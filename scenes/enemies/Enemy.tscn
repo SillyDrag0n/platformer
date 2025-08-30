@@ -1,12 +1,14 @@
-[gd_scene load_steps=3 format=3 uid="uid://yti18354ayox"]
+[gd_scene load_steps=4 format=3 uid="uid://yti18354ayox"]
 
 [ext_resource type="Texture2D" uid="uid://5g6kes63q51w" path="res://assets/enemies/Sprite-0001.png" id="1_hpe7p"]
+[ext_resource type="Script" uid="uid://drb6ywy16css8" path="res://scenes/enemies/enemy.gd" id="1_k7o7a"]
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_k7o7a"]
 radius = 25.0
 height = 112.0
 
 [node name="Enemy" type="CharacterBody2D"]
+script = ExtResource("1_k7o7a")
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
 texture_filter = 3

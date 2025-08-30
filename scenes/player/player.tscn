@@ -18,6 +18,26 @@ animations = [{
 "loop": true,
 "name": &"idle",
 "speed": 5.0
+}, {
+"frames": [],
+"loop": true,
+"name": &"jump",
+"speed": 5.0
+}, {
+"frames": [],
+"loop": true,
+"name": &"run",
+"speed": 5.0
+}, {
+"frames": [],
+"loop": true,
+"name": &"shoot",
+"speed": 5.0
+}, {
+"frames": [],
+"loop": true,
+"name": &"walk",
+"speed": 5.0
 }]
 
 [node name="Player" type="CharacterBody2D"]
@@ -33,4 +53,6 @@ shape = SubResource("CapsuleShape2D_gmlin")
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
 sprite_frames = SubResource("SpriteFrames_lvxji")
 animation = &"idle"
-frame_progress = 0.80705
+frame_progress = 0.42838
+
+[node name="Marker2D" type="Marker2D" parent="."]

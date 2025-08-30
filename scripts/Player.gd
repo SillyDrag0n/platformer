@@ -18,6 +18,9 @@ var coyote_timer : Timer # Reference to the coyote timer
 var coyote_jump_available := true
 
 @onready var bullet_scene = preload("res://scenes/common/projectile/bullet.tscn")
+var shoot_timer : Timer
+const shoot_time = 0.25
+var shoot_available : bool = true
 
 func _ready() -> void:
 	# Set up input buffer timer
@@ -32,6 +35,13 @@ func _ready() -> void:
 	coyote_timer.one_shot = true
 	add_child(coyote_timer)
 	coyote_timer.timeout.connect(coyote_timeout)
+
+	# Set up shoot timer
+	shoot_timer = Timer.new()
+	shoot_timer.wait_time = shoot_time
+	shoot_timer.one_shot = true
+	add_child(shoot_timer)
+	# shoot_timer.timeout.connect()
 
 func _physics_process(delta) -> void:
 	# Get inputs
@@ -73,7 +83,6 @@ func _physics_process(delta) -> void:
 
 	# Apply velocity
 	move_and_slide()
-
 	shoot()
 
 ## Returns the gravity based on the state of the player
