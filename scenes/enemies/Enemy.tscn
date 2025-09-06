@@ -1,20 +1,33 @@
-[gd_scene load_steps=4 format=3 uid="uid://yti18354ayox"]
+[gd_scene load_steps=5 format=3 uid="uid://yti18354ayox"]
 
-[ext_resource type="Texture2D" uid="uid://5g6kes63q51w" path="res://assets/enemies/Sprite-0001.png" id="1_hpe7p"]
 [ext_resource type="Script" uid="uid://drb6ywy16css8" path="res://scenes/enemies/enemy.gd" id="1_k7o7a"]
+[ext_resource type="Texture2D" uid="uid://dn4a8pjicd2gm" path="res://assets/enemies/EnemyIdle01.png" id="2_k7o7a"]
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_k7o7a"]
-radius = 25.0
-height = 112.0
+radius = 10.6666
+height = 21.3333
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_8axbs"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("2_k7o7a")
+}],
+"loop": true,
+"name": &"Idle",
+"speed": 5.0
+}]
 
 [node name="Enemy" type="CharacterBody2D"]
 script = ExtResource("1_k7o7a")
 
-[node name="Sprite2D" type="Sprite2D" parent="."]
-texture_filter = 3
-position = Vector2(7, -12)
-texture = ExtResource("1_hpe7p")
-
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
-position = Vector2(1, -5)
+position = Vector2(0, -32)
+scale = Vector2(1, 3)
 shape = SubResource("CapsuleShape2D_k7o7a")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+texture_filter = 3
+position = Vector2(0, -31)
+sprite_frames = SubResource("SpriteFrames_8axbs")
+animation = &"Idle"

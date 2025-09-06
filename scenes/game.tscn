@@ -1,21 +1,12 @@
-[gd_scene load_steps=5 format=3 uid="uid://b08oohfdsgcut"]
+[gd_scene load_steps=4 format=3 uid="uid://b08oohfdsgcut"]
 
-[ext_resource type="PackedScene" uid="uid://cp725ajvwdsd3" path="res://scenes/player/player.tscn" id="1_uwrxv"]
-[ext_resource type="Texture2D" uid="uid://kr0nnjeqpeqq" path="res://assets/environment/Background.png" id="3_lbhrr"]
+[ext_resource type="PackedScene" uid="uid://cryvwwp5pcgj3" path="res://scenes/player/player.tscn" id="1_uwrxv"]
 [ext_resource type="PackedScene" uid="uid://yti18354ayox" path="res://scenes/enemies/Enemy.tscn" id="3_lnu2h"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_lnu2h"]
 size = Vector2(1094.5, 131.5)
 
 [node name="Game" type="Node2D"]
-
-[node name="TextureRect" type="TextureRect" parent="."]
-offset_right = 40.0
-offset_bottom = 40.0
-scale = Vector2(1.71202, 2.02903)
-mouse_filter = 2
-texture = ExtResource("3_lbhrr")
-stretch_mode = 1
 
 [node name="TileMapLayer" type="TileMapLayer" parent="."]
 
@@ -29,11 +20,14 @@ shape = SubResource("RectangleShape2D_lnu2h")
 
 [node name="Entities" type="Node2D" parent="."]
 
+[node name="Enemy" parent="Entities" instance=ExtResource("3_lnu2h")]
+position = Vector2(722, 359)
+
 [node name="Player" parent="Entities" instance=ExtResource("1_uwrxv")]
 position = Vector2(547, 360)
 
 [node name="Camera2D" type="Camera2D" parent="Entities/Player"]
+offset = Vector2(25, -25)
+zoom = Vector2(2, 2)
 position_smoothing_enabled = true
-
-[node name="Enemy" parent="Entities" instance=ExtResource("3_lnu2h")]
-position = Vector2(722, 359)
+position_smoothing_speed = 10.0
