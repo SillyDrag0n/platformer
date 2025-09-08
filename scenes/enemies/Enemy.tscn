@@ -4,8 +4,8 @@
 [ext_resource type="Texture2D" uid="uid://dn4a8pjicd2gm" path="res://assets/enemies/EnemyIdle01.png" id="2_k7o7a"]
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_k7o7a"]
-radius = 10.6666
-height = 21.3333
+radius = 9.0
+height = 18.6667
 
 [sub_resource type="SpriteFrames" id="SpriteFrames_8axbs"]
 animations = [{
