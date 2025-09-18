@@ -12,7 +12,7 @@ func handle_horizontal_flip(move_direction: float) -> void:
 
 func handle_move_animation(move_direction: float) -> void:
 	handle_horizontal_flip(move_direction)
-
+	
 	if move_direction != 0:
 		sprite.play("run")
 	else:
