@@ -4,7 +4,7 @@ extends NodeState
 @export var animated_sprite_2d : AnimatedSprite2D
 
 @export_category("Run State")
-@export var speed : int = 1000
+@export var speed : int = 800
 @export var max_horizontal_speed: int = 300
 
 const GRAVITY : int = 1000

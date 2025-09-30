@@ -98,27 +98,27 @@ region = Rect2(288, 0, 48, 87)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_pnw6m"]
 atlas = ExtResource("2_857uo")
-region = Rect2(0, 0, 48, 87)
+region = Rect2(0, 0, 47, 87)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_1so5t"]
 atlas = ExtResource("2_857uo")
-region = Rect2(48, 0, 48, 87)
+region = Rect2(47, 0, 47, 87)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_55jnj"]
 atlas = ExtResource("2_857uo")
-region = Rect2(96, 0, 48, 87)
+region = Rect2(94, 0, 47, 87)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_dx5ib"]
 atlas = ExtResource("2_857uo")
-region = Rect2(144, 0, 48, 87)
+region = Rect2(141, 0, 47, 87)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_a2xo5"]
 atlas = ExtResource("2_857uo")
-region = Rect2(192, 0, 48, 87)
+region = Rect2(188, 0, 47, 87)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_art4l"]
 atlas = ExtResource("2_857uo")
-region = Rect2(240, 0, 48, 87)
+region = Rect2(235, 0, 47, 87)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_fjxoa"]
 atlas = ExtResource("6_j743l")
@@ -349,7 +349,7 @@ animations = [{
 "duration": 1.0,
 "texture": SubResource("AtlasTexture_7pqkx")
 }],
-"loop": true,
+"loop": false,
 "name": &"jump",
 "speed": 10.0
 }, {
@@ -544,9 +544,9 @@ material = SubResource("ShaderMaterial_5kha7")
 position = Vector2(0, -32)
 scale = Vector2(0.833333, 0.729885)
 sprite_frames = SubResource("SpriteFrames_il2ct")
-animation = &"jump"
+animation = &"idle"
 autoplay = "idle"
-frame_progress = 0.502051
+frame_progress = 0.168199
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 position = Vector2(0, -21)

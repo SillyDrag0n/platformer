@@ -63,4 +63,5 @@ func gun_shooting():
 	bullet_instance.direction = direction
 	bullet_instance.move_x_direction = true
 	bullet_instance.global_position = muzzle.global_position
+	print_debug("bullet spawned")
 	get_parent().add_child(bullet_instance)

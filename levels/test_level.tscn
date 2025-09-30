@@ -1,0 +1,17 @@
+[gd_scene load_steps=3 format=3 uid="uid://gkr4g0dg7pla"]
+
+[ext_resource type="PackedScene" uid="uid://bfcmjoltsmsed" path="res://player/player.tscn" id="4_wndkh"]
+[ext_resource type="Script" uid="uid://chd8hkfd628j6" path="res://player/player_camera.gd" id="5_ly3hx"]
+
+[node name="BaseLevel" type="Node2D"]
+
+[node name="TileMapLayer" type="TileMapLayer" parent="."]
+
+[node name="Player" parent="." instance=ExtResource("4_wndkh")]
+position = Vector2(53, -104)
+
+[node name="PlayerCamera2D" type="Camera2D" parent="." node_paths=PackedStringArray("player")]
+position = Vector2(53, -104)
+editor_draw_limits = true
+script = ExtResource("5_ly3hx")
+player = NodePath("../Player")
