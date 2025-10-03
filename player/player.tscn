@@ -1,4 +1,4 @@
-[gd_scene load_steps=89 format=3 uid="uid://bfcmjoltsmsed"]
+[gd_scene load_steps=87 format=3 uid="uid://bfcmjoltsmsed"]
 
 [ext_resource type="Script" uid="uid://bw7oflms0slfo" path="res://player/player.gd" id="1_wqxfn"]
 [ext_resource type="Texture2D" uid="uid://gnuwn56p7uf0" path="res://player/player-idle.png" id="1_xd272"]
@@ -72,10 +72,6 @@ region = Rect2(192, 0, 48, 87)
 atlas = ExtResource("1_xd272")
 region = Rect2(240, 0, 48, 87)
 
-[sub_resource type="AtlasTexture" id="AtlasTexture_x7c3f"]
-atlas = ExtResource("3_gm186")
-region = Rect2(48, 0, 48, 87)
-
 [sub_resource type="AtlasTexture" id="AtlasTexture_bjvpn"]
 atlas = ExtResource("3_gm186")
 region = Rect2(96, 0, 48, 87)
@@ -91,10 +87,6 @@ region = Rect2(192, 0, 48, 87)
 [sub_resource type="AtlasTexture" id="AtlasTexture_knn7v"]
 atlas = ExtResource("3_gm186")
 region = Rect2(240, 0, 48, 87)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_7pqkx"]
-atlas = ExtResource("3_gm186")
-region = Rect2(288, 0, 48, 87)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_pnw6m"]
 atlas = ExtResource("2_857uo")
@@ -332,9 +324,6 @@ animations = [{
 }, {
 "frames": [{
 "duration": 1.0,
-"texture": SubResource("AtlasTexture_x7c3f")
-}, {
-"duration": 1.0,
 "texture": SubResource("AtlasTexture_bjvpn")
 }, {
 "duration": 1.0,
@@ -345,9 +334,6 @@ animations = [{
 }, {
 "duration": 1.0,
 "texture": SubResource("AtlasTexture_knn7v")
-}, {
-"duration": 1.0,
-"texture": SubResource("AtlasTexture_7pqkx")
 }],
 "loop": false,
 "name": &"jump",
@@ -544,9 +530,10 @@ material = SubResource("ShaderMaterial_5kha7")
 position = Vector2(0, -32)
 scale = Vector2(0.833333, 0.729885)
 sprite_frames = SubResource("SpriteFrames_il2ct")
-animation = &"idle"
+animation = &"fall"
 autoplay = "idle"
-frame_progress = 0.168199
+frame = 4
+frame_progress = 1.0
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 position = Vector2(0, -21)
@@ -589,7 +576,6 @@ speed = 300
 script = ExtResource("15_vphvd")
 character_body_2d = NodePath("../..")
 animated_sprite_2d = NodePath("../../AnimatedSprite2D")
-jump_height = -350.0
 jump_horizontal_speed = 450
 max_jump_count = 2
 
