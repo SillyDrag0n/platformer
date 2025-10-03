@@ -36,8 +36,8 @@ region = Rect2(160, 0, 32, 64)
 animations = [{
 "frames": [],
 "loop": true,
-"name": &"default",
-"speed": 12.0
+"name": &"attack",
+"speed": 5.0
 }, {
 "frames": [{
 "duration": 1.0,
@@ -89,7 +89,6 @@ position = Vector2(0, -14)
 sprite_frames = SubResource("SpriteFrames_6w2qa")
 animation = &"scout"
 autoplay = "idle"
-frame_progress = 0.363349
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 position = Vector2(0, -9)

@@ -1,6 +1,7 @@
-[gd_scene load_steps=6 format=4 uid="uid://gkr4g0dg7pla"]
+[gd_scene load_steps=7 format=4 uid="uid://gkr4g0dg7pla"]
 
 [ext_resource type="Texture2D" uid="uid://dfciu0bvt77h" path="res://tileset/desert_tileset.png" id="1_gmgay"]
+[ext_resource type="PackedScene" uid="uid://u0noil7whtf" path="res://enemies/cactus/enemy_cactus.tscn" id="4_w7r7j"]
 [ext_resource type="PackedScene" uid="uid://bfcmjoltsmsed" path="res://player/player.tscn" id="4_wndkh"]
 [ext_resource type="Script" uid="uid://chd8hkfd628j6" path="res://player/player_camera.gd" id="5_ly3hx"]
 
@@ -93,3 +94,6 @@ zoom = Vector2(2, 2)
 editor_draw_limits = true
 script = ExtResource("5_ly3hx")
 player = NodePath("..")
+
+[node name="EnemyCactus" parent="." instance=ExtResource("4_w7r7j")]
+position = Vector2(235, 190)
