@@ -4,9 +4,9 @@ extends NodeState
 @export var animated_sprite_2d : AnimatedSprite2D
 
 @export_category("Jump State")
-@export var jump_height :  float = -250
-@export var jump_horizontal_speed : int = 500
-@export var max_jump_horizontal_speed : int = 300
+@export var jump_height :  float = -350
+@export var jump_horizontal_speed : int = 200
+@export var max_jump_horizontal_speed : int = 200	
 @export var max_jump_count : int = 1
 @export var jump_gravity : int = 1000
 
@@ -40,8 +40,11 @@ func on_physics_process(delta : float):
 	var direction : float = GameInputEvents.movement_input()
 	
 	if !character_body_2d.is_on_floor():
-		character_body_2d.velocity.x += direction * jump_horizontal_speed
-		character_body_2d.velocity.x = clamp(character_body_2d.velocity.x, -max_jump_horizontal_speed, max_jump_horizontal_speed)
+		if direction != 0:
+			character_body_2d.velocity.x += direction * jump_horizontal_speed
+			character_body_2d.velocity.x = clamp(character_body_2d.velocity.x, -max_jump_horizontal_speed, max_jump_horizontal_speed)
+		else:
+			character_body_2d.velocity.x = 0
 		
 	character_body_2d.move_and_slide()
 	

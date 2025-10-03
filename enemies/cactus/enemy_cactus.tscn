@@ -71,13 +71,15 @@ animations = [{
 "speed": 5.0
 }]
 
-[sub_resource type="CircleShape2D" id="CircleShape2D_8nxol"]
-radius = 13.0
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_xddwv"]
+radius = 6.0
+height = 54.0
 
-[sub_resource type="CircleShape2D" id="CircleShape2D_wv3ht"]
-radius = 14.0
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_idb2v"]
+radius = 6.0
+height = 54.0
 
-[node name="EnemyCrab" type="CharacterBody2D" groups=["Enemy"]]
+[node name="EnemyCactus" type="CharacterBody2D" groups=["Enemy"]]
 collision_layer = 4
 collision_mask = 3
 script = ExtResource("1_siw7a")
@@ -90,8 +92,8 @@ autoplay = "idle"
 frame_progress = 0.363349
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
-position = Vector2(0, -13)
-shape = SubResource("CircleShape2D_8nxol")
+position = Vector2(0, -9)
+shape = SubResource("CapsuleShape2D_xddwv")
 
 [node name="Timer" type="Timer" parent="."]
 wait_time = 3.0
@@ -102,8 +104,8 @@ collision_layer = 4
 collision_mask = 2
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Hurtbox"]
-position = Vector2(0, -13)
-shape = SubResource("CircleShape2D_wv3ht")
+position = Vector2(0, -9)
+shape = SubResource("CapsuleShape2D_idb2v")
 debug_color = Color(0.937255, 0.129412, 0.541176, 0.419608)
 
 [connection signal="timeout" from="Timer" to="." method="_on_timer_timeout"]
