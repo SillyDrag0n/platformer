@@ -41,6 +41,7 @@ func on_physics_process(delta : float):
 	
 	if !character_body_2d.is_on_floor():
 		if direction != 0:
+			animated_sprite_2d.flip_h = false if direction > 0 else true
 			character_body_2d.velocity.x += direction * jump_horizontal_speed
 			character_body_2d.velocity.x = clamp(character_body_2d.velocity.x, -max_jump_horizontal_speed, max_jump_horizontal_speed)
 		else:

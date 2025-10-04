@@ -1,8 +1,37 @@
-[gd_scene load_steps=14 format=3 uid="uid://u0noil7whtf"]
+[gd_scene load_steps=24 format=3 uid="uid://u0noil7whtf"]
 
-[ext_resource type="Script" uid="uid://be7xi8y3wkk6v" path="res://enemies/crab/enemy_crab.gd" id="1_siw7a"]
+[ext_resource type="Script" uid="uid://c4y36jo5nvq6q" path="res://enemies/cactus/enemy_cactus.gd" id="1_xddwv"]
 [ext_resource type="Texture2D" uid="uid://dng2hat43g3xa" path="res://enemies/cactus/idle.png" id="2_xddwv"]
 [ext_resource type="Texture2D" uid="uid://wjbkbd1whl8o" path="res://enemies/cactus/idle-sheet.png" id="3_idb2v"]
+[ext_resource type="Texture2D" uid="uid://bt4eso77b47uo" path="res://enemies/cactus/attack.png" id="3_os84p"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_krsve"]
+atlas = ExtResource("3_os84p")
+region = Rect2(0, 0, 32, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_7hx7i"]
+atlas = ExtResource("3_os84p")
+region = Rect2(192, 0, 32, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_c1vvc"]
+atlas = ExtResource("3_os84p")
+region = Rect2(32, 0, 32, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_lyj3b"]
+atlas = ExtResource("3_os84p")
+region = Rect2(64, 0, 32, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_kgavq"]
+atlas = ExtResource("3_os84p")
+region = Rect2(96, 0, 32, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_6ewyw"]
+atlas = ExtResource("3_os84p")
+region = Rect2(128, 0, 32, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_wbejn"]
+atlas = ExtResource("3_os84p")
+region = Rect2(160, 0, 32, 64)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_os84p"]
 atlas = ExtResource("2_xddwv")
@@ -34,8 +63,40 @@ region = Rect2(160, 0, 32, 64)
 
 [sub_resource type="SpriteFrames" id="SpriteFrames_6w2qa"]
 animations = [{
-"frames": [],
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_krsve")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_7hx7i")
+}],
 "loop": true,
+"name": &"aggro",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_krsve")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_c1vvc")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_lyj3b")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_kgavq")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_6ewyw")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_wbejn")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_7hx7i")
+}],
+"loop": false,
 "name": &"attack",
 "speed": 5.0
 }, {
@@ -79,23 +140,31 @@ height = 54.0
 radius = 6.0
 height = 54.0
 
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_xddwv"]
+size = Vector2(500, 200)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_idb2v"]
+size = Vector2(300, 200)
+
 [node name="EnemyCactus" type="CharacterBody2D" groups=["Enemy"]]
 collision_layer = 4
 collision_mask = 3
-script = ExtResource("1_siw7a")
+script = ExtResource("1_xddwv")
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
 position = Vector2(0, -14)
 sprite_frames = SubResource("SpriteFrames_6w2qa")
-animation = &"scout"
+animation = &"attack"
 autoplay = "idle"
+frame = 6
+frame_progress = 1.0
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 position = Vector2(0, -9)
 shape = SubResource("CapsuleShape2D_xddwv")
 
 [node name="Timer" type="Timer" parent="."]
-wait_time = 3.0
+wait_time = 2.5
 autostart = true
 
 [node name="Hurtbox" type="Area2D" parent="."]
@@ -107,5 +176,24 @@ position = Vector2(0, -9)
 shape = SubResource("CapsuleShape2D_idb2v")
 debug_color = Color(0.937255, 0.129412, 0.541176, 0.419608)
 
+[node name="ScoutArea" type="Area2D" parent="."]
+collision_layer = 4
+collision_mask = 2
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="ScoutArea"]
+position = Vector2(0, -9)
+shape = SubResource("RectangleShape2D_xddwv")
+
+[node name="AggroArea" type="Area2D" parent="."]
+collision_layer = 4
+collision_mask = 2
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="AggroArea"]
+position = Vector2(0, -9)
+shape = SubResource("RectangleShape2D_idb2v")
+
 [connection signal="timeout" from="Timer" to="." method="_on_timer_timeout"]
 [connection signal="area_entered" from="Hurtbox" to="." method="_on_hurtbox_area_entered"]
+[connection signal="body_entered" from="ScoutArea" to="." method="_on_scout_area_body_entered"]
+[connection signal="body_exited" from="ScoutArea" to="." method="_on_scout_area_body_exited"]
+[connection signal="body_entered" from="AggroArea" to="." method="_on_aggro_area_body_entered"]
