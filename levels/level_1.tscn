@@ -1,6 +1,5 @@
-[gd_scene load_steps=10 format=3 uid="uid://cg13hidxfod5d"]
+[gd_scene load_steps=9 format=3 uid="uid://cg13hidxfod5d"]
 
-[ext_resource type="PackedScene" uid="uid://ck80q7i6cfn5x" path="res://levels/base_level.tscn" id="1_3kjr0"]
 [ext_resource type="PackedScene" uid="uid://crnq7s50akxjp" path="res://background/parallax_background.tscn" id="2_enhfr"]
 [ext_resource type="PackedScene" uid="uid://ll1w8pmjf7wk" path="res://enemies/crab/enemy_crab.tscn" id="3_omqh5"]
 [ext_resource type="PackedScene" uid="uid://dabxfx3538yx0" path="res://ui/game_screen.tscn" id="4_kw8yo"]
@@ -10,7 +9,7 @@
 [ext_resource type="PackedScene" uid="uid://cxilejs35uqha" path="res://levels/keys/key.tscn" id="8_i3aku"]
 [ext_resource type="PackedScene" uid="uid://7pyg1q5x1xse" path="res://levels/door/door.tscn" id="8_xti8t"]
 
-[node name="Level1" instance=ExtResource("1_3kjr0")]
+[node name="Level1"]
 
 [node name="ParallaxBackground" parent="." index="0" instance=ExtResource("2_enhfr")]
 offset = Vector2(0, -306)

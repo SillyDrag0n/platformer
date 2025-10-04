@@ -1,18 +1,16 @@
-[gd_scene load_steps=6 format=3 uid="uid://bnpci6lx6d0ve"]
+[gd_scene load_steps=4 format=3 uid="uid://bnpci6lx6d0ve"]
 
-[ext_resource type="Script" path="res://ui/settings_menu_screen.gd" id="1_kdqj1"]
-[ext_resource type="Texture2D" uid="uid://riw5epitme28" path="res://ui/environment-preview.png" id="2_c2qwt"]
+[ext_resource type="Script" uid="uid://cw2hqkapp34wy" path="res://ui/settings_menu_screen.gd" id="1_kdqj1"]
+[ext_resource type="Texture2D" uid="uid://dixf3cwo2jdnw" path="res://ui/background.png" id="2_gidpi"]
 [ext_resource type="Theme" uid="uid://ddr12d5h68dd1" path="res://ui/theme/game_theme.tres" id="3_in15j"]
-[ext_resource type="Texture2D" uid="uid://bbhqr4m1gcnn" path="res://ui/player-run-4.png" id="4_bv2g0"]
-[ext_resource type="Texture2D" uid="uid://13vp2vbi46e3" path="res://ui/crab-walk-1.png" id="5_6e7pp"]
 
 [node name="SettingsMenuScreen" type="CanvasLayer"]
 process_mode = 3
 layer = 2
 script = ExtResource("1_kdqj1")
 
-[node name="TextureRect" type="TextureRect" parent="."]
-modulate = Color(0.815686, 0.290196, 0.780392, 1)
+[node name="Background" type="TextureRect" parent="."]
+modulate = Color(0.564706, 0.407843, 0.34902, 0.490196)
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
@@ -22,7 +20,7 @@ offset_right = 244.0
 offset_bottom = 14.0
 grow_horizontal = 2
 grow_vertical = 2
-texture = ExtResource("2_c2qwt")
+texture = ExtResource("2_gidpi")
 
 [node name="MarginContainer" type="MarginContainer" parent="."]
 anchors_preset = 15
@@ -56,14 +54,6 @@ layout_mode = 2
 [node name="MainMenuButton" type="Button" parent="MarginContainer/PanelContainer/MarginContainer/VBoxContainer"]
 layout_mode = 2
 text = "MAIN MENU"
-
-[node name="Player-run-4" type="Sprite2D" parent="."]
-position = Vector2(166, 231)
-texture = ExtResource("4_bv2g0")
-
-[node name="Crab-walk-1" type="Sprite2D" parent="."]
-position = Vector2(246, 237)
-texture = ExtResource("5_6e7pp")
 
 [connection signal="item_selected" from="MarginContainer/PanelContainer/MarginContainer/VBoxContainer/WindowModeOptionButton" to="." method="_on_window_mode_option_button_item_selected"]
 [connection signal="item_selected" from="MarginContainer/PanelContainer/MarginContainer/VBoxContainer/ResolutionOptionButton" to="." method="_on_resolution_option_button_item_selected"]

@@ -35,4 +35,3 @@ func continue_game():
 func main_menu():
 	var main_menu_screen_instance = main_menu_screen.instantiate()
 	get_tree().get_root().add_child(main_menu_screen_instance)
-

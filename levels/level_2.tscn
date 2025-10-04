@@ -1,9 +1,8 @@
-[gd_scene load_steps=3 format=3 uid="uid://dkdsjhexg110w"]
+[gd_scene load_steps=2 format=3 uid="uid://dkdsjhexg110w"]
 
-[ext_resource type="PackedScene" uid="uid://ck80q7i6cfn5x" path="res://levels/base_level.tscn" id="1_pbyw2"]
 [ext_resource type="PackedScene" uid="uid://crnq7s50akxjp" path="res://background/parallax_background.tscn" id="2_2qa5i"]
 
-[node name="Level2" instance=ExtResource("1_pbyw2")]
+[node name="Level2"]
 
 [node name="ParallaxBackground" parent="." index="0" instance=ExtResource("2_2qa5i")]
 offset = Vector2(0, -321)
@@ -16,7 +15,6 @@ layer_2/tile_data = PackedInt32Array(-1179644, 917504, 11, -1179643, 983040, 11,
 
 [node name="Player" parent="." index="2"]
 position = Vector2(106, -224)
-jump_count = 2
 
 [node name="PlayerCamera2D" parent="." index="3"]
 limit_left = 0
