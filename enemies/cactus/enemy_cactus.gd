@@ -20,13 +20,12 @@ func _ready():
 	can_attack = true
 
 func _process(delta):
-	enemy_attack(delta)
+	enemy_attack()
 	enemy_animations()
-	print("Enemy State: ", current_state)
 
-func enemy_attack(delta : float):
+func enemy_attack():
 	if current_state == State.Aggro && can_attack:
-		print_debug("ATTACK")
+		current_state = State.Attack
 
 func enemy_animations():
 	if current_state == State.Idle:
@@ -35,7 +34,7 @@ func enemy_animations():
 	elif current_state == State.Scout:
 		animated_sprite_2d.play("scout")
 
-	elif current_state == State.Aggro && can_attack:
+	elif current_state == State.Attack:
 		animated_sprite_2d.play("attack")
 		can_attack = false
 		timer.start()	
@@ -47,7 +46,6 @@ func _on_timer_timeout():
 	can_attack = true
 
 func _on_hurtbox_area_entered(area : Area2D):
-	print("Hurtbox area entered")
 	if area.get_parent().has_method("get_damage_amount"):
 		var node = area.get_parent() as Node
 		health_amount -= node.damage_amount
@@ -59,18 +57,15 @@ func _on_hurtbox_area_entered(area : Area2D):
 			get_parent().add_child(enemy_death_effect_instance)
 			queue_free()
 
-func _on_aggro_area_body_entered(body:Node2D) -> void:
-	print("aggro area entered")
+func _on_aggro_area_body_entered(body:Node2D):
 	current_state = State.Aggro
 
-func _on_scout_area_body_entered(body:Node2D) -> void:
-	if "Player" in body.name:
-		player_body = body
-		print("scout area entered")
+func _on_scout_area_body_entered(body:Node2D):
 		current_state = State.Scout
 
-func _on_scout_area_body_exited(body:Node2D) -> void:
-	if "Player" in body.name:
-		player_body = null
-	print("scout area exited")
+func _on_scout_area_body_exited(body:Node2D):
 	current_state = State.Idle
+
+func _on_animated_sprite_2d_animation_finished():
+	if current_state == State.Attack:
+		current_state = State.Aggro

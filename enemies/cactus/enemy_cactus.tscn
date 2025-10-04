@@ -144,7 +144,7 @@ height = 54.0
 size = Vector2(500, 200)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_idb2v"]
-size = Vector2(300, 200)
+size = Vector2(300, 180)
 
 [node name="EnemyCactus" type="CharacterBody2D" groups=["Enemy"]]
 collision_layer = 4
@@ -177,7 +177,7 @@ shape = SubResource("CapsuleShape2D_idb2v")
 debug_color = Color(0.937255, 0.129412, 0.541176, 0.419608)
 
 [node name="ScoutArea" type="Area2D" parent="."]
-collision_layer = 4
+collision_layer = 128
 collision_mask = 2
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="ScoutArea"]
@@ -185,13 +185,14 @@ position = Vector2(0, -9)
 shape = SubResource("RectangleShape2D_xddwv")
 
 [node name="AggroArea" type="Area2D" parent="."]
-collision_layer = 4
+collision_layer = 128
 collision_mask = 2
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="AggroArea"]
 position = Vector2(0, -9)
 shape = SubResource("RectangleShape2D_idb2v")
 
+[connection signal="animation_finished" from="AnimatedSprite2D" to="." method="_on_animated_sprite_2d_animation_finished"]
 [connection signal="timeout" from="Timer" to="." method="_on_timer_timeout"]
 [connection signal="area_entered" from="Hurtbox" to="." method="_on_hurtbox_area_entered"]
 [connection signal="body_entered" from="ScoutArea" to="." method="_on_scout_area_body_entered"]
