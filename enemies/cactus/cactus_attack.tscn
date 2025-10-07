@@ -1,0 +1,48 @@
+[gd_scene load_steps=6 format=3 uid="uid://ioxbfqcwsin1"]
+
+[ext_resource type="Texture2D" uid="uid://2vqskqj2qk5f" path="res://player/shot.png" id="1_j5wmt"]
+[ext_resource type="Script" uid="uid://cg3qqk8125beg" path="res://enemies/cactus/cactus_attack.gd" id="2_l7765"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_j40gx"]
+atlas = ExtResource("1_j5wmt")
+region = Rect2(96, 0, 12, 7)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_c2ri7"]
+animations = [{
+"frames": [],
+"loop": true,
+"name": &"default",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_j40gx")
+}],
+"loop": true,
+"name": &"shot",
+"speed": 10.0
+}]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_boyjm"]
+size = Vector2(12, 2)
+
+[node name="CactusAttack" type="AnimatedSprite2D" groups=["Enemy"]]
+sprite_frames = SubResource("SpriteFrames_c2ri7")
+animation = &"shot"
+script = ExtResource("2_l7765")
+
+[node name="Timer" type="Timer" parent="."]
+wait_time = 5.0
+one_shot = true
+autostart = true
+
+[node name="Hurtbox" type="Area2D" parent="."]
+collision_layer = 4
+collision_mask = 2
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Hurtbox"]
+shape = SubResource("RectangleShape2D_boyjm")
+
+[connection signal="timeout" from="Timer" to="." method="_on_timer_timeout"]
+[connection signal="area_entered" from="Hurtbox" to="." method="_attack_on_hurtbox_area_entered"]
+[connection signal="body_entered" from="Hurtbox" to="." method="_attack_on_hurtbox_body_entered"]

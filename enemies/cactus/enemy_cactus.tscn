@@ -192,6 +192,18 @@ collision_mask = 2
 position = Vector2(0, -9)
 shape = SubResource("RectangleShape2D_idb2v")
 
+[node name="AttackSpawnLeft01" type="Marker2D" parent="." groups=["attack_spawns_left"]]
+position = Vector2(-10, 0)
+
+[node name="AttackSpawnLeft02" type="Marker2D" parent="." groups=["attack_spawns_left"]]
+position = Vector2(-10, -15)
+
+[node name="AttackSpawnRight01" type="Marker2D" parent="." groups=["attack_spawns_right"]]
+position = Vector2(10, 0)
+
+[node name="AttackSpawnRight02" type="Marker2D" parent="." groups=["attack_spawns_right"]]
+position = Vector2(10, -15)
+
 [connection signal="animation_finished" from="AnimatedSprite2D" to="." method="_on_animated_sprite_2d_animation_finished"]
 [connection signal="timeout" from="Timer" to="." method="_on_timer_timeout"]
 [connection signal="area_entered" from="Hurtbox" to="." method="_on_hurtbox_area_entered"]
