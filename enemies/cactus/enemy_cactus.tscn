@@ -141,10 +141,10 @@ radius = 6.0
 height = 54.0
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_xddwv"]
-size = Vector2(500, 200)
+size = Vector2(700, 200)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_idb2v"]
-size = Vector2(300, 180)
+size = Vector2(500, 180)
 
 [node name="EnemyCactus" type="CharacterBody2D" groups=["Enemy"]]
 collision_layer = 4
