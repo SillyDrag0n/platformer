@@ -1,4 +1,4 @@
-[gd_scene load_steps=86 format=3 uid="uid://bfcmjoltsmsed"]
+[gd_scene load_steps=82 format=3 uid="uid://bfcmjoltsmsed"]
 
 [ext_resource type="Script" uid="uid://bw7oflms0slfo" path="res://player/player.gd" id="1_wqxfn"]
 [ext_resource type="Texture2D" uid="uid://gnuwn56p7uf0" path="res://player/player-idle.png" id="1_xd272"]
@@ -30,22 +30,6 @@ shader_parameter/hit_colour = Color(0.746723, 0.018789, 0.134852, 1)
 [sub_resource type="AtlasTexture" id="AtlasTexture_65viv"]
 atlas = ExtResource("3_gm186")
 region = Rect2(336, 0, 48, 87)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_uw77l"]
-atlas = ExtResource("3_gm186")
-region = Rect2(384, 0, 48, 87)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_jd2rm"]
-atlas = ExtResource("3_gm186")
-region = Rect2(432, 0, 48, 87)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_q28gw"]
-atlas = ExtResource("3_gm186")
-region = Rect2(480, 0, 48, 87)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_ge24q"]
-atlas = ExtResource("3_gm186")
-region = Rect2(528, 0, 48, 87)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_rptt4"]
 atlas = ExtResource("1_xd272")
@@ -276,18 +260,6 @@ animations = [{
 "frames": [{
 "duration": 1.0,
 "texture": SubResource("AtlasTexture_65viv")
-}, {
-"duration": 1.0,
-"texture": SubResource("AtlasTexture_uw77l")
-}, {
-"duration": 1.0,
-"texture": SubResource("AtlasTexture_jd2rm")
-}, {
-"duration": 1.0,
-"texture": SubResource("AtlasTexture_q28gw")
-}, {
-"duration": 1.0,
-"texture": SubResource("AtlasTexture_ge24q")
 }],
 "loop": false,
 "name": &"fall",
@@ -519,9 +491,9 @@ material = SubResource("ShaderMaterial_5kha7")
 position = Vector2(0, -32)
 scale = Vector2(0.833333, 0.729885)
 sprite_frames = SubResource("SpriteFrames_il2ct")
-animation = &"idle"
+animation = &"fall"
 autoplay = "idle"
-frame_progress = 0.843711
+frame_progress = 1.0
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 position = Vector2(0, -21)
