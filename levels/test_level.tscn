@@ -91,16 +91,19 @@ tile_set = SubResource("TileSet_x25rp")
 [node name="Player" parent="." instance=ExtResource("4_wndkh")]
 position = Vector2(63, 208)
 
-[node name="PlayerCamera2D" type="Camera2D" parent="Player" node_paths=PackedStringArray("player")]
+[node name="RespawnPosition" type="Marker2D" parent="."]
+
+[node name="PlayerCamera2D" type="Camera2D" parent="." node_paths=PackedStringArray("player")]
+position = Vector2(63, 208)
 zoom = Vector2(2, 2)
 editor_draw_limits = true
 script = ExtResource("5_ly3hx")
-player = NodePath("..")
+player = NodePath("../Player")
 
 [node name="EnemyCactus" parent="." instance=ExtResource("4_w7r7j")]
 position = Vector2(503, 190)
 
 [node name="GameScreen" parent="." instance=ExtResource("5_o6mel")]
 
-[node name="DeathScreen" parent="GameScreen" instance=ExtResource("6_e7anx")]
+[node name="DeathScreen" parent="." instance=ExtResource("6_e7anx")]
 visible = false

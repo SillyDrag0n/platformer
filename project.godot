@@ -24,6 +24,7 @@ CollectibleManager="*res://scripts/collectible_manager.gd"
 SettingsManager="*res://scripts/settings_manager.gd"
 SceneManager="*res://scripts/scene_manager.gd"
 InventoryManager="*res://scripts/inventory_manager.gd"
+RespawnManager="*res://scripts/respawn_manager.gd"
 
 [display]
 

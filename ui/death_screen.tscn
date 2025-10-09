@@ -30,18 +30,22 @@ grow_vertical = 2
 [node name="VBoxContainer" type="VBoxContainer" parent="PanelContainer"]
 layout_mode = 2
 
-[node name="Button" type="Button" parent="PanelContainer/VBoxContainer"]
+[node name="RespawnButton" type="Button" parent="PanelContainer/VBoxContainer"]
 layout_mode = 2
 text = "Respawn"
 
-[node name="Button2" type="Button" parent="PanelContainer/VBoxContainer"]
+[node name="HubButton" type="Button" parent="PanelContainer/VBoxContainer"]
 layout_mode = 2
 text = "Return to Hub"
 
-[node name="Button3" type="Button" parent="PanelContainer/VBoxContainer"]
+[node name="ExitButton" type="Button" parent="PanelContainer/VBoxContainer"]
 layout_mode = 2
 text = "Exit Game"
 
 [node name="MarginContainer" type="MarginContainer" parent="."]
 offset_right = 40.0
 offset_bottom = 40.0
+
+[connection signal="pressed" from="PanelContainer/VBoxContainer/RespawnButton" to="." method="_on_respawn_button_pressed"]
+[connection signal="pressed" from="PanelContainer/VBoxContainer/HubButton" to="." method="_on_hub_button_pressed"]
+[connection signal="pressed" from="PanelContainer/VBoxContainer/ExitButton" to="." method="_on_exit_button_pressed"]

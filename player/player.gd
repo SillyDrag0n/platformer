@@ -43,6 +43,5 @@ func _on_hurtbox_area_entered(area:Area2D) -> void:
 
 
 func CheckPlayerHealth():
-	
 	if HealthManager.current_health == 0:
 		player_death()
