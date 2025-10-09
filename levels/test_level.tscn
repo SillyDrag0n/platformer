@@ -1,10 +1,11 @@
-[gd_scene load_steps=8 format=4 uid="uid://gkr4g0dg7pla"]
+[gd_scene load_steps=9 format=4 uid="uid://gkr4g0dg7pla"]
 
 [ext_resource type="Texture2D" uid="uid://dfciu0bvt77h" path="res://tileset/desert_tileset.png" id="1_gmgay"]
 [ext_resource type="PackedScene" uid="uid://u0noil7whtf" path="res://enemies/cactus/enemy_cactus.tscn" id="4_w7r7j"]
 [ext_resource type="PackedScene" uid="uid://bfcmjoltsmsed" path="res://player/player.tscn" id="4_wndkh"]
 [ext_resource type="Script" uid="uid://chd8hkfd628j6" path="res://player/player_camera.gd" id="5_ly3hx"]
 [ext_resource type="PackedScene" uid="uid://dabxfx3538yx0" path="res://ui/game_screen.tscn" id="5_o6mel"]
+[ext_resource type="PackedScene" uid="uid://dnko61n7gbtwq" path="res://ui/death_screen.tscn" id="6_e7anx"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_w7r7j"]
 texture = ExtResource("1_gmgay")
@@ -100,3 +101,6 @@ player = NodePath("..")
 position = Vector2(503, 190)
 
 [node name="GameScreen" parent="." instance=ExtResource("5_o6mel")]
+
+[node name="DeathScreen" parent="GameScreen" instance=ExtResource("6_e7anx")]
+visible = false

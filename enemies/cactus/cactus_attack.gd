@@ -2,9 +2,9 @@ extends AnimatedSprite2D
 
 var bullet_impact_effect = preload("res://player/bullet_impact_effect.tscn")
 
-var speed : int = 350
+@export var speed : int = 350
+@export var damage_amount : int = 1
 var direction : int
-var damage_amount : int = 1
 
 
 func _physics_process(delta):
