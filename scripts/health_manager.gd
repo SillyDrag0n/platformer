@@ -45,3 +45,6 @@ func increase_health(health_amount : int):
 func _on_timer_timeout():
 	print("on timer timeout")
 	Invulnerable = false
+
+func set_health_max():
+	current_health = max_health
