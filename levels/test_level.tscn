@@ -102,6 +102,7 @@ position = Vector2(301, 105)
 [node name="PlayerCamera" type="Camera2D" parent="." node_paths=PackedStringArray("player")]
 position = Vector2(63, 208)
 zoom = Vector2(2, 2)
+limit_left = -100
 editor_draw_limits = true
 script = ExtResource("5_ly3hx")
 player = NodePath("../Player")

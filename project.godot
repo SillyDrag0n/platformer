@@ -30,10 +30,9 @@ RespawnManager="*res://scripts/respawn_manager.gd"
 
 window/size/viewport_width=1920
 window/size/viewport_height=1080
-window/size/window_width_override=1440
-window/size/window_height_override=810
-window/stretch/aspect="keep_height"
-window/stretch/scale_mode="integer"
+window/size/window_width_override=640
+window/size/window_height_override=360
+window/stretch/mode="viewport"
 
 [input]
 
@@ -101,3 +100,5 @@ wall_cling={
 [rendering]
 
 textures/canvas_textures/default_texture_filter=0
+2d/snap/snap_2d_transforms_to_pixel=true
+2d/snap/snap_2d_vertices_to_pixel=true
