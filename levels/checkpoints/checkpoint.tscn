@@ -1,0 +1,86 @@
+[gd_scene load_steps=12 format=3 uid="uid://c1cg0fctna23d"]
+
+[ext_resource type="Script" uid="uid://c4r8w4i2j6e12" path="res://levels/checkpoints/checkpoint.gd" id="1_50yp4"]
+[ext_resource type="Texture2D" uid="uid://13mervrh330a" path="res://levels/checkpoints/campfire_active.png" id="1_o48dn"]
+[ext_resource type="Texture2D" uid="uid://cskqtqhwxrpoe" path="res://levels/checkpoints/campfire_inactive.png" id="2_50yp4"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_q5j1l"]
+atlas = ExtResource("1_o48dn")
+region = Rect2(0, 0, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_aygcn"]
+atlas = ExtResource("1_o48dn")
+region = Rect2(32, 0, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_of5lg"]
+atlas = ExtResource("1_o48dn")
+region = Rect2(64, 0, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_wjmox"]
+atlas = ExtResource("1_o48dn")
+region = Rect2(96, 0, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_6pcmm"]
+atlas = ExtResource("1_o48dn")
+region = Rect2(128, 0, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_50yov"]
+atlas = ExtResource("1_o48dn")
+region = Rect2(160, 0, 32, 32)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_t8853"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_q5j1l")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_aygcn")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_of5lg")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_wjmox")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_6pcmm")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_50yov")
+}],
+"loop": true,
+"name": &"active",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("2_50yp4")
+}],
+"loop": true,
+"name": &"inactive",
+"speed": 5.0
+}]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_t8853"]
+size = Vector2(64, 64)
+
+[node name="Checkpoint" type="Node2D" node_paths=PackedStringArray("animated_sprite_2d")]
+script = ExtResource("1_50yp4")
+animated_sprite_2d = NodePath("AnimatedSprite2D")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+sprite_frames = SubResource("SpriteFrames_t8853")
+animation = &"active"
+autoplay = "inactive"
+frame_progress = 0.168924
+
+[node name="Area2D" type="Area2D" parent="."]
+collision_layer = 16
+collision_mask = 2
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]
+position = Vector2(0, -16)
+shape = SubResource("RectangleShape2D_t8853")
+
+[connection signal="body_entered" from="Area2D" to="." method="_on_area_2d_body_entered"]
