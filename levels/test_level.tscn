@@ -106,6 +106,7 @@ limit_left = -100
 editor_draw_limits = true
 script = ExtResource("5_ly3hx")
 player = NodePath("../Player")
+smoothing_distance = 1
 
 [node name="EnemyCactus" parent="." instance=ExtResource("4_w7r7j")]
 position = Vector2(503, 190)
