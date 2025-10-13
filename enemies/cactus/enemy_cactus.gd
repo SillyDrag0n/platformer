@@ -7,6 +7,11 @@ var cactus_attack = preload("res://enemies/cactus/cactus_attack.tscn")
 @export var health_amount : int = 3
 @export var damage_amount : int = 1
 
+@export var attack_spawns_left_01 : Marker2D
+@export var attack_spawns_left_02 : Marker2D
+@export var attack_spawns_right_01 : Marker2D
+@export var attack_spawns_right_02 : Marker2D
+
 @onready var animated_sprite_2d = $AnimatedSprite2D
 @onready var timer = $Timer
 
@@ -25,15 +30,15 @@ func _process(delta):
 	enemy_animations()
 
 func enemy_attack():
-	#TODO: If 1 cactus attacks, everyone attacks
 	if current_state == State.Aggro && can_attack:
 		current_state = State.Attack
 		print_debug("Attack")
-		spawn_attacks(get_tree().get_nodes_in_group("attack_spawns_left"), -1)
-		spawn_attacks(get_tree().get_nodes_in_group("attack_spawns_right"), 1)
+		spawn_attacks(attack_spawns_left_01, -1)
+		spawn_attacks(attack_spawns_left_02, -1)
+		spawn_attacks(attack_spawns_right_01, 1)
+		spawn_attacks(attack_spawns_right_02, 1)
 
-func spawn_attacks(bullet_spawns, direction):
-	for spawnpoint in bullet_spawns:
+func spawn_attacks(spawnpoint, direction):
 		var attack = cactus_attack.instantiate() as Node2D
 		attack.global_position = spawnpoint.global_position
 		attack.direction = direction
