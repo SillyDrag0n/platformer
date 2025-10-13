@@ -25,6 +25,7 @@ func _process(delta):
 	enemy_animations()
 
 func enemy_attack():
+	#TODO: If 1 cactus attacks, everyone attacks
 	if current_state == State.Aggro && can_attack:
 		current_state = State.Attack
 		print_debug("Attack")
