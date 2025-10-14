@@ -3,6 +3,7 @@ extends NodeState
 @export var character_body_2d : CharacterBody2D
 @export var animated_sprite_2d : AnimatedSprite2D
 @export var speed : int
+@export var rotation : int
 
 var player : CharacterBody2D
 var max_speed : int
@@ -22,7 +23,8 @@ func on_physics_process(delta : float):
 		direction = 1
 	
 	animated_sprite_2d.play("attack")
-	
+	animated_sprite_2d.rotation += rotation * delta
+
 	character_body_2d.velocity.x += direction * speed * delta
 	character_body_2d.velocity.x = clamp(character_body_2d.velocity.x, -max_speed, max_speed)
 	character_body_2d.move_and_slide()

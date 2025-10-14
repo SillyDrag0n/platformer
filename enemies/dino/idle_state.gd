@@ -12,7 +12,7 @@ func on_physics_process(delta : float):
 	character_body_2d.velocity.x = move_toward(character_body_2d.velocity.x, 0, slow_down_speed * delta)
 	animated_sprite_2d.play("idle")
 	character_body_2d.move_and_slide()
-
+	animated_sprite_2d.rotation = 0
 
 
 func enter():
