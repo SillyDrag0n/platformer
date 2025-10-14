@@ -7,7 +7,7 @@
 [ext_resource type="Script" uid="uid://chd8hkfd628j6" path="res://player/player_camera.gd" id="5_ly3hx"]
 [ext_resource type="PackedScene" uid="uid://dabxfx3538yx0" path="res://ui/game_screen.tscn" id="5_o6mel"]
 [ext_resource type="PackedScene" uid="uid://dnko61n7gbtwq" path="res://ui/death_screen.tscn" id="6_e7anx"]
-[ext_resource type="PackedScene" uid="uid://cwibpyckk7wqj" path="res://enemies/dino/enemy_dino.tscn" id="6_ly3hx"]
+[ext_resource type="PackedScene" uid="uid://cwibpyckk7wqj" path="res://enemies/roller/enemy_roller.tscn" id="6_ly3hx"]
 [ext_resource type="PackedScene" uid="uid://c1cg0fctna23d" path="res://levels/checkpoints/checkpoint.tscn" id="8_wndkh"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_wndkh"]
@@ -484,7 +484,7 @@ position = Vector2(1118, 101)
 [node name="EnemyCactus4" parent="Enemies" instance=ExtResource("4_w7r7j")]
 position = Vector2(2165, 165)
 
-[node name="EnemyDino" parent="Enemies" instance=ExtResource("6_ly3hx")]
+[node name="Enemyroller" parent="Enemies" instance=ExtResource("6_ly3hx")]
 position = Vector2(810, 189)
 
 [node name="GameScreen" parent="." instance=ExtResource("5_o6mel")]

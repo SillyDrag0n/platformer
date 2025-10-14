@@ -3,15 +3,15 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://mhux5r3uhn0b"
-path="res://.godot/imported/dino.png-06c1d6cb6b8d51c6d3cbc5496dc4b99e.ctex"
+path="res://.godot/imported/roller.png-cf7bd0cf1da0fadbd8a2c0e74783c454.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://enemies/dino/dino.png"
-dest_files=["res://.godot/imported/dino.png-06c1d6cb6b8d51c6d3cbc5496dc4b99e.ctex"]
+source_file="res://enemies/roller/roller.png"
+dest_files=["res://.godot/imported/roller.png-cf7bd0cf1da0fadbd8a2c0e74783c454.ctex"]
 
 [params]
 

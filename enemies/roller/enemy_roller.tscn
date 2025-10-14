@@ -1,12 +1,12 @@
 [gd_scene load_steps=17 format=3 uid="uid://cwibpyckk7wqj"]
 
-[ext_resource type="Script" uid="uid://bau2pd5y3rp7k" path="res://enemies/dino/enemy_dino.gd" id="1_lxac6"]
-[ext_resource type="Texture2D" uid="uid://ctlwfgof1a2ac" path="res://enemies/dino/dino-idle.png" id="2_cmhv7"]
-[ext_resource type="Script" uid="uid://ckgttsx24boxc" path="res://enemies/dino/gravity.gd" id="3_ag2p3"]
-[ext_resource type="Script" uid="uid://dwno2je7ji3xu" path="res://enemies/dino/state_machine_controller.gd" id="4_s0a02"]
+[ext_resource type="Script" uid="uid://bau2pd5y3rp7k" path="res://enemies/roller/enemy_roller.gd" id="1_lxac6"]
+[ext_resource type="Texture2D" uid="uid://ctlwfgof1a2ac" path="res://enemies/roller/roller-idle.png" id="2_cmhv7"]
+[ext_resource type="Script" uid="uid://ckgttsx24boxc" path="res://enemies/roller/gravity.gd" id="3_ag2p3"]
+[ext_resource type="Script" uid="uid://dwno2je7ji3xu" path="res://enemies/roller/state_machine_controller.gd" id="4_s0a02"]
 [ext_resource type="Script" uid="uid://7qf0q30y202f" path="res://scripts/state_machine/node_finite_state_machine.gd" id="4_v6t0k"]
-[ext_resource type="Script" uid="uid://ej766ocrt6na" path="res://enemies/dino/idle_state.gd" id="5_k6m6b"]
-[ext_resource type="Script" uid="uid://b6in1m7ke87tx" path="res://enemies/dino/attack_state.gd" id="6_wwuvh"]
+[ext_resource type="Script" uid="uid://ej766ocrt6na" path="res://enemies/roller/idle_state.gd" id="5_k6m6b"]
+[ext_resource type="Script" uid="uid://b6in1m7ke87tx" path="res://enemies/roller/attack_state.gd" id="6_wwuvh"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_ng162"]
 atlas = ExtResource("2_cmhv7")
@@ -65,7 +65,7 @@ size = Vector2(400, 200)
 [sub_resource type="CircleShape2D" id="CircleShape2D_ng162"]
 radius = 25.0
 
-[node name="EnemyDino" type="CharacterBody2D" groups=["Enemy"]]
+[node name="EnemyRoller" type="CharacterBody2D" groups=["Enemy"]]
 collision_layer = 4
 collision_mask = 3
 script = ExtResource("1_lxac6")
