@@ -1,4 +1,4 @@
-[gd_scene load_steps=82 format=3 uid="uid://bfcmjoltsmsed"]
+[gd_scene load_steps=80 format=3 uid="uid://bfcmjoltsmsed"]
 
 [ext_resource type="Script" uid="uid://bw7oflms0slfo" path="res://player/player.gd" id="1_wqxfn"]
 [ext_resource type="Texture2D" uid="uid://gnuwn56p7uf0" path="res://player/player-idle.png" id="1_xd272"]
@@ -16,10 +16,8 @@
 [ext_resource type="Script" uid="uid://b6vl6ctl3x0jn" path="res://player/player_states/run_state.gd" id="14_461ul"]
 [ext_resource type="Script" uid="uid://bb8rfsbdpnkt3" path="res://player/player_states/jump_state.gd" id="15_vphvd"]
 [ext_resource type="Script" uid="uid://vdwej75wmlh8" path="res://player/player_states/shoot_stand_state.gd" id="16_vnex8"]
-[ext_resource type="Script" uid="uid://cokf2i603jnxt" path="res://player/player_states/shoot_up_state.gd" id="17_til18"]
 [ext_resource type="Script" uid="uid://b2p3yajfrginn" path="res://player/player_states/shoot_crouch_state.gd" id="18_mv0ng"]
 [ext_resource type="Script" uid="uid://b1ikki11tupdt" path="res://player/player_states/shoot_run_state.gd" id="19_g7odk"]
-[ext_resource type="Script" uid="uid://da183va765ffx" path="res://player/player_states/shoot_wall_cling_state.gd" id="20_o1vdt"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_5kha7"]
 resource_local_to_scene = true
@@ -544,12 +542,6 @@ character_body_2d = NodePath("../..")
 animated_sprite_2d = NodePath("../../AnimatedSprite2D")
 muzzle = NodePath("../../Muzzle")
 
-[node name="ShootUp" type="Node" parent="StateMachine" node_paths=PackedStringArray("character_body_2d", "animated_sprite_2d", "muzzle")]
-script = ExtResource("17_til18")
-character_body_2d = NodePath("../..")
-animated_sprite_2d = NodePath("../../AnimatedSprite2D")
-muzzle = NodePath("../../Muzzle")
-
 [node name="ShootCrouch" type="Node" parent="StateMachine" node_paths=PackedStringArray("character_body_2d", "animated_sprite_2d", "muzzle")]
 script = ExtResource("18_mv0ng")
 character_body_2d = NodePath("../..")
@@ -558,12 +550,6 @@ muzzle = NodePath("../../Muzzle")
 
 [node name="ShootRun" type="Node" parent="StateMachine" node_paths=PackedStringArray("character_body_2d", "animated_sprite_2d", "muzzle")]
 script = ExtResource("19_g7odk")
-character_body_2d = NodePath("../..")
-animated_sprite_2d = NodePath("../../AnimatedSprite2D")
-muzzle = NodePath("../../Muzzle")
-
-[node name="ShootWallCling" type="Node" parent="StateMachine" node_paths=PackedStringArray("character_body_2d", "animated_sprite_2d", "muzzle")]
-script = ExtResource("20_o1vdt")
 character_body_2d = NodePath("../..")
 animated_sprite_2d = NodePath("../../AnimatedSprite2D")
 muzzle = NodePath("../../Muzzle")
