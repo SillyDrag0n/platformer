@@ -4,13 +4,17 @@ var bullet = preload("res://player/bullet.tscn")
 
 @export var bullet_speed := 500
 @export var bullet_damage := 1
-@export var cooldown := 1.0
+@export var cooldown := 0.75
 
 @onready var muzzle = $Muzzle
 @onready var cooldown_timer = $CooldownTimer
+@onready var gun_cooldown = $GunCooldown
 
 func _ready():
 	cooldown_timer.wait_time = cooldown
+
+func _process(delta):
+	gun_cooldown.setValue(cooldown_timer.time_left / cooldown_timer.wait_time)
 
 # --- Upgrade setters ---
 func set_cooldown(new_cooldown: float):

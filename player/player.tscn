@@ -1,4 +1,4 @@
-[gd_scene load_steps=72 format=3 uid="uid://bfcmjoltsmsed"]
+[gd_scene load_steps=73 format=3 uid="uid://bfcmjoltsmsed"]
 
 [ext_resource type="Script" uid="uid://bw7oflms0slfo" path="res://player/player.gd" id="1_wqxfn"]
 [ext_resource type="Texture2D" uid="uid://gnuwn56p7uf0" path="res://player/player-idle.png" id="1_xd272"]
@@ -10,6 +10,7 @@
 [ext_resource type="Texture2D" uid="uid://c451nlt658rcu" path="res://player/player-shoot-stand.png" id="8_b6s5q"]
 [ext_resource type="Texture2D" uid="uid://bpwc6k8xte6pr" path="res://player/player-shoot-up.png" id="9_pax4w"]
 [ext_resource type="Script" uid="uid://cvem3bgyk4gme" path="res://player/gun.gd" id="10_e7oew"]
+[ext_resource type="PackedScene" uid="uid://1nt6653rbtnu" path="res://ui/gun_cooldown.tscn" id="11_c35mf"]
 [ext_resource type="Script" uid="uid://7qf0q30y202f" path="res://scripts/state_machine/node_finite_state_machine.gd" id="11_xte76"]
 [ext_resource type="Script" uid="uid://2yiybft4et1v" path="res://player/player_states/idle_state.gd" id="12_6j7f0"]
 [ext_resource type="Script" uid="uid://ds1ig4k2343g3" path="res://player/player_states/fall_state.gd" id="13_r2qhm"]
@@ -445,6 +446,17 @@ position = Vector2(19, -37)
 
 [node name="CooldownTimer" type="Timer" parent="Gun"]
 one_shot = true
+
+[node name="GunCooldown" parent="Gun" instance=ExtResource("11_c35mf")]
+anchors_preset = 0
+anchor_right = 0.0
+anchor_bottom = 0.0
+offset_left = -25.0
+offset_top = -75.0
+offset_right = -25.0
+offset_bottom = -75.0
+grow_horizontal = 1
+grow_vertical = 1
 
 [node name="Hurtbox" type="Area2D" parent="."]
 collision_layer = 2
