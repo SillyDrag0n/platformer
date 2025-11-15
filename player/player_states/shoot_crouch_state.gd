@@ -4,7 +4,7 @@ var bullet = preload("res://player/bullet.tscn")
 
 @export var character_body_2d : CharacterBody2D
 @export var animated_sprite_2d : AnimatedSprite2D
-@export var muzzle : Marker2D
+@export var gun : Node2D
 
 var muzzle_position : Vector2
 
@@ -14,11 +14,7 @@ func on_process(delta : float):
 
 func on_physics_process(delta : float):
 	if GameInputEvents.shoot_input():
-		gun_muzzle_position()
-		var camera = get_viewport().get_camera_2d()
-		var mouse_global = camera.get_global_mouse_position()
-		var shootdirection : Vector2 = (mouse_global - muzzle.global_position).normalized()
-		GunManager.createBullet(shootdirection, muzzle.global_position)
+		gun.try_shoot()
 	
 	# run state
 	var direction : float = GameInputEvents.movement_input()
@@ -32,17 +28,8 @@ func on_physics_process(delta : float):
 
 
 func enter():
-	muzzle.position = Vector2(17, -14)
-	muzzle_position = muzzle.position
 	animated_sprite_2d.play("shoot_crouch")
 
 
 func exit():
 	animated_sprite_2d.stop()
-
-
-func gun_muzzle_position():
-	if !animated_sprite_2d.flip_h:
-		muzzle.position.x = muzzle_position.x
-	elif animated_sprite_2d.flip_h:
-		muzzle.position.x = -muzzle_position.x

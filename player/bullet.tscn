@@ -9,11 +9,6 @@ region = Rect2(96, 0, 12, 7)
 
 [sub_resource type="SpriteFrames" id="SpriteFrames_c2ri7"]
 animations = [{
-"frames": [],
-"loop": true,
-"name": &"default",
-"speed": 5.0
-}, {
 "frames": [{
 "duration": 1.0,
 "texture": SubResource("AtlasTexture_j40gx")
@@ -29,6 +24,7 @@ size = Vector2(12, 2)
 [node name="Bullet" type="AnimatedSprite2D"]
 sprite_frames = SubResource("SpriteFrames_c2ri7")
 animation = &"shot"
+autoplay = "shot"
 script = ExtResource("2_eavcx")
 
 [node name="Timer" type="Timer" parent="."]
@@ -41,6 +37,7 @@ collision_layer = 2
 collision_mask = 5
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Hitbox"]
+position = Vector2(0, 0.25)
 shape = SubResource("RectangleShape2D_boyjm")
 
 [connection signal="timeout" from="Timer" to="." method="_on_timer_timeout"]

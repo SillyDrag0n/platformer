@@ -2,14 +2,13 @@ extends NodeState
 
 @export var character_body_2d : CharacterBody2D
 @export var animated_sprite_2d : AnimatedSprite2D
-@export var muzzle : Marker2D
+@export var gun : Node2D
 
 @export_category("Run State")
 @export var speed : int = 1000
 @export var max_horizontal_speed: int = 300
 
 const GRAVITY : int = 1000
-var muzzle_position : Vector2
 
 func on_process(delta : float):
 	pass
@@ -17,8 +16,6 @@ func on_process(delta : float):
 
 func on_physics_process(delta : float):
 	var direction : float = GameInputEvents.movement_input()
-	
-	gun_muzzle_position(direction)
 	
 	if direction:
 		character_body_2d.velocity.x += direction * speed
@@ -30,11 +27,7 @@ func on_physics_process(delta : float):
 	character_body_2d.velocity.y += GRAVITY * delta
 	
 	if GameInputEvents.shoot_input():
-		gun_muzzle_position(direction)
-		var camera = get_viewport().get_camera_2d()
-		var mouse_global = camera.get_global_mouse_position()
-		var shootdirection : Vector2 = (mouse_global - muzzle.global_position).normalized()
-		GunManager.createBullet(shootdirection, muzzle.global_position)
+		gun.try_shoot()
 	
 	character_body_2d.move_and_slide()
 	
@@ -54,18 +47,8 @@ func on_physics_process(delta : float):
 
 
 func enter():
-	muzzle.position = Vector2(18, -26)
-	muzzle_position = muzzle.position
-	
 	animated_sprite_2d.play("shoot_run")
 
 
 func exit():
 	animated_sprite_2d.stop()
-
-
-func gun_muzzle_position(direction : float):
-	if direction > 0:
-		muzzle.position.x = muzzle_position.x
-	elif direction < 0:
-		muzzle.position.x = -muzzle_position.x

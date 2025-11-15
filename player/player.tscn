@@ -1,4 +1,4 @@
-[gd_scene load_steps=71 format=3 uid="uid://bfcmjoltsmsed"]
+[gd_scene load_steps=72 format=3 uid="uid://bfcmjoltsmsed"]
 
 [ext_resource type="Script" uid="uid://bw7oflms0slfo" path="res://player/player.gd" id="1_wqxfn"]
 [ext_resource type="Texture2D" uid="uid://gnuwn56p7uf0" path="res://player/player-idle.png" id="1_xd272"]
@@ -9,6 +9,7 @@
 [ext_resource type="Texture2D" uid="uid://c5i56sd7f5kcp" path="res://player/player-shoot-crouch.png" id="6_j743l"]
 [ext_resource type="Texture2D" uid="uid://c451nlt658rcu" path="res://player/player-shoot-stand.png" id="8_b6s5q"]
 [ext_resource type="Texture2D" uid="uid://bpwc6k8xte6pr" path="res://player/player-shoot-up.png" id="9_pax4w"]
+[ext_resource type="Script" uid="uid://cvem3bgyk4gme" path="res://player/gun.gd" id="10_e7oew"]
 [ext_resource type="Script" uid="uid://7qf0q30y202f" path="res://scripts/state_machine/node_finite_state_machine.gd" id="11_xte76"]
 [ext_resource type="Script" uid="uid://2yiybft4et1v" path="res://player/player_states/idle_state.gd" id="12_6j7f0"]
 [ext_resource type="Script" uid="uid://ds1ig4k2343g3" path="res://player/player_states/fall_state.gd" id="13_r2qhm"]
@@ -436,8 +437,14 @@ frame_progress = 1.0
 position = Vector2(0, -21)
 shape = SubResource("CapsuleShape2D_7slp3")
 
-[node name="Muzzle" type="Marker2D" parent="."]
+[node name="Gun" type="Node2D" parent="."]
+script = ExtResource("10_e7oew")
+
+[node name="Muzzle" type="Marker2D" parent="Gun"]
 position = Vector2(19, -37)
+
+[node name="CooldownTimer" type="Timer" parent="Gun"]
+one_shot = true
 
 [node name="Hurtbox" type="Area2D" parent="."]
 collision_layer = 2
@@ -475,23 +482,23 @@ animated_sprite_2d = NodePath("../../AnimatedSprite2D")
 jump_horizontal_speed = 450
 max_jump_count = 2
 
-[node name="ShootStand" type="Node" parent="StateMachine" node_paths=PackedStringArray("character_body_2d", "animated_sprite_2d", "muzzle")]
+[node name="ShootStand" type="Node" parent="StateMachine" node_paths=PackedStringArray("character_body_2d", "animated_sprite_2d", "gun")]
 script = ExtResource("16_vnex8")
 character_body_2d = NodePath("../..")
 animated_sprite_2d = NodePath("../../AnimatedSprite2D")
-muzzle = NodePath("../../Muzzle")
+gun = NodePath("../../Gun")
 
-[node name="ShootCrouch" type="Node" parent="StateMachine" node_paths=PackedStringArray("character_body_2d", "animated_sprite_2d", "muzzle")]
+[node name="ShootCrouch" type="Node" parent="StateMachine" node_paths=PackedStringArray("character_body_2d", "animated_sprite_2d", "gun")]
 script = ExtResource("18_mv0ng")
 character_body_2d = NodePath("../..")
 animated_sprite_2d = NodePath("../../AnimatedSprite2D")
-muzzle = NodePath("../../Muzzle")
+gun = NodePath("../../Gun")
 
-[node name="ShootRun" type="Node" parent="StateMachine" node_paths=PackedStringArray("character_body_2d", "animated_sprite_2d", "muzzle")]
+[node name="ShootRun" type="Node" parent="StateMachine" node_paths=PackedStringArray("character_body_2d", "animated_sprite_2d", "gun")]
 script = ExtResource("19_g7odk")
 character_body_2d = NodePath("../..")
 animated_sprite_2d = NodePath("../../AnimatedSprite2D")
-muzzle = NodePath("../../Muzzle")
+gun = NodePath("../../Gun")
 
 [connection signal="area_entered" from="Hurtbox" to="." method="_on_hurtbox_area_entered"]
 [connection signal="body_entered" from="Hurtbox" to="." method="_on_hurtbox_body_entered"]
