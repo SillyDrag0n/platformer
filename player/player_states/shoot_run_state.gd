@@ -1,7 +1,5 @@
 extends NodeState
 
-var bullet = preload("res://player/bullet.tscn")
-
 @export var character_body_2d : CharacterBody2D
 @export var animated_sprite_2d : AnimatedSprite2D
 @export var muzzle : Marker2D
@@ -32,7 +30,11 @@ func on_physics_process(delta : float):
 	character_body_2d.velocity.y += GRAVITY * delta
 	
 	if GameInputEvents.shoot_input():
-		gun_shooting(direction)
+		gun_muzzle_position(direction)
+		var camera = get_viewport().get_camera_2d()
+		var mouse_global = camera.get_global_mouse_position()
+		var shootdirection : Vector2 = (mouse_global - muzzle.global_position).normalized()
+		GunManager.createBullet(shootdirection, muzzle.global_position)
 	
 	character_body_2d.move_and_slide()
 	
@@ -67,11 +69,3 @@ func gun_muzzle_position(direction : float):
 		muzzle.position.x = muzzle_position.x
 	elif direction < 0:
 		muzzle.position.x = -muzzle_position.x
-
-
-func gun_shooting(direction : float):
-	var bullet_instance = bullet.instantiate() as Node2D
-	bullet_instance.direction = direction
-	bullet_instance.move_x_direction = true
-	bullet_instance.global_position = muzzle.global_position
-	get_parent().add_child(bullet_instance)

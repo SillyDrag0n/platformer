@@ -13,13 +13,12 @@ func on_process(delta : float):
 
 
 func on_physics_process(delta : float):
-	
-	gun_muzzle_position()
-	
 	if GameInputEvents.shoot_input():
-		gun_shooting()
-	
-	# transitioning states
+		gun_muzzle_position()
+		var camera = get_viewport().get_camera_2d()
+		var mouse_global = camera.get_global_mouse_position()
+		var shootdirection : Vector2 = (mouse_global - muzzle.global_position).normalized()
+		GunManager.createBullet(shootdirection, muzzle.global_position)
 	
 	# run state
 	var direction : float = GameInputEvents.movement_input()
@@ -35,7 +34,6 @@ func on_physics_process(delta : float):
 func enter():
 	muzzle.position = Vector2(17, -14)
 	muzzle_position = muzzle.position
-	
 	animated_sprite_2d.play("shoot_crouch")
 
 
@@ -48,13 +46,3 @@ func gun_muzzle_position():
 		muzzle.position.x = muzzle_position.x
 	elif animated_sprite_2d.flip_h:
 		muzzle.position.x = -muzzle_position.x
-
-
-func gun_shooting():
-	var direction : float = -1 if animated_sprite_2d.flip_h == true else 1
-	
-	var bullet_instance = bullet.instantiate() as Node2D
-	bullet_instance.direction = direction
-	bullet_instance.move_x_direction = true
-	bullet_instance.global_position = muzzle.global_position
-	get_parent().add_child(bullet_instance)

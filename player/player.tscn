@@ -1,4 +1,4 @@
-[gd_scene load_steps=80 format=3 uid="uid://bfcmjoltsmsed"]
+[gd_scene load_steps=71 format=3 uid="uid://bfcmjoltsmsed"]
 
 [ext_resource type="Script" uid="uid://bw7oflms0slfo" path="res://player/player.gd" id="1_wqxfn"]
 [ext_resource type="Texture2D" uid="uid://gnuwn56p7uf0" path="res://player/player-idle.png" id="1_xd272"]
@@ -9,7 +9,6 @@
 [ext_resource type="Texture2D" uid="uid://c5i56sd7f5kcp" path="res://player/player-shoot-crouch.png" id="6_j743l"]
 [ext_resource type="Texture2D" uid="uid://c451nlt658rcu" path="res://player/player-shoot-stand.png" id="8_b6s5q"]
 [ext_resource type="Texture2D" uid="uid://bpwc6k8xte6pr" path="res://player/player-shoot-up.png" id="9_pax4w"]
-[ext_resource type="Texture2D" uid="uid://c541j3on3r2u7" path="res://player/player-shoot-wall-cling.png" id="10_jwfos"]
 [ext_resource type="Script" uid="uid://7qf0q30y202f" path="res://scripts/state_machine/node_finite_state_machine.gd" id="11_xte76"]
 [ext_resource type="Script" uid="uid://2yiybft4et1v" path="res://player/player_states/idle_state.gd" id="12_6j7f0"]
 [ext_resource type="Script" uid="uid://ds1ig4k2343g3" path="res://player/player_states/fall_state.gd" id="13_r2qhm"]
@@ -221,38 +220,6 @@ region = Rect2(288, 0, 48, 87)
 atlas = ExtResource("9_pax4w")
 region = Rect2(336, 0, 48, 87)
 
-[sub_resource type="AtlasTexture" id="AtlasTexture_8rogd"]
-atlas = ExtResource("10_jwfos")
-region = Rect2(0, 0, 48, 87)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_48p26"]
-atlas = ExtResource("10_jwfos")
-region = Rect2(48, 0, 48, 87)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_anp34"]
-atlas = ExtResource("10_jwfos")
-region = Rect2(96, 0, 48, 87)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_jdjat"]
-atlas = ExtResource("10_jwfos")
-region = Rect2(144, 0, 48, 87)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_j420s"]
-atlas = ExtResource("10_jwfos")
-region = Rect2(192, 0, 48, 87)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_kcq4v"]
-atlas = ExtResource("10_jwfos")
-region = Rect2(240, 0, 48, 87)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_qavcc"]
-atlas = ExtResource("10_jwfos")
-region = Rect2(288, 0, 48, 87)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_bd26m"]
-atlas = ExtResource("10_jwfos")
-region = Rect2(336, 0, 48, 87)
-
 [sub_resource type="SpriteFrames" id="SpriteFrames_il2ct"]
 animations = [{
 "frames": [{
@@ -441,35 +408,6 @@ animations = [{
 "loop": false,
 "name": &"shoot_up",
 "speed": 10.0
-}, {
-"frames": [{
-"duration": 1.0,
-"texture": SubResource("AtlasTexture_8rogd")
-}, {
-"duration": 1.0,
-"texture": SubResource("AtlasTexture_48p26")
-}, {
-"duration": 1.0,
-"texture": SubResource("AtlasTexture_anp34")
-}, {
-"duration": 1.0,
-"texture": SubResource("AtlasTexture_jdjat")
-}, {
-"duration": 1.0,
-"texture": SubResource("AtlasTexture_j420s")
-}, {
-"duration": 1.0,
-"texture": SubResource("AtlasTexture_kcq4v")
-}, {
-"duration": 1.0,
-"texture": SubResource("AtlasTexture_qavcc")
-}, {
-"duration": 1.0,
-"texture": SubResource("AtlasTexture_bd26m")
-}],
-"loop": false,
-"name": &"shoot_wall_cling",
-"speed": 10.0
 }]
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_7slp3"]
@@ -489,8 +427,9 @@ material = SubResource("ShaderMaterial_5kha7")
 position = Vector2(0, -32)
 scale = Vector2(0.833333, 0.729885)
 sprite_frames = SubResource("SpriteFrames_il2ct")
-animation = &"fall"
+animation = &"shoot_stand"
 autoplay = "idle"
+frame = 7
 frame_progress = 1.0
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
