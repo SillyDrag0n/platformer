@@ -30,3 +30,8 @@ static func fall_input() -> bool:
 static func wall_cling_input() -> bool: 
 	var wall_cling_input : bool = Input.is_action_pressed("wall_cling")
 	return wall_cling_input
+
+
+static func reload_input() -> bool: 
+	var reload_input : bool = Input.is_action_pressed("reload")
+	return reload_input

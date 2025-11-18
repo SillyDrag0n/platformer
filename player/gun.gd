@@ -1,25 +1,33 @@
 extends Node2D
 
+#TODO: Magazine
 var bullet = preload("res://player/bullet.tscn")
 
 @export var bullet_speed := 500
 @export var bullet_damage := 1
+#TODO: check if cooldown can be replaced by shoot_timer, why is it necessary?
 @export var cooldown := 0.75
+@export var magazineMax := 6
+@export var magazineCurrent := 6
 
 @onready var muzzle = $Muzzle
-@onready var cooldown_timer = $CooldownTimer
-@onready var gun_cooldown = $GunCooldown
+@onready var shoot_timer = $ShootTimer
+@onready var reload_timer = $ReloadTimer
+@onready var reload_ui = $ReloadUi
 
 func _ready():
-	cooldown_timer.wait_time = cooldown
+	shoot_timer.wait_time = cooldown
 
-func _process(delta):
-	gun_cooldown.setValue(cooldown_timer.time_left / cooldown_timer.wait_time)
+func _process(delta):	
+	if GameInputEvents.reload_input():
+		reload()
+	if !reload_timer.is_stopped():
+		reload_ui.setValue(reload_timer.time_left / reload_timer.wait_time)
 
 # --- Upgrade setters ---
 func set_cooldown(new_cooldown: float):
 	cooldown = new_cooldown
-	cooldown_timer.wait_time = cooldown
+	shoot_timer.wait_time = cooldown
 
 func set_damage(new_damage: int):
 	bullet_damage = new_damage
@@ -30,12 +38,15 @@ func set_speed(new_speed: int):
 
 # --- Fire attempt ---
 func try_shoot() -> bool:
-	if cooldown_timer.is_stopped():
-		print("enter shoot")
-		shoot()
-		cooldown_timer.start()
-		return true
-	
+	if shoot_timer.is_stopped():
+		if magazineCurrent > 0:
+			magazineCurrent -= 1
+			print("enter shoot, magazine size: ", magazineCurrent)
+			shoot()
+			shoot_timer.start()
+			return true
+		print("no ammo")
+		return false
 	print("weapon on cooldown")
 	return false
 
@@ -49,3 +60,14 @@ func shoot():
 	bullet_instance.direction = shootdirection
 	bullet_instance.rotation = bullet_instance.direction.angle()
 	bullet_instance.global_position = muzzle.global_position
+
+func reload():
+	reload_timer.start()
+	$ReloadUi.show()
+	print("is reloading")
+
+func _on_reload_timer_timeout() -> void:
+	print("reload finished")
+	magazineCurrent = magazineMax
+	$ReloadUi.hide()
+	#gun_cooldown.setValue(shoot_timer.time_left / shoot_timer.wait_time)
