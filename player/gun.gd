@@ -69,7 +69,8 @@ func shoot():
 func reload():
 	reload_timer.start()
 	$ReloadUi.show()
-	gunReload.play()
+	if !gunReload.playing:
+		gunReload.play()
 	print("is reloading")
 
 func _on_reload_timer_timeout() -> void:

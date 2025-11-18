@@ -33,5 +33,5 @@ static func wall_cling_input() -> bool:
 
 
 static func reload_input() -> bool: 
-	var reload_input : bool = Input.is_action_pressed("reload")
+	var reload_input : bool = Input.is_action_just_pressed("reload")
 	return reload_input
