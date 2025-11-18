@@ -1,4 +1,4 @@
-[gd_scene load_steps=73 format=3 uid="uid://bfcmjoltsmsed"]
+[gd_scene load_steps=76 format=3 uid="uid://bfcmjoltsmsed"]
 
 [ext_resource type="Script" uid="uid://bw7oflms0slfo" path="res://player/player.gd" id="1_wqxfn"]
 [ext_resource type="Texture2D" uid="uid://gnuwn56p7uf0" path="res://player/player-idle.png" id="1_xd272"]
@@ -13,8 +13,11 @@
 [ext_resource type="PackedScene" uid="uid://1nt6653rbtnu" path="res://ui/gun_reload_ui.tscn" id="11_c35mf"]
 [ext_resource type="Script" uid="uid://7qf0q30y202f" path="res://scripts/state_machine/node_finite_state_machine.gd" id="11_xte76"]
 [ext_resource type="Script" uid="uid://2yiybft4et1v" path="res://player/player_states/idle_state.gd" id="12_6j7f0"]
+[ext_resource type="AudioStream" uid="uid://bkrttmkh3v5cu" path="res://player/gun_shot_01.ogg" id="12_65viv"]
 [ext_resource type="Script" uid="uid://ds1ig4k2343g3" path="res://player/player_states/fall_state.gd" id="13_r2qhm"]
+[ext_resource type="AudioStream" uid="uid://dfkw8eip0rc0x" path="res://player/gun_reload.ogg" id="13_x7c3f"]
 [ext_resource type="Script" uid="uid://b6vl6ctl3x0jn" path="res://player/player_states/run_state.gd" id="14_461ul"]
+[ext_resource type="AudioStream" uid="uid://bjkrgnwja22lo" path="res://player/gun_empty.ogg" id="14_bjvpn"]
 [ext_resource type="Script" uid="uid://bb8rfsbdpnkt3" path="res://player/player_states/jump_state.gd" id="15_vphvd"]
 [ext_resource type="Script" uid="uid://vdwej75wmlh8" path="res://player/player_states/shoot_stand_state.gd" id="16_vnex8"]
 [ext_resource type="Script" uid="uid://b2p3yajfrginn" path="res://player/player_states/shoot_crouch_state.gd" id="18_mv0ng"]
@@ -461,6 +464,17 @@ grow_vertical = 1
 [node name="ReloadTimer" type="Timer" parent="Gun"]
 wait_time = 1.5
 one_shot = true
+
+[node name="GunShot01" type="AudioStreamPlayer" parent="Gun"]
+stream = ExtResource("12_65viv")
+volume_db = -5.0
+
+[node name="GunReload" type="AudioStreamPlayer" parent="Gun"]
+stream = ExtResource("13_x7c3f")
+volume_db = -5.0
+
+[node name="GunEmpty" type="AudioStreamPlayer" parent="Gun"]
+stream = ExtResource("14_bjvpn")
 
 [node name="Hurtbox" type="Area2D" parent="."]
 collision_layer = 2

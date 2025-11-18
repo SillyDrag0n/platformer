@@ -9,11 +9,14 @@ var bullet = preload("res://player/bullet.tscn")
 @export var cooldown := 0.75
 @export var magazineMax := 6
 @export var magazineCurrent := 6
-
 @onready var muzzle = $Muzzle
 @onready var shoot_timer = $ShootTimer
 @onready var reload_timer = $ReloadTimer
 @onready var reload_ui = $ReloadUi
+@onready var gunShot01 = $GunShot01
+@onready var gunReload = $GunReload
+@onready var gunEmpty = $GunEmpty
+
 
 func _ready():
 	shoot_timer.wait_time = cooldown
@@ -46,6 +49,7 @@ func try_shoot() -> bool:
 			shoot_timer.start()
 			return true
 		print("no ammo")
+		gunEmpty.play()
 		return false
 	print("weapon on cooldown")
 	return false
@@ -60,10 +64,12 @@ func shoot():
 	bullet_instance.direction = shootdirection
 	bullet_instance.rotation = bullet_instance.direction.angle()
 	bullet_instance.global_position = muzzle.global_position
+	gunShot01.play()
 
 func reload():
 	reload_timer.start()
 	$ReloadUi.show()
+	gunReload.play()
 	print("is reloading")
 
 func _on_reload_timer_timeout() -> void:
