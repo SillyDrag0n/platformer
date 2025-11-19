@@ -3,9 +3,10 @@ extends Node
 var max_health : int = 3
 var current_health : int
 var Invulnerable : bool
-var damage_timer : Timer
+var damage_timer : Timer	
 
 signal on_health_changed
+signal on_health_decreased
 
 
 func _ready():
@@ -30,6 +31,7 @@ func decrease_health(health_amount : int):
 	
 	print("decrease_health called")
 	on_health_changed.emit(current_health)
+	on_health_decreased.emit(health_amount)
 
 
 func increase_health(health_amount : int):

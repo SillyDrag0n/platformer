@@ -1,0 +1,25 @@
+[gd_scene load_steps=6 format=3 uid="uid://cqhro705skse6"]
+
+[ext_resource type="Script" uid="uid://c5d1byngofxjm" path="res://ui/resource_bar/resource_bar.gd" id="1_p2qkw"]
+[ext_resource type="Texture2D" uid="uid://bbbira474vcho" path="res://ui/resource_bar/healthbar_emtpy.png" id="4_08pb6"]
+[ext_resource type="Texture2D" uid="uid://ci7awtr58ppj6" path="res://ui/resource_bar/healthbar_full.png" id="5_k6nk8"]
+[ext_resource type="Texture2D" uid="uid://8oqgmf1wggp3" path="res://ui/resource_bar/spiritbar_empty.png" id="6_cllj3"]
+[ext_resource type="Texture2D" uid="uid://dvqo3tocnvapm" path="res://ui/resource_bar/spiritbar_full.png" id="7_08pb6"]
+
+[node name="ResourceBar" type="Node2D"]
+script = ExtResource("1_p2qkw")
+
+[node name="HealthBar" type="TextureProgressBar" parent="."]
+offset_right = 40.0
+offset_bottom = 40.0
+value = 50.0
+texture_under = ExtResource("4_08pb6")
+texture_progress = ExtResource("5_k6nk8")
+
+[node name="SpiritBar" type="TextureProgressBar" parent="."]
+offset_top = 7.0
+offset_right = 111.0
+offset_bottom = 47.0
+value = 80.0
+texture_under = ExtResource("6_cllj3")
+texture_progress = ExtResource("7_08pb6")
