@@ -1,7 +1,7 @@
 extends Node
 
-var max_health : int = 3
-var current_health : int
+var max_health : float = 3
+var current_health : float
 var Invulnerable : bool
 var damage_timer : Timer	
 
@@ -19,7 +19,7 @@ func _ready():
 	damage_timer.wait_time = 1
 
 
-func decrease_health(health_amount : int):
+func decrease_health(health_amount : float):
 	if !Invulnerable:
 		print("is vulnerable")
 		Invulnerable = true
@@ -34,7 +34,7 @@ func decrease_health(health_amount : int):
 	on_health_decreased.emit()
 
 
-func increase_health(health_amount : int):
+func increase_health(health_amount : float):
 	current_health += health_amount
 	
 	if current_health > max_health:
@@ -50,3 +50,6 @@ func _on_timer_timeout():
 
 func set_health_max():
 	current_health = max_health
+
+func get_health_max():
+	return max_health
