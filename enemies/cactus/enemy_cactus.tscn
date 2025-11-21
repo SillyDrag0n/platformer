@@ -1,7 +1,6 @@
-[gd_scene load_steps=24 format=3 uid="uid://u0noil7whtf"]
+[gd_scene load_steps=22 format=3 uid="uid://u0noil7whtf"]
 
 [ext_resource type="Script" uid="uid://c4y36jo5nvq6q" path="res://enemies/cactus/enemy_cactus.gd" id="1_xddwv"]
-[ext_resource type="Texture2D" uid="uid://dng2hat43g3xa" path="res://enemies/cactus/idle.png" id="2_xddwv"]
 [ext_resource type="Texture2D" uid="uid://wjbkbd1whl8o" path="res://enemies/cactus/idle-sheet.png" id="3_idb2v"]
 [ext_resource type="Texture2D" uid="uid://bt4eso77b47uo" path="res://enemies/cactus/attack.png" id="3_os84p"]
 
@@ -32,10 +31,6 @@ region = Rect2(128, 0, 32, 64)
 [sub_resource type="AtlasTexture" id="AtlasTexture_wbejn"]
 atlas = ExtResource("3_os84p")
 region = Rect2(160, 0, 32, 64)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_os84p"]
-atlas = ExtResource("2_xddwv")
-region = Rect2(0, 0, 32, 64)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_8odr1"]
 atlas = ExtResource("3_idb2v")
@@ -102,7 +97,7 @@ animations = [{
 }, {
 "frames": [{
 "duration": 1.0,
-"texture": SubResource("AtlasTexture_os84p")
+"texture": SubResource("AtlasTexture_8odr1")
 }],
 "loop": true,
 "name": &"idle",
@@ -159,9 +154,6 @@ attack_spawns_right_02 = NodePath("AttackSpawnRight02")
 position = Vector2(0, -14)
 sprite_frames = SubResource("SpriteFrames_6w2qa")
 animation = &"attack"
-autoplay = "idle"
-frame = 6
-frame_progress = 1.0
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 position = Vector2(0, -9)

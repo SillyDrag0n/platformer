@@ -19,6 +19,7 @@ var weight : float
 
 func _ready():
 	weight = float(11 - smoothing_distance) / 100 
+	HealthManager.on_health_decreased.connect(screen_shake)
 
 
 func _physics_process(delta):
@@ -45,11 +46,12 @@ func _physics_process(delta):
 		
 		global_position = camera_position.floor()
 
-func screen_shake(intensity: int, time:float):
+# func screen_shake(intensity: int, time:float):
+func screen_shake():
 	randomize()
 	noise.seed = randi()
 	noise.frequency = 2.0
 
-	shake_intensity = intensity
-	active_shake_time = time
+	shake_intensity = 8
+	active_shake_time = 0.5
 	shake_time = 0.0

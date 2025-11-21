@@ -31,7 +31,7 @@ func decrease_health(health_amount : int):
 	
 	print("decrease_health called")
 	on_health_changed.emit(current_health)
-	on_health_decreased.emit(health_amount)
+	on_health_decreased.emit()
 
 
 func increase_health(health_amount : int):
