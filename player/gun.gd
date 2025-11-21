@@ -41,7 +41,7 @@ func set_speed(new_speed: int):
 
 # --- Fire attempt ---
 func try_shoot() -> bool:
-	if shoot_timer.is_stopped():
+	if shoot_timer.is_stopped() and reload_timer.is_stopped():
 		if magazineCurrent > 0:
 			magazineCurrent -= 1
 			print("enter shoot, magazine size: ", magazineCurrent)
