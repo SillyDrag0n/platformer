@@ -1,7 +1,6 @@
 extends Node2D
 
-#TODO: Magazine
-var bullet = preload("res://player/bullet.tscn")
+var bullet = preload("res://player/gun/bullet/bullet.tscn")
 
 @export var bullet_speed := 500
 @export var bullet_damage := 1

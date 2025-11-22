@@ -1,6 +1,6 @@
 extends AnimatedSprite2D
 
-var bullet_impact_effect = preload("res://player/bullet_impact_effect.tscn")
+var bullet_impact_effect = preload("res://player/gun/bullet/ui/bullet_impact_effect.tscn")
 
 var speed : int = 600
 var direction : Vector2

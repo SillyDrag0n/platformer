@@ -3,15 +3,15 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://c7tcvqv0gi6wy"
-path="res://.godot/imported/Desert Background Desert Layer 1.png-d05480f37983a34965fae34574fa92f4.ctex"
+path="res://.godot/imported/Desert Background Desert Layer 1.png-8f5a358125eb6f95a5de2980f42dd219.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://tileset/Cave and Desert Tileset/Backgrounds/Desert/PNGs/Desert Background Desert Layer 1.png"
-dest_files=["res://.godot/imported/Desert Background Desert Layer 1.png-d05480f37983a34965fae34574fa92f4.ctex"]
+source_file="res://tileset/paralax_backgrounds/desert/Desert Background Desert Layer 1.png"
+dest_files=["res://.godot/imported/Desert Background Desert Layer 1.png-8f5a358125eb6f95a5de2980f42dd219.ctex"]
 
 [params]
 

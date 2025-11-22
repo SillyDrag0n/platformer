@@ -1,6 +1,6 @@
 extends CanvasLayer
 
-var settings_menu_screen = preload("res://ui/settings_menu_screen.tscn")
+var settings_menu_screen = preload("res://ui/screens/settings_menu_screen.tscn")
 
 func _on_play_button_pressed():
 	GameManager.start_game()

@@ -2,7 +2,7 @@ extends CharacterBody2D
 
 signal PlayerDeath()
 
-var bullet = preload("res://player/bullet.tscn")
+var bullet = preload("res://player/gun/bullet/bullet.tscn")
 var player_death_effect = preload("res://player/player_death_effect/player_death_effect.tscn")
 
 @onready var animated_sprite_2d = $AnimatedSprite2D

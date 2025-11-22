@@ -1,6 +1,6 @@
 extends NodeState
 
-var bullet = preload("res://player/bullet.tscn")
+var bullet = preload("res://player/gun/bullet/bullet.tscn")
 
 @export var character_body_2d : CharacterBody2D
 @export var animated_sprite_2d : AnimatedSprite2D

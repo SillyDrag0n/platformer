@@ -3,15 +3,15 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://13mervrh330a"
-path="res://.godot/imported/campfire_active.png-cc7fa4176f3711aed1976dd8f215a031.ctex"
+path="res://.godot/imported/campfire_active.png-52a520887e05e3efe8131cb4f9763219.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://levels/checkpoints/campfire_active.png"
-dest_files=["res://.godot/imported/campfire_active.png-cc7fa4176f3711aed1976dd8f215a031.ctex"]
+source_file="res://levels/checkpoints/sprites/campfire_active.png"
+dest_files=["res://.godot/imported/campfire_active.png-52a520887e05e3efe8131cb4f9763219.ctex"]
 
 [params]
 
