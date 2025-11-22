@@ -459,7 +459,7 @@ tile_set = SubResource("TileSet_ly3hx")
 rendering_quadrant_size = 32
 
 [node name="Player" parent="." instance=ExtResource("4_wndkh")]
-position = Vector2(64, 216)
+position = Vector2(61, 190)
 
 [node name="RespawnPosition" type="Marker2D" parent="."]
 position = Vector2(64, 210)

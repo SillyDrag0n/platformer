@@ -1,7 +1,11 @@
-[gd_scene load_steps=5 format=4 uid="uid://0i0lfbqtcd0k"]
+[gd_scene load_steps=9 format=4 uid="uid://0i0lfbqtcd0k"]
 
 [ext_resource type="Texture2D" uid="uid://cri0t32ynff7" path="res://tileset/Cave and Desert Tileset/Base Tileset/PNG/Tileset Base.png" id="1_1u1ry"]
 [ext_resource type="PackedScene" uid="uid://bfcmjoltsmsed" path="res://player/player.tscn" id="2_oyc5a"]
+[ext_resource type="Script" uid="uid://chd8hkfd628j6" path="res://player/player_camera.gd" id="4_bdvu7"]
+[ext_resource type="PackedScene" uid="uid://dabxfx3538yx0" path="res://ui/game_screen.tscn" id="5_iovl6"]
+[ext_resource type="PackedScene" uid="uid://dnko61n7gbtwq" path="res://ui/death_screen.tscn" id="6_a83uw"]
+[ext_resource type="PackedScene" uid="uid://wq5uffyprpgx" path="res://tileset/structures/rosas-saloon.tscn" id="6_bdvu7"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_1u1ry"]
 texture = ExtResource("1_1u1ry")
@@ -143,4 +147,23 @@ tile_map_data = PackedByteArray("AAAGAAkAAAABAAYAAAAHAAkAAAABAAAAAAAIAAkAAAABAAA
 tile_set = SubResource("TileSet_oyc5a")
 
 [node name="Player" parent="." instance=ExtResource("2_oyc5a")]
-position = Vector2(76, 264)
+position = Vector2(66, 196)
+
+[node name="RespawnPosition" type="Marker2D" parent="."]
+position = Vector2(64, 210)
+
+[node name="PlayerCamera" type="Camera2D" parent="."]
+position = Vector2(63, 208)
+zoom = Vector2(2, 2)
+limit_left = -100
+editor_draw_limits = true
+script = ExtResource("4_bdvu7")
+smoothing_distance = 1
+
+[node name="GameScreen" parent="." instance=ExtResource("5_iovl6")]
+
+[node name="DeathScreen" parent="." instance=ExtResource("6_a83uw")]
+visible = false
+
+[node name="Rosas-saloon" parent="." instance=ExtResource("6_bdvu7")]
+position = Vector2(424, 288)

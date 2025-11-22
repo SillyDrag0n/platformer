@@ -1,0 +1,22 @@
+[gd_scene load_steps=3 format=3 uid="uid://wq5uffyprpgx"]
+
+[ext_resource type="Texture2D" uid="uid://d3yvwlauosvtf" path="res://tileset/structures/rosa's saloon.png" id="1_plv7j"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_plv7j"]
+size = Vector2(120, 70)
+
+[node name="Rosas-saloon" type="Node2D"]
+z_index = -10
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+position = Vector2(0, -96)
+scale = Vector2(2, 2)
+texture = ExtResource("1_plv7j")
+
+[node name="InteractArea" type="Area2D" parent="."]
+collision_layer = 256
+collision_mask = 3
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="InteractArea"]
+position = Vector2(0, -35)
+shape = SubResource("RectangleShape2D_plv7j")
