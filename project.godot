@@ -34,6 +34,10 @@ window/size/mode=3
 window/size/window_width_override=1280
 window/size/window_height_override=720
 
+[gui]
+
+theme/custom_font="uid://kiwlymd55nc2"
+
 [input]
 
 move_left={

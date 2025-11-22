@@ -1,27 +1,28 @@
 [gd_scene load_steps=77 format=3 uid="uid://bfcmjoltsmsed"]
 
 [ext_resource type="Script" uid="uid://bw7oflms0slfo" path="res://player/player.gd" id="1_wqxfn"]
-[ext_resource type="Texture2D" uid="uid://gnuwn56p7uf0" path="res://player/player-idle.png" id="1_xd272"]
-[ext_resource type="Texture2D" uid="uid://lth80kl62757" path="res://player/player-run.png" id="2_857uo"]
+[ext_resource type="Texture2D" uid="uid://gnuwn56p7uf0" path="res://player/player_states/sprites/player-idle.png" id="1_xd272"]
+[ext_resource type="Texture2D" uid="uid://lth80kl62757" path="res://player/player_states/sprites/player-run.png" id="2_857uo"]
 [ext_resource type="Shader" uid="uid://di586mbwclj1e" path="res://player/player_hit_flash_shader.tres" id="2_sxhcj"]
-[ext_resource type="Texture2D" uid="uid://d0cfpvhpomjoi" path="res://player/player-jump.png" id="3_gm186"]
-[ext_resource type="Texture2D" uid="uid://dnjsxlu5isvh4" path="res://player/player-shoot-run.png" id="5_w6vks"]
-[ext_resource type="Texture2D" uid="uid://c5i56sd7f5kcp" path="res://player/player-shoot-crouch.png" id="6_j743l"]
-[ext_resource type="Texture2D" uid="uid://c451nlt658rcu" path="res://player/player-shoot-stand.png" id="8_b6s5q"]
-[ext_resource type="Texture2D" uid="uid://bpwc6k8xte6pr" path="res://player/player-shoot-up.png" id="9_pax4w"]
-[ext_resource type="Script" uid="uid://cvem3bgyk4gme" path="res://player/gun.gd" id="10_e7oew"]
-[ext_resource type="PackedScene" uid="uid://1nt6653rbtnu" path="res://ui/gun_reload_ui.tscn" id="11_c35mf"]
+[ext_resource type="Texture2D" uid="uid://d0cfpvhpomjoi" path="res://player/player_states/sprites/player-jump.png" id="3_gm186"]
+[ext_resource type="Texture2D" uid="uid://dnjsxlu5isvh4" path="res://player/player_states/sprites/player-shoot-run.png" id="5_w6vks"]
+[ext_resource type="Texture2D" uid="uid://c5i56sd7f5kcp" path="res://player/player_states/sprites/player-shoot-crouch.png" id="6_j743l"]
+[ext_resource type="Texture2D" uid="uid://c451nlt658rcu" path="res://player/player_states/sprites/player-shoot-stand.png" id="8_b6s5q"]
+[ext_resource type="Texture2D" uid="uid://bpwc6k8xte6pr" path="res://player/player_states/sprites/player-shoot-up.png" id="9_pax4w"]
+[ext_resource type="Script" uid="uid://cvem3bgyk4gme" path="res://player/gun/gun.gd" id="10_e7oew"]
+[ext_resource type="PackedScene" uid="uid://1nt6653rbtnu" path="res://player/gun/ui/gun_reload_ui.tscn" id="11_c35mf"]
 [ext_resource type="Script" uid="uid://7qf0q30y202f" path="res://scripts/state_machine/node_finite_state_machine.gd" id="11_xte76"]
 [ext_resource type="Script" uid="uid://2yiybft4et1v" path="res://player/player_states/idle_state.gd" id="12_6j7f0"]
-[ext_resource type="AudioStream" uid="uid://bkrttmkh3v5cu" path="res://player/gun_shot_01.ogg" id="12_65viv"]
+[ext_resource type="AudioStream" uid="uid://bkrttmkh3v5cu" path="res://player/gun/sounds/gun_shot_01.ogg" id="12_65viv"]
 [ext_resource type="Script" uid="uid://ds1ig4k2343g3" path="res://player/player_states/fall_state.gd" id="13_r2qhm"]
-[ext_resource type="AudioStream" uid="uid://dfkw8eip0rc0x" path="res://player/gun_reload.ogg" id="13_x7c3f"]
+[ext_resource type="AudioStream" uid="uid://dfkw8eip0rc0x" path="res://player/gun/sounds/gun_reload.ogg" id="13_x7c3f"]
 [ext_resource type="Script" uid="uid://b6vl6ctl3x0jn" path="res://player/player_states/run_state.gd" id="14_461ul"]
-[ext_resource type="AudioStream" uid="uid://bjkrgnwja22lo" path="res://player/gun_empty.ogg" id="14_bjvpn"]
+[ext_resource type="AudioStream" uid="uid://bjkrgnwja22lo" path="res://player/gun/sounds/gun_empty.ogg" id="14_bjvpn"]
 [ext_resource type="Script" uid="uid://bb8rfsbdpnkt3" path="res://player/player_states/jump_state.gd" id="15_vphvd"]
 [ext_resource type="Script" uid="uid://vdwej75wmlh8" path="res://player/player_states/shoot_stand_state.gd" id="16_vnex8"]
 [ext_resource type="Script" uid="uid://b2p3yajfrginn" path="res://player/player_states/shoot_crouch_state.gd" id="18_mv0ng"]
 [ext_resource type="Script" uid="uid://b1ikki11tupdt" path="res://player/player_states/shoot_run_state.gd" id="19_g7odk"]
+[ext_resource type="PackedScene" uid="uid://b5urwtxvwwkpo" path="res://interaction_component/interacting_component.tscn" id="23_s7qer"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_5kha7"]
 resource_local_to_scene = true
@@ -423,9 +424,6 @@ height = 66.0
 radius = 11.0
 height = 62.0
 
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_bjvpn"]
-size = Vector2(75, 75)
-
 [node name="Player" type="CharacterBody2D" groups=["Player"]]
 collision_layer = 2
 script = ExtResource("1_wqxfn")
@@ -477,7 +475,7 @@ volume_db = -5.0
 stream = ExtResource("14_bjvpn")
 
 [node name="Hurtbox" type="Area2D" parent="."]
-collision_layer = 2
+collision_layer = 0
 collision_mask = 4
 
 [node name="HurtboxCollisionShape2D" type="CollisionShape2D" parent="Hurtbox"]
@@ -530,13 +528,8 @@ character_body_2d = NodePath("../..")
 animated_sprite_2d = NodePath("../../AnimatedSprite2D")
 gun = NodePath("../../Gun")
 
-[node name="InteractArea" type="Area2D" parent="."]
-collision_layer = 2
-collision_mask = 256
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="InteractArea"]
+[node name="InteractingComponent" parent="." instance=ExtResource("23_s7qer")]
 position = Vector2(0, -21)
-shape = SubResource("RectangleShape2D_bjvpn")
 
 [connection signal="timeout" from="Gun/ReloadTimer" to="Gun" method="_on_reload_timer_timeout"]
 [connection signal="area_entered" from="Hurtbox" to="." method="_on_hurtbox_area_entered"]

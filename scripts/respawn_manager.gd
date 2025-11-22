@@ -14,3 +14,5 @@ func Respawn():
 	player_instance.global_position = respawn_marker.global_position
 	HealthManager.set_health_max()
 	camera.player = player_instance
+	
+	#TODO: On Respawn reset resource bar UI

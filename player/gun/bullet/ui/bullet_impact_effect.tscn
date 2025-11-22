@@ -1,7 +1,7 @@
 [gd_scene load_steps=8 format=3 uid="uid://kulmxhntda13"]
 
-[ext_resource type="Texture2D" uid="uid://di4smp4wad71c" path="res://player/impact.png" id="1_ex53p"]
-[ext_resource type="Script" path="res://player/BulletImpactEffect.gd" id="2_lsi7x"]
+[ext_resource type="Texture2D" uid="uid://di4smp4wad71c" path="res://player/gun/ui/impact.png" id="1_ex53p"]
+[ext_resource type="Script" uid="uid://bb5nbvugth2kf" path="res://player/gun/bullet/ui/BulletImpactEffect.gd" id="2_lsi7x"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_m8unk"]
 atlas = ExtResource("1_ex53p")
