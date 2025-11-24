@@ -106,7 +106,7 @@ speed = 100
 rotation = 10
 
 [node name="AttackArea" type="Area2D" parent="."]
-collision_layer = 8
+collision_layer = 64
 collision_mask = 2
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="AttackArea"]
@@ -115,7 +115,7 @@ debug_color = Color(0.729412, 0.470588, 0.101961, 0.419608)
 
 [node name="Hurtbox" type="Area2D" parent="."]
 collision_layer = 4
-collision_mask = 2
+collision_mask = 32
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Hurtbox"]
 shape = SubResource("CircleShape2D_ng162")

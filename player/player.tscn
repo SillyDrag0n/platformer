@@ -501,7 +501,8 @@ animated_sprite_2d = NodePath("../../AnimatedSprite2D")
 script = ExtResource("14_461ul")
 character_body_2d = NodePath("../..")
 animated_sprite_2d = NodePath("../../AnimatedSprite2D")
-speed = 300
+speed = 350
+max_horizontal_speed = 300
 
 [node name="Jump" type="Node" parent="StateMachine" node_paths=PackedStringArray("character_body_2d", "animated_sprite_2d")]
 script = ExtResource("15_vphvd")

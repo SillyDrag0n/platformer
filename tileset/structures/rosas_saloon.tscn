@@ -5,15 +5,14 @@
 [ext_resource type="PackedScene" uid="uid://s2gswtyrtm5x" path="res://interaction_component/interactable.tscn" id="2_ymhjx"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_ymhjx"]
-size = Vector2(90, 70)
+size = Vector2(70, 70)
 
 [node name="RosasSaloon" type="Node2D"]
 z_index = -10
 script = ExtResource("1_yw7xr")
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
-position = Vector2(0, -96)
-scale = Vector2(2, 2)
+position = Vector2(0, -112)
 texture = ExtResource("1_plv7j")
 
 [node name="Interactable" parent="." instance=ExtResource("2_ymhjx")]

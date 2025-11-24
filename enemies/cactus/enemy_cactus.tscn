@@ -165,7 +165,7 @@ autostart = true
 
 [node name="Hurtbox" type="Area2D" parent="." groups=["Enemy"]]
 collision_layer = 4
-collision_mask = 2
+collision_mask = 32
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Hurtbox"]
 position = Vector2(0, -9)
@@ -173,7 +173,7 @@ shape = SubResource("CapsuleShape2D_idb2v")
 debug_color = Color(0.937255, 0.129412, 0.541176, 0.419608)
 
 [node name="ScoutArea" type="Area2D" parent="."]
-collision_layer = 128
+collision_layer = 8
 collision_mask = 2
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="ScoutArea"]
@@ -181,7 +181,7 @@ position = Vector2(0, -9)
 shape = SubResource("RectangleShape2D_xddwv")
 
 [node name="AggroArea" type="Area2D" parent="."]
-collision_layer = 128
+collision_layer = 64
 collision_mask = 2
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="AggroArea"]

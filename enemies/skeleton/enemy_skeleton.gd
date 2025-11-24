@@ -11,7 +11,7 @@ var enemy_death_effect = preload("res://enemies/enemy_death_effect.tscn")
 @onready var animated_sprite_2d = $AnimatedSprite2D
 @onready var timer = $Timer
 
-const GRAVITY = 1000
+const GRAVITY = 750
 
 enum State { Idle, Walk }
 var current_state : State

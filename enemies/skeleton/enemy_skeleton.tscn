@@ -1,0 +1,171 @@
+[gd_scene load_steps=21 format=3 uid="uid://cqi1xyh7a2gl7"]
+
+[ext_resource type="Script" uid="uid://deq268fc0onlq" path="res://enemies/skeleton/enemy_skeleton.gd" id="1_y25qr"]
+[ext_resource type="Texture2D" uid="uid://cqgxrd6e10yk4" path="res://enemies/skeleton/skeleton-idle-sheet.png" id="2_4yxjy"]
+[ext_resource type="Texture2D" uid="uid://cvqxe4f28ed0x" path="res://enemies/skeleton/skeleton-attack-sheet.png" id="2_y25qr"]
+[ext_resource type="Script" uid="uid://cu3fef7fc7576" path="res://enemies/skeleton/gravity.gd" id="4_y25qr"]
+[ext_resource type="Script" uid="uid://7qf0q30y202f" path="res://scripts/state_machine/node_finite_state_machine.gd" id="5_siymg"]
+[ext_resource type="Script" uid="uid://lom13u3tcq3c" path="res://enemies/skeleton/state_machine_controller.gd" id="5_y25qr"]
+[ext_resource type="Script" uid="uid://n07yea6sw00e" path="res://enemies/skeleton/idle_state.gd" id="7_y25qr"]
+[ext_resource type="Script" uid="uid://hb1pp0xb7rb" path="res://enemies/skeleton/attack_state.gd" id="8_y25qr"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_kgsfp"]
+atlas = ExtResource("2_y25qr")
+region = Rect2(0, 0, 32, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_y25qr"]
+atlas = ExtResource("2_4yxjy")
+region = Rect2(0, 0, 32, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_3f8p5"]
+atlas = ExtResource("2_4yxjy")
+region = Rect2(32, 0, 32, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_y8duq"]
+atlas = ExtResource("2_4yxjy")
+region = Rect2(64, 0, 32, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_jnutj"]
+atlas = ExtResource("2_4yxjy")
+region = Rect2(96, 0, 32, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_q1uxb"]
+atlas = ExtResource("2_4yxjy")
+region = Rect2(128, 0, 32, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_a8goc"]
+atlas = ExtResource("2_4yxjy")
+region = Rect2(160, 0, 32, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ff44l"]
+atlas = ExtResource("2_4yxjy")
+region = Rect2(192, 0, 32, 64)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_8al4v"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_kgsfp")
+}],
+"loop": true,
+"name": &"attack",
+"speed": 12.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_y25qr")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_3f8p5")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_y8duq")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_jnutj")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_q1uxb")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_a8goc")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_ff44l")
+}],
+"loop": true,
+"name": &"idle",
+"speed": 8.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_kgsfp")
+}],
+"loop": true,
+"name": &"walk",
+"speed": 5.0
+}]
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_y25qr"]
+height = 60.0
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_lxac6"]
+size = Vector2(750, 300)
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_3f8p5"]
+height = 60.0
+
+[node name="EnemySkeleton" type="CharacterBody2D" node_paths=PackedStringArray("patrol_points") groups=["Enemy"]]
+collision_layer = 4
+collision_mask = 3
+script = ExtResource("1_y25qr")
+patrol_points = NodePath("PatrolPoints")
+health_amount = 2
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+sprite_frames = SubResource("SpriteFrames_8al4v")
+animation = &"walk"
+autoplay = "idle"
+offset = Vector2(0, -32)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(0, -30)
+shape = SubResource("CapsuleShape2D_y25qr")
+
+[node name="Timer" type="Timer" parent="."]
+one_shot = true
+autostart = true
+
+[node name="PatrolPoints" type="Node2D" parent="."]
+
+[node name="Point1" type="Marker2D" parent="PatrolPoints"]
+position = Vector2(-150, 0)
+
+[node name="Point2" type="Marker2D" parent="PatrolPoints"]
+position = Vector2(150, 0)
+
+[node name="Gravity" type="Node" parent="." node_paths=PackedStringArray("character_body_2d", "animated_sprite_2d")]
+script = ExtResource("4_y25qr")
+character_body_2d = NodePath("..")
+animated_sprite_2d = NodePath("../AnimatedSprite2D")
+
+[node name="StateMachineController" type="Node" parent="." node_paths=PackedStringArray("node_finite_state_machine")]
+script = ExtResource("5_y25qr")
+node_finite_state_machine = NodePath("../StateMachine")
+
+[node name="StateMachine" type="Node" parent="." node_paths=PackedStringArray("initial_node_state")]
+script = ExtResource("5_siymg")
+initial_node_state = NodePath("Idle")
+
+[node name="Idle" type="Node" parent="StateMachine" node_paths=PackedStringArray("character_body_2d", "animated_sprite_2d")]
+script = ExtResource("7_y25qr")
+character_body_2d = NodePath("../..")
+animated_sprite_2d = NodePath("../../AnimatedSprite2D")
+slow_down_speed = 300
+
+[node name="Attack" type="Node" parent="StateMachine" node_paths=PackedStringArray("character_body_2d", "animated_sprite_2d")]
+script = ExtResource("8_y25qr")
+character_body_2d = NodePath("../..")
+animated_sprite_2d = NodePath("../../AnimatedSprite2D")
+speed = 500
+
+[node name="AttackArea" type="Area2D" parent="."]
+position = Vector2(0, -30)
+collision_layer = 64
+collision_mask = 2
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="AttackArea"]
+shape = SubResource("RectangleShape2D_lxac6")
+debug_color = Color(0.729412, 0.470588, 0.101961, 0.419608)
+
+[node name="Hurtbox" type="Area2D" parent="."]
+collision_layer = 4
+collision_mask = 32
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Hurtbox"]
+position = Vector2(0, -30)
+shape = SubResource("CapsuleShape2D_3f8p5")
+
+[connection signal="body_entered" from="AttackArea" to="StateMachineController" method="_on_attack_area_2d_body_entered"]
+[connection signal="body_exited" from="AttackArea" to="StateMachineController" method="_on_attack_area_2d_body_exited"]
+[connection signal="area_entered" from="Hurtbox" to="." method="_on_hurtbox_area_entered"]
