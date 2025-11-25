@@ -100,6 +100,7 @@ collision_layer = 4
 collision_mask = 3
 script = ExtResource("1_y25qr")
 patrol_points = NodePath("PatrolPoints")
+speed = 1200
 health_amount = 2
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
@@ -113,7 +114,6 @@ position = Vector2(0, -30)
 shape = SubResource("CapsuleShape2D_y25qr")
 
 [node name="Timer" type="Timer" parent="."]
-one_shot = true
 autostart = true
 
 [node name="PatrolPoints" type="Node2D" parent="."]
