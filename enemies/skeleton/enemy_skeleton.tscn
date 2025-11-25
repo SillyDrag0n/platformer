@@ -48,8 +48,8 @@ animations = [{
 "texture": SubResource("AtlasTexture_kgsfp")
 }],
 "loop": true,
-"name": &"attack",
-"speed": 12.0
+"name": &"aggro",
+"speed": 8.0
 }, {
 "frames": [{
 "duration": 1.0,
@@ -82,8 +82,16 @@ animations = [{
 "texture": SubResource("AtlasTexture_kgsfp")
 }],
 "loop": true,
+"name": &"shoot",
+"speed": 8.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_kgsfp")
+}],
+"loop": true,
 "name": &"walk",
-"speed": 5.0
+"speed": 8.0
 }]
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_y25qr"]
@@ -105,7 +113,7 @@ health_amount = 2
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
 sprite_frames = SubResource("SpriteFrames_8al4v")
-animation = &"walk"
+animation = &"shoot"
 autoplay = "idle"
 offset = Vector2(0, -32)
 
@@ -113,8 +121,15 @@ offset = Vector2(0, -32)
 position = Vector2(0, -30)
 shape = SubResource("CapsuleShape2D_y25qr")
 
-[node name="Timer" type="Timer" parent="."]
+[node name="IdleTimer" type="Timer" parent="."]
 autostart = true
+
+[node name="AttackTimer" type="Timer" parent="."]
+one_shot = true
+autostart = true
+
+[node name="Muzzle" type="Marker2D" parent="."]
+position = Vector2(20, -40)
 
 [node name="PatrolPoints" type="Node2D" parent="."]
 
@@ -143,11 +158,12 @@ character_body_2d = NodePath("../..")
 animated_sprite_2d = NodePath("../../AnimatedSprite2D")
 slow_down_speed = 300
 
-[node name="Attack" type="Node" parent="StateMachine" node_paths=PackedStringArray("character_body_2d", "animated_sprite_2d")]
+[node name="Attack" type="Node" parent="StateMachine" node_paths=PackedStringArray("character_body_2d", "animated_sprite_2d", "attack_timer", "muzzle")]
 script = ExtResource("8_y25qr")
 character_body_2d = NodePath("../..")
 animated_sprite_2d = NodePath("../../AnimatedSprite2D")
-speed = 500
+attack_timer = NodePath("../../AttackTimer")
+muzzle = NodePath("../../Muzzle")
 
 [node name="AttackArea" type="Area2D" parent="."]
 position = Vector2(0, -30)
@@ -166,7 +182,8 @@ collision_mask = 32
 position = Vector2(0, -30)
 shape = SubResource("CapsuleShape2D_3f8p5")
 
-[connection signal="timeout" from="Timer" to="." method="_on_timer_timeout"]
+[connection signal="timeout" from="IdleTimer" to="." method="_on_timer_timeout"]
+[connection signal="timeout" from="AttackTimer" to="StateMachine/Attack" method="_on_attack_timer_timeout"]
 [connection signal="body_entered" from="AttackArea" to="StateMachineController" method="_on_attack_area_2d_body_entered"]
 [connection signal="body_exited" from="AttackArea" to="StateMachineController" method="_on_attack_area_2d_body_exited"]
 [connection signal="area_entered" from="Hurtbox" to="." method="_on_hurtbox_area_entered"]

@@ -2,6 +2,7 @@ extends Node
 
 var main_menu_screen = preload("res://ui/screens/main_menu_screen.tscn")
 var pause_menu_screen = preload("res://ui/screens/pause_menu_screen.tscn")
+var player: Node2D
 
 func _ready():
 	RenderingServer.set_default_clear_color(Color(0.44,0.12,0.53,1.00))
@@ -35,3 +36,8 @@ func continue_game():
 func main_menu():
 	var main_menu_screen_instance = main_menu_screen.instantiate()
 	get_tree().get_root().add_child(main_menu_screen_instance)
+
+func get_global_player_position() -> Vector2:
+	if player:
+		return player.global_position
+	return Vector2.ZERO

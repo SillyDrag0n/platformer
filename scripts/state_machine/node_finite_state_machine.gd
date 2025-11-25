@@ -46,4 +46,3 @@ func transition_to(node_state_name : String):
 	
 	current_node_state = new_node_state
 	current_node_state_name = current_node_state.name.to_lower()
-

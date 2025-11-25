@@ -9,7 +9,7 @@ var enemy_death_effect = preload("res://enemies/enemy_death_effect.tscn")
 @export var damage_amount : int = 1
 
 @onready var animated_sprite_2d = $AnimatedSprite2D
-@onready var timer = $Timer
+@onready var timer = $IdleTimer
 
 const GRAVITY = 750
 

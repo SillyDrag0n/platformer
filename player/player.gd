@@ -8,6 +8,8 @@ var player_death_effect = preload("res://player/player_death_effect/player_death
 @onready var animated_sprite_2d = $AnimatedSprite2D
 @onready var muzzle : Marker2D = $Muzzle
 
+func _ready() -> void:
+	GameManager.player = self
 
 func player_death():
 	var player_death_effect_instance = player_death_effect.instantiate() as Node2D
