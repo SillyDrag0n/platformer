@@ -1,4 +1,4 @@
-[gd_scene load_steps=9 format=4 uid="uid://0i0lfbqtcd0k"]
+[gd_scene load_steps=10 format=4 uid="uid://0i0lfbqtcd0k"]
 
 [ext_resource type="Texture2D" uid="uid://cri0t32ynff7" path="res://tileset/Tileset Base.png" id="1_1u1ry"]
 [ext_resource type="PackedScene" uid="uid://bfcmjoltsmsed" path="res://player/player.tscn" id="2_oyc5a"]
@@ -6,6 +6,7 @@
 [ext_resource type="PackedScene" uid="uid://dabxfx3538yx0" path="res://ui/screens/game_screen.tscn" id="5_iovl6"]
 [ext_resource type="PackedScene" uid="uid://dnko61n7gbtwq" path="res://ui/screens/death_screen.tscn" id="6_a83uw"]
 [ext_resource type="PackedScene" uid="uid://wq5uffyprpgx" path="res://tileset/structures/rosas_saloon.tscn" id="6_bdvu7"]
+[ext_resource type="PackedScene" uid="uid://wq68y6xgou3y" path="res://enemies/skeleton/skeleton.tscn" id="7_ftq5n"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_1u1ry"]
 texture = ExtResource("1_1u1ry")
@@ -170,3 +171,6 @@ visible = false
 
 [node name="Rosas-saloon" parent="Structures" instance=ExtResource("6_bdvu7")]
 position = Vector2(417, 288)
+
+[node name="Skeleton" parent="." instance=ExtResource("7_ftq5n")]
+position = Vector2(1029, 256)
