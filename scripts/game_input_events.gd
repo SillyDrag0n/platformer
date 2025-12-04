@@ -13,7 +13,7 @@ static func jump_input() -> bool:
 
 
 static func shoot_input() -> bool:
-	var shoot_input : bool = Input.is_action_just_pressed("shoot")
+	var shoot_input : bool = Input.is_action_pressed("shoot")
 	return shoot_input
 
 
