@@ -73,6 +73,7 @@ size = Vector2(800, 250)
 size = Vector2(500, 250)
 
 [node name="Skeleton" type="CharacterBody2D"]
+collision_mask = 129
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
 sprite_frames = SubResource("SpriteFrames_hoo18")
