@@ -22,10 +22,10 @@ func bullet_impact():
 	get_parent().add_child(bullet_impact_effect_instance)
 	queue_free()
 
-func _attack_on_hurtbox_area_entered(area:Area2D) -> void:
+func _on_hurtbox_area_entered(_area:Area2D) -> void:
 	print("Enemy attack entered area")
 	bullet_impact()
 
-func _attack_on_hurtbox_body_entered(body:Node2D) -> void:
+func _on_hurtbox_body_entered(_body:Node2D) -> void:
 	print("Enemy attack entered body")
 	bullet_impact()

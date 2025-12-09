@@ -3796,10 +3796,13 @@ tile_map_data = PackedByteArray("AABLAP//AQAuAAMAAABLAAAAAQAuAAQAAABMAP//AQAvAAM
 tile_set = SubResource("TileSet_4n8tn")
 rendering_quadrant_size = 32
 
-[node name="Skeleton" parent="TileMap" instance=ExtResource("7_ly3hx")]
-position = Vector2(769, 192)
-
 [node name="Enemies" type="Node" parent="."]
+
+[node name="Skeleton" parent="Enemies" instance=ExtResource("7_ly3hx")]
+position = Vector2(1611, 128)
+
+[node name="Skeleton2" parent="Enemies" instance=ExtResource("7_ly3hx")]
+position = Vector2(1072, 191)
 
 [node name="Checkpoint" parent="." node_paths=PackedStringArray("respawn_marker") instance=ExtResource("8_wndkh")]
 position = Vector2(1536, -188)

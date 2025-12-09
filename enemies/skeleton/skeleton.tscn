@@ -1,4 +1,4 @@
-[gd_scene load_steps=20 format=3 uid="uid://wq68y6xgou3y"]
+[gd_scene load_steps=21 format=3 uid="uid://wq68y6xgou3y"]
 
 [ext_resource type="Script" uid="uid://cq0wgk8tf034e" path="res://enemies/skeleton/skeleton.gd" id="1_dhyvq"]
 [ext_resource type="Texture2D" uid="uid://bx16vh2lxo6ql" path="res://enemies/temp_files/temp-enemy-aggro.png" id="1_xuvgk"]
@@ -70,11 +70,16 @@ height = 60.0
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_xuvgk"]
 size = Vector2(800, 250)
 
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_dhyvq"]
+radius = 12.0
+height = 60.0
+
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_8ytsa"]
 size = Vector2(500, 250)
 
 [node name="Skeleton" type="CharacterBody2D" node_paths=PackedStringArray("gun_muzzle", "gun_timer")]
-collision_mask = 129
+collision_layer = 4
+collision_mask = 387
 script = ExtResource("1_dhyvq")
 gun_muzzle = NodePath("Muzzle")
 gun_timer = NodePath("AttackTimer")
@@ -95,6 +100,13 @@ collision_mask = 2
 shape = SubResource("RectangleShape2D_xuvgk")
 debug_color = Color(0.219608, 0, 0.67451, 0.423529)
 
+[node name="Hurtbox" type="Area2D" parent="." groups=["Enemy"]]
+collision_layer = 4
+collision_mask = 32
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Hurtbox"]
+shape = SubResource("CapsuleShape2D_dhyvq")
+
 [node name="AttackRange" type="Area2D" parent="."]
 collision_layer = 64
 collision_mask = 2
@@ -104,6 +116,7 @@ shape = SubResource("RectangleShape2D_8ytsa")
 debug_color = Color(0.819608, 0.67451, 0.156863, 0.364706)
 
 [node name="AttackTimer" type="Timer" parent="."]
+wait_time = 1.25
 one_shot = true
 
 [node name="ChaseTimer" type="Timer" parent="."]
@@ -149,6 +162,7 @@ metadata/_custom_type_script = "uid://dd5u7pxrdxlwe"
 
 [connection signal="body_entered" from="AggroRange" to="StateMachineController" method="_on_aggro_range_body_entered"]
 [connection signal="body_exited" from="AggroRange" to="StateMachineController" method="_on_aggro_range_body_exited"]
+[connection signal="area_entered" from="Hurtbox" to="." method="_on_hurtbox_area_entered"]
 [connection signal="body_entered" from="AttackRange" to="StateMachineController" method="_on_attack_range_body_entered"]
 [connection signal="body_exited" from="AttackRange" to="StateMachineController" method="_on_attack_range_body_exited"]
 [connection signal="timeout" from="AttackTimer" to="." method="_on_attack_timer_timeout"]
