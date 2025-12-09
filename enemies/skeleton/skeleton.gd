@@ -3,10 +3,10 @@ extends CharacterBody2D
 const SPEED = 100.0
 @export var is_chasing: bool = false
 
-func _physics_process(delta: float) -> void:
-	chase_player(delta)
+func _physics_process(_delta: float) -> void:
+	chase_player()
 
-func chase_player(delta):
+func chase_player():
 	if is_chasing == true:
 		print("Chase started")
 		var player_global_position = GameManager.get_global_player_position()
