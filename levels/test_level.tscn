@@ -3797,7 +3797,7 @@ tile_set = SubResource("TileSet_4n8tn")
 rendering_quadrant_size = 32
 
 [node name="Skeleton" parent="TileMap" instance=ExtResource("7_ly3hx")]
-position = Vector2(767, 188)
+position = Vector2(769, 192)
 
 [node name="Enemies" type="Node" parent="."]
 

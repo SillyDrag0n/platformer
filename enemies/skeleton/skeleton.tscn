@@ -1,5 +1,6 @@
-[gd_scene load_steps=19 format=3 uid="uid://wq68y6xgou3y"]
+[gd_scene load_steps=20 format=3 uid="uid://wq68y6xgou3y"]
 
+[ext_resource type="Script" uid="uid://cq0wgk8tf034e" path="res://enemies/skeleton/skeleton.gd" id="1_dhyvq"]
 [ext_resource type="Texture2D" uid="uid://bx16vh2lxo6ql" path="res://enemies/temp_files/temp-enemy-aggro.png" id="1_xuvgk"]
 [ext_resource type="Texture2D" uid="uid://b003taxp5u40m" path="res://enemies/temp_files/temp-enemy-shoot.png" id="2_8ytsa"]
 [ext_resource type="Texture2D" uid="uid://cltqpimt50u5r" path="res://enemies/temp_files/temp-enemy-idle.png" id="3_2b7ve"]
@@ -74,6 +75,7 @@ size = Vector2(500, 250)
 
 [node name="Skeleton" type="CharacterBody2D"]
 collision_mask = 129
+script = ExtResource("1_dhyvq")
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
 sprite_frames = SubResource("SpriteFrames_hoo18")
@@ -115,23 +117,27 @@ chase_timer = NodePath("../ChaseTimer")
 script = ExtResource("6_7bufg")
 initial_node_state = NodePath("Idle")
 
-[node name="Idle" type="Node" parent="StateMachine" node_paths=PackedStringArray("animated_sprite_2d")]
+[node name="Idle" type="Node" parent="StateMachine" node_paths=PackedStringArray("character_body_2d", "animated_sprite_2d")]
 script = ExtResource("7_dhyvq")
+character_body_2d = NodePath("../..")
 animated_sprite_2d = NodePath("../../AnimatedSprite2D")
 metadata/_custom_type_script = "uid://dd5u7pxrdxlwe"
 
-[node name="Aggro" type="Node" parent="StateMachine" node_paths=PackedStringArray("animated_sprite_2d")]
+[node name="Aggro" type="Node" parent="StateMachine" node_paths=PackedStringArray("character_body_2d", "animated_sprite_2d")]
 script = ExtResource("8_hoo18")
+character_body_2d = NodePath("../..")
 animated_sprite_2d = NodePath("../../AnimatedSprite2D")
 metadata/_custom_type_script = "uid://dd5u7pxrdxlwe"
 
-[node name="Attack" type="Node" parent="StateMachine" node_paths=PackedStringArray("animated_sprite_2d")]
+[node name="Attack" type="Node" parent="StateMachine" node_paths=PackedStringArray("character_body_2d", "animated_sprite_2d")]
 script = ExtResource("9_axxec")
+character_body_2d = NodePath("../..")
 animated_sprite_2d = NodePath("../../AnimatedSprite2D")
 metadata/_custom_type_script = "uid://dd5u7pxrdxlwe"
 
-[node name="Chase" type="Node" parent="StateMachine" node_paths=PackedStringArray("animated_sprite_2d", "chase_timer")]
+[node name="Chase" type="Node" parent="StateMachine" node_paths=PackedStringArray("character_body_2d", "animated_sprite_2d", "chase_timer")]
 script = ExtResource("10_ct5ms")
+character_body_2d = NodePath("../..")
 animated_sprite_2d = NodePath("../../AnimatedSprite2D")
 chase_timer = NodePath("../../ChaseTimer")
 metadata/_custom_type_script = "uid://dd5u7pxrdxlwe"

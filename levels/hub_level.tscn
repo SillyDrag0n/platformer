@@ -173,4 +173,4 @@ visible = false
 position = Vector2(417, 288)
 
 [node name="Skeleton" parent="." instance=ExtResource("7_ftq5n")]
-position = Vector2(1029, 256)
+position = Vector2(1029, 255)

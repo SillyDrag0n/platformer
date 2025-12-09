@@ -6,20 +6,25 @@ extends Node
 func _on_attack_range_body_entered(body:Node2D) -> void:
 	if body.is_in_group("Player"):
 		node_finite_state_machine.transition_to("Attack")
+		print("Attack")
 
 func _on_attack_range_body_exited(body:Node2D) -> void:
 	if body.is_in_group("Player"):
 		node_finite_state_machine.transition_to("Aggro")
+		print("Aggro")
 
 func _on_aggro_range_body_exited(body:Node2D) -> void:
 	if body.is_in_group("Player"):
 		node_finite_state_machine.transition_to("Chase")
+		print("Chase")
 
 func _on_aggro_range_body_entered(body:Node2D) -> void:
 	if chase_timer.is_stopped() == false:
 		chase_timer.stop()
 	if body.is_in_group("Player"):
 		node_finite_state_machine.transition_to("Aggro")
+		print("Aggro")
 
 func _on_chase_timer_timeout() -> void:
 	node_finite_state_machine.transition_to("Idle")
+	print("Idle")
