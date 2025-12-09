@@ -7,7 +7,9 @@ extends NodeState
 func enter():
 	animated_sprite_2d.play("attack")
 	character_body_2d.set_chase(false)
+	character_body_2d.shoot_enabled = true
 
 
 func exit():
 	animated_sprite_2d.stop()
+	character_body_2d.shoot_enabled = false

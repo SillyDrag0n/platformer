@@ -1,6 +1,6 @@
 [gd_scene load_steps=6 format=3 uid="uid://ioxbfqcwsin1"]
 
-[ext_resource type="Texture2D" uid="uid://2vqskqj2qk5f" path="res://player/shot.png" id="1_j5wmt"]
+[ext_resource type="Texture2D" uid="uid://2vqskqj2qk5f" path="res://player/gun/bullet/ui/shot.png" id="1_j5wmt"]
 [ext_resource type="Script" uid="uid://cg3qqk8125beg" path="res://enemies/cactus/cactus_attack.gd" id="2_l7765"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_j40gx"]
@@ -9,11 +9,6 @@ region = Rect2(96, 0, 12, 7)
 
 [sub_resource type="SpriteFrames" id="SpriteFrames_c2ri7"]
 animations = [{
-"frames": [],
-"loop": true,
-"name": &"default",
-"speed": 5.0
-}, {
 "frames": [{
 "duration": 1.0,
 "texture": SubResource("AtlasTexture_j40gx")

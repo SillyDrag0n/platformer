@@ -73,9 +73,11 @@ size = Vector2(800, 250)
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_8ytsa"]
 size = Vector2(500, 250)
 
-[node name="Skeleton" type="CharacterBody2D"]
+[node name="Skeleton" type="CharacterBody2D" node_paths=PackedStringArray("gun_muzzle", "gun_timer")]
 collision_mask = 129
 script = ExtResource("1_dhyvq")
+gun_muzzle = NodePath("Muzzle")
+gun_timer = NodePath("AttackTimer")
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
 sprite_frames = SubResource("SpriteFrames_hoo18")
@@ -102,11 +104,14 @@ shape = SubResource("RectangleShape2D_8ytsa")
 debug_color = Color(0.819608, 0.67451, 0.156863, 0.364706)
 
 [node name="AttackTimer" type="Timer" parent="."]
-wait_time = 0.8
+one_shot = true
 
 [node name="ChaseTimer" type="Timer" parent="."]
 wait_time = 2.0
 one_shot = true
+
+[node name="Muzzle" type="Marker2D" parent="."]
+position = Vector2(-15, -7.5)
 
 [node name="StateMachineController" type="Node" parent="." node_paths=PackedStringArray("node_finite_state_machine", "chase_timer")]
 script = ExtResource("5_8ytsa")
@@ -146,4 +151,5 @@ metadata/_custom_type_script = "uid://dd5u7pxrdxlwe"
 [connection signal="body_exited" from="AggroRange" to="StateMachineController" method="_on_aggro_range_body_exited"]
 [connection signal="body_entered" from="AttackRange" to="StateMachineController" method="_on_attack_range_body_entered"]
 [connection signal="body_exited" from="AttackRange" to="StateMachineController" method="_on_attack_range_body_exited"]
+[connection signal="timeout" from="AttackTimer" to="." method="_on_attack_timer_timeout"]
 [connection signal="timeout" from="ChaseTimer" to="StateMachineController" method="_on_chase_timer_timeout"]
