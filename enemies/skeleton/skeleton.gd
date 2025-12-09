@@ -43,6 +43,7 @@ func shoot():
 		attack.global_position = gun_muzzle.global_position
 		var player_global_position = GameManager.get_global_player_position()
 		attack.direction = (player_global_position - global_position).normalized()
+		attack.rotation = attack.direction.angle()
 		print_debug("Shoot projectile")
 		get_tree().current_scene.add_child(attack)
 
