@@ -21,15 +21,12 @@ func _physics_process(_delta: float) -> void:
 
 func chase_player():
 	if is_chasing == true:
-		print("Chase started")
 		var player_global_position = GameManager.get_global_player_position()
 		var direction = (player_global_position - global_position).normalized()
 		velocity.x = direction.x * SPEED
 
 	if is_chasing == false:
-		print("Chase stopped")
 		velocity.x = 0
-	
 	move_and_slide()
 	
 
@@ -46,7 +43,6 @@ func shoot():
 		var player_global_position = GameManager.get_global_player_position()
 		attack.direction = (player_global_position - global_position).normalized()
 		attack.rotation = attack.direction.angle()
-		print_debug("Shoot projectile")
 		get_tree().current_scene.add_child(attack)
 
 func _on_attack_timer_timeout() -> void:
@@ -57,7 +53,6 @@ func _on_hurtbox_area_entered(area : Area2D):
 	if area.get_parent().has_method("get_damage_amount"):
 		var node = area.get_parent() as Node
 		health_amount -= node.damage_amount
-		print("Health amount: ", health_amount)
 		
 		if health_amount <= 0:
 			var enemy_death_effect_instance = enemy_death_effect.instantiate() as Node2D
