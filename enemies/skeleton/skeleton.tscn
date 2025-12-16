@@ -11,7 +11,7 @@
 [ext_resource type="Script" uid="uid://db7trep67yucr" path="res://enemies/skeleton/state_machine/aggro_state.gd" id="8_hoo18"]
 [ext_resource type="Script" uid="uid://cntl2n0srvuag" path="res://enemies/skeleton/state_machine/attack_state.gd" id="9_axxec"]
 [ext_resource type="Script" uid="uid://dhwaaekkfmb0m" path="res://enemies/skeleton/state_machine/chase_state.gd" id="10_ct5ms"]
-[ext_resource type="Script" uid="uid://ckgttsx24boxc" path="res://enemies/_common/gravity.gd" id="12_hoo18"]
+[ext_resource type="Script" uid="uid://cl5kkl1jbwkie" path="res://enemies/_common/gravity.gd" id="12_hoo18"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_ybkpd"]
 atlas = ExtResource("1_xuvgk")
