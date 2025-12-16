@@ -1,7 +1,5 @@
 extends CharacterBody2D
 
-signal PlayerDeath()
-
 var bullet = preload("res://player/gun/bullet/bullet.tscn")
 var player_death_effect = preload("res://player/player_death_effect/player_death_effect.tscn")
 
@@ -9,13 +7,15 @@ var player_death_effect = preload("res://player/player_death_effect/player_death
 @onready var muzzle : Marker2D = $Muzzle
 
 func _ready() -> void:
-	GameManager.player = self
+	PlayerManager.player = self
+	PlayerManager.player_spawned.emit(self)
+
 
 func player_death():
 	var player_death_effect_instance = player_death_effect.instantiate() as Node2D
 	player_death_effect_instance.global_position = global_position
 	get_parent().add_child(player_death_effect_instance)
-	PlayerDeath.emit()
+	PlayerManager.player_died.emit()
 	queue_free()
 
 
@@ -47,3 +47,8 @@ func _on_hurtbox_area_entered(area:Area2D) -> void:
 func CheckPlayerHealth():
 	if HealthManager.current_health == 0:
 		player_death()
+
+
+func _exit_tree():
+	if PlayerManager.player == self:
+		PlayerManager.player = null

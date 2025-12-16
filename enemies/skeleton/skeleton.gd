@@ -11,6 +11,7 @@ var cactus_attack = preload("res://enemies/skeleton/skeleton_attack.tscn")
 const SPEED = 100.0
 var can_shoot: bool = true
 var shoot_enabled: bool = false
+var player_global_position: Vector2
 
 
 func _physics_process(_delta: float) -> void:
@@ -21,7 +22,7 @@ func _physics_process(_delta: float) -> void:
 
 func chase_player():
 	if is_chasing == true:
-		var player_global_position = GameManager.get_global_player_position()
+		getPlayerPosition()
 		var direction = (player_global_position - global_position).normalized()
 		velocity.x = direction.x * SPEED
 
@@ -40,7 +41,7 @@ func shoot():
 		gun_timer.start()
 		var attack = cactus_attack.instantiate() as Node2D
 		attack.global_position = gun_muzzle.global_position
-		var player_global_position = GameManager.get_global_player_position()
+		getPlayerPosition()
 		attack.direction = (player_global_position - global_position).normalized()
 		attack.rotation = attack.direction.angle()
 		get_tree().current_scene.add_child(attack)
@@ -59,3 +60,10 @@ func _on_hurtbox_area_entered(area : Area2D):
 			enemy_death_effect_instance.global_position = global_position
 			get_parent().add_child(enemy_death_effect_instance)
 			queue_free()
+
+
+func getPlayerPosition():
+	if PlayerManager.player != null:
+		player_global_position = PlayerManager.player.global_position
+	else:
+		player_global_position = Vector2.ZERO

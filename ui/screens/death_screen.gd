@@ -2,8 +2,7 @@ extends CanvasLayer
 
 func _ready():
 	for player in get_tree().get_nodes_in_group("Player"):
-		player.PlayerDeath.connect(ShowDeathScreen)
-		print("Death Screen connected")
+		PlayerManager.player_died.connect(ShowDeathScreen)
 
 
 func ShowDeathScreen():

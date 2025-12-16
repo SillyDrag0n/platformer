@@ -17,6 +17,8 @@ func _ready():
 	damage_timer.timeout.connect(_on_timer_timeout)
 	damage_timer.one_shot = true
 	damage_timer.wait_time = 1
+	
+	PlayerManager.player_spawned.connect(ResetHealthManager)
 
 
 func decrease_health(health_amount : float):
@@ -48,8 +50,13 @@ func _on_timer_timeout():
 	print("on timer timeout")
 	Invulnerable = false
 
+
 func set_health_max():
 	current_health = max_health
 
+
 func get_health_max():
 	return max_health
+
+func ResetHealthManager(_player):
+	set_health_max()
