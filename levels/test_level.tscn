@@ -14,7 +14,7 @@
 [ext_resource type="Texture2D" uid="uid://dfbtpy3tygbdh" path="res://tileset/paralax_backgrounds/Parallax2.png" id="12_8hjdj"]
 [ext_resource type="Texture2D" uid="uid://bao5suuofbayn" path="res://tileset/paralax_backgrounds/Parallax1.png" id="13_0vv12"]
 
-[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_wkb0e"]
+[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_axl34"]
 resource_name = "Background"
 texture = ExtResource("6_4n8tn")
 16:14/0 = 0
@@ -1269,9 +1269,9 @@ texture = ExtResource("6_4n8tn")
 [sub_resource type="TileSet" id="TileSet_paa45"]
 physics_layer_0/collision_layer = 1
 physics_layer_0/collision_mask = 6
-sources/1 = SubResource("TileSetAtlasSource_wkb0e")
+sources/1 = SubResource("TileSetAtlasSource_axl34")
 
-[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_4n8tn"]
+[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_8hjdj"]
 resource_name = "Background"
 texture = ExtResource("6_4n8tn")
 16:14/0 = 0
@@ -2508,9 +2508,9 @@ texture = ExtResource("6_4n8tn")
 [sub_resource type="TileSet" id="TileSet_wkb0e"]
 physics_layer_0/collision_layer = 128
 physics_layer_0/collision_mask = 6
-sources/1 = SubResource("TileSetAtlasSource_4n8tn")
+sources/1 = SubResource("TileSetAtlasSource_8hjdj")
 
-[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_wndkh"]
+[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_0vv12"]
 resource_name = "Background"
 texture = ExtResource("6_4n8tn")
 16:14/0 = 0
@@ -3747,9 +3747,9 @@ texture = ExtResource("6_4n8tn")
 [sub_resource type="TileSet" id="TileSet_ly3hx"]
 physics_layer_0/collision_layer = 0
 physics_layer_0/collision_mask = 6
-sources/1 = SubResource("TileSetAtlasSource_wndkh")
+sources/1 = SubResource("TileSetAtlasSource_0vv12")
 
-[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_ly3hx"]
+[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_o5yuq"]
 resource_name = "Background"
 texture = ExtResource("6_4n8tn")
 16:14/0 = 0
@@ -5004,7 +5004,7 @@ texture = ExtResource("6_4n8tn")
 [sub_resource type="TileSet" id="TileSet_4n8tn"]
 physics_layer_0/collision_layer = 256
 physics_layer_0/collision_mask = 6
-sources/1 = SubResource("TileSetAtlasSource_ly3hx")
+sources/1 = SubResource("TileSetAtlasSource_o5yuq")
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_8hjdj"]
 size = Vector2(944, 50)
@@ -5016,7 +5016,6 @@ respawn_marker = NodePath("RespawnPosition")
 player = NodePath("Player")
 
 [node name="Player" parent="." instance=ExtResource("4_wndkh")]
-z_index = 1
 position = Vector2(40, 200)
 
 [node name="PlayerCamera" type="Camera2D" parent="." node_paths=PackedStringArray("player")]
