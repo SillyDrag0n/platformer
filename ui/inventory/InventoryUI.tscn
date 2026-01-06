@@ -48,6 +48,7 @@ layout_mode = 2
 metadata/_tab_index = 1
 
 [node name="MarginContainer" type="MarginContainer" parent="Panel/MarginContainer/TabContainer/Bounties"]
+layout_mode = 0
 offset_right = 1440.0
 offset_bottom = 840.0
 theme_override_constants/margin_left = 16
@@ -65,6 +66,7 @@ layout_mode = 2
 metadata/_tab_index = 2
 
 [node name="MarginContainer" type="MarginContainer" parent="Panel/MarginContainer/TabContainer/Quests"]
+layout_mode = 0
 offset_right = 1440.0
 offset_bottom = 840.0
 theme_override_constants/margin_left = 16
@@ -81,6 +83,7 @@ layout_mode = 2
 metadata/_tab_index = 3
 
 [node name="MarginContainer" type="MarginContainer" parent="Panel/MarginContainer/TabContainer/Map"]
+layout_mode = 0
 offset_right = 1440.0
 offset_bottom = 840.0
 theme_override_constants/margin_left = 16
