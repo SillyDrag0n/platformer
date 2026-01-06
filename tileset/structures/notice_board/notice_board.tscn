@@ -1,0 +1,23 @@
+[gd_scene load_steps=5 format=3 uid="uid://m3n2p442c8l"]
+
+[ext_resource type="Script" uid="uid://gdouc4nv5v5o" path="res://tileset/structures/notice_board/notice_board.gd" id="1_3yclc"]
+[ext_resource type="Texture2D" uid="uid://cpphoocql76a2" path="res://tileset/structures/notice_board/notice_board.png" id="1_5hye1"]
+[ext_resource type="PackedScene" uid="uid://s2gswtyrtm5x" path="res://interaction_component/interactable.tscn" id="2_3yclc"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_35v5r"]
+size = Vector2(44, 51)
+
+[node name="NoticeBoard" type="Node2D"]
+z_index = -1
+script = ExtResource("1_3yclc")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+position = Vector2(0, -37)
+texture = ExtResource("1_5hye1")
+
+[node name="Interactable" parent="." instance=ExtResource("2_3yclc")]
+interact_name = "Read Notice board"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Interactable"]
+position = Vector2(-1, -42.5)
+shape = SubResource("RectangleShape2D_35v5r")

@@ -1,0 +1,23 @@
+[gd_scene load_steps=5 format=3 uid="uid://b2ry6lpywpuox"]
+
+[ext_resource type="Script" uid="uid://cc1a1e0irjmau" path="res://tileset/structures/church/church.gd" id="1_3qtpi"]
+[ext_resource type="Texture2D" uid="uid://ph5kgq14hkmy" path="res://tileset/structures/church/church.png" id="2_d8a2n"]
+[ext_resource type="PackedScene" uid="uid://s2gswtyrtm5x" path="res://interaction_component/interactable.tscn" id="3_bnqmy"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_ymhjx"]
+size = Vector2(70, 70)
+
+[node name="Church" type="Node2D"]
+z_index = -10
+script = ExtResource("1_3qtpi")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+position = Vector2(0, -112)
+texture = ExtResource("2_d8a2n")
+
+[node name="Interactable" parent="." instance=ExtResource("3_bnqmy")]
+interact_name = "Enter Church"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Interactable"]
+position = Vector2(0, -35)
+shape = SubResource("RectangleShape2D_ymhjx")

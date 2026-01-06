@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://d3yvwlauosvtf"
-path="res://.godot/imported/rosa's saloon.png-9d78045729d59c9b0195d62d9b205509.ctex"
+uid="uid://ph5kgq14hkmy"
+path="res://.godot/imported/church.png-90f25275d09a93b5d16afcf7e4e33857.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://tileset/structures/rosa's saloon.png"
-dest_files=["res://.godot/imported/rosa's saloon.png-9d78045729d59c9b0195d62d9b205509.ctex"]
+source_file="res://tileset/structures/church/church.png"
+dest_files=["res://.godot/imported/church.png-90f25275d09a93b5d16afcf7e4e33857.ctex"]
 
 [params]
 

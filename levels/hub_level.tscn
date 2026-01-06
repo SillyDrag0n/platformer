@@ -1,11 +1,13 @@
-[gd_scene load_steps=15 format=4 uid="uid://0i0lfbqtcd0k"]
+[gd_scene load_steps=17 format=4 uid="uid://0i0lfbqtcd0k"]
 
 [ext_resource type="Texture2D" uid="uid://dlgq45pbrfxiy" path="res://tileset/Desert tileset.png" id="1_6wf1f"]
 [ext_resource type="PackedScene" uid="uid://bfcmjoltsmsed" path="res://player/player.tscn" id="2_oyc5a"]
 [ext_resource type="Script" uid="uid://chd8hkfd628j6" path="res://player/player_camera.gd" id="4_bdvu7"]
 [ext_resource type="PackedScene" uid="uid://dabxfx3538yx0" path="res://ui/screens/game_screen.tscn" id="5_iovl6"]
+[ext_resource type="PackedScene" uid="uid://b2ry6lpywpuox" path="res://tileset/structures/church/church.tscn" id="5_ip335"]
 [ext_resource type="PackedScene" uid="uid://dnko61n7gbtwq" path="res://ui/screens/death_screen.tscn" id="6_a83uw"]
-[ext_resource type="PackedScene" uid="uid://wq5uffyprpgx" path="res://tileset/structures/rosas_saloon.tscn" id="6_bdvu7"]
+[ext_resource type="PackedScene" uid="uid://wq5uffyprpgx" path="res://tileset/structures/saloon/rosas_saloon.tscn" id="6_bdvu7"]
+[ext_resource type="PackedScene" uid="uid://m3n2p442c8l" path="res://tileset/structures/notice_board/notice_board.tscn" id="6_ftq5n"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_6wf1f"]
 resource_name = "Background"
@@ -5023,9 +5025,15 @@ visible = false
 
 [node name="Structures" type="Node" parent="."]
 
+[node name="Church" parent="Structures" instance=ExtResource("5_ip335")]
+position = Vector2(1349, 224)
+
 [node name="Rosas-saloon" parent="Structures" instance=ExtResource("6_bdvu7")]
 z_index = -1
 position = Vector2(413, 224)
+
+[node name="NoticeBoard" parent="Structures" instance=ExtResource("6_ftq5n")]
+position = Vector2(1158, 226)
 
 [node name="TileMap" type="Node" parent="."]
 
@@ -5037,7 +5045,6 @@ rendering_quadrant_size = 32
 
 [node name="TileMapOWP" type="TileMapLayer" parent="TileMap"]
 z_index = -1
-tile_map_data = PackedByteArray("AABHAAkAAQACAAAAAABHAAoAAQACAAEAAABHAAsAAQACAAIAAABHAAwAAQACAAMAAABHAA0AAQACAAQAAABIAAkAAQADAAAAAABIAAoAAQADAAEAAABIAAsAAQADAAIAAABIAAwAAQADAAMAAABIAA0AAQADAAQAAABJAAkAAQAEAAAAAABJAAoAAQAEAAEAAABJAAsAAQAEAAIAAABJAAwAAQAEAAMAAABJAA0AAQAEAAQAAABKAAkAAQAFAAAAAABKAAoAAQAFAAEAAABKAAsAAQAFAAIAAABKAAwAAQAFAAMAAABKAA0AAQAFAAQAAABLAAkAAQAGAAAAAABLAAoAAQAGAAEAAABLAAsAAQAGAAIAAABLAAwAAQAGAAMAAABLAA0AAQAGAAQAAABMAAkAAQAHAAAAAABMAAoAAQAHAAEAAABMAAsAAQAHAAIAAABMAAwAAQAHAAMAAABMAA0AAQAHAAQAAAA=")
 tile_set = SubResource("TileSet_11ood")
 rendering_quadrant_size = 32
 
