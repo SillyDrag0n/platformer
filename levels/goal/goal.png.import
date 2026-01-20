@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://bebiku1lus6q4"
-path="res://.godot/imported/gate-03.png-4c8331323f47ec5cd6cec2c4d1bb5fc6.ctex"
+uid="uid://b6o8o0u6umwxt"
+path="res://.godot/imported/goal.png-c85c1742648011a3992c7de0f5175578.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://levels/door/gate-03.png"
-dest_files=["res://.godot/imported/gate-03.png-4c8331323f47ec5cd6cec2c4d1bb5fc6.ctex"]
+source_file="res://levels/goal/goal.png"
+dest_files=["res://.godot/imported/goal.png-c85c1742648011a3992c7de0f5175578.ctex"]
 
 [params]
 

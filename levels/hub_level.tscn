@@ -5006,17 +5006,18 @@ sources/1 = SubResource("TileSetAtlasSource_0nv80")
 [node name="Player" parent="." instance=ExtResource("2_oyc5a")]
 position = Vector2(66, 196)
 
-[node name="RespawnPosition" type="Marker2D" parent="."]
-position = Vector2(64, 210)
-
 [node name="PlayerCamera" type="Camera2D" parent="." node_paths=PackedStringArray("player")]
 position = Vector2(63, 208)
 zoom = Vector2(2, 2)
 limit_left = -100
+limit_bottom = 300
 editor_draw_limits = true
 script = ExtResource("4_bdvu7")
 player = NodePath("../Player")
 smoothing_distance = 1
+
+[node name="RespawnPosition" type="Marker2D" parent="."]
+position = Vector2(64, 210)
 
 [node name="GameScreen" parent="." instance=ExtResource("5_iovl6")]
 

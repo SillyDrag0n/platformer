@@ -1,0 +1,57 @@
+[gd_scene load_steps=6 format=3 uid="uid://f6m0rh8nsljb"]
+
+[ext_resource type="Script" uid="uid://cwhgclgd3ngqi" path="res://levels/goal/goal.gd" id="1_sq3m3"]
+[ext_resource type="Texture2D" uid="uid://b6o8o0u6umwxt" path="res://levels/goal/goal.png" id="2_iyl8x"]
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_a2dk5"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("2_iyl8x")
+}],
+"loop": false,
+"name": &"close",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("2_iyl8x")
+}],
+"loop": false,
+"name": &"open",
+"speed": 5.0
+}]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_c4rhb"]
+size = Vector2(37, 48)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_03tco"]
+size = Vector2(32, 48)
+
+[node name="Goal" type="StaticBody2D"]
+z_index = 1
+collision_layer = 512
+script = ExtResource("1_sq3m3")
+next_scene = "Hub"
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+position = Vector2(-16, -40)
+sprite_frames = SubResource("SpriteFrames_a2dk5")
+animation = &"close"
+autoplay = "close"
+centered = false
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(0, -24)
+shape = SubResource("RectangleShape2D_c4rhb")
+
+[node name="ExitArea2D" type="Area2D" parent="."]
+collision_layer = 512
+collision_mask = 2
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="ExitArea2D"]
+position = Vector2(0, -24)
+shape = SubResource("RectangleShape2D_03tco")
+debug_color = Color(0.74902, 0.447059, 0.32549, 0.419608)
+
+[connection signal="body_entered" from="ExitArea2D" to="." method="_on_exit_area_2d_body_entered"]

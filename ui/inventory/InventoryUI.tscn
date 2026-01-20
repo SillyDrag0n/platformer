@@ -1,4 +1,6 @@
-[gd_scene load_steps=2 format=3 uid="uid://rx3auanfsgp0"]
+[gd_scene load_steps=3 format=3 uid="uid://rx3auanfsgp0"]
+
+[ext_resource type="PackedScene" uid="uid://cb75n4qc854ox" path="res://ui/inventory/ItemSlot.tscn" id="1_4eae1"]
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_mjk5w"]
 content_margin_left = 240.0
@@ -39,8 +41,19 @@ theme_override_constants/margin_right = 16
 theme_override_constants/margin_bottom = 16
 
 [node name="GridContainer" type="GridContainer" parent="Panel/MarginContainer/TabContainer/Items/MarginContainer"]
+clip_contents = true
+custom_minimum_size = Vector2(128, 128)
+layout_direction = 2
 layout_mode = 2
-columns = 5
+theme_override_constants/h_separation = 5
+theme_override_constants/v_separation = 5
+columns = 10
+
+[node name="ItemSlot" parent="Panel/MarginContainer/TabContainer/Items/MarginContainer/GridContainer" instance=ExtResource("1_4eae1")]
+layout_mode = 2
+
+[node name="ItemSlot2" parent="Panel/MarginContainer/TabContainer/Items/MarginContainer/GridContainer" instance=ExtResource("1_4eae1")]
+layout_mode = 2
 
 [node name="Bounties" type="Control" parent="Panel/MarginContainer/TabContainer"]
 visible = false
