@@ -1,32 +1,32 @@
-[gd_scene load_steps=2 format=3 uid="uid://cb75n4qc854ox"]
+[gd_scene load_steps=4 format=3 uid="uid://cb75n4qc854ox"]
 
 [ext_resource type="Script" uid="uid://caxfaqp5ta3cs" path="res://ui/inventory/item_slot.gd" id="1_4m33f"]
+[ext_resource type="FontFile" uid="uid://kiwlymd55nc2" path="res://ui/font/BoldPixels.ttf" id="3_nvbsh"]
+
+[sub_resource type="LabelSettings" id="LabelSettings_4lalr"]
+font = ExtResource("3_nvbsh")
+font_size = 48
 
 [node name="ItemSlot" type="ColorRect"]
-custom_minimum_size = Vector2(40, 40)
-offset_left = -20.0
-offset_top = -20.0
-offset_right = 20.0
-offset_bottom = 20.0
-color = Color(1, 1, 1, 0)
+custom_minimum_size = Vector2(136, 136)
+offset_left = -68.0
+offset_top = -68.0
+offset_right = 68.0
+offset_bottom = 68.0
+color = Color(1, 1, 1, 0.501961)
 script = ExtResource("1_4m33f")
 
-[node name="Slot" type="ColorRect" parent="."]
-custom_minimum_size = Vector2(40, 40)
-layout_mode = 0
-offset_right = 40.0
-offset_bottom = 40.0
-color = Color(1, 1, 1, 0.501961)
-
 [node name="ItemIcon" type="Sprite2D" parent="."]
-position = Vector2(20, 20)
-scale = Vector2(0.3125, 0.3125)
+position = Vector2(68, 68)
 
 [node name="Button" type="Button" parent="."]
 self_modulate = Color(1, 1, 1, 0)
+custom_minimum_size = Vector2(60, 60)
 layout_mode = 0
-offset_right = 40.0
-offset_bottom = 40.0
+offset_left = 1.0
+offset_top = 1.0
+offset_right = 135.0
+offset_bottom = 135.0
 
 [node name="ItemCountLabel" type="Label" parent="."]
 self_modulate = Color(0, 0, 0, 1)
@@ -36,11 +36,10 @@ anchor_left = 1.0
 anchor_top = 1.0
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_left = -20.0
-offset_top = -16.0
-offset_right = -1.0
+offset_left = -54.0
+offset_top = -48.0
 grow_horizontal = 0
 grow_vertical = 0
-text = "0"
+label_settings = SubResource("LabelSettings_4lalr")
 horizontal_alignment = 2
 vertical_alignment = 2
