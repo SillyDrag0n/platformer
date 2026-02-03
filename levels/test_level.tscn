@@ -1,8 +1,9 @@
-[gd_scene load_steps=24 format=4 uid="uid://gkr4g0dg7pla"]
+[gd_scene load_steps=25 format=4 uid="uid://gkr4g0dg7pla"]
 
 [ext_resource type="Script" uid="uid://uphv34nfh2ba" path="res://levels/test_level.gd" id="1_ur00s"]
 [ext_resource type="PackedScene" uid="uid://bfcmjoltsmsed" path="res://player/player.tscn" id="4_wndkh"]
 [ext_resource type="Script" uid="uid://chd8hkfd628j6" path="res://player/player_camera.gd" id="5_ly3hx"]
+[ext_resource type="PackedScene" uid="uid://rx3auanfsgp0" path="res://ui/inventory/InventoryUI.tscn" id="6_0vv12"]
 [ext_resource type="Texture2D" uid="uid://dlgq45pbrfxiy" path="res://tileset/Desert tileset.png" id="6_4n8tn"]
 [ext_resource type="PackedScene" uid="uid://wq68y6xgou3y" path="res://enemies/skeleton/skeleton.tscn" id="7_ly3hx"]
 [ext_resource type="PackedScene" uid="uid://dabxfx3538yx0" path="res://ui/screens/game_screen.tscn" id="8_ly3hx"]
@@ -5037,6 +5038,8 @@ position = Vector2(64, 210)
 
 [node name="DeathScreen" parent="." instance=ExtResource("9_4n8tn")]
 visible = false
+
+[node name="InventoryUi" parent="." instance=ExtResource("6_0vv12")]
 
 [node name="TileMap" type="Node" parent="."]
 

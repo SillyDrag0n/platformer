@@ -1,4 +1,4 @@
-[gd_scene load_steps=78 format=3 uid="uid://bfcmjoltsmsed"]
+[gd_scene load_steps=77 format=3 uid="uid://bfcmjoltsmsed"]
 
 [ext_resource type="Script" uid="uid://bw7oflms0slfo" path="res://player/player.gd" id="1_wqxfn"]
 [ext_resource type="Texture2D" uid="uid://gnuwn56p7uf0" path="res://player/player_states/sprites/player-idle.png" id="1_xd272"]
@@ -23,7 +23,6 @@
 [ext_resource type="Script" uid="uid://b2p3yajfrginn" path="res://player/player_states/shoot_crouch_state.gd" id="18_mv0ng"]
 [ext_resource type="Script" uid="uid://b1ikki11tupdt" path="res://player/player_states/shoot_run_state.gd" id="19_g7odk"]
 [ext_resource type="PackedScene" uid="uid://b5urwtxvwwkpo" path="res://interaction_component/interacting_component.tscn" id="23_s7qer"]
-[ext_resource type="PackedScene" uid="uid://rx3auanfsgp0" path="res://ui/inventory/InventoryUI.tscn" id="24_g4c7l"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_5kha7"]
 resource_local_to_scene = true
@@ -536,8 +535,6 @@ gun = NodePath("../../Gun")
 
 [node name="InteractingComponent" parent="." instance=ExtResource("23_s7qer")]
 position = Vector2(0, -21)
-
-[node name="InventoryUi" parent="." instance=ExtResource("24_g4c7l")]
 
 [connection signal="timeout" from="Gun/ReloadTimer" to="Gun" method="_on_reload_timer_timeout"]
 [connection signal="area_entered" from="Hurtbox" to="." method="_on_hurtbox_area_entered"]
