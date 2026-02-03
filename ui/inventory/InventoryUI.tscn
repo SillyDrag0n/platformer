@@ -1,6 +1,6 @@
 [gd_scene load_steps=7 format=3 uid="uid://rx3auanfsgp0"]
 
-[ext_resource type="PackedScene" uid="uid://cb75n4qc854ox" path="res://ui/inventory/ItemSlot.tscn" id="1_4eae1"]
+[ext_resource type="Script" uid="uid://badieadd4juu0" path="res://ui/inventory/inventory_ui.gd" id="1_73x1u"]
 [ext_resource type="Texture2D" uid="uid://xgv7mcdhswi4" path="res://icon.svg" id="2_h7hxg"]
 [ext_resource type="FontFile" uid="uid://kiwlymd55nc2" path="res://ui/font/BoldPixels.ttf" id="3_gvwsh"]
 
@@ -18,7 +18,10 @@ font_size = 48
 font = ExtResource("3_gvwsh")
 font_size = 32
 
-[node name="InventoryUi" type="CanvasLayer"]
+[node name="InventoryUi" type="CanvasLayer" node_paths=PackedStringArray("item_grid")]
+visible = false
+script = ExtResource("1_73x1u")
+item_grid = NodePath("Panel/MarginContainer/TabContainer/Items/ItemSlots/ItemsGridContainer")
 
 [node name="Panel" type="Panel" parent="."]
 anchors_preset = 15
@@ -50,132 +53,12 @@ theme_override_constants/margin_top = 16
 theme_override_constants/margin_right = 16
 theme_override_constants/margin_bottom = 16
 
-[node name="GridContainer" type="GridContainer" parent="Panel/MarginContainer/TabContainer/Items/ItemSlots"]
+[node name="ItemsGridContainer" type="GridContainer" parent="Panel/MarginContainer/TabContainer/Items/ItemSlots"]
 layout_direction = 2
 layout_mode = 2
 theme_override_constants/h_separation = 5
 theme_override_constants/v_separation = 5
 columns = 10
-
-[node name="ItemSlot" parent="Panel/MarginContainer/TabContainer/Items/ItemSlots/GridContainer" instance=ExtResource("1_4eae1")]
-layout_mode = 2
-
-[node name="ItemSlot2" parent="Panel/MarginContainer/TabContainer/Items/ItemSlots/GridContainer" instance=ExtResource("1_4eae1")]
-layout_mode = 2
-
-[node name="ItemSlot3" parent="Panel/MarginContainer/TabContainer/Items/ItemSlots/GridContainer" instance=ExtResource("1_4eae1")]
-layout_mode = 2
-
-[node name="ItemSlot4" parent="Panel/MarginContainer/TabContainer/Items/ItemSlots/GridContainer" instance=ExtResource("1_4eae1")]
-layout_mode = 2
-
-[node name="ItemSlot5" parent="Panel/MarginContainer/TabContainer/Items/ItemSlots/GridContainer" instance=ExtResource("1_4eae1")]
-layout_mode = 2
-
-[node name="ItemSlot6" parent="Panel/MarginContainer/TabContainer/Items/ItemSlots/GridContainer" instance=ExtResource("1_4eae1")]
-layout_mode = 2
-
-[node name="ItemSlot7" parent="Panel/MarginContainer/TabContainer/Items/ItemSlots/GridContainer" instance=ExtResource("1_4eae1")]
-layout_mode = 2
-
-[node name="ItemSlot8" parent="Panel/MarginContainer/TabContainer/Items/ItemSlots/GridContainer" instance=ExtResource("1_4eae1")]
-layout_mode = 2
-
-[node name="ItemSlot9" parent="Panel/MarginContainer/TabContainer/Items/ItemSlots/GridContainer" instance=ExtResource("1_4eae1")]
-layout_mode = 2
-
-[node name="ItemSlot10" parent="Panel/MarginContainer/TabContainer/Items/ItemSlots/GridContainer" instance=ExtResource("1_4eae1")]
-layout_mode = 2
-
-[node name="ItemSlot11" parent="Panel/MarginContainer/TabContainer/Items/ItemSlots/GridContainer" instance=ExtResource("1_4eae1")]
-layout_mode = 2
-
-[node name="ItemSlot12" parent="Panel/MarginContainer/TabContainer/Items/ItemSlots/GridContainer" instance=ExtResource("1_4eae1")]
-layout_mode = 2
-
-[node name="ItemSlot13" parent="Panel/MarginContainer/TabContainer/Items/ItemSlots/GridContainer" instance=ExtResource("1_4eae1")]
-layout_mode = 2
-
-[node name="ItemSlot14" parent="Panel/MarginContainer/TabContainer/Items/ItemSlots/GridContainer" instance=ExtResource("1_4eae1")]
-layout_mode = 2
-
-[node name="ItemSlot15" parent="Panel/MarginContainer/TabContainer/Items/ItemSlots/GridContainer" instance=ExtResource("1_4eae1")]
-layout_mode = 2
-
-[node name="ItemSlot16" parent="Panel/MarginContainer/TabContainer/Items/ItemSlots/GridContainer" instance=ExtResource("1_4eae1")]
-layout_mode = 2
-
-[node name="ItemSlot17" parent="Panel/MarginContainer/TabContainer/Items/ItemSlots/GridContainer" instance=ExtResource("1_4eae1")]
-layout_mode = 2
-
-[node name="ItemSlot18" parent="Panel/MarginContainer/TabContainer/Items/ItemSlots/GridContainer" instance=ExtResource("1_4eae1")]
-layout_mode = 2
-
-[node name="ItemSlot19" parent="Panel/MarginContainer/TabContainer/Items/ItemSlots/GridContainer" instance=ExtResource("1_4eae1")]
-layout_mode = 2
-
-[node name="ItemSlot20" parent="Panel/MarginContainer/TabContainer/Items/ItemSlots/GridContainer" instance=ExtResource("1_4eae1")]
-layout_mode = 2
-
-[node name="ItemSlot21" parent="Panel/MarginContainer/TabContainer/Items/ItemSlots/GridContainer" instance=ExtResource("1_4eae1")]
-layout_mode = 2
-
-[node name="ItemSlot22" parent="Panel/MarginContainer/TabContainer/Items/ItemSlots/GridContainer" instance=ExtResource("1_4eae1")]
-layout_mode = 2
-
-[node name="ItemSlot23" parent="Panel/MarginContainer/TabContainer/Items/ItemSlots/GridContainer" instance=ExtResource("1_4eae1")]
-layout_mode = 2
-
-[node name="ItemSlot24" parent="Panel/MarginContainer/TabContainer/Items/ItemSlots/GridContainer" instance=ExtResource("1_4eae1")]
-layout_mode = 2
-
-[node name="ItemSlot25" parent="Panel/MarginContainer/TabContainer/Items/ItemSlots/GridContainer" instance=ExtResource("1_4eae1")]
-layout_mode = 2
-
-[node name="ItemSlot26" parent="Panel/MarginContainer/TabContainer/Items/ItemSlots/GridContainer" instance=ExtResource("1_4eae1")]
-layout_mode = 2
-
-[node name="ItemSlot27" parent="Panel/MarginContainer/TabContainer/Items/ItemSlots/GridContainer" instance=ExtResource("1_4eae1")]
-layout_mode = 2
-
-[node name="ItemSlot28" parent="Panel/MarginContainer/TabContainer/Items/ItemSlots/GridContainer" instance=ExtResource("1_4eae1")]
-layout_mode = 2
-
-[node name="ItemSlot29" parent="Panel/MarginContainer/TabContainer/Items/ItemSlots/GridContainer" instance=ExtResource("1_4eae1")]
-layout_mode = 2
-
-[node name="ItemSlot30" parent="Panel/MarginContainer/TabContainer/Items/ItemSlots/GridContainer" instance=ExtResource("1_4eae1")]
-layout_mode = 2
-
-[node name="ItemSlot31" parent="Panel/MarginContainer/TabContainer/Items/ItemSlots/GridContainer" instance=ExtResource("1_4eae1")]
-layout_mode = 2
-
-[node name="ItemSlot32" parent="Panel/MarginContainer/TabContainer/Items/ItemSlots/GridContainer" instance=ExtResource("1_4eae1")]
-layout_mode = 2
-
-[node name="ItemSlot33" parent="Panel/MarginContainer/TabContainer/Items/ItemSlots/GridContainer" instance=ExtResource("1_4eae1")]
-layout_mode = 2
-
-[node name="ItemSlot34" parent="Panel/MarginContainer/TabContainer/Items/ItemSlots/GridContainer" instance=ExtResource("1_4eae1")]
-layout_mode = 2
-
-[node name="ItemSlot35" parent="Panel/MarginContainer/TabContainer/Items/ItemSlots/GridContainer" instance=ExtResource("1_4eae1")]
-layout_mode = 2
-
-[node name="ItemSlot36" parent="Panel/MarginContainer/TabContainer/Items/ItemSlots/GridContainer" instance=ExtResource("1_4eae1")]
-layout_mode = 2
-
-[node name="ItemSlot37" parent="Panel/MarginContainer/TabContainer/Items/ItemSlots/GridContainer" instance=ExtResource("1_4eae1")]
-layout_mode = 2
-
-[node name="ItemSlot38" parent="Panel/MarginContainer/TabContainer/Items/ItemSlots/GridContainer" instance=ExtResource("1_4eae1")]
-layout_mode = 2
-
-[node name="ItemSlot39" parent="Panel/MarginContainer/TabContainer/Items/ItemSlots/GridContainer" instance=ExtResource("1_4eae1")]
-layout_mode = 2
-
-[node name="ItemSlot40" parent="Panel/MarginContainer/TabContainer/Items/ItemSlots/GridContainer" instance=ExtResource("1_4eae1")]
-layout_mode = 2
 
 [node name="Item Information" type="MarginContainer" parent="Panel/MarginContainer/TabContainer/Items"]
 layout_mode = 0
@@ -190,11 +73,11 @@ theme_override_constants/margin_bottom = 16
 [node name="HBoxContainer" type="HBoxContainer" parent="Panel/MarginContainer/TabContainer/Items/Item Information"]
 layout_mode = 2
 
-[node name="PanelContainer2" type="PanelContainer" parent="Panel/MarginContainer/TabContainer/Items/Item Information/HBoxContainer"]
+[node name="ItemInformationIcon" type="PanelContainer" parent="Panel/MarginContainer/TabContainer/Items/Item Information/HBoxContainer"]
 custom_minimum_size = Vector2(218, 0)
 layout_mode = 2
 
-[node name="Sprite2D" type="Sprite2D" parent="Panel/MarginContainer/TabContainer/Items/Item Information/HBoxContainer/PanelContainer2"]
+[node name="Sprite2D" type="Sprite2D" parent="Panel/MarginContainer/TabContainer/Items/Item Information/HBoxContainer/ItemInformationIcon"]
 position = Vector2(108.5, 108.5)
 scale = Vector2(1.5, 1.5)
 texture = ExtResource("2_h7hxg")

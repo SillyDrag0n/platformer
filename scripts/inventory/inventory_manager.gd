@@ -1,28 +1,30 @@
-class_name Inventory
 extends Node
-
-class ItemSlot:
-    var item: ItemData
-    var quantity: int
 
 signal UpdatedInventory
 signal UpdatedSlot (slot: ItemSlot)
 
-var item_slots: Array[ItemSlot]
+var item_slots: Array[ItemSlot] = []
 
-@export var size : int = 9
-@export var start_items: Dictionary[ItemData, int]
+var size: int = 20
+var start_items: Dictionary[ItemData, int]
+var item_slot_scene: PackedScene = preload("res://ui/inventory/ItemSlot.tscn")
 
 func _ready():
-    # create slots
+    print_debug("creating slots")
+
+    item_slots.clear()
+
     for i in range(size):
-        item_slots.append(ItemSlot.new())
+        var slot := item_slot_scene.instantiate() as ItemSlot
+        item_slots.append(slot)
 
     # add start items
     for key in start_items:
         for i in range(start_items[key]):
             add_item(key)
 
+    print_debug("slots created")
+    
 func add_item(item: ItemData) -> bool:
     var slot : ItemSlot = get_item_slot(item)
 
