@@ -1,0 +1,39 @@
+[gd_scene load_steps=3 format=3 uid="uid://rl5na08yw0jq"]
+
+[ext_resource type="FontFile" uid="uid://kiwlymd55nc2" path="res://ui/font/BoldPixels.ttf" id="1_kfug1"]
+
+[sub_resource type="LabelSettings" id="LabelSettings_r211r"]
+font = ExtResource("1_kfug1")
+
+[node name="NoticeBoardBounty" type="ColorRect"]
+custom_minimum_size = Vector2(350, 416)
+
+[node name="Button" type="Button" parent="."]
+self_modulate = Color(1, 1, 1, 0)
+layout_mode = 0
+offset_left = 2.0
+offset_top = 2.0
+offset_right = 348.0
+offset_bottom = 414.0
+
+[node name="PaperBG" type="TextureRect" parent="."]
+layout_mode = 0
+offset_right = 350.0
+offset_bottom = 416.0
+stretch_mode = 2
+
+[node name="Symbol" type="TextureRect" parent="."]
+custom_minimum_size = Vector2(96, 96)
+layout_mode = 0
+offset_left = 240.0
+offset_top = 308.0
+offset_right = 336.0
+offset_bottom = 404.0
+
+[node name="RumorText" type="Label" parent="."]
+custom_minimum_size = Vector2(350, 100)
+layout_mode = 0
+offset_top = 318.0
+offset_right = 350.0
+offset_bottom = 418.0
+label_settings = SubResource("LabelSettings_r211r")

@@ -19,7 +19,6 @@ font = ExtResource("3_gvwsh")
 font_size = 32
 
 [node name="InventoryUi" type="CanvasLayer" node_paths=PackedStringArray("item_grid")]
-visible = false
 script = ExtResource("1_73x1u")
 item_grid = NodePath("Panel/MarginContainer/TabContainer/Items/ItemSlots/ItemsGridContainer")
 

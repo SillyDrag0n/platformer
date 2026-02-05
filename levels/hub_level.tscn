@@ -5032,7 +5032,7 @@ visible = false
 [node name="Church" parent="Structures" instance=ExtResource("5_ip335")]
 position = Vector2(1349, 224)
 
-[node name="Rosas-saloon" parent="Structures" instance=ExtResource("6_bdvu7")]
+[node name="RosasSaloon" parent="Structures" instance=ExtResource("6_bdvu7")]
 z_index = -1
 position = Vector2(413, 224)
 

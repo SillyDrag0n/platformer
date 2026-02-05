@@ -1,0 +1,25 @@
+[gd_scene load_steps=2 format=3 uid="uid://c5nb8wn5164lu"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_lqfsh"]
+content_margin_left = 240.0
+content_margin_top = 108.0
+content_margin_right = 240.0
+content_margin_bottom = 108.0
+
+[node name="NoticeBoardUi" type="CanvasLayer"]
+
+[node name="Panel" type="Panel" parent="."]
+offset_right = 1920.0
+offset_bottom = 1080.0
+
+[node name="MarginContainer" type="PanelContainer" parent="Panel"]
+layout_mode = 0
+offset_right = 1920.0
+offset_bottom = 1080.0
+theme_override_styles/panel = SubResource("StyleBoxEmpty_lqfsh")
+
+[node name="GridContainer" type="GridContainer" parent="Panel/MarginContainer"]
+layout_mode = 2
+theme_override_constants/h_separation = 25
+theme_override_constants/v_separation = 32
+columns = 4
