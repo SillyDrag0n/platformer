@@ -18,16 +18,16 @@ config/icon="res://icon.svg"
 
 [autoload]
 
-GameManager="*res://scripts/game_manager.gd"
-HealthManager="*res://scripts/health_manager.gd"
-CollectibleManager="*res://scripts/collectible_manager.gd"
-SettingsManager="*res://scripts/settings_manager.gd"
-SceneManager="*res://scripts/scene_manager.gd"
-RespawnManager="*res://scripts/respawn_manager.gd"
-PlayerManager="*res://scripts/player_manager.gd"
+GameManager="*res://scripts/managers/game_manager.gd"
+HealthManager="*res://scripts/managers/health_manager.gd"
+CollectibleManager="*res://scripts/managers/collectible_manager.gd"
+SettingsManager="*res://scripts/managers/settings_manager.gd"
+SceneManager="*res://scripts/managers/scene_manager.gd"
+RespawnManager="*res://scripts/managers/respawn_manager.gd"
+PlayerManager="*res://scripts/managers/player_manager.gd"
 InventoryManager="*res://scripts/inventory/inventory_manager.gd"
-BountyManager="*res://scripts/bounty_manager.gd"
-UiManager="*res://scripts/ui_manager.gd"
+BountyManager="*res://scripts/managers/bounty_manager.gd"
+UiManager="*res://scripts/managers/ui_manager.gd"
 
 [display]
 
