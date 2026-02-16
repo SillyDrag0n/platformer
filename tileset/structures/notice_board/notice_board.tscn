@@ -16,7 +16,7 @@ position = Vector2(0, -37)
 texture = ExtResource("1_5hye1")
 
 [node name="Interactable" parent="." instance=ExtResource("2_3yclc")]
-interact_name = "Read Notice board"
+interact_name = "Inspect Notice board"
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Interactable"]
 position = Vector2(-1, -42.5)

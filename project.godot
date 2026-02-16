@@ -26,6 +26,8 @@ SceneManager="*res://scripts/scene_manager.gd"
 RespawnManager="*res://scripts/respawn_manager.gd"
 PlayerManager="*res://scripts/player_manager.gd"
 InventoryManager="*res://scripts/inventory/inventory_manager.gd"
+BountyManager="*res://scripts/bounty_manager.gd"
+UiManager="*res://scripts/ui_manager.gd"
 
 [display]
 
