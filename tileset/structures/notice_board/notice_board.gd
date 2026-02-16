@@ -12,3 +12,4 @@ func _ready() -> void:
 func _on_interact():
 	print("Inspect Notice board")
 	interactable.is_interactable = false
+	UiManager.open_notice_board()
