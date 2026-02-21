@@ -1,6 +1,74 @@
-[gd_scene load_steps=2 format=3 uid="uid://d2xxyulicyvdx"]
+[gd_scene load_steps=11 format=3 uid="uid://d2xxyulicyvdx"]
 
 [ext_resource type="Script" uid="uid://dv8108cua2h0a" path="res://scripts/managers/bounty_manager.gd" id="1_4wjav"]
+[ext_resource type="Script" uid="uid://1a50eu8xiuur" path="res://scripts/bounties/bounty_data.gd" id="2_reqrb"]
+[ext_resource type="PackedScene" uid="uid://wq68y6xgou3y" path="res://enemies/skeleton/skeleton.tscn" id="3_5jx1c"]
+[ext_resource type="PackedScene" uid="uid://gkr4g0dg7pla" path="res://levels/test_level.tscn" id="4_jek3a"]
+[ext_resource type="Texture2D" uid="uid://neaixfhqi8aj" path="res://enemies/chindi.png" id="5_epaoo"]
+
+[sub_resource type="Resource" id="Resource_bbyys"]
+script = ExtResource("2_reqrb")
+id = "1"
+title = "Test Boss"
+description = "This boss is a test object."
+level_scene = ExtResource("4_jek3a")
+boss_scene = ExtResource("3_5jx1c")
+reward = 0
+picture = ExtResource("5_epaoo")
+rumor_text = "This is an example rumor text."
+difficulty = 1
+unlocks = Array[String]([])
+requires = Array[String]([])
+metadata/_custom_type_script = "uid://1a50eu8xiuur"
+
+[sub_resource type="Resource" id="Resource_reqrb"]
+script = ExtResource("2_reqrb")
+id = "2"
+title = "sex"
+description = ""
+reward = 0
+rumor_text = ""
+difficulty = 1
+unlocks = Array[String]([])
+requires = Array[String]([])
+metadata/_custom_type_script = "uid://1a50eu8xiuur"
+
+[sub_resource type="Resource" id="Resource_5jx1c"]
+script = ExtResource("2_reqrb")
+id = "3"
+title = "sex 2"
+description = ""
+reward = 0
+rumor_text = ""
+difficulty = 1
+unlocks = Array[String]([])
+requires = Array[String]([])
+metadata/_custom_type_script = "uid://1a50eu8xiuur"
+
+[sub_resource type="Resource" id="Resource_jek3a"]
+script = ExtResource("2_reqrb")
+id = "3"
+title = "sex 3d"
+description = ""
+reward = 0
+rumor_text = ""
+difficulty = 1
+unlocks = Array[String]([])
+requires = Array[String]([])
+metadata/_custom_type_script = "uid://1a50eu8xiuur"
+
+[sub_resource type="Resource" id="Resource_epaoo"]
+script = ExtResource("2_reqrb")
+id = "4"
+title = "sex remastered"
+description = ""
+reward = 0
+rumor_text = ""
+difficulty = 1
+unlocks = Array[String]([])
+requires = Array[String]([])
+metadata/_custom_type_script = "uid://1a50eu8xiuur"
 
 [node name="BountyManager" type="Node"]
 script = ExtResource("1_4wjav")
+all_bounties = Array[ExtResource("2_reqrb")]([SubResource("Resource_bbyys"), SubResource("Resource_reqrb"), SubResource("Resource_5jx1c"), SubResource("Resource_jek3a"), SubResource("Resource_epaoo")])

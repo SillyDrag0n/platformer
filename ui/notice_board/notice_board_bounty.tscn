@@ -1,21 +1,22 @@
-[gd_scene load_steps=4 format=3 uid="uid://rl5na08yw0jq"]
+[gd_scene load_steps=6 format=3 uid="uid://rl5na08yw0jq"]
 
+[ext_resource type="Script" uid="uid://b6y7vwjqumun3" path="res://ui/notice_board/notice_board_bounty.gd" id="1_dtji8"]
 [ext_resource type="FontFile" uid="uid://kiwlymd55nc2" path="res://ui/font/BoldPixels.ttf" id="1_kfug1"]
 [ext_resource type="Texture2D" uid="uid://e7e8sic6acpu" path="res://ui/notice_board/bounty_template.png" id="1_r211r"]
 
+[sub_resource type="LabelSettings" id="LabelSettings_dtji8"]
+font = ExtResource("1_kfug1")
+font_size = 32
+font_color = Color(0, 0, 0, 1)
+
 [sub_resource type="LabelSettings" id="LabelSettings_r211r"]
 font = ExtResource("1_kfug1")
+font_size = 24
+font_color = Color(0, 0, 0, 1)
 
 [node name="NoticeBoardBounty" type="ColorRect"]
 custom_minimum_size = Vector2(350, 416)
-
-[node name="Button" type="Button" parent="."]
-self_modulate = Color(1, 1, 1, 0)
-layout_mode = 0
-offset_left = 2.0
-offset_top = 2.0
-offset_right = 348.0
-offset_bottom = 414.0
+script = ExtResource("1_dtji8")
 
 [node name="PaperBG" type="TextureRect" parent="."]
 layout_mode = 0
@@ -24,24 +25,50 @@ offset_bottom = 416.0
 texture = ExtResource("1_r211r")
 stretch_mode = 2
 
-[node name="ImageClue" type="TextureRect" parent="."]
+[node name="Picture" type="TextureRect" parent="."]
 layout_mode = 0
-offset_left = 22.0
-offset_top = 84.0
-offset_right = 329.0
+offset_left = 42.0
+offset_top = 119.0
+offset_right = 308.0
 offset_bottom = 311.0
 
-[node name="BountyCollected" type="TextureRect" parent="."]
-visible = false
-custom_minimum_size = Vector2(96, 96)
+[node name="Title" type="Label" parent="."]
 layout_mode = 0
-offset_right = 350.0
-offset_bottom = 416.0
+offset_top = 317.0
+offset_right = 349.0
+offset_bottom = 351.0
+text = "The lingering shadow"
+label_settings = SubResource("LabelSettings_dtji8")
+horizontal_alignment = 1
+autowrap_mode = 1
+clip_text = true
+
+[node name="ColorRect" type="ColorRect" parent="."]
+layout_mode = 0
+offset_left = 17.0
+offset_top = 352.0
+offset_right = 334.0
+offset_bottom = 354.0
+color = Color(0, 0, 0, 1)
 
 [node name="RumorText" type="Label" parent="."]
-custom_minimum_size = Vector2(350, 100)
 layout_mode = 0
-offset_top = 316.0
+offset_top = 356.0
 offset_right = 350.0
 offset_bottom = 416.0
+text = "Rumored to be last seen at the sunken valley"
 label_settings = SubResource("LabelSettings_r211r")
+horizontal_alignment = 1
+vertical_alignment = 1
+autowrap_mode = 1
+clip_text = true
+
+[node name="AcceptButton" type="Button" parent="."]
+self_modulate = Color(1, 1, 1, 0)
+layout_mode = 0
+offset_left = 2.0
+offset_top = 2.0
+offset_right = 348.0
+offset_bottom = 414.0
+
+[connection signal="pressed" from="AcceptButton" to="." method="_on_accept_button_pressed"]

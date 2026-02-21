@@ -1,4 +1,7 @@
-[gd_scene load_steps=2 format=3 uid="uid://c5nb8wn5164lu"]
+[gd_scene load_steps=4 format=3 uid="uid://c5nb8wn5164lu"]
+
+[ext_resource type="Script" uid="uid://b11oeoo41cerm" path="res://ui/notice_board/notice_board_ui.gd" id="1_6dw7g"]
+[ext_resource type="PackedScene" uid="uid://rl5na08yw0jq" path="res://ui/notice_board/notice_board_bounty.tscn" id="2_6hdrf"]
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_lqfsh"]
 content_margin_left = 240.0
@@ -6,7 +9,10 @@ content_margin_top = 108.0
 content_margin_right = 240.0
 content_margin_bottom = 108.0
 
-[node name="NoticeBoardUi" type="CanvasLayer"]
+[node name="NoticeBoardUi" type="CanvasLayer" node_paths=PackedStringArray("bounty_container")]
+script = ExtResource("1_6dw7g")
+bounty_entry_scene = ExtResource("2_6hdrf")
+bounty_container = NodePath("Panel/MarginContainer/BountyContainer")
 
 [node name="Panel" type="Panel" parent="."]
 offset_right = 1920.0
@@ -18,7 +24,7 @@ offset_right = 1920.0
 offset_bottom = 1080.0
 theme_override_styles/panel = SubResource("StyleBoxEmpty_lqfsh")
 
-[node name="GridContainer" type="GridContainer" parent="Panel/MarginContainer"]
+[node name="BountyContainer" type="GridContainer" parent="Panel/MarginContainer"]
 layout_mode = 2
 theme_override_constants/h_separation = 25
 theme_override_constants/v_separation = 32

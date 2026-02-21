@@ -1,103 +1,87 @@
 extends Node
 
-# All BountyData resources assigned in inspector
-@export var all_bounties: Array[BountyData]
+@export var all_bounties: Array[BountyData] = []
 
-# Runtime lookup
-var bounty_lookup: Dictionary = {}
+var bounty_dict: Dictionary = {}
+var active_bounty: BountyData = null
 
-# Progress data (this is what gets saved)
-var bounty_progress: Dictionary = {}
-
-# Currently selected bounty
-var current_bounty_id: String = ""
-
-signal bounty_unlocked(id: String)
-signal bounty_completed(id: String)
-signal bounty_selected(id: String)
 
 func _ready():
-    _build_lookup()
-    _initialize_progress()
+    _initialize_bounties()
 
-func _build_lookup():
-    bounty_lookup.clear()
+
+func _initialize_bounties():
+    bounty_dict.clear()
+
     for bounty in all_bounties:
-        bounty_lookup[bounty.id] = bounty
+        bounty_dict[bounty.id] = bounty
 
-func _initialize_progress():
     for bounty in all_bounties:
-        if not bounty_progress.has(bounty.id):
-            bounty_progress[bounty.id] = {
-                "completed": false,
-                "unlocked": bounty.requires.is_empty() # root nodes auto unlock
-            }
+        if bounty.requires.is_empty():
+            bounty.unlocked = true
 
-func select_bounty(id: String) -> bool:
-    if not is_unlocked(id):
-        return false
-    
-    current_bounty_id = id
-    bounty_selected.emit(id)
-    return true
 
-func complete_current_bounty():
-    if current_bounty_id == "":
-        return
-    
-    complete_bounty(current_bounty_id)
-    current_bounty_id = ""
+func get_available_bounties() -> Array[BountyData]:
+    var result: Array[BountyData] = []
 
-func complete_bounty(id: String):
-    if not bounty_lookup.has(id):
-        return
-    
-    bounty_progress[id]["completed"] = true
-    bounty_completed.emit(id)
-
-    _check_unlocks(id)
-
-func _check_unlocks(completed_id: String):
-    var completed_bounty: BountyData = bounty_lookup[completed_id]
-
-    for unlocked_id in completed_bounty.unlocks:
-        if _requirements_met(unlocked_id):
-            if not is_unlocked(unlocked_id):
-                bounty_progress[unlocked_id]["unlocked"] = true
-                bounty_unlocked.emit(unlocked_id)
-
-func _requirements_met(id: String) -> bool:
-    var bounty: BountyData = bounty_lookup[id]
-    
-    for req in bounty.requires:
-        if not bounty_progress[req]["completed"]:
-            return false
-    return true
-
-func is_completed(id: String) -> bool:
-    return bounty_progress.has(id) and bounty_progress[id]["completed"]
-
-func is_unlocked(id: String) -> bool:
-    return bounty_progress.has(id) and bounty_progress[id]["unlocked"]
-
-func get_unlocked_bounties() -> Array:
-    var result: Array = []
-    
-    for id in bounty_progress.keys():
-        if bounty_progress[id]["unlocked"]:
-            result.append(bounty_lookup[id])
-    
+    for bounty in bounty_dict.values():
+        if bounty.is_available():
+            result.append(bounty)
     return result
 
-func get_bounty_data(id: String) -> BountyData:
-    return bounty_lookup.get(id)
 
-func load_current_level():
-    if current_bounty_id == "":
+func get_active_bounty() -> BountyData:
+    return active_bounty
+
+
+func should_spawn_boss(current_scene: PackedScene) -> bool:
+    if active_bounty == null:
+        return false
+    return active_bounty.level_scene == current_scene
+
+
+func get_active_boss_scene() -> PackedScene:
+    if active_bounty == null:
+        return null
+    return active_bounty.boss_scene
+
+
+func accept_bounty(id: String) -> void:
+    if not bounty_dict.has(id):
+        push_warning("Bounty not found: " + id)
         return
-    
-    var bounty: BountyData = bounty_lookup[current_bounty_id]
-    get_tree().change_scene_to_packed(bounty.level_scene)
 
-func load_progress(data: Dictionary):
-    bounty_progress = data["bounty_progress"]
+    var bounty = bounty_dict[id]
+    if bounty.completed:
+        return
+        
+    active_bounty = bounty
+
+
+func complete_active_bounty():
+    if active_bounty == null:
+        return
+
+    active_bounty.completed = true
+    _process_unlocks(active_bounty)
+    active_bounty = null
+
+
+func _process_unlocks(bounty: BountyData):
+    for unlock_id in bounty.unlocks:
+        if bounty_dict.has(unlock_id):
+            bounty_dict[unlock_id].unlocked = true
+
+    for other in bounty_dict.values():
+        if not other.unlocked and _requirements_met(other):
+            other.unlocked = true
+
+
+func _requirements_met(bounty: BountyData) -> bool:
+    for req_id in bounty.requires:
+        if not bounty_dict.has(req_id):
+            return false
+
+        if not bounty_dict[req_id].completed:
+            return false
+    return true
