@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://b3t5m55bo74t1"
-path="res://.godot/imported/chindi_attack.png-b00bab6f62f1382ffd5e6df5e3562dcb.ctex"
+uid="uid://neaixfhqi8aj"
+path="res://.godot/imported/sand_spirit.png-dcaa936400e76119d182d2cc0f9813b8.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://enemies/chindi_attack.png"
-dest_files=["res://.godot/imported/chindi_attack.png-b00bab6f62f1382ffd5e6df5e3562dcb.ctex"]
+source_file="res://enemies/bosses/sand_spirit/sand_spirit.png"
+dest_files=["res://.godot/imported/sand_spirit.png-dcaa936400e76119d182d2cc0f9813b8.ctex"]
 
 [params]
 

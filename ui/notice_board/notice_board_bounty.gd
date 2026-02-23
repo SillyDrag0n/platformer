@@ -15,4 +15,4 @@ func setup(data):
 func _on_accept_button_pressed():
 	print(title_label)
 	BountyManager.accept_bounty(bounty_data.id)
-	get_parent().get_parent().populate_bounties()
+	get_parent().get_parent().get_parent().get_parent().populate_bounties()

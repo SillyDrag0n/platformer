@@ -17,6 +17,7 @@ bounty_container = NodePath("Panel/MarginContainer/BountyContainer")
 [node name="Panel" type="Panel" parent="."]
 offset_right = 1920.0
 offset_bottom = 1080.0
+mouse_filter = 1
 
 [node name="MarginContainer" type="PanelContainer" parent="Panel"]
 layout_mode = 0

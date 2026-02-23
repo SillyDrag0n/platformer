@@ -4,7 +4,7 @@
 [ext_resource type="Script" uid="uid://1a50eu8xiuur" path="res://scripts/bounties/bounty_data.gd" id="2_reqrb"]
 [ext_resource type="PackedScene" uid="uid://wq68y6xgou3y" path="res://enemies/skeleton/skeleton.tscn" id="3_5jx1c"]
 [ext_resource type="PackedScene" uid="uid://gkr4g0dg7pla" path="res://levels/test_level.tscn" id="4_jek3a"]
-[ext_resource type="Texture2D" uid="uid://neaixfhqi8aj" path="res://enemies/chindi.png" id="5_epaoo"]
+[ext_resource type="Texture2D" uid="uid://neaixfhqi8aj" path="res://enemies/bosses/sand_spirit/sand_spirit.png" id="5_epaoo"]
 
 [sub_resource type="Resource" id="Resource_bbyys"]
 script = ExtResource("2_reqrb")
