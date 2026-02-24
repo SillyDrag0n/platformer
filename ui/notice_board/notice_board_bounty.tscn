@@ -17,7 +17,6 @@ font_color = Color(0, 0, 0, 1)
 [node name="NoticeBoardBounty" type="ColorRect"]
 custom_minimum_size = Vector2(350, 416)
 mouse_filter = 1
-mouse_default_cursor_shape = 2
 script = ExtResource("1_dtji8")
 
 [node name="PaperBG" type="TextureRect" parent="."]
@@ -51,6 +50,7 @@ offset_left = 17.0
 offset_top = 352.0
 offset_right = 334.0
 offset_bottom = 354.0
+mouse_filter = 2
 color = Color(0, 0, 0, 1)
 
 [node name="RumorText" type="Label" parent="."]
@@ -67,10 +67,12 @@ clip_text = true
 
 [node name="AcceptButton" type="Button" parent="."]
 self_modulate = Color(1, 1, 1, 0)
+custom_minimum_size = Vector2(325, 400)
 layout_mode = 0
-offset_left = 2.0
-offset_top = 2.0
-offset_right = 348.0
-offset_bottom = 414.0
+offset_left = 13.0
+offset_top = 8.0
+offset_right = 338.0
+offset_bottom = 408.0
+mouse_default_cursor_shape = 3
 
 [connection signal="pressed" from="AcceptButton" to="." method="_on_accept_button_pressed"]

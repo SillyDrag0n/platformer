@@ -1,0 +1,16 @@
+[gd_scene load_steps=4 format=3 uid="uid://cm47v18c8f03"]
+
+[ext_resource type="Script" uid="uid://cmasdw6hkyn8" path="res://enemies/bosses/sand_spirit/sand_spirit.gd" id="1_uepdw"]
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_uepdw"]
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_uepdw"]
+
+[node name="SandSpirit" type="CharacterBody2D"]
+script = ExtResource("1_uepdw")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+sprite_frames = SubResource("SpriteFrames_uepdw")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("CapsuleShape2D_uepdw")

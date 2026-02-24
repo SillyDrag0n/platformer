@@ -10,6 +10,7 @@ content_margin_right = 240.0
 content_margin_bottom = 108.0
 
 [node name="NoticeBoardUi" type="CanvasLayer" node_paths=PackedStringArray("bounty_container")]
+process_mode = 3
 script = ExtResource("1_6dw7g")
 bounty_entry_scene = ExtResource("2_6hdrf")
 bounty_container = NodePath("Panel/MarginContainer/BountyContainer")
@@ -23,6 +24,7 @@ mouse_filter = 1
 layout_mode = 0
 offset_right = 1920.0
 offset_bottom = 1080.0
+mouse_filter = 1
 theme_override_styles/panel = SubResource("StyleBoxEmpty_lqfsh")
 
 [node name="BountyContainer" type="GridContainer" parent="Panel/MarginContainer"]

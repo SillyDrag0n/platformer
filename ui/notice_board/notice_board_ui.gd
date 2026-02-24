@@ -16,8 +16,7 @@ func populate_bounties():
 		var entry = bounty_entry_scene.instantiate()
 		bounty_container.add_child(entry)
 		entry.setup(bounty_data)
-		# entry.bounty_selected.connect(_on_bounty_selected)
+		entry.bounty_selected.connect(_on_bounty_selected)
 
-# func _on_bounty_selected(id: String):
-#     BountyManager.accept_bounty(id)
-#     UiManager.close_notice_board()
+func _on_bounty_selected(id: String):
+	BountyManager.accept_bounty(id)

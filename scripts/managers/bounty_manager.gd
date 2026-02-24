@@ -1,6 +1,7 @@
 extends Node
 
 @export var all_bounties: Array[BountyData] = []
+@export var level_id : String
 
 var bounty_dict: Dictionary = {}
 var active_bounty: BountyData = null
@@ -34,10 +35,10 @@ func get_active_bounty() -> BountyData:
     return active_bounty
 
 
-func should_spawn_boss(current_scene: PackedScene) -> bool:
+func should_spawn_boss() -> bool:
     if active_bounty == null:
         return false
-    return active_bounty.level_scene == current_scene
+    return active_bounty.level_id == get_tree().current_scene.level_id
 
 
 func get_active_boss_scene() -> PackedScene:
@@ -56,6 +57,7 @@ func accept_bounty(id: String) -> void:
         return
         
     active_bounty = bounty
+    print_debug(active_bounty)
 
 
 func complete_active_bounty():
