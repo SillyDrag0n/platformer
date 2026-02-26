@@ -1,0 +1,57 @@
+[gd_scene load_steps=3 format=3 uid="uid://byecf7yuaqxk1"]
+
+[ext_resource type="Script" uid="uid://dsjw4m474euxi" path="res://ui/notice_board/region_map.gd" id="1_gpn3y"]
+
+[sub_resource type="LabelSettings" id="LabelSettings_gpn3y"]
+font_size = 32
+
+[node name="RegionMap" type="Control"]
+custom_minimum_size = Vector2(1920, 1080)
+layout_mode = 3
+anchors_preset = 0
+script = ExtResource("1_gpn3y")
+
+[node name="Background" type="TextureRect" parent="."]
+custom_minimum_size = Vector2(1920, 1080)
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="BountyContainer" type="Node2D" parent="."]
+
+[node name="ConfirmButton" type="Button" parent="."]
+layout_mode = 0
+offset_left = 1705.0
+offset_top = 960.0
+offset_right = 1906.0
+offset_bottom = 1066.0
+
+[node name="Label" type="Label" parent="ConfirmButton"]
+layout_mode = 0
+offset_left = 1.0
+offset_top = 1.0
+offset_right = 199.0
+offset_bottom = 105.0
+text = "Confirm"
+label_settings = SubResource("LabelSettings_gpn3y")
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="ReturnButton" type="Button" parent="."]
+layout_mode = 0
+offset_left = 17.0
+offset_top = 957.0
+offset_right = 218.0
+offset_bottom = 1063.0
+
+[node name="Label" type="Label" parent="ReturnButton"]
+layout_mode = 0
+offset_left = 1.0
+offset_top = 1.0
+offset_right = 199.0
+offset_bottom = 104.0
+text = "Return
+"
+label_settings = SubResource("LabelSettings_gpn3y")
+horizontal_alignment = 1
+vertical_alignment = 1

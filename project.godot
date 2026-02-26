@@ -18,7 +18,6 @@ config/icon="res://icon.svg"
 
 [autoload]
 
-BountyManager="*res://scripts/managers/BountyManager.tscn"
 CollectibleManager="*res://scripts/managers/CollectibleManager.tscn"
 GameManager="*res://scripts/managers/GameManager.tscn"
 GameInputEvents="*res://scripts/managers/GameInputEvents.tscn"
@@ -29,6 +28,7 @@ SceneManager="*res://scripts/managers/SceneManager.tscn"
 SettingsManager="*res://scripts/managers/SettingsManager.tscn"
 UiManager="*res://scripts/managers/UiManager.tscn"
 InventoryManager="*res://scripts/managers/InventoryManager.tscn"
+GameStateManager="*res://scripts/managers/GameStateManager.tscn"
 
 [display]
 

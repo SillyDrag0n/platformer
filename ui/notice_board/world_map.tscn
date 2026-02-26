@@ -1,0 +1,56 @@
+[gd_scene load_steps=3 format=3 uid="uid://5ebj4vx5tdb8"]
+
+[ext_resource type="Script" uid="uid://bvxthyjjy6p5t" path="res://ui/notice_board/world_map.gd" id="1_t7sg5"]
+[ext_resource type="PackedScene" uid="uid://c0pu0vm3jdcja" path="res://ui/notice_board/RegionButton.tscn" id="2_0sdb1"]
+
+[node name="WorldMap" type="Control"]
+layout_mode = 3
+anchors_preset = 0
+script = ExtResource("1_t7sg5")
+
+[node name="Background" type="TextureRect" parent="."]
+custom_minimum_size = Vector2(1920, 1080)
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="RegionContainer" type="Control" parent="."]
+anchors_preset = 0
+offset_right = 1920.0
+offset_bottom = 1080.0
+
+[node name="Region1Button" parent="RegionContainer" instance=ExtResource("2_0sdb1")]
+layout_mode = 0
+offset_left = 49.0
+offset_top = 771.0
+offset_right = 566.0
+offset_bottom = 988.0
+text = "1"
+region_id = "1"
+
+[node name="Region2Button" parent="RegionContainer" instance=ExtResource("2_0sdb1")]
+layout_mode = 0
+offset_left = 1230.0
+offset_top = 487.0
+offset_right = 1754.0
+offset_bottom = 996.0
+text = "2"
+region_id = "2"
+
+[node name="Region3Button" parent="RegionContainer" instance=ExtResource("2_0sdb1")]
+layout_mode = 0
+offset_left = 524.0
+offset_top = 129.0
+offset_right = 862.0
+offset_bottom = 315.0
+text = "3"
+region_id = "3"
+
+[node name="ReturnButton" type="TextureButton" parent="."]
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
+[connection signal="region_selected" from="RegionContainer/Region1Button" to="." method="_on_region_selected"]
+[connection signal="region_selected" from="RegionContainer/Region2Button" to="." method="_on_region_selected"]
+[connection signal="region_selected" from="RegionContainer/Region3Button" to="." method="_on_region_selected"]

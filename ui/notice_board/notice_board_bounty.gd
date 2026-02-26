@@ -1,19 +1,19 @@
-extends ColorRect
+extends Control
 
-var bounty_data
+signal bounty_selected(bounty_data)
 
-signal bounty_selected(id)
+var base_position: Vector2
+var bounty_data: BountyData
 
-@onready var title_label = $Title
-@onready var reward_label = $Reward
-@onready var accept_button = $AcceptButton
-@onready var picture = $Picture	
+func setup(bounty: BountyData):
+    bounty_data = bounty
+    $TitleLabel.text = bounty.title
 
-func setup(data):
-	bounty_data = data
-	title_label.text = data.title
-	picture.texture = data.picture
+func _ready():
+    base_position = position
 
+func _process(_delta):
+    position.y = base_position.y + sin(Time.get_ticks_msec() * 0.004) * 5
 
 func _on_accept_button_pressed():
-	emit_signal("bounty_selected", bounty_data.id)
+    emit_signal("bounty_selected", bounty_data)

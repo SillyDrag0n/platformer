@@ -24,5 +24,3 @@ func create_inventory_ui():
 		if item_slot.get_parent():
 			item_slot.get_parent().remove_child(item_slot)
 		item_grid.add_child(item_slot)
-		print("Children count:", item_grid.get_child_count())
-	

@@ -1,8 +1,8 @@
 [gd_scene load_steps=3 format=3 uid="uid://xvkveg02lf2n"]
 
 [ext_resource type="Script" uid="uid://be5ktyleckk61" path="res://scripts/managers/ui_manager.gd" id="1_udtmv"]
-[ext_resource type="PackedScene" uid="uid://c5nb8wn5164lu" path="res://ui/notice_board/notice_board_ui.tscn" id="2_o6khy"]
+[ext_resource type="PackedScene" uid="uid://5ebj4vx5tdb8" path="res://ui/notice_board/world_map.tscn" id="2_o6khy"]
 
 [node name="UiManager" type="Node"]
 script = ExtResource("1_udtmv")
-notice_board_scene = ExtResource("2_o6khy")
+world_map_scene = ExtResource("2_o6khy")

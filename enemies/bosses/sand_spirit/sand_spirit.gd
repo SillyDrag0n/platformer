@@ -25,5 +25,5 @@ func _physics_process(delta: float) -> void:
 	move_and_slide()
 
 func die():
-	BountyManager.complete_active_bounty()
+	GameStateManager.complete_active_bounty()
 	queue_free()

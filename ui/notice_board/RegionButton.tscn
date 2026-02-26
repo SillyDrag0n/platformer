@@ -1,0 +1,8 @@
+[gd_scene load_steps=2 format=3 uid="uid://c0pu0vm3jdcja"]
+
+[ext_resource type="Script" uid="uid://csq53q4drqa8s" path="res://ui/notice_board/region_button.gd" id="1_die80"]
+
+[node name="RegionButton" type="Button"]
+script = ExtResource("1_die80")
+
+[connection signal="pressed" from="." to="." method="_on_pressed"]
