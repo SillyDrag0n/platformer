@@ -5011,10 +5011,11 @@ sources/1 = SubResource("TileSetAtlasSource_o5yuq")
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_8hjdj"]
 size = Vector2(944, 50)
 
-[node name="TestLevel" type="Node2D" node_paths=PackedStringArray("camera", "respawn_marker", "player")]
+[node name="TestLevel" type="Node2D" node_paths=PackedStringArray("camera", "respawn_marker", "boss_spawn_marker", "player")]
 script = ExtResource("1_ur00s")
 camera = NodePath("PlayerCamera")
 respawn_marker = NodePath("RespawnPosition")
+boss_spawn_marker = NodePath("BossSpawnPosition")
 player = NodePath("Player")
 
 [node name="Player" parent="." instance=ExtResource("4_wndkh")]
@@ -5033,6 +5034,9 @@ smoothing_distance = 1
 
 [node name="RespawnPosition" type="Marker2D" parent="."]
 position = Vector2(64, 210)
+
+[node name="BossSpawnPosition" type="Marker2D" parent="."]
+position = Vector2(3936, -763)
 
 [node name="GameScreen" parent="." instance=ExtResource("8_ly3hx")]
 

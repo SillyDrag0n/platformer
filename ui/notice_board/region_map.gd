@@ -1,7 +1,5 @@
 extends Control
 
-var selected_bounty: BountyData
-
 func _ready():
 	spawn_bounties()
 
@@ -23,9 +21,5 @@ func spawn_poster(bounty):
 	poster.bounty_selected.connect(_on_bounty_selected)
 
 func _on_bounty_selected(bounty):
-	selected_bounty = bounty
-
-func _on_confirm_pressed():
-	if selected_bounty != null:
-		GameStateManager.set_active_bounty(selected_bounty)
+		GameStateManager.set_active_bounty(bounty)
 		GameStateManager.load_active_bounty_level()

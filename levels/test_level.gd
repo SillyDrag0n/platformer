@@ -2,11 +2,13 @@ extends Node2D
 
 @export var camera: Camera2D
 @export var respawn_marker: Marker2D
+@export var boss_spawn_marker: Marker2D
 @export var player: CharacterBody2D
 @export var level_id : String
 
 		
 func _ready():
+	await get_tree().process_frame
 	RespawnManager.set_respawn_nodes(camera, respawn_marker, self)
 	spawn_boss()
 
@@ -21,9 +23,19 @@ func _on_death_zone_body_entered(body:Node2D) -> void:
 
 
 func spawn_boss():
-	var boss_scene = GameStateManager.get_active_boss_scene()
-	var boss = boss_scene.instantiate()
-	add_child(boss)
+	if GameStateManager.active_bounty == null:
+		return
+
+	var boss_scene = GameStateManager.active_bounty.boss_scene
+	if boss_scene == null:
+		return
+
+	var boss_instance = boss_scene.instantiate()
+
+	var spawn_point = get_node("BossSpawn")
+	boss_instance.global_position = spawn_point.global_position
+
+	add_child(boss_instance)
 
 
 func on_boss_defeated():
