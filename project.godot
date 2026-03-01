@@ -108,16 +108,17 @@ inventory={
 
 [layer_names]
 
-2d_physics/layer_1="GROUND"
-2d_physics/layer_2="PLAYER"
-2d_physics/layer_3="ENEMY"
-2d_physics/layer_4="ENEMY_SCOUT"
-2d_physics/layer_5="INTERACTIONS"
-2d_physics/layer_6="PLAYER_ATTACKS"
-2d_physics/layer_7="ENEMY_AGGRO"
-2d_physics/layer_8="OneWayPlatforms"
+2d_physics/layer_1="Ground"
+2d_physics/layer_2="Player"
+2d_physics/layer_3="Enemy"
+2d_physics/layer_4="EnemyScout"
+2d_physics/layer_5="Interaction"
+2d_physics/layer_6="PlayerAttack"
+2d_physics/layer_7="EnemyAggro"
+2d_physics/layer_8="OneWayPlatform"
 2d_physics/layer_9="Foreground"
 2d_physics/layer_10="Goal"
+2d_physics/layer_11="EnemyAttacks"
 
 [rendering]
 

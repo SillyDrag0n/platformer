@@ -31,10 +31,7 @@ func spawn_boss():
 		return
 
 	var boss_instance = boss_scene.instantiate()
-
-	var spawn_point = get_node("BossSpawn")
-	boss_instance.global_position = spawn_point.global_position
-
+	boss_instance.global_position = boss_spawn_marker.global_position
 	add_child(boss_instance)
 
 

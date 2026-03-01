@@ -478,7 +478,7 @@ stream = ExtResource("14_bjvpn")
 
 [node name="Hurtbox" type="Area2D" parent="."]
 collision_layer = 0
-collision_mask = 4
+collision_mask = 1028
 
 [node name="HurtboxCollisionShape2D" type="CollisionShape2D" parent="Hurtbox"]
 position = Vector2(0, -21)

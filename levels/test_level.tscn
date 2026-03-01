@@ -5044,6 +5044,7 @@ position = Vector2(3936, -763)
 visible = false
 
 [node name="InventoryUi" parent="." instance=ExtResource("6_0vv12")]
+visible = false
 
 [node name="TileMap" type="Node" parent="."]
 
