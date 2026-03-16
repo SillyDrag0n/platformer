@@ -1,4 +1,4 @@
-[gd_scene load_steps=19 format=3 uid="uid://cm47v18c8f03"]
+[gd_scene load_steps=20 format=3 uid="uid://cm47v18c8f03"]
 
 [ext_resource type="Script" uid="uid://cmasdw6hkyn8" path="res://enemies/bosses/sand_spirit/sand_spirit.gd" id="1_uepdw"]
 [ext_resource type="Texture2D" uid="uid://bewbrcv8wdy1w" path="res://enemies/bosses/sand_spirit/sprites/temp-enemy-attack01.png" id="2_oh5cw"]
@@ -11,6 +11,7 @@
 [ext_resource type="Texture2D" uid="uid://b71bl4wem7f1j" path="res://enemies/bosses/sand_spirit/sprites/temp-enemy-hide.png" id="7_rsonh"]
 [ext_resource type="Texture2D" uid="uid://c7xebpve3tq86" path="res://enemies/bosses/sand_spirit/sprites/temp-enemy-idle.png" id="8_n6hgt"]
 [ext_resource type="Texture2D" uid="uid://uvjh2hyj5kax" path="res://enemies/bosses/sand_spirit/sprites/temp-enemy-intro.png" id="9_hhcka"]
+[ext_resource type="Script" uid="uid://b8lis7jjln0ot" path="res://enemies/bosses/sand_spirit/state_machine_controller.gd" id="12_n6hgt"]
 [ext_resource type="Script" uid="uid://7qf0q30y202f" path="res://scripts/state_machine/node_finite_state_machine.gd" id="13_rsonh"]
 [ext_resource type="Script" uid="uid://dd5u7pxrdxlwe" path="res://scripts/state_machine/node_state.gd" id="14_rsonh"]
 [ext_resource type="Script" uid="uid://neipckx2xq28" path="res://enemies/bosses/sand_spirit/state_machine/move_state.gd" id="15_n6hgt"]
@@ -138,11 +139,13 @@ collision_mask = 2
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Arena"]
 shape = SubResource("RectangleShape2D_n6hgt")
 
-[node name="StateMachineController" type="Node" parent="."]
+[node name="StateMachineController" type="Node" parent="." node_paths=PackedStringArray("node_finite_state_machine")]
+script = ExtResource("12_n6hgt")
+node_finite_state_machine = NodePath("../StateMachine")
 
 [node name="StateMachine" type="Node" parent="." node_paths=PackedStringArray("initial_node_state")]
 script = ExtResource("13_rsonh")
-initial_node_state = NodePath("Idle")
+initial_node_state = NodePath("Move")
 
 [node name="Intro" type="Node" parent="StateMachine"]
 script = ExtResource("14_rsonh")

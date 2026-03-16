@@ -3,7 +3,6 @@ extends NodeState
 @export var character_body_2d: CharacterBody2D
 @export var animated_sprite_2d: AnimatedSprite2D
 
-func _physics_process(_delta: float) -> void:
 
 func enter():
 	animated_sprite_2d.play("attack")
