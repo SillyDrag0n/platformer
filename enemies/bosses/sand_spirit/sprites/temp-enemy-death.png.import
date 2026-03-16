@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://celys1rbmkd6h"
-path="res://.godot/imported/enemy-death.png-8e517c34e557b1b80b3e1bade641ba46.ctex"
+uid="uid://cba4bteob74h4"
+path="res://.godot/imported/temp-enemy-death.png-465cd4739e111669b27a378f591eebed.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://enemies/enemy-death.png"
-dest_files=["res://.godot/imported/enemy-death.png-8e517c34e557b1b80b3e1bade641ba46.ctex"]
+source_file="res://enemies/bosses/sand_spirit/sprites/temp-enemy-death.png"
+dest_files=["res://.godot/imported/temp-enemy-death.png-465cd4739e111669b27a378f591eebed.ctex"]
 
 [params]
 

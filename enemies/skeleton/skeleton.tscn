@@ -5,8 +5,8 @@
 [ext_resource type="Texture2D" uid="uid://b003taxp5u40m" path="res://enemies/temp_files/temp-enemy-shoot.png" id="2_8ytsa"]
 [ext_resource type="Texture2D" uid="uid://cltqpimt50u5r" path="res://enemies/temp_files/temp-enemy-idle.png" id="3_2b7ve"]
 [ext_resource type="Texture2D" uid="uid://dpf6fchvv1chn" path="res://enemies/temp_files/temp-enemy-walk.png" id="4_o2orx"]
-[ext_resource type="Script" uid="uid://de03mrq8ngyvp" path="res://enemies/skeleton/state_machine_controller.gd" id="5_8ytsa"]
 [ext_resource type="Script" uid="uid://7qf0q30y202f" path="res://scripts/state_machine/node_finite_state_machine.gd" id="6_7bufg"]
+[ext_resource type="Script" uid="uid://de03mrq8ngyvp" path="res://enemies/skeleton/state_machine_controller.gd" id="6_hoo18"]
 [ext_resource type="Script" uid="uid://545t00i7efk1" path="res://enemies/skeleton/state_machine/idle_state.gd" id="7_dhyvq"]
 [ext_resource type="Script" uid="uid://db7trep67yucr" path="res://enemies/skeleton/state_machine/aggro_state.gd" id="8_hoo18"]
 [ext_resource type="Script" uid="uid://cntl2n0srvuag" path="res://enemies/skeleton/state_machine/attack_state.gd" id="9_axxec"]
@@ -128,7 +128,7 @@ one_shot = true
 position = Vector2(-15, -7.5)
 
 [node name="StateMachineController" type="Node" parent="." node_paths=PackedStringArray("node_finite_state_machine", "chase_timer")]
-script = ExtResource("5_8ytsa")
+script = ExtResource("6_hoo18")
 node_finite_state_machine = NodePath("../StateMachine")
 chase_timer = NodePath("../ChaseTimer")
 

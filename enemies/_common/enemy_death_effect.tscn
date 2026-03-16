@@ -1,7 +1,8 @@
 [gd_scene load_steps=9 format=3 uid="uid://dfo04bmgiobj2"]
 
-[ext_resource type="Texture2D" uid="uid://celys1rbmkd6h" path="res://enemies/enemy-death.png" id="1_3aon6"]
-[ext_resource type="Script" path="res://enemies/enemy_death_effect.gd" id="2_bcb7e"]
+[ext_resource type="Texture2D" uid="uid://celys1rbmkd6h" path="res://enemies/_common/enemy-death.png" id="1_3aon6"]
+[ext_resource type="Script" uid="uid://dhshs6fh6n5a5" path="res://enemies/_common/enemy_death_effect.gd" id="2_bcb7e"]
+
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_uotwv"]
 atlas = ExtResource("1_3aon6")

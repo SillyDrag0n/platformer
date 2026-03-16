@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://neaixfhqi8aj"
-path="res://.godot/imported/sand_spirit.png-dcaa936400e76119d182d2cc0f9813b8.ctex"
+uid="uid://cn8wm1dyp6bv2"
+path="res://.godot/imported/temp-enemy-attack03.png-b92adeda91060a15f579f62c52385879.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://enemies/bosses/sand_spirit/sand_spirit.png"
-dest_files=["res://.godot/imported/sand_spirit.png-dcaa936400e76119d182d2cc0f9813b8.ctex"]
+source_file="res://enemies/bosses/sand_spirit/sprites/temp-enemy-attack03.png"
+dest_files=["res://.godot/imported/temp-enemy-attack03.png-b92adeda91060a15f579f62c52385879.ctex"]
 
 [params]
 

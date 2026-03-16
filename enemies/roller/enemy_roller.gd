@@ -1,6 +1,6 @@
 extends CharacterBody2D
 
-var enemy_death_effect = preload("res://enemies/enemy_death_effect.tscn")
+var enemy_death_effect = preload("res://enemies/_common/enemy_death_effect.tscn")
 
 @export var health_amount : int = 3
 @export var damage_amount : int = 1

@@ -5,7 +5,7 @@ extends CharacterBody2D
 @export var gun_timer: Timer
 @export var health_amount : int = 3
 
-var enemy_death_effect = preload("res://enemies/enemy_death_effect.tscn")
+var enemy_death_effect = preload("res://enemies/_common/enemy_death_effect.tscn")
 var cactus_attack = preload("res://enemies/skeleton/skeleton_attack.tscn")
 
 const SPEED = 100.0
@@ -51,7 +51,9 @@ func _on_attack_timer_timeout() -> void:
 
 
 func _on_hurtbox_area_entered(area : Area2D):
+	print("Hurtbox entered boss")
 	if area.get_parent().has_method("get_damage_amount"):
+		print("get_damage_amount")
 		var node = area.get_parent() as Node
 		health_amount -= node.damage_amount
 		

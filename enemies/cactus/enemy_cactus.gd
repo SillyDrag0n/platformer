@@ -1,6 +1,6 @@
 extends CharacterBody2D
 
-var enemy_death_effect = preload("res://enemies/enemy_death_effect.tscn")
+var enemy_death_effect = preload("res://enemies/_common/enemy_death_effect.tscn")
 var cactus_attack = preload("res://enemies/cactus/cactus_attack.tscn")
 
 @export var wait_time : int = 3

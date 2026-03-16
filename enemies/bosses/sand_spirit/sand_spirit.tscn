@@ -1,16 +1,184 @@
-[gd_scene load_steps=4 format=3 uid="uid://cm47v18c8f03"]
+[gd_scene load_steps=20 format=3 uid="uid://cm47v18c8f03"]
 
 [ext_resource type="Script" uid="uid://cmasdw6hkyn8" path="res://enemies/bosses/sand_spirit/sand_spirit.gd" id="1_uepdw"]
+[ext_resource type="Texture2D" uid="uid://bewbrcv8wdy1w" path="res://enemies/bosses/sand_spirit/sprites/temp-enemy-attack01.png" id="2_oh5cw"]
+[ext_resource type="Texture2D" uid="uid://cqxj1q3typ37y" path="res://enemies/bosses/sand_spirit/sprites/temp-enemy-attack02.png" id="3_8mpj4"]
+[ext_resource type="Texture2D" uid="uid://cwckh6jcbrbq3" path="res://enemies/bosses/sand_spirit/sprites/temp-enemy-crumble.png" id="3_pflpt"]
+[ext_resource type="Texture2D" uid="uid://cn8wm1dyp6bv2" path="res://enemies/bosses/sand_spirit/sprites/temp-enemy-attack03.png" id="4_gwd1j"]
+[ext_resource type="Texture2D" uid="uid://c5w01gdmvrdsg" path="res://enemies/bosses/sand_spirit/sprites/temp-enemy-move.png" id="4_pflpt"]
+[ext_resource type="Texture2D" uid="uid://cba4bteob74h4" path="res://enemies/bosses/sand_spirit/sprites/temp-enemy-death.png" id="6_22xr6"]
+[ext_resource type="Texture2D" uid="uid://dk3a8saakm0xv" path="res://enemies/bosses/sand_spirit/sprites/temp-enemy-hidden.png" id="7_8mpj4"]
+[ext_resource type="Texture2D" uid="uid://b71bl4wem7f1j" path="res://enemies/bosses/sand_spirit/sprites/temp-enemy-hide.png" id="7_rsonh"]
+[ext_resource type="Texture2D" uid="uid://c7xebpve3tq86" path="res://enemies/bosses/sand_spirit/sprites/temp-enemy-idle.png" id="8_n6hgt"]
+[ext_resource type="Texture2D" uid="uid://uvjh2hyj5kax" path="res://enemies/bosses/sand_spirit/sprites/temp-enemy-intro.png" id="9_hhcka"]
+[ext_resource type="Script" uid="uid://de03mrq8ngyvp" path="res://enemies/bosses/sand_spirit/state_machine_controller.gd" id="12_rsonh"]
+[ext_resource type="Script" uid="uid://7qf0q30y202f" path="res://scripts/state_machine/node_finite_state_machine.gd" id="13_rsonh"]
+[ext_resource type="Script" uid="uid://dd5u7pxrdxlwe" path="res://scripts/state_machine/node_state.gd" id="14_rsonh"]
+[ext_resource type="Script" uid="uid://neipckx2xq28" path="res://enemies/bosses/sand_spirit/state_machine/move_state.gd" id="15_n6hgt"]
 
 [sub_resource type="SpriteFrames" id="SpriteFrames_uepdw"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("2_oh5cw")
+}],
+"loop": false,
+"name": &"attack",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("3_8mpj4")
+}],
+"loop": false,
+"name": &"attack2",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("4_gwd1j")
+}],
+"loop": false,
+"name": &"attack3",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("3_pflpt")
+}],
+"loop": false,
+"name": &"crumble",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("6_22xr6")
+}],
+"loop": false,
+"name": &"death",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("7_8mpj4")
+}],
+"loop": true,
+"name": &"hidden",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("7_rsonh")
+}],
+"loop": false,
+"name": &"hide",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("8_n6hgt")
+}],
+"loop": true,
+"name": &"idle",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("9_hhcka")
+}],
+"loop": true,
+"name": &"intro",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("4_pflpt")
+}],
+"loop": true,
+"name": &"move",
+"speed": 5.0
+}]
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_uepdw"]
+radius = 6.0
+height = 42.0
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_13c8m"]
+radius = 17.0294
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_n6hgt"]
+size = Vector2(1000, 500)
 
 [node name="SandSpirit" type="CharacterBody2D"]
+collision_layer = 4
+collision_mask = 32
 script = ExtResource("1_uepdw")
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+scale = Vector2(0.75, 0.75)
 sprite_frames = SubResource("SpriteFrames_uepdw")
+animation = &"crumble"
+autoplay = "idle"
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+[node name="Hurtbox" type="Area2D" parent="."]
+collision_layer = 4
+collision_mask = 32
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Hurtbox"]
+position = Vector2(0, 14)
 shape = SubResource("CapsuleShape2D_uepdw")
+
+[node name="CollisionShape2D2" type="CollisionShape2D" parent="Hurtbox"]
+position = Vector2(1, -17)
+shape = SubResource("CircleShape2D_13c8m")
+
+[node name="Arena" type="Area2D" parent="."]
+collision_layer = 0
+collision_mask = 2
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Arena"]
+shape = SubResource("RectangleShape2D_n6hgt")
+
+[node name="StateMachineController" type="Node" parent="." node_paths=PackedStringArray("node_finite_state_machine")]
+script = ExtResource("12_rsonh")
+node_finite_state_machine = NodePath("../StateMachine")
+
+[node name="StateMachine" type="Node" parent="." node_paths=PackedStringArray("initial_node_state")]
+script = ExtResource("13_rsonh")
+initial_node_state = NodePath("Idle")
+
+[node name="Intro" type="Node" parent="StateMachine"]
+script = ExtResource("14_rsonh")
+metadata/_custom_type_script = "uid://dd5u7pxrdxlwe"
+
+[node name="Idle" type="Node" parent="StateMachine"]
+script = ExtResource("14_rsonh")
+metadata/_custom_type_script = "uid://dd5u7pxrdxlwe"
+
+[node name="Move" type="Node" parent="StateMachine" node_paths=PackedStringArray("StateMachine", "Boss")]
+script = ExtResource("15_n6hgt")
+StateMachine = NodePath("..")
+Boss = NodePath("../..")
+metadata/_custom_type_script = "uid://dd5u7pxrdxlwe"
+
+[node name="ChooseAttack" type="Node" parent="StateMachine"]
+script = ExtResource("14_rsonh")
+metadata/_custom_type_script = "uid://dd5u7pxrdxlwe"
+
+[node name="Attack01" type="Node" parent="StateMachine"]
+script = ExtResource("14_rsonh")
+metadata/_custom_type_script = "uid://dd5u7pxrdxlwe"
+
+[node name="Attack02" type="Node" parent="StateMachine"]
+script = ExtResource("14_rsonh")
+metadata/_custom_type_script = "uid://dd5u7pxrdxlwe"
+
+[node name="Dive" type="Node" parent="StateMachine"]
+script = ExtResource("14_rsonh")
+metadata/_custom_type_script = "uid://dd5u7pxrdxlwe"
+
+[node name="Death" type="Node" parent="StateMachine"]
+script = ExtResource("14_rsonh")
+metadata/_custom_type_script = "uid://dd5u7pxrdxlwe"
+
+[connection signal="area_entered" from="Hurtbox" to="." method="_on_hurtbox_area_entered"]
