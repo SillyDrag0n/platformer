@@ -4,7 +4,6 @@ extends NodeState
 @export var animated_sprite_2d: AnimatedSprite2D
 
 func _physics_process(_delta: float) -> void:
-	print("Test physics")
 
 func enter():
 	animated_sprite_2d.play("attack")
