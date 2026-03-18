@@ -1,4 +1,4 @@
-[gd_scene load_steps=20 format=3 uid="uid://cm47v18c8f03"]
+[gd_scene load_steps=26 format=3 uid="uid://cm47v18c8f03"]
 
 [ext_resource type="Script" uid="uid://cmasdw6hkyn8" path="res://enemies/bosses/sand_spirit/sand_spirit.gd" id="1_uepdw"]
 [ext_resource type="Texture2D" uid="uid://bewbrcv8wdy1w" path="res://enemies/bosses/sand_spirit/sprites/temp-enemy-attack01.png" id="2_oh5cw"]
@@ -15,6 +15,12 @@
 [ext_resource type="Script" uid="uid://7qf0q30y202f" path="res://scripts/state_machine/node_finite_state_machine.gd" id="13_rsonh"]
 [ext_resource type="Script" uid="uid://dd5u7pxrdxlwe" path="res://scripts/state_machine/node_state.gd" id="14_rsonh"]
 [ext_resource type="Script" uid="uid://neipckx2xq28" path="res://enemies/bosses/sand_spirit/state_machine/move_state.gd" id="15_n6hgt"]
+[ext_resource type="Script" uid="uid://b53v65v4kjmib" path="res://enemies/bosses/sand_spirit/state_machine/projectile_attack_state.gd" id="16_hhcka"]
+[ext_resource type="Script" uid="uid://plcboqag22q7" path="res://enemies/bosses/sand_spirit/state_machine/choose_attack.gd" id="16_y3x15"]
+[ext_resource type="Script" uid="uid://buw4jfumisyfu" path="res://enemies/bosses/sand_spirit/state_machine/dust_devil_attack.gd" id="18_t3v08"]
+[ext_resource type="Script" uid="uid://drtbd0gdo0rnr" path="res://enemies/bosses/sand_spirit/state_machine/ambush_attack.gd" id="19_hufni"]
+[ext_resource type="Script" uid="uid://6yhok01xpbej" path="res://enemies/bosses/sand_spirit/state_machine/cooldown.gd" id="19_t3v08"]
+[ext_resource type="Script" uid="uid://dyqoo56nre80e" path="res://enemies/bosses/sand_spirit/state_machine/phase_transition.gd" id="20_4nncl"]
 
 [sub_resource type="SpriteFrames" id="SpriteFrames_uepdw"]
 animations = [{
@@ -110,6 +116,7 @@ radius = 17.0294
 size = Vector2(1000, 500)
 
 [node name="SandSpirit" type="CharacterBody2D"]
+position = Vector2(0, -1)
 collision_layer = 4
 collision_mask = 32
 script = ExtResource("1_uepdw")
@@ -139,9 +146,15 @@ collision_mask = 2
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Arena"]
 shape = SubResource("RectangleShape2D_n6hgt")
 
-[node name="StateMachineController" type="Node" parent="." node_paths=PackedStringArray("node_finite_state_machine")]
+[node name="StateMachineController" type="Node" parent="." node_paths=PackedStringArray("node_finite_state_machine", "boss", "move_state", "projectile_attack_state", "dust_devil_attack_state", "ambush_attack_state", "cooldown_state")]
 script = ExtResource("12_n6hgt")
 node_finite_state_machine = NodePath("../StateMachine")
+boss = NodePath("..")
+move_state = NodePath("../StateMachine/Move")
+projectile_attack_state = NodePath("../StateMachine/ProjectileAttack")
+dust_devil_attack_state = NodePath("../StateMachine/DustDevilAttack")
+ambush_attack_state = NodePath("../StateMachine/AmbushAttack")
+cooldown_state = NodePath("../StateMachine/Cooldown")
 
 [node name="StateMachine" type="Node" parent="." node_paths=PackedStringArray("initial_node_state")]
 script = ExtResource("13_rsonh")
@@ -160,20 +173,34 @@ script = ExtResource("15_n6hgt")
 Boss = NodePath("../..")
 metadata/_custom_type_script = "uid://dd5u7pxrdxlwe"
 
-[node name="ChooseAttack" type="Node" parent="StateMachine"]
-script = ExtResource("14_rsonh")
+[node name="ChooseAttack" type="Node" parent="StateMachine" node_paths=PackedStringArray("Boss")]
+script = ExtResource("16_y3x15")
+Boss = NodePath("../..")
 metadata/_custom_type_script = "uid://dd5u7pxrdxlwe"
 
-[node name="Attack01" type="Node" parent="StateMachine"]
-script = ExtResource("14_rsonh")
+[node name="ProjectileAttack" type="Node" parent="StateMachine" node_paths=PackedStringArray("Boss")]
+script = ExtResource("16_hhcka")
+Boss = NodePath("../..")
 metadata/_custom_type_script = "uid://dd5u7pxrdxlwe"
 
-[node name="Attack02" type="Node" parent="StateMachine"]
-script = ExtResource("14_rsonh")
+[node name="DustDevilAttack" type="Node" parent="StateMachine" node_paths=PackedStringArray("Boss")]
+script = ExtResource("18_t3v08")
+Boss = NodePath("../..")
 metadata/_custom_type_script = "uid://dd5u7pxrdxlwe"
 
-[node name="Dive" type="Node" parent="StateMachine"]
-script = ExtResource("14_rsonh")
+[node name="AmbushAttack" type="Node" parent="StateMachine" node_paths=PackedStringArray("Boss")]
+script = ExtResource("19_hufni")
+Boss = NodePath("../..")
+metadata/_custom_type_script = "uid://dd5u7pxrdxlwe"
+
+[node name="Cooldown" type="Node" parent="StateMachine" node_paths=PackedStringArray("Boss")]
+script = ExtResource("19_t3v08")
+Boss = NodePath("../..")
+metadata/_custom_type_script = "uid://dd5u7pxrdxlwe"
+
+[node name="PhaseTransition" type="Node" parent="StateMachine" node_paths=PackedStringArray("Boss")]
+script = ExtResource("20_4nncl")
+Boss = NodePath("../..")
 metadata/_custom_type_script = "uid://dd5u7pxrdxlwe"
 
 [node name="Death" type="Node" parent="StateMachine"]

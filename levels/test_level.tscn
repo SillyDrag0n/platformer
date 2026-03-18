@@ -5131,12 +5131,12 @@ position = Vector2(3801, -368)
 position = Vector2(3174, -225)
 
 [node name="SandSpirit" parent="Enemies" instance=ExtResource("15_0vv12")]
-position = Vector2(3346, -822)
+position = Vector2(3500, -900)
 max_health = 6
 hover_speed = 100
 arena_left = 3000
 arena_right = 4000
-arena_top = -1250
+arena_top = -1200
 arena_bottom = -750
 
 [node name="Checkpoints" type="Node" parent="."]

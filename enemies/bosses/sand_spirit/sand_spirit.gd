@@ -3,7 +3,7 @@ extends CharacterBody2D
 
 @export var fsm : NodeFiniteStateMachine
 @export var max_health : int = 60
-@export var hover_speed := 80
+@export var hover_speed := 200
 
 @export var arena_left := 100
 @export var arena_right := 900
@@ -17,6 +17,7 @@ var phase_started : bool = true
 var rng := RandomNumberGenerator.new()
 var hover_target: Vector2
 var current_state: NodeState
+var ready_to_attack: bool = true
 
 func _ready():
 	health = max_health
