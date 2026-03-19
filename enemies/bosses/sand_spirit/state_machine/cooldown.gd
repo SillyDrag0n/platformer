@@ -11,6 +11,5 @@ func enter():
 
 func on_physics_process(delta):
 	timer -= delta
-
 	if timer <= 0:
 		finished.emit()
