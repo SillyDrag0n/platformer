@@ -1,7 +1,8 @@
 class_name BossStateController
 extends CharacterBody2D
 
-@export var fsm : NodeFiniteStateMachine
+@export var finite_state_machine : NodeFiniteStateMachine
+@export var animated_sprite : AnimatedSprite2D
 @export var max_health : int = 60
 @export var hover_speed := 200
 
@@ -19,13 +20,29 @@ var hover_target: Vector2
 var current_state: NodeState
 var ready_to_attack: bool = true
 
+enum Animations { AmbushAttack, Death, DustDevilAttack, Hidden, Hide, Idle, Intro, Move, PhaseTransition, ProjectileAttack }
+var current_animation: Animations = Animations.Idle
+
+var animation_map := {
+	Animations.AmbushAttack: "ambushAttack",
+	Animations.Death: "death",
+	Animations.DustDevilAttack: "dustDevilAttack",
+	Animations.Hidden: "hidden",
+	Animations.Hide: "hide",
+	Animations.Idle: "idle",
+	Animations.Intro: "intro",
+	Animations.Move: "move",
+	Animations.PhaseTransition: "phaseTransition",
+	Animations.ProjectileAttack: "projectileAttack",
+}
+
+
 func _ready():
 	health = max_health
 	rng.randomize()
 
 
 func _physics_process(delta):
-	# state_machine._physics_process(delta)
 	move_and_slide()
 
 
@@ -35,7 +52,7 @@ func _physics_process(delta):
 
 
 # func start_boss_fight():
-# 	fsm.transition_to("intro")
+# 	finite_state_machine.transition_to("intro")
 
 
 func die():
@@ -53,7 +70,7 @@ func _on_hurtbox_area_entered(area : Area2D):
 		print(health)
 		
 		if health <= 0:
-			fsm.transition_to("death")
+			finite_state_machine.transition_to("death")
 			print("death")
 
 		check_phase_change()
@@ -72,3 +89,16 @@ func check_phase_change():
 		phase = 3
 		phase_started = true
 		print("Phase 3")
+
+
+func play_animation(anim: Animations):
+	if anim == current_animation:
+		return
+		
+	if not animation_map.has(anim):
+		push_error("Unknown animation: " + str(anim))
+		return
+
+	current_animation = anim
+	var anim_name: String = animation_map[anim]
+	animated_sprite.play(anim_name)

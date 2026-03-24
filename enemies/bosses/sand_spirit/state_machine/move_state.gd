@@ -1,6 +1,6 @@
 extends NodeState
 
-@export var Boss: CharacterBody2D
+@export var boss: BossStateController
 
 signal attack_requested
 
@@ -8,15 +8,16 @@ var attack_timer
 
 func enter():
 	pick_new_target()
-	attack_timer = randf_range(2.0, 4.0) / Boss.phase
+	attack_timer = randf_range(2.0, 4.0) / boss.phase
+	boss.play_animation(boss.Animations.Move)
 
 func on_physics_process(delta):
 
 	# Movement
-	var direction = (Boss.hover_target - Boss.global_position).normalized()
-	Boss.velocity = direction * Boss.hover_speed
+	var direction = (boss.hover_target - boss.global_position).normalized()
+	boss.velocity = direction * boss.hover_speed
 
-	if Boss.global_position.distance_to(Boss.hover_target) < 20:
+	if boss.global_position.distance_to(boss.hover_target) < 20:
 		pick_new_target()
 
 	# Attack trigger
@@ -25,7 +26,7 @@ func on_physics_process(delta):
 		attack_requested.emit()   # ← ONLY SIGNAL
 
 func pick_new_target():
-	Boss.hover_target = Vector2(
-		randf_range(Boss.arena_left, Boss.arena_right),
-		randf_range(Boss.arena_top, Boss.arena_bottom)
+	boss.hover_target = Vector2(
+		randf_range(boss.arena_left, boss.arena_right),
+		randf_range(boss.arena_top, boss.arena_bottom)
 	)

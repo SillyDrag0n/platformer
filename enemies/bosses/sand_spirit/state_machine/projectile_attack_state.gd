@@ -1,11 +1,12 @@
 extends NodeState
 
-@export var Boss: CharacterBody2D
+@export var boss: BossStateController
 
 signal finished
 
 func enter():
-	Boss.velocity = Vector2.ZERO
+	boss.velocity = Vector2.ZERO
+	boss.play_animation(boss.Animations.ProjectileAttack)
 	shoot()
 	finish_next_frame()
 	

@@ -1,14 +1,15 @@
 extends NodeState
 
-@export var Boss: CharacterBody2D
+@export var boss: BossStateController
 
 signal finished
 
 var timer
 
 func enter():
-	Boss.visible = false
+	boss.visible = false
 	timer = 1.0
+	boss.play_animation(boss.Animations.AmbushAttack)
 
 func on_physics_process(delta):
 
