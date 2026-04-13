@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://neaixfhqi8aj"
-path="res://.godot/imported/sand_spirit.png-e030e000d868abf43062db0ae8e2917f.ctex"
+uid="uid://dh65svwq2f0fd"
+path="res://.godot/imported/sand_spirit_idle.png-34b35eb7aad89ea67a025931932a2f39.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://enemies/bosses/sand_spirit/sprites/sand_spirit.png"
-dest_files=["res://.godot/imported/sand_spirit.png-e030e000d868abf43062db0ae8e2917f.ctex"]
+source_file="res://enemies/bosses/sand_spirit/temp/sand_spirit_idle.png"
+dest_files=["res://.godot/imported/sand_spirit_idle.png-34b35eb7aad89ea67a025931932a2f39.ctex"]
 
 [params]
 

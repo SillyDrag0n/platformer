@@ -1,13 +1,13 @@
 extends NodeState
 
-@export var Boss: CharacterBody2D
+@export var boss: CharacterBody2D
 
 signal finished
 
 var timer
 
 func enter():
-	timer = randf_range(1.0, 2.0) / Boss.phase
+	timer = randf_range(1.0, 2.0) / boss.phase
 
 func on_physics_process(delta):
 	timer -= delta

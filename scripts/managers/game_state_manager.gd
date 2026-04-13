@@ -71,6 +71,12 @@ func complete_bounty(id: String):
 		bounty.completed = true
 
 
+func complete_active_bounty():
+	var bounty = active_bounty
+	if bounty:
+		bounty.completed = true
+
+
 func is_bounty_unlocked(id: String) -> bool:
 	var bounty = get_bounty_by_id(id)
 	return bounty != null and bounty.unlocked

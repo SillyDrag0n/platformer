@@ -45,6 +45,7 @@ func _physics_process(delta):
 			camera_position = player.global_position
 		
 		global_position = camera_position.floor()
+		global_position.y -= 100
 
 # func screen_shake(intensity: int, time:float):
 func screen_shake():

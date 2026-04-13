@@ -71,7 +71,7 @@ func _on_hurtbox_area_entered(area : Area2D):
 		
 		if health <= 0:
 			finite_state_machine.transition_to("death")
-			print("death")
+			pass
 
 		check_phase_change()
 

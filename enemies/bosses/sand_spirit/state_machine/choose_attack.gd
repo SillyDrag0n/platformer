@@ -1,6 +1,6 @@
 extends NodeState
 
-@export var Boss: CharacterBody2D
+@export var boss: CharacterBody2D
 
 var last_attack = ""
 
@@ -11,7 +11,7 @@ func physics_update(_delta):
 
 	var attacks = []
 
-	if Boss.phase == 1:
+	if boss.phase == 1:
 		attacks = ["AttackShoot"]
 	else:
 		attacks = ["AttackShoot", "AttackDust"]

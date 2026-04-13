@@ -1,4 +1,4 @@
-[gd_scene load_steps=25 format=4 uid="uid://gkr4g0dg7pla"]
+[gd_scene load_steps=24 format=4 uid="uid://gkr4g0dg7pla"]
 
 [ext_resource type="Script" uid="uid://uphv34nfh2ba" path="res://levels/test_level.gd" id="1_ur00s"]
 [ext_resource type="PackedScene" uid="uid://bfcmjoltsmsed" path="res://player/player.tscn" id="4_wndkh"]
@@ -14,7 +14,6 @@
 [ext_resource type="Texture2D" uid="uid://b6tfg1d00fxkb" path="res://tileset/paralax_backgrounds/Parallax3.png" id="11_axl34"]
 [ext_resource type="Texture2D" uid="uid://dfbtpy3tygbdh" path="res://tileset/paralax_backgrounds/Parallax2.png" id="12_8hjdj"]
 [ext_resource type="Texture2D" uid="uid://bao5suuofbayn" path="res://tileset/paralax_backgrounds/Parallax1.png" id="13_0vv12"]
-[ext_resource type="PackedScene" uid="uid://cm47v18c8f03" path="res://enemies/bosses/sand_spirit/sand_spirit.tscn" id="15_0vv12"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_axl34"]
 resource_name = "Background"
@@ -5036,7 +5035,7 @@ smoothing_distance = 1
 position = Vector2(64, 210)
 
 [node name="BossSpawnPosition" type="Marker2D" parent="."]
-position = Vector2(3500, -750)
+position = Vector2(3500, -900)
 
 [node name="GameScreen" parent="." instance=ExtResource("8_ly3hx")]
 
@@ -5129,15 +5128,6 @@ position = Vector2(3801, -368)
 
 [node name="Skeleton3" parent="Enemies" instance=ExtResource("7_ly3hx")]
 position = Vector2(3174, -225)
-
-[node name="SandSpirit" parent="Enemies" instance=ExtResource("15_0vv12")]
-position = Vector2(3500, -900)
-max_health = 6
-hover_speed = 100
-arena_left = 3000
-arena_right = 4000
-arena_top = -1200
-arena_bottom = -750
 
 [node name="Checkpoints" type="Node" parent="."]
 
