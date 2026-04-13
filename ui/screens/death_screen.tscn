@@ -1,6 +1,6 @@
 [gd_scene load_steps=2 format=3 uid="uid://dnko61n7gbtwq"]
 
-[ext_resource type="Script" uid="uid://diljlwynlpai1" path="res://ui/death_screen.gd" id="1_36x74"]
+[ext_resource type="Script" uid="uid://diljlwynlpai1" path="res://ui/screens/death_screen.gd" id="1_36x74"]
 
 [node name="DeathScreen" type="CanvasLayer"]
 process_mode = 3
