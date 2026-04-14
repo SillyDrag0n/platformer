@@ -56,11 +56,13 @@ func _physics_process(delta):
 
 
 func die():
-	GameStateManager.complete_active_bounty()
 	var enemy_death_effect_instance = enemy_death_effect.instantiate() as Node2D
 	enemy_death_effect_instance.global_position = global_position
 	get_parent().add_child(enemy_death_effect_instance)
 	queue_free()
+	GameStateManager.complete_active_bounty()
+	GameStateManager.give_bounty_reward()
+	UiManager.open_bounty_completed_screen()
 
 
 func _on_hurtbox_area_entered(area : Area2D):

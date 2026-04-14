@@ -7,7 +7,9 @@ class_name BountyData
 
 @export var unlocked: bool = false
 @export var completed: bool = false
+@export var reward_claimed: bool = false
 
 @export var map_position: Vector2
 @export var level_scene: PackedScene
 @export var boss_scene: PackedScene
+@export var rewards: Array[ItemData]

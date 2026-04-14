@@ -1,6 +1,7 @@
-[gd_scene load_steps=5 format=3 uid="uid://w2veq7ymk6wd"]
+[gd_scene load_steps=6 format=3 uid="uid://w2veq7ymk6wd"]
 
 [ext_resource type="FontFile" uid="uid://kiwlymd55nc2" path="res://ui/font/BoldPixels.ttf" id="1_8q7fw"]
+[ext_resource type="Script" uid="uid://c8d6i1bvpojbm" path="res://ui/screens/bounty_completed.gd" id="1_ucj71"]
 
 [sub_resource type="LabelSettings" id="LabelSettings_ucj71"]
 font = ExtResource("1_8q7fw")
@@ -15,6 +16,7 @@ font = ExtResource("1_8q7fw")
 font_size = 48
 
 [node name="BountyCompleted" type="CanvasLayer"]
+script = ExtResource("1_ucj71")
 
 [node name="ColorRect" type="ColorRect" parent="."]
 anchors_preset = 15
@@ -49,13 +51,9 @@ horizontal_alignment = 1
 vertical_alignment = 1
 
 [node name="BountyContainer" type="PanelContainer" parent="PanelContainer/VBoxContainer"]
-layout_mode = 2
-
-[node name="ColorRect" type="ColorRect" parent="PanelContainer/VBoxContainer/BountyContainer"]
+self_modulate = Color(1, 1, 1, 0)
 custom_minimum_size = Vector2(350, 416)
 layout_mode = 2
-size_flags_horizontal = 4
-size_flags_vertical = 4
 
 [node name="RewardsLbl" type="Label" parent="PanelContainer/VBoxContainer"]
 layout_mode = 2
@@ -123,3 +121,5 @@ layout_mode = 2
 size_flags_horizontal = 4
 theme_override_font_sizes/font_size = 64
 text = "Return to Hub"
+
+[connection signal="pressed" from="PanelContainer/VBoxContainer/Button" to="." method="_on_button_pressed"]

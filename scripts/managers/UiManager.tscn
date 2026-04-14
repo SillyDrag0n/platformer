@@ -1,8 +1,10 @@
-[gd_scene load_steps=3 format=3 uid="uid://xvkveg02lf2n"]
+[gd_scene load_steps=4 format=3 uid="uid://xvkveg02lf2n"]
 
 [ext_resource type="Script" uid="uid://be5ktyleckk61" path="res://scripts/managers/ui_manager.gd" id="1_udtmv"]
 [ext_resource type="PackedScene" uid="uid://5ebj4vx5tdb8" path="res://ui/notice_board/world_map.tscn" id="2_o6khy"]
+[ext_resource type="PackedScene" uid="uid://w2veq7ymk6wd" path="res://ui/screens/bounty_completed.tscn" id="3_1t3u3"]
 
 [node name="UiManager" type="Node"]
 script = ExtResource("1_udtmv")
 world_map_scene = ExtResource("2_o6khy")
+bounty_completed_scene = ExtResource("3_1t3u3")

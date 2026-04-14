@@ -1,0 +1,35 @@
+[gd_scene load_steps=3 format=3 uid="uid://gvt4clppnsy3"]
+
+[ext_resource type="FontFile" uid="uid://kiwlymd55nc2" path="res://ui/font/BoldPixels.ttf" id="1_8mo8s"]
+
+[sub_resource type="LabelSettings" id="LabelSettings_b01al"]
+font = ExtResource("1_8mo8s")
+font_size = 48
+
+[node name="BountyReward" type="Control"]
+layout_mode = 3
+anchors_preset = 0
+
+[node name="MarginContainer" type="MarginContainer" parent="."]
+custom_minimum_size = Vector2(312, 0)
+layout_mode = 0
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer"]
+custom_minimum_size = Vector2(256, 256)
+layout_mode = 2
+alignment = 1
+
+[node name="TextureRect" type="TextureRect" parent="MarginContainer/VBoxContainer"]
+custom_minimum_size = Vector2(128, 128)
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 1
+text = "+ 850 Gold"
+label_settings = SubResource("LabelSettings_b01al")
+horizontal_alignment = 1
+vertical_alignment = 1
+clip_text = true

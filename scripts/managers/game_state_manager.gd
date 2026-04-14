@@ -98,3 +98,16 @@ func load_active_bounty_level():
 
 func clear_active_bounty():
 	active_bounty = null
+
+
+func give_bounty_reward():
+	if active_bounty.completed == false:
+		pass
+
+	if active_bounty.reward_claimed == true:
+		# TODO
+		pass 
+
+	active_bounty.reward_claimed = true
+	for reward in active_bounty.rewards:
+		InventoryManager.add_item(reward)
