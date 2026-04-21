@@ -1,14 +1,17 @@
-[gd_scene load_steps=3 format=3 uid="uid://gvt4clppnsy3"]
+[gd_scene load_steps=4 format=3 uid="uid://gvt4clppnsy3"]
 
 [ext_resource type="FontFile" uid="uid://kiwlymd55nc2" path="res://ui/font/BoldPixels.ttf" id="1_8mo8s"]
+[ext_resource type="Script" uid="uid://chb4bqrsc5sr7" path="res://ui/screens/bounty_reward.gd" id="1_b01al"]
 
 [sub_resource type="LabelSettings" id="LabelSettings_b01al"]
 font = ExtResource("1_8mo8s")
 font_size = 48
 
 [node name="BountyReward" type="Control"]
+custom_minimum_size = Vector2(312, 256)
 layout_mode = 3
 anchors_preset = 0
+script = ExtResource("1_b01al")
 
 [node name="MarginContainer" type="MarginContainer" parent="."]
 custom_minimum_size = Vector2(312, 0)
@@ -19,13 +22,13 @@ custom_minimum_size = Vector2(256, 256)
 layout_mode = 2
 alignment = 1
 
-[node name="TextureRect" type="TextureRect" parent="MarginContainer/VBoxContainer"]
+[node name="RewardTexture" type="TextureRect" parent="MarginContainer/VBoxContainer"]
 custom_minimum_size = Vector2(128, 128)
 layout_mode = 2
 size_flags_horizontal = 4
 size_flags_vertical = 4
 
-[node name="Label" type="Label" parent="MarginContainer/VBoxContainer"]
+[node name="RewardLabel" type="Label" parent="MarginContainer/VBoxContainer"]
 layout_mode = 2
 size_flags_vertical = 1
 text = "+ 850 Gold"
