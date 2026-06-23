@@ -4,7 +4,7 @@ extends CanvasLayer
 @export var item_slot_scene : PackedScene
 
 func _ready():
-	InventoryManager.UpdatedInventory.connect(update_inventory_ui)
+	InventoryManager.updated_inventory.connect(update_inventory_ui)
 	create_inventory_ui()
 
 func _process(_delta):

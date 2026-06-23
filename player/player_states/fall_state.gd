@@ -20,7 +20,6 @@ func on_physics_process(delta : float):
 	var direction : float = GameInputEvents.movement_input()
 	
 	if !character_body_2d.is_on_floor():
-		get_coyote_time()
 		character_body_2d.velocity.y += GRAVITY * delta
 
 		if direction != 0:
@@ -46,12 +45,13 @@ func on_physics_process(delta : float):
 func enter():
 	coyote_jump = true
 	animated_sprite_2d.play("fall")
+	start_coyote_time()
 
 
 func exit():
 	animated_sprite_2d.stop()
 
 
-func get_coyote_time():
+func start_coyote_time():
 	await get_tree().create_timer(coyote_time).timeout
 	coyote_jump = false

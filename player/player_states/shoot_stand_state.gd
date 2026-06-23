@@ -1,7 +1,5 @@
 extends NodeState
 
-var bullet = preload("res://player/gun/bullet/bullet.tscn")
-
 @export var character_body_2d : CharacterBody2D
 @export var animated_sprite_2d : AnimatedSprite2D
 @export var gun : Node2D
@@ -23,6 +21,14 @@ func on_physics_process(delta : float):
 	# jump state
 	if GameInputEvents.jump_input():
 		transition.emit("Jump")
+	
+	# fall state
+	if !character_body_2d.is_on_floor():
+		transition.emit("Fall")
+	
+	# idle state (stopped shooting)
+	if not GameInputEvents.shoot_input() and direction == 0:
+		transition.emit("Idle")
 
 
 func enter():

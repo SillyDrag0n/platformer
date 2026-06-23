@@ -5,9 +5,8 @@ var bounty_reward = preload("res://ui/screens/bounty_reward.tscn")
 
 
 func _ready():
-	print_debug("Bounty ready")
 	if GameStateManager.active_bounty == null:
-		pass
+		return
 
 	for reward in GameStateManager.active_bounty.rewards:
 		var reward_instance = bounty_reward.instantiate()

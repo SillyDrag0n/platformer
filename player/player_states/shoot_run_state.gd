@@ -43,7 +43,7 @@ func on_physics_process(delta : float):
 	
 	# jump state
 	if GameInputEvents.jump_input():
-		transition.emit("jump")
+		transition.emit("Jump")
 
 
 func enter():

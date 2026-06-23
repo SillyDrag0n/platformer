@@ -1,7 +1,7 @@
 extends Control
 
 func _ready() -> void:
-		self.hide()
+	self.hide()
 
-func setValue(value):
+func set_value(value):
 	$TextureProgressBar.value = value

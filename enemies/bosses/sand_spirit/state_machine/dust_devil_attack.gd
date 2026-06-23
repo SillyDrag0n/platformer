@@ -17,4 +17,4 @@ func finish_next_frame():
 
 func spawn_dust_devils(count):
 	#TODO: implement dust devils attack
-	print("Boss spawn dust devils ", count)
+	pass

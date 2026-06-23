@@ -23,9 +23,7 @@ func bullet_impact():
 	queue_free()
 
 func _on_hurtbox_area_entered(_area:Area2D) -> void:
-	print("Enemy attack entered area")
 	bullet_impact()
 
 func _on_hurtbox_body_entered(_body:Node2D) -> void:
-	print("Enemy attack entered body")
 	bullet_impact()

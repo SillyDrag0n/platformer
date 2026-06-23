@@ -101,12 +101,14 @@ func clear_active_bounty():
 
 
 func give_bounty_reward():
+	if active_bounty == null:
+		return
+
 	if active_bounty.completed == false:
-		pass
+		return
 
 	if active_bounty.reward_claimed == true:
-		# TODO
-		pass 
+		return
 
 	active_bounty.reward_claimed = true
 	for reward in active_bounty.rewards:

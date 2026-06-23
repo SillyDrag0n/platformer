@@ -1,30 +1,29 @@
 extends CanvasLayer
 
 func _ready():
-	for player in get_tree().get_nodes_in_group("Player"):
-		PlayerManager.player_died.connect(ShowDeathScreen)
+	PlayerManager.player_died.connect(show_death_screen)
 
 
-func ShowDeathScreen():
+func show_death_screen():
 	visible = true
 
 
-func ReturnToHub():
+func return_to_hub():
 	return
 
 
-func ExitGame():
+func exit_game():
 	return
 
 
 func _on_respawn_button_pressed() -> void:
 	visible = false
-	RespawnManager.Respawn()
+	RespawnManager.respawn()
 
 
 func _on_hub_button_pressed() -> void:
-	ReturnToHub()
+	return_to_hub()
 
 
 func _on_exit_button_pressed() -> void:
-	ExitGame()
+	exit_game()

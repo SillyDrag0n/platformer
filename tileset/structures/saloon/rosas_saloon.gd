@@ -7,5 +7,4 @@ func _ready() -> void:
 
 
 func _on_interact():
-	print("Entered Saloon")
 	interactable.is_interactable = false

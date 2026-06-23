@@ -13,8 +13,8 @@ func _ready():
 	spawn_boss()
 
 
-func setPlayerInstance(playerInstance: CharacterBody2D):
-	player = playerInstance
+func set_player_instance(player_instance: CharacterBody2D):
+	player = player_instance
 
 
 func _on_death_zone_body_entered(body:Node2D) -> void:
@@ -36,6 +36,6 @@ func spawn_boss():
 
 
 func on_boss_defeated():
-	GameStateManager.complete_bounty(GameStateManager.active_bounty_id)
+	GameStateManager.complete_active_bounty()
 	GameStateManager.clear_active_bounty()
 	get_tree().change_scene_to_file("res://levels/hub_level.tscn")
