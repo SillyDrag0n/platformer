@@ -1,12 +1,8 @@
 extends NodeState
 
-var bullet = preload("res://player/gun/bullet/bullet.tscn")
-
 @export var character_body_2d : CharacterBody2D
 @export var animated_sprite_2d : AnimatedSprite2D
 @export var gun : Node2D
-
-var muzzle_position : Vector2
 
 func on_process(delta : float):
 	pass
@@ -25,6 +21,14 @@ func on_physics_process(delta : float):
 	# jump state
 	if GameInputEvents.jump_input():
 		transition.emit("Jump")
+	
+	# fall state
+	if !character_body_2d.is_on_floor():
+		transition.emit("Fall")
+	
+	# idle state (toggle crouch off)
+	if GameInputEvents.crouch_input():
+		transition.emit("Idle")
 
 
 func enter():

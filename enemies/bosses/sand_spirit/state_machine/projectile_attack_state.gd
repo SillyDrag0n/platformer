@@ -12,7 +12,7 @@ func enter():
 	
 func shoot():
 	#TODO: implement shoot attack
-	print("Boos Shoot Projectile")
+	pass
 
 func finish_next_frame():
 	await get_tree().process_frame

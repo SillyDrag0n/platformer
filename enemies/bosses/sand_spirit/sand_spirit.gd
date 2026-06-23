@@ -69,28 +69,24 @@ func _on_hurtbox_area_entered(area : Area2D):
 	if area.get_parent().has_method("get_damage_amount"):
 		var node = area.get_parent() as Node
 		health -= node.damage_amount
-		print(health)
-		
+
 		if health <= 0:
 			finite_state_machine.transition_to("death")
-			pass
 
 		check_phase_change()
 
 
 func check_phase_change():
 	if health <= 0:
-		pass
+		return
 
 	if health < max_health * 0.66 and phase == 1:
 		phase = 2
 		phase_started = true
-		print("Phase 2")
 
 	elif health < max_health * 0.33 and phase == 2:
 		phase = 3
 		phase_started = true
-		print("Phase 3")
 
 
 func play_animation(anim: Animations):

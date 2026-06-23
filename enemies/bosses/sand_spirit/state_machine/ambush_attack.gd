@@ -21,4 +21,4 @@ func on_physics_process(delta):
 
 func ambush():
 	#TODO: implement ambush attack
-	print("Ambush attack")
+	pass

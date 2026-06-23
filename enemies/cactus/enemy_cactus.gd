@@ -1,11 +1,8 @@
-extends CharacterBody2D
+extends Enemy
 
-var enemy_death_effect = preload("res://enemies/_common/enemy_death_effect.tscn")
 var cactus_attack = preload("res://enemies/cactus/cactus_attack.tscn")
 
 @export var wait_time : int = 3
-@export var health_amount : int = 3
-@export var damage_amount : int = 1
 
 @export var attack_spawns_left_01 : Marker2D
 @export var attack_spawns_left_02 : Marker2D
@@ -32,18 +29,16 @@ func _process(delta):
 func enemy_attack():
 	if current_state == State.Aggro && can_attack:
 		current_state = State.Attack
-		print_debug("Attack")
 		spawn_attacks(attack_spawns_left_01, -1)
 		spawn_attacks(attack_spawns_left_02, -1)
 		spawn_attacks(attack_spawns_right_01, 1)
 		spawn_attacks(attack_spawns_right_02, 1)
 
 func spawn_attacks(spawnpoint, direction):
-		var attack = cactus_attack.instantiate() as Node2D
-		attack.global_position = spawnpoint.global_position
-		attack.direction = direction
-		print_debug("Shoot projectile")
-		get_tree().current_scene.add_child(attack)
+	var attack = cactus_attack.instantiate() as Node2D
+	attack.global_position = spawnpoint.global_position
+	attack.direction = direction
+	get_tree().current_scene.add_child(attack)
 
 func enemy_animations():
 	if current_state == State.Idle:
@@ -63,23 +58,11 @@ func enemy_animations():
 func _on_timer_timeout():
 	can_attack = true
 
-func _on_hurtbox_area_entered(area : Area2D):
-	if area.get_parent().has_method("get_damage_amount"):
-		var node = area.get_parent() as Node
-		health_amount -= node.damage_amount
-		print("Health amount: ", health_amount)
-		
-		if health_amount <= 0:
-			var enemy_death_effect_instance = enemy_death_effect.instantiate() as Node2D
-			enemy_death_effect_instance.global_position = global_position
-			get_parent().add_child(enemy_death_effect_instance)
-			queue_free()
-
 func _on_aggro_area_body_entered(body:Node2D):
 	current_state = State.Aggro
 
 func _on_scout_area_body_entered(body:Node2D):
-		current_state = State.Scout
+	current_state = State.Scout
 
 func _on_scout_area_body_exited(body:Node2D):
 	current_state = State.Idle
