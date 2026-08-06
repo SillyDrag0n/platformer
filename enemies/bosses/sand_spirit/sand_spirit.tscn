@@ -1,4 +1,4 @@
-[gd_scene load_steps=27 format=3 uid="uid://cm47v18c8f03"]
+[gd_scene load_steps=28 format=3 uid="uid://cm47v18c8f03"]
 
 [ext_resource type="Script" uid="uid://cmasdw6hkyn8" path="res://enemies/bosses/sand_spirit/sand_spirit.gd" id="1_uepdw"]
 [ext_resource type="Texture2D" uid="uid://bewbrcv8wdy1w" path="res://enemies/bosses/sand_spirit/sprites/temp-enemy-attack01.png" id="2_oh5cw"]
@@ -22,6 +22,7 @@
 [ext_resource type="Script" uid="uid://6yhok01xpbej" path="res://enemies/bosses/sand_spirit/state_machine/cooldown.gd" id="19_t3v08"]
 [ext_resource type="Script" uid="uid://dyqoo56nre80e" path="res://enemies/bosses/sand_spirit/state_machine/phase_transition.gd" id="20_4nncl"]
 [ext_resource type="Script" uid="uid://q570g00gxnk3" path="res://enemies/bosses/sand_spirit/state_machine/death.gd" id="22_hsq3c"]
+[ext_resource type="Script" uid="uid://tkf4xtxu3xi6" path="res://enemies/bosses/sand_spirit/state_machine/intro.gd" id="23_tkf4x"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_hufni"]
 radius = 15.0
@@ -80,7 +81,7 @@ animations = [{
 "duration": 1.0,
 "texture": ExtResource("9_hhcka")
 }],
-"loop": true,
+"loop": false,
 "name": &"intro",
 "speed": 5.0
 }, {
@@ -162,10 +163,12 @@ cooldown_state = NodePath("../StateMachine/Cooldown")
 
 [node name="StateMachine" type="Node" parent="." node_paths=PackedStringArray("initial_node_state")]
 script = ExtResource("13_rsonh")
-initial_node_state = NodePath("Move")
+initial_node_state = NodePath("Idle")
 
-[node name="Intro" type="Node" parent="StateMachine"]
-script = ExtResource("14_rsonh")
+[node name="Intro" type="Node" parent="StateMachine" node_paths=PackedStringArray("boss", "Sprite")]
+script = ExtResource("23_tkf4x")
+boss = NodePath("../..")
+Sprite = NodePath("../../AnimatedSprite2D")
 metadata/_custom_type_script = "uid://dd5u7pxrdxlwe"
 
 [node name="Idle" type="Node" parent="StateMachine"]

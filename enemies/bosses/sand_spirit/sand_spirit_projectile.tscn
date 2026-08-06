@@ -1,0 +1,46 @@
+[gd_scene load_steps=6 format=3 uid="uid://c7ywpc4mqgpgf"]
+
+[ext_resource type="Texture2D" uid="uid://b3t5m55bo74t1" path="res://enemies/bosses/sand_spirit/sprites/sand_spirit_attack.png" id="1_3tb42"]
+[ext_resource type="Script" uid="uid://bpli5jta15214" path="res://enemies/bosses/sand_spirit/sand_spirit_projectile.gd" id="2_script"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_3k42t"]
+atlas = ExtResource("1_3tb42")
+region = Rect2(0, 0, 64, 64)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_shot"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_3k42t")
+}],
+"loop": true,
+"name": &"shot",
+"speed": 10.0
+}]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_4hrrw"]
+radius = 25.0
+
+[node name="SandSpiritProjectile" type="AnimatedSprite2D"]
+scale = Vector2(0.5, 0.5)
+sprite_frames = SubResource("SpriteFrames_shot")
+animation = &"shot"
+autoplay = "shot"
+script = ExtResource("2_script")
+
+[node name="Timer" type="Timer" parent="."]
+wait_time = 2.0
+one_shot = true
+autostart = true
+
+[node name="Hitbox" type="Area2D" parent="."]
+collision_layer = 1024
+collision_mask = 3
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Hitbox"]
+position = Vector2(0, 0.25)
+shape = SubResource("CircleShape2D_4hrrw")
+
+[connection signal="timeout" from="Timer" to="." method="_on_timer_timeout"]
+[connection signal="area_entered" from="Hitbox" to="." method="_on_hitbox_area_entered"]
+[connection signal="body_entered" from="Hitbox" to="." method="_on_hitbox_body_entered"]

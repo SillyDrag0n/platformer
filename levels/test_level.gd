@@ -3,6 +3,7 @@ extends Node2D
 @export var camera: Camera2D
 @export var respawn_marker: Marker2D
 @export var boss_spawn_marker: Marker2D
+@export var boss_arena: BossArena
 @export var player: CharacterBody2D
 @export var level_id : String
 
@@ -33,6 +34,7 @@ func spawn_boss():
 	var boss_instance = boss_scene.instantiate()
 	boss_instance.global_position = boss_spawn_marker.global_position
 	add_child(boss_instance)
+	boss_arena.boss = boss_instance
 
 
 func on_boss_defeated():

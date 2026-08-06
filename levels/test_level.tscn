@@ -1,4 +1,4 @@
-[gd_scene load_steps=24 format=4 uid="uid://gkr4g0dg7pla"]
+[gd_scene load_steps=25 format=4 uid="uid://gkr4g0dg7pla"]
 
 [ext_resource type="Script" uid="uid://uphv34nfh2ba" path="res://levels/test_level.gd" id="1_ur00s"]
 [ext_resource type="PackedScene" uid="uid://bfcmjoltsmsed" path="res://player/player.tscn" id="4_wndkh"]
@@ -14,6 +14,7 @@
 [ext_resource type="Texture2D" uid="uid://b6tfg1d00fxkb" path="res://tileset/paralax_backgrounds/Parallax3.png" id="11_axl34"]
 [ext_resource type="Texture2D" uid="uid://dfbtpy3tygbdh" path="res://tileset/paralax_backgrounds/Parallax2.png" id="12_8hjdj"]
 [ext_resource type="Texture2D" uid="uid://bao5suuofbayn" path="res://tileset/paralax_backgrounds/Parallax1.png" id="13_0vv12"]
+[ext_resource type="PackedScene" uid="uid://b760t7e0aygod" path="res://levels/boss_arena/boss_arena.tscn" id="14_arena"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_axl34"]
 resource_name = "Background"
@@ -5010,15 +5011,16 @@ sources/1 = SubResource("TileSetAtlasSource_o5yuq")
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_8hjdj"]
 size = Vector2(944, 50)
 
-[node name="TestLevel" type="Node2D" node_paths=PackedStringArray("camera", "respawn_marker", "boss_spawn_marker", "player")]
+[node name="TestLevel" type="Node2D" node_paths=PackedStringArray("camera", "respawn_marker", "boss_spawn_marker", "boss_arena", "player")]
 script = ExtResource("1_ur00s")
 camera = NodePath("PlayerCamera")
 respawn_marker = NodePath("RespawnPosition")
 boss_spawn_marker = NodePath("BossSpawnPosition")
+boss_arena = NodePath("BossArena")
 player = NodePath("Player")
 
 [node name="Player" parent="." instance=ExtResource("4_wndkh")]
-position = Vector2(3500, -750)
+position = Vector2(150, 220)
 
 [node name="PlayerCamera" type="Camera2D" parent="." node_paths=PackedStringArray("player")]
 position = Vector2(3500, -900)
@@ -5036,6 +5038,9 @@ position = Vector2(64, 210)
 
 [node name="BossSpawnPosition" type="Marker2D" parent="."]
 position = Vector2(3500, -900)
+
+[node name="BossArena" parent="." instance=ExtResource("14_arena")]
+position = Vector2(3500, -901)
 
 [node name="GameScreen" parent="." instance=ExtResource("8_ly3hx")]
 

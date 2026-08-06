@@ -1,0 +1,58 @@
+[gd_scene load_steps=5 format=3 uid="uid://b760t7e0aygod"]
+
+[ext_resource type="Script" uid="uid://g0juvdtdt7il" path="res://levels/boss_arena/boss_arena.gd" id="1_arena"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_trigger"]
+size = Vector2(750, 350)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_wall_v"]
+size = Vector2(32, 370)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_wall_h"]
+size = Vector2(770, 32)
+
+[node name="BossArena" type="Area2D"]
+collision_layer = 0
+collision_mask = 2
+script = ExtResource("1_arena")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("RectangleShape2D_trigger")
+
+[node name="Walls" type="Node2D" parent="."]
+
+[node name="Left" type="StaticBody2D" parent="Walls"]
+position = Vector2(-250, 0)
+collision_mask = 0
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Walls/Left"]
+position = Vector2(-126, 0)
+shape = SubResource("RectangleShape2D_wall_v")
+disabled = true
+
+[node name="Right" type="StaticBody2D" parent="Walls"]
+position = Vector2(250, 0)
+collision_mask = 0
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Walls/Right"]
+position = Vector2(125, 0)
+shape = SubResource("RectangleShape2D_wall_v")
+disabled = true
+
+[node name="Top" type="StaticBody2D" parent="Walls"]
+position = Vector2(0, -180)
+collision_mask = 0
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Walls/Top"]
+position = Vector2(0, 5)
+shape = SubResource("RectangleShape2D_wall_h")
+disabled = true
+
+[node name="Bottom" type="StaticBody2D" parent="Walls"]
+position = Vector2(0, 225)
+collision_mask = 0
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Walls/Bottom"]
+position = Vector2(0, -50)
+shape = SubResource("RectangleShape2D_wall_h")
+disabled = true

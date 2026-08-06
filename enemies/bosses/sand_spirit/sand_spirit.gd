@@ -1,6 +1,8 @@
 class_name BossStateController
 extends CharacterBody2D
 
+signal defeated
+
 @export var finite_state_machine : NodeFiniteStateMachine
 @export var animated_sprite : AnimatedSprite2D
 @export var max_health : int = 60
@@ -46,19 +48,17 @@ func _physics_process(delta):
 	move_and_slide()
 
 
-#func _on_boss_arena_entered(body:Node2D) -> void:
-#	if body.is_in_group("Player"):
-#		start_boss_fight()
-
-
-# func start_boss_fight():
-# 	finite_state_machine.transition_to("intro")
+func start_boss_fight():
+	if finite_state_machine.current_node_state.name.to_lower() != "idle":
+		return
+	finite_state_machine.transition_to("intro")
 
 
 func die():
 	var enemy_death_effect_instance = enemy_death_effect.instantiate() as Node2D
 	enemy_death_effect_instance.global_position = global_position
 	get_parent().add_child(enemy_death_effect_instance)
+	defeated.emit()
 	queue_free()
 	GameStateManager.complete_active_bounty()
 	GameStateManager.give_bounty_reward()

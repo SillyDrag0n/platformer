@@ -1,0 +1,43 @@
+[gd_scene load_steps=6 format=3 uid="uid://dmxhugqw1wnq4"]
+
+[ext_resource type="Texture2D" uid="uid://d0xmypt1ree68" path="res://enemies/bosses/sand_spirit/sprites/dust_devil_attack.png" id="2_0l03g"]
+[ext_resource type="Script" uid="uid://dg0koa1a3o623" path="res://enemies/bosses/sand_spirit/dust_devil.gd" id="2_script"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_40bkb"]
+atlas = ExtResource("2_0l03g")
+region = Rect2(0, 0, 64, 128)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_dust"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_40bkb")
+}],
+"loop": true,
+"name": &"default",
+"speed": 10.0
+}]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_shape"]
+
+[node name="DustDevil" type="Node2D"]
+script = ExtResource("2_script")
+
+[node name="Sprite" type="AnimatedSprite2D" parent="."]
+scale = Vector2(1.2, 1.2)
+sprite_frames = SubResource("SpriteFrames_dust")
+autoplay = "default"
+
+[node name="Timer" type="Timer" parent="."]
+one_shot = true
+
+[node name="Hurtbox" type="Area2D" parent="."]
+collision_layer = 1024
+collision_mask = 3
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Hurtbox"]
+shape = SubResource("CircleShape2D_shape")
+
+[connection signal="timeout" from="Timer" to="." method="_on_timer_timeout"]
+[connection signal="area_entered" from="Hurtbox" to="." method="_on_hurtbox_area_entered"]
+[connection signal="body_entered" from="Hurtbox" to="." method="_on_hurtbox_body_entered"]
