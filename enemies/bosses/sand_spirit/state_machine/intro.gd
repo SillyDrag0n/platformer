@@ -9,6 +9,5 @@ func _on_intro_finished():
 
 
 func enter():
-	print("Enter state entered")
 	boss.play_animation(boss.Animations.Intro)
-	Sprite.animation_finished.connect(_on_intro_finished)
+	Sprite.animation_finished.connect(_on_intro_finished, CONNECT_ONE_SHOT)

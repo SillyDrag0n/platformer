@@ -1,0 +1,41 @@
+[gd_scene load_steps=5 format=3]
+
+[ext_resource type="Texture2D" uid="uid://do5ojht6g16y2" path="res://player/player_death_effect/spark_dot.png" id="1_dot"]
+[ext_resource type="Script" path="res://enemies/bosses/sand_spirit/sand_eruption_effect.gd" id="2_script"]
+
+[sub_resource type="Gradient" id="Gradient_sand_eruption"]
+colors = PackedColorArray(0.87, 0.72, 0.45, 1, 0.55, 0.38, 0.18, 0)
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_sand_eruption"]
+gradient = SubResource("Gradient_sand_eruption")
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_sand_eruption"]
+emission_shape = 1
+emission_sphere_radius = 18.0
+particle_flag_disable_z = true
+direction = Vector3(0, -1, 0)
+spread = 50.0
+gravity = Vector3(0, 500, 0)
+initial_velocity_min = 120.0
+initial_velocity_max = 220.0
+scale_min = 0.6
+scale_max = 1.4
+color_ramp = SubResource("GradientTexture1D_sand_eruption")
+
+[node name="SandEruptionEffect" type="Node2D"]
+script = ExtResource("2_script")
+
+[node name="GPUParticles2D" type="GPUParticles2D" parent="."]
+amount = 48
+lifetime = 0.7
+one_shot = true
+explosiveness = 1.0
+process_material = SubResource("ParticleProcessMaterial_sand_eruption")
+texture = ExtResource("1_dot")
+
+[node name="Timer" type="Timer" parent="."]
+wait_time = 1.0
+one_shot = true
+autostart = true
+
+[connection signal="timeout" from="Timer" to="." method="_on_timer_timeout"]

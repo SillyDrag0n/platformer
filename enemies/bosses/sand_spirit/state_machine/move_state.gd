@@ -4,15 +4,14 @@ extends NodeState
 
 signal attack_requested
 
-var attack_timer
+var attack_timer: float
 
 func enter():
 	pick_new_target()
 	attack_timer = randf_range(2.0, 4.0) / boss.phase
 	boss.play_animation(boss.Animations.Move)
 
-func on_physics_process(delta):
-
+func physics_update(delta):
 	# Movement
 	var direction = (boss.hover_target - boss.global_position).normalized()
 	boss.velocity = direction * boss.hover_speed
@@ -23,7 +22,7 @@ func on_physics_process(delta):
 	# Attack trigger
 	attack_timer -= delta
 	if attack_timer <= 0:
-		attack_requested.emit()   # ← ONLY SIGNAL
+		attack_requested.emit()
 
 func pick_new_target():
 	boss.hover_target = Vector2(

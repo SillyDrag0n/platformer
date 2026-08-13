@@ -1,14 +1,13 @@
-[gd_scene load_steps=28 format=3 uid="uid://cm47v18c8f03"]
+[gd_scene load_steps=42 format=3 uid="uid://cm47v18c8f03"]
 
 [ext_resource type="Script" uid="uid://cmasdw6hkyn8" path="res://enemies/bosses/sand_spirit/sand_spirit.gd" id="1_uepdw"]
-[ext_resource type="Texture2D" uid="uid://bewbrcv8wdy1w" path="res://enemies/bosses/sand_spirit/sprites/temp-enemy-attack01.png" id="2_oh5cw"]
-[ext_resource type="Texture2D" uid="uid://cqxj1q3typ37y" path="res://enemies/bosses/sand_spirit/sprites/temp-enemy-attack02.png" id="3_8mpj4"]
 [ext_resource type="Texture2D" uid="uid://cn8wm1dyp6bv2" path="res://enemies/bosses/sand_spirit/sprites/temp-enemy-attack03.png" id="4_gwd1j"]
-[ext_resource type="Texture2D" uid="uid://c5w01gdmvrdsg" path="res://enemies/bosses/sand_spirit/sprites/temp-enemy-move.png" id="4_pflpt"]
+[ext_resource type="Texture2D" uid="uid://bdrjk7tb48ym7" path="res://enemies/bosses/sand_spirit/temp/sand_spirit_attack_01_spritesheet.png" id="4_o8iqb"]
 [ext_resource type="Texture2D" uid="uid://cba4bteob74h4" path="res://enemies/bosses/sand_spirit/sprites/temp-enemy-death.png" id="6_22xr6"]
 [ext_resource type="Texture2D" uid="uid://dk3a8saakm0xv" path="res://enemies/bosses/sand_spirit/sprites/temp-enemy-hidden.png" id="7_8mpj4"]
+[ext_resource type="Texture2D" uid="uid://dh65svwq2f0fd" path="res://enemies/bosses/sand_spirit/temp/sand_spirit_idle.png" id="7_o8iqb"]
 [ext_resource type="Texture2D" uid="uid://b71bl4wem7f1j" path="res://enemies/bosses/sand_spirit/sprites/temp-enemy-hide.png" id="7_rsonh"]
-[ext_resource type="Texture2D" uid="uid://c7xebpve3tq86" path="res://enemies/bosses/sand_spirit/sprites/temp-enemy-idle.png" id="8_n6hgt"]
+[ext_resource type="Texture2D" uid="uid://crukkqq41k0qg" path="res://enemies/bosses/sand_spirit/temp/sand_spirit_move_spritesheet.png" id="9_ctjbf"]
 [ext_resource type="Texture2D" uid="uid://uvjh2hyj5kax" path="res://enemies/bosses/sand_spirit/sprites/temp-enemy-intro.png" id="9_hhcka"]
 [ext_resource type="Texture2D" uid="uid://cwckh6jcbrbq3" path="res://enemies/bosses/sand_spirit/sprites/temp-enemy-crumble.png" id="10_hufni"]
 [ext_resource type="Script" uid="uid://b8lis7jjln0ot" path="res://enemies/bosses/sand_spirit/state_machine_controller.gd" id="12_n6hgt"]
@@ -16,7 +15,6 @@
 [ext_resource type="Script" uid="uid://dd5u7pxrdxlwe" path="res://scripts/state_machine/node_state.gd" id="14_rsonh"]
 [ext_resource type="Script" uid="uid://neipckx2xq28" path="res://enemies/bosses/sand_spirit/state_machine/move_state.gd" id="15_n6hgt"]
 [ext_resource type="Script" uid="uid://b53v65v4kjmib" path="res://enemies/bosses/sand_spirit/state_machine/projectile_attack_state.gd" id="16_hhcka"]
-[ext_resource type="Script" uid="uid://plcboqag22q7" path="res://enemies/bosses/sand_spirit/state_machine/choose_attack.gd" id="16_y3x15"]
 [ext_resource type="Script" uid="uid://buw4jfumisyfu" path="res://enemies/bosses/sand_spirit/state_machine/dust_devil_attack.gd" id="18_t3v08"]
 [ext_resource type="Script" uid="uid://drtbd0gdo0rnr" path="res://enemies/bosses/sand_spirit/state_machine/ambush_attack.gd" id="19_hufni"]
 [ext_resource type="Script" uid="uid://6yhok01xpbej" path="res://enemies/bosses/sand_spirit/state_machine/cooldown.gd" id="19_t3v08"]
@@ -26,6 +24,70 @@
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_hufni"]
 radius = 15.0
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ctjbf"]
+atlas = ExtResource("4_o8iqb")
+region = Rect2(0, 0, 64, 128)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_t6wns"]
+atlas = ExtResource("4_o8iqb")
+region = Rect2(64, 0, 64, 128)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_hkrof"]
+atlas = ExtResource("4_o8iqb")
+region = Rect2(128, 0, 64, 128)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_vcvny"]
+atlas = ExtResource("4_o8iqb")
+region = Rect2(192, 0, 64, 128)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_cv44e"]
+atlas = ExtResource("4_o8iqb")
+region = Rect2(256, 0, 64, 128)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_k4aoc"]
+atlas = ExtResource("4_o8iqb")
+region = Rect2(320, 0, 64, 128)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_0xqsh"]
+atlas = ExtResource("7_o8iqb")
+region = Rect2(0, 0, 64, 128)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_3bkbt"]
+atlas = ExtResource("9_ctjbf")
+region = Rect2(0, 0, 64, 128)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_f8h3r"]
+atlas = ExtResource("9_ctjbf")
+region = Rect2(64, 0, 64, 128)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_n24j1"]
+atlas = ExtResource("9_ctjbf")
+region = Rect2(128, 0, 64, 128)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_hsq3c"]
+atlas = ExtResource("4_o8iqb")
+region = Rect2(0, 0, 64, 128)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_o8iqb"]
+atlas = ExtResource("4_o8iqb")
+region = Rect2(64, 0, 64, 128)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_1l7ew"]
+atlas = ExtResource("4_o8iqb")
+region = Rect2(128, 0, 64, 128)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_25xm7"]
+atlas = ExtResource("4_o8iqb")
+region = Rect2(192, 0, 64, 128)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_obuym"]
+atlas = ExtResource("4_o8iqb")
+region = Rect2(256, 0, 64, 128)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_w3t72"]
+atlas = ExtResource("4_o8iqb")
+region = Rect2(320, 0, 64, 128)
 
 [sub_resource type="SpriteFrames" id="SpriteFrames_uepdw"]
 animations = [{
@@ -47,11 +109,26 @@ animations = [{
 }, {
 "frames": [{
 "duration": 1.0,
-"texture": ExtResource("3_8mpj4")
+"texture": SubResource("AtlasTexture_ctjbf")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_t6wns")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_hkrof")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_vcvny")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_cv44e")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_k4aoc")
 }],
 "loop": false,
 "name": &"dustDevilAttack",
-"speed": 5.0
+"speed": 10.0
 }, {
 "frames": [{
 "duration": 1.0,
@@ -71,11 +148,11 @@ animations = [{
 }, {
 "frames": [{
 "duration": 1.0,
-"texture": ExtResource("8_n6hgt")
+"texture": SubResource("AtlasTexture_0xqsh")
 }],
 "loop": true,
 "name": &"idle",
-"speed": 5.0
+"speed": 10.0
 }, {
 "frames": [{
 "duration": 1.0,
@@ -87,11 +164,17 @@ animations = [{
 }, {
 "frames": [{
 "duration": 1.0,
-"texture": ExtResource("4_pflpt")
+"texture": SubResource("AtlasTexture_3bkbt")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_f8h3r")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_n24j1")
 }],
 "loop": true,
 "name": &"move",
-"speed": 5.0
+"speed": 10.0
 }, {
 "frames": [{
 "duration": 1.0,
@@ -103,11 +186,26 @@ animations = [{
 }, {
 "frames": [{
 "duration": 1.0,
-"texture": ExtResource("2_oh5cw")
+"texture": SubResource("AtlasTexture_hsq3c")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_o8iqb")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_1l7ew")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_25xm7")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_obuym")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_w3t72")
 }],
 "loop": false,
 "name": &"projectileAttack",
-"speed": 5.0
+"speed": 10.0
 }]
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_uepdw"]
@@ -123,7 +221,6 @@ collision_mask = 32
 script = ExtResource("1_uepdw")
 finite_state_machine = NodePath("StateMachine")
 animated_sprite = NodePath("AnimatedSprite2D")
-max_health = 3
 hover_speed = 150
 arena_left = 3250
 arena_right = 3750
@@ -131,15 +228,17 @@ arena_top = -1200
 arena_bottom = -750
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+visible = false
 shape = SubResource("CircleShape2D_hufni")
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
 scale = Vector2(0.75, 0.75)
 sprite_frames = SubResource("SpriteFrames_uepdw")
-animation = &"phaseTransition"
+animation = &"ambushAttack"
 autoplay = "idle"
 
 [node name="Hurtbox" type="Area2D" parent="."]
+visible = false
 collision_layer = 4
 collision_mask = 32
 
@@ -177,11 +276,6 @@ metadata/_custom_type_script = "uid://dd5u7pxrdxlwe"
 
 [node name="Move" type="Node" parent="StateMachine" node_paths=PackedStringArray("boss")]
 script = ExtResource("15_n6hgt")
-boss = NodePath("../..")
-metadata/_custom_type_script = "uid://dd5u7pxrdxlwe"
-
-[node name="ChooseAttack" type="Node" parent="StateMachine" node_paths=PackedStringArray("boss")]
-script = ExtResource("16_y3x15")
 boss = NodePath("../..")
 metadata/_custom_type_script = "uid://dd5u7pxrdxlwe"
 

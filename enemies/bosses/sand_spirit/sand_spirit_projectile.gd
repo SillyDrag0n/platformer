@@ -1,6 +1,6 @@
 extends AnimatedSprite2D
 
-@export var speed : int = 350
+@export var speed : float = 350
 @export var direction : Vector2
 @export var damage_amount : int = 1
 
@@ -17,8 +17,8 @@ func _on_timer_timeout():
 func get_damage_amount() -> int:
 	return damage_amount
 
-func _on_hitbox_area_entered(area: Area2D) -> void:
+func _on_hitbox_area_entered(_area: Area2D) -> void:
 	queue_free()
 
-func _on_hitbox_body_entered(body: Node2D) -> void:
+func _on_hitbox_body_entered(_body: Node2D) -> void:
 	queue_free()

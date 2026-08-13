@@ -1,6 +1,6 @@
 extends NodeState
 
-@export var boss: CharacterBody2D
+@export var boss: BossStateController
 
 func enter():
 	boss.play_animation(boss.Animations.Death)

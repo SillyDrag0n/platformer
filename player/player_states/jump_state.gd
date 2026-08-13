@@ -13,6 +13,8 @@ extends NodeState
 var current_jump_count : int
 var coyote_jump : bool
 
+var footstep_dust_effect = preload("res://player/effects/footstep_dust_effect.tscn")
+
 func on_process(delta : float):
 	pass
 
@@ -50,16 +52,24 @@ func on_physics_process(delta : float):
 	character_body_2d.move_and_slide()
 	
 	# transitioning states
-	
+
 	# idle state
 	if character_body_2d.is_on_floor():
+		spawn_dust()
 		transition.emit("Idle")
 
 func enter():
 	coyote_jump = true
 	animated_sprite_2d.play("jump")
+	spawn_dust()
 
 
 func exit():
 	coyote_jump = false
 	animated_sprite_2d.stop()
+
+
+func spawn_dust():
+	var dust = footstep_dust_effect.instantiate() as Node2D
+	dust.global_position = character_body_2d.global_position
+	character_body_2d.get_parent().add_child(dust)

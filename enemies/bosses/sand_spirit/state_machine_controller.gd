@@ -21,12 +21,11 @@ func _ready():
 	# COOLDOWN → HOVER
 	cooldown_state.finished.connect(func(): node_finite_state_machine.transition_to("Move"))
 
-	# AMBUSH → COOLDOWN
-	ambush_attack_state.finished.connect(func(): node_finite_state_machine.transition_to("Cooldown"))
+	# AMBUSH → MOVE
+	ambush_attack_state.finished.connect(func(): node_finite_state_machine.transition_to("Move"))
 
 
 func _on_attack_requested():
-
 	var next = choose_attack()
 	node_finite_state_machine.transition_to(next)
 
@@ -36,7 +35,6 @@ func _on_attack_finished():
 
 
 func choose_attack():
-
 	var attacks = []
 
 	if boss.phase == 1:

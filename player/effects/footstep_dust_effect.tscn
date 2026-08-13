@@ -1,0 +1,41 @@
+[gd_scene load_steps=5 format=3]
+
+[ext_resource type="Texture2D" uid="uid://do5ojht6g16y2" path="res://player/player_death_effect/spark_dot.png" id="1_dot"]
+[ext_resource type="Script" path="res://player/effects/footstep_dust_effect.gd" id="2_script"]
+
+[sub_resource type="Gradient" id="Gradient_footstep_dust"]
+colors = PackedColorArray(0.75, 0.7, 0.6, 0.8, 0.6, 0.56, 0.48, 0)
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_footstep_dust"]
+gradient = SubResource("Gradient_footstep_dust")
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_footstep_dust"]
+emission_shape = 1
+emission_sphere_radius = 6.0
+particle_flag_disable_z = true
+direction = Vector3(0, -1, 0)
+spread = 60.0
+gravity = Vector3(0, 300, 0)
+initial_velocity_min = 30.0
+initial_velocity_max = 70.0
+scale_min = 0.2
+scale_max = 0.5
+color_ramp = SubResource("GradientTexture1D_footstep_dust")
+
+[node name="FootstepDustEffect" type="Node2D"]
+script = ExtResource("2_script")
+
+[node name="GPUParticles2D" type="GPUParticles2D" parent="."]
+amount = 12
+lifetime = 0.35
+one_shot = true
+explosiveness = 1.0
+process_material = SubResource("ParticleProcessMaterial_footstep_dust")
+texture = ExtResource("1_dot")
+
+[node name="Timer" type="Timer" parent="."]
+wait_time = 0.6
+one_shot = true
+autostart = true
+
+[connection signal="timeout" from="Timer" to="." method="_on_timer_timeout"]

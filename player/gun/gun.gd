@@ -1,6 +1,7 @@
 extends Node2D
 
 var bullet = preload("res://player/gun/bullet/bullet.tscn")
+var muzzle_flash_effect = preload("res://player/gun/muzzle_flash_effect.tscn")
 
 @export var bullet_speed := 500
 @export var bullet_damage := 1
@@ -63,6 +64,11 @@ func shoot():
 	bullet_instance.speed = bullet_speed
 	bullet_instance.damage_amount = bullet_damage
 	gun_shot_sound.play()
+
+	var flash_instance = muzzle_flash_effect.instantiate() as Node2D
+	flash_instance.global_position = muzzle.global_position
+	flash_instance.rotation = shootdirection.angle()
+	get_tree().current_scene.add_child(flash_instance)
 
 func reload():
 	reload_timer.start()

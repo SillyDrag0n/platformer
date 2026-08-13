@@ -13,8 +13,6 @@ func enter():
 	done = true
 
 func physics_update(_delta):
-
 	if done:
-		return "Ambush"
-
+		return "AmbushAttack"
 	return null

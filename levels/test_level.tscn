@@ -5020,7 +5020,7 @@ boss_arena = NodePath("BossArena")
 player = NodePath("Player")
 
 [node name="Player" parent="." instance=ExtResource("4_wndkh")]
-position = Vector2(150, 220)
+position = Vector2(4120, -870)
 
 [node name="PlayerCamera" type="Camera2D" parent="." node_paths=PackedStringArray("player")]
 position = Vector2(3500, -900)

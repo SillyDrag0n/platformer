@@ -5,7 +5,7 @@ signal defeated
 
 @export var finite_state_machine : NodeFiniteStateMachine
 @export var animated_sprite : AnimatedSprite2D
-@export var max_health : int = 60
+@export var max_health : int = 9
 @export var hover_speed := 200
 
 @export var arena_left := 100
@@ -13,14 +13,13 @@ signal defeated
 @export var arena_top := 100
 @export var arena_bottom := 350
 
+const HIT_FLASH_SHADER: Shader = preload("res://player/player_hit_flash_shader.tres")
+
 var enemy_death_effect = preload("res://enemies/_common/enemy_death_effect.tscn")
 var health : int
 var phase : int = 1
-var phase_started : bool = true
 var rng := RandomNumberGenerator.new()
 var hover_target: Vector2
-var current_state: NodeState
-var ready_to_attack: bool = true
 
 enum Animations { AmbushAttack, Death, DustDevilAttack, Hidden, Hide, Idle, Intro, Move, PhaseTransition, ProjectileAttack }
 var current_animation: Animations = Animations.Idle
@@ -69,6 +68,7 @@ func _on_hurtbox_area_entered(area : Area2D):
 	if area.get_parent().has_method("get_damage_amount"):
 		var node = area.get_parent() as Node
 		health -= node.damage_amount
+		flash_hit()
 
 		if health <= 0:
 			finite_state_machine.transition_to("death")
@@ -76,17 +76,29 @@ func _on_hurtbox_area_entered(area : Area2D):
 		check_phase_change()
 
 
+func flash_hit() -> void:
+	if animated_sprite.material == null:
+		var flash_material := ShaderMaterial.new()
+		flash_material.shader = HIT_FLASH_SHADER
+		animated_sprite.material = flash_material
+	var tween = create_tween()
+	tween.tween_property(animated_sprite, "material:shader_parameter/enabled", true, 0)
+	tween.tween_property(animated_sprite, "material:shader_parameter/enabled", false, 0.2)
+
+
 func check_phase_change():
 	if health <= 0:
 		return
+	var previous_phase = phase
 
 	if health < max_health * 0.66 and phase == 1:
 		phase = 2
-		phase_started = true
 
 	elif health < max_health * 0.33 and phase == 2:
 		phase = 3
-		phase_started = true
+
+	if phase != previous_phase and finite_state_machine != null:
+		finite_state_machine.transition_to("PhaseTransition")
 
 
 func play_animation(anim: Animations):
