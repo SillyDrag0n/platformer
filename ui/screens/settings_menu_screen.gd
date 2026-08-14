@@ -14,7 +14,7 @@ var window_modes : Dictionary = {"Fullscreen" : DisplayServer.WINDOW_MODE_EXCLUS
 var resolutions : Dictionary = {"320x180" : Vector2i(320, 180),
 								"480x270" : Vector2i(480, 270),
 								"640x360" : Vector2i(640, 360),
-								"854x480" : Vector2i(640, 360),
+								"854x480" : Vector2i(854, 480),
 								"1280x720" : Vector2i(1280, 720)}
 
 var max_fps_options : Dictionary = {"Unlimited" : 0,

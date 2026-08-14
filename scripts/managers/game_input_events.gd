@@ -1,10 +1,16 @@
 extends Node
 
-# Deadzone range the "Aim Sensitivity" setting maps into - low sensitivity means the stick
-# needs a bigger, more deliberate push before the aim responds (AIM_DEADZONE_MAX), high
-# sensitivity reacts to the slightest tilt (AIM_DEADZONE_MIN).
-const AIM_DEADZONE_MIN := 0.15
-const AIM_DEADZONE_MAX := 0.6
+# Fixed deadzone so a stick that isn't perfectly centered doesn't register as input on its own.
+# Not sensitivity-dependent - a raw angle is so sensitive near dead center that tying deadzone
+# size to "sensitivity" barely changed anything (a normal aiming push clears either extreme of
+# that range immediately, so the slider only ever touched the imperceptible center wobble).
+const AIM_DEADZONE := 0.2
+
+# How fast last_aim_direction turns to follow the stick, in radians/second. This is what the
+# "Aim Sensitivity" setting actually controls: low sensitivity turns slowly (aim lags behind a
+# quick flick, feels heavy), high sensitivity turns almost instantly.
+const AIM_TURN_SPEED_MIN := 5.0
+const AIM_TURN_SPEED_MAX := 50.0
 
 # 0 = least sensitive, 1 = most sensitive. Set by SettingsManager from the saved settings.
 static var aim_sensitivity : float = 0.5
@@ -31,6 +37,23 @@ func _input(event : InputEvent) -> void:
 		controller_active = false
 
 
+# Turns last_aim_direction toward the stick's current angle at a sensitivity-controlled rate.
+# Runs exactly once per frame here (rather than inside aim_input(), which can be called several
+# times a frame by different callers) so the turn rate stays correct regardless of how many
+# places query the aim direction on a given frame.
+func _process(delta : float) -> void:
+	if is_input_locked() or not controller_active:
+		return
+
+	var stick : Vector2 = Input.get_vector("aim_left", "aim_right", "aim_up", "aim_down", AIM_DEADZONE)
+	if stick.length() == 0.0:
+		return
+
+	var turn_speed := lerpf(AIM_TURN_SPEED_MIN, AIM_TURN_SPEED_MAX, clampf(aim_sensitivity, 0.0, 1.0))
+	var new_angle := rotate_toward(last_aim_direction.angle(), stick.angle(), turn_speed * delta)
+	last_aim_direction = Vector2.from_angle(new_angle)
+
+
 # Movement (left stick / A-D) and aiming (right stick / mouse) are read independently, so the
 # player can move and aim in different directions at the same time. `from_global` is only used
 # for the mouse fallback (aim direction = mouse position relative to that point) - controller
@@ -40,10 +63,6 @@ func aim_input(from_global : Vector2) -> Vector2:
 		return last_aim_direction
 
 	if controller_active:
-		var deadzone := lerpf(AIM_DEADZONE_MAX, AIM_DEADZONE_MIN, clampf(aim_sensitivity, 0.0, 1.0))
-		var stick : Vector2 = Input.get_vector("aim_left", "aim_right", "aim_up", "aim_down", deadzone)
-		if stick.length() > 0.0:
-			last_aim_direction = stick.normalized()
 		return last_aim_direction
 
 	var camera := get_viewport().get_camera_2d()

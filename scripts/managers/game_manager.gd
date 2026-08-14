@@ -33,5 +33,5 @@ func continue_game():
 
 
 func main_menu():
-	var main_menu_screen_instance = main_menu_screen.instantiate()
-	get_tree().get_root().add_child(main_menu_screen_instance)
+	get_tree().paused = false
+	get_tree().change_scene_to_packed(main_menu_screen)

@@ -9,6 +9,7 @@ extends Node2D
 @export var trajectory_max_distance : float = 900.0
 @export var trajectory_color : Color = Color(1, 1, 1, 0.18)
 @export var trajectory_width : float = 1.5
+@export var trajectory_dash_length : float = 8.0
 
 # Same layers the bullet's own hitbox checks (see bullet.tscn Hitbox.collision_mask), so the
 # line always ends exactly where a shot fired right now would actually land.
@@ -39,7 +40,7 @@ func _update_trajectory(anchor_global : Vector2, direction : Vector2) -> void:
 
 
 func _draw() -> void:
-	draw_line(to_local(trajectory_start_global), to_local(trajectory_end_global), trajectory_color, trajectory_width)
+	draw_dashed_line(to_local(trajectory_start_global), to_local(trajectory_end_global), trajectory_color, trajectory_width, trajectory_dash_length)
 
 	draw_arc(Vector2.ZERO, reticle_radius_px, 0.0, TAU, 20, reticle_color, 2.0, true)
 
