@@ -10,15 +10,12 @@ const GRAPPLE_ANCHOR_MASK : int = 1 << 11 # layer 12 "GrappleAnchor"
 
 
 func get_aim_direction(from_global : Vector2) -> Vector2:
-	var camera := get_viewport().get_camera_2d()
-	if camera == null:
-		return Vector2.ZERO
-	var mouse_global := camera.get_global_mouse_position()
-	return (mouse_global - from_global).normalized()
+	return GameInputEvents.aim_input(from_global)
 
 
-# Casts a ray toward the mouse and returns the hit GrappleAnchor, or null if
-# the aim is out of range, blocked by geometry, or not pointed at an anchor.
+# Casts a ray toward the current aim direction (stick or mouse) and returns the hit
+# GrappleAnchor, or null if the aim is out of range, blocked by geometry, or not pointed
+# at an anchor.
 func find_anchor(from_global : Vector2) -> Node2D:
 	var direction := get_aim_direction(from_global)
 	if direction == Vector2.ZERO:

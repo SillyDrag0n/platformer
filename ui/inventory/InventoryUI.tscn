@@ -1,9 +1,10 @@
-[gd_scene load_steps=8 format=3 uid="uid://rx3auanfsgp0"]
+[gd_scene load_steps=9 format=3 uid="uid://rx3auanfsgp0"]
 
 [ext_resource type="Script" uid="uid://badieadd4juu0" path="res://ui/inventory/inventory_ui.gd" id="1_73x1u"]
 [ext_resource type="PackedScene" uid="uid://cb75n4qc854ox" path="res://ui/inventory/ItemSlot.tscn" id="2_73x1u"]
 [ext_resource type="Texture2D" uid="uid://xgv7mcdhswi4" path="res://icon.svg" id="2_h7hxg"]
 [ext_resource type="FontFile" uid="uid://kiwlymd55nc2" path="res://ui/font/BoldPixels.ttf" id="3_gvwsh"]
+[ext_resource type="PackedScene" path="res://ui/inventory/BountyEntry.tscn" id="5_bnty1"]
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_mjk5w"]
 content_margin_left = 240.0
@@ -19,10 +20,17 @@ font_size = 48
 font = ExtResource("3_gvwsh")
 font_size = 32
 
-[node name="InventoryUi" type="CanvasLayer" node_paths=PackedStringArray("item_grid")]
+[node name="InventoryUi" type="CanvasLayer" node_paths=PackedStringArray("item_grid", "bounty_list_container", "bounty_title_label", "bounty_status_label", "bounty_description_label", "bounty_detail_icon")]
 script = ExtResource("1_73x1u")
 item_grid = NodePath("Panel/MarginContainer/TabContainer/Items/ItemSlots/ItemsGridContainer")
 item_slot_scene = ExtResource("2_73x1u")
+bounty_list_container = NodePath("Panel/MarginContainer/TabContainer/Bounties/BountyList/ScrollContainer/BountyListContainer")
+bounty_title_label = NodePath("Panel/MarginContainer/TabContainer/Bounties/Bounty Information/HBoxContainer/VBoxContainer/PanelContainer/BountyTitleLabel")
+bounty_status_label = NodePath("Panel/MarginContainer/TabContainer/Bounties/Bounty Information/HBoxContainer/VBoxContainer/BountyStatusLabel")
+bounty_description_label = NodePath("Panel/MarginContainer/TabContainer/Bounties/Bounty Information/HBoxContainer/VBoxContainer/PanelContainer2/BountyDescriptionLabel")
+bounty_detail_icon = NodePath("Panel/MarginContainer/TabContainer/Bounties/Bounty Information/HBoxContainer/BountyInformationIcon/BountyIconTextureRect")
+bounty_entry_scene = ExtResource("5_bnty1")
+default_bounty_icon = ExtResource("2_h7hxg")
 
 [node name="Panel" type="Panel" parent="."]
 anchors_preset = 15
@@ -116,8 +124,27 @@ visible = false
 layout_mode = 2
 metadata/_tab_index = 1
 
-[node name="MarginContainer" type="MarginContainer" parent="Panel/MarginContainer/TabContainer/Bounties"]
+[node name="BountyList" type="MarginContainer" parent="Panel/MarginContainer/TabContainer/Bounties"]
 layout_mode = 0
+offset_right = 1440.0
+offset_bottom = 591.0
+theme_override_constants/margin_left = 16
+theme_override_constants/margin_top = 16
+theme_override_constants/margin_right = 16
+theme_override_constants/margin_bottom = 16
+
+[node name="ScrollContainer" type="ScrollContainer" parent="Panel/MarginContainer/TabContainer/Bounties/BountyList"]
+layout_mode = 2
+horizontal_scroll_mode = 0
+
+[node name="BountyListContainer" type="VBoxContainer" parent="Panel/MarginContainer/TabContainer/Bounties/BountyList/ScrollContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/separation = 6
+
+[node name="Bounty Information" type="MarginContainer" parent="Panel/MarginContainer/TabContainer/Bounties"]
+layout_mode = 0
+offset_top = 591.0
 offset_right = 1440.0
 offset_bottom = 840.0
 theme_override_constants/margin_left = 16
@@ -125,9 +152,49 @@ theme_override_constants/margin_top = 16
 theme_override_constants/margin_right = 16
 theme_override_constants/margin_bottom = 16
 
-[node name="GridContainer" type="GridContainer" parent="Panel/MarginContainer/TabContainer/Bounties/MarginContainer"]
+[node name="HBoxContainer" type="HBoxContainer" parent="Panel/MarginContainer/TabContainer/Bounties/Bounty Information"]
 layout_mode = 2
-columns = 5
+
+[node name="BountyInformationIcon" type="PanelContainer" parent="Panel/MarginContainer/TabContainer/Bounties/Bounty Information/HBoxContainer"]
+custom_minimum_size = Vector2(218, 0)
+layout_mode = 2
+
+[node name="BountyIconTextureRect" type="TextureRect" parent="Panel/MarginContainer/TabContainer/Bounties/Bounty Information/HBoxContainer/BountyInformationIcon"]
+custom_minimum_size = Vector2(190, 190)
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+expand_mode = 1
+stretch_mode = 5
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Panel/MarginContainer/TabContainer/Bounties/Bounty Information/HBoxContainer"]
+clip_contents = true
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="PanelContainer" type="PanelContainer" parent="Panel/MarginContainer/TabContainer/Bounties/Bounty Information/HBoxContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 0
+
+[node name="BountyTitleLabel" type="Label" parent="Panel/MarginContainer/TabContainer/Bounties/Bounty Information/HBoxContainer/VBoxContainer/PanelContainer"]
+layout_mode = 2
+text = "Select a bounty"
+label_settings = SubResource("LabelSettings_73x1u")
+
+[node name="BountyStatusLabel" type="Label" parent="Panel/MarginContainer/TabContainer/Bounties/Bounty Information/HBoxContainer/VBoxContainer"]
+layout_mode = 2
+label_settings = SubResource("LabelSettings_hu5s4")
+
+[node name="PanelContainer2" type="PanelContainer" parent="Panel/MarginContainer/TabContainer/Bounties/Bounty Information/HBoxContainer/VBoxContainer"]
+clip_contents = true
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="BountyDescriptionLabel" type="Label" parent="Panel/MarginContainer/TabContainer/Bounties/Bounty Information/HBoxContainer/VBoxContainer/PanelContainer2"]
+layout_mode = 2
+label_settings = SubResource("LabelSettings_hu5s4")
+autowrap_mode = 3
+text_overrun_behavior = 1
 
 [node name="Quests" type="Control" parent="Panel/MarginContainer/TabContainer"]
 visible = false

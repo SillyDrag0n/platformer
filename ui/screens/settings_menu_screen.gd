@@ -5,6 +5,7 @@ extends CanvasLayer
 @onready var max_fps_option_button = $MarginContainer/PanelContainer/MarginContainer/VBoxContainer/MaxFpsOptionButton
 @onready var vsync_check_button = $MarginContainer/PanelContainer/MarginContainer/VBoxContainer/VSyncCheckButton
 @onready var master_volume_slider = $MarginContainer/PanelContainer/MarginContainer/VBoxContainer/MasterVolumeSlider
+@onready var aim_sensitivity_slider = $MarginContainer/PanelContainer/MarginContainer/VBoxContainer/AimSensitivitySlider
 
 var window_modes : Dictionary = {"Fullscreen" : DisplayServer.WINDOW_MODE_EXCLUSIVE_FULLSCREEN,
 								 "Window" : DisplayServer.WINDOW_MODE_WINDOWED,
@@ -35,6 +36,13 @@ func _ready():
 		max_fps_option_button.add_item(max_fps_option)
 
 	initialise_controls()
+	window_mode_option_button.grab_focus()
+
+
+func _unhandled_input(event : InputEvent) -> void:
+	if event.is_action_pressed("ui_cancel"):
+		_on_main_menu_button_pressed()
+		get_viewport().set_input_as_handled()
 
 
 func initialise_controls():
@@ -45,6 +53,7 @@ func initialise_controls():
 	max_fps_option_button.selected = settings_data.max_fps_index
 	vsync_check_button.button_pressed = settings_data.vsync_enabled
 	master_volume_slider.value = settings_data.master_volume * 100.0
+	aim_sensitivity_slider.value = settings_data.aim_sensitivity * 100.0
 
 
 func _on_window_mode_option_button_item_selected(index):
@@ -68,6 +77,10 @@ func _on_v_sync_check_button_toggled(toggled_on):
 
 func _on_master_volume_slider_value_changed(value):
 	SettingsManager.set_master_volume(value / 100.0)
+
+
+func _on_aim_sensitivity_slider_value_changed(value):
+	SettingsManager.set_aim_sensitivity(value / 100.0)
 
 
 func _on_main_menu_button_pressed():

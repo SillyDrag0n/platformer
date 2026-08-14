@@ -1,10 +1,13 @@
 extends CanvasLayer
 
 @onready var RewardsContainer: HBoxContainer = $PanelContainer/VBoxContainer/RewardsContainer
+@onready var return_button: Button = $PanelContainer/VBoxContainer/Button
 var bounty_reward = preload("res://ui/screens/bounty_reward.tscn")
 
 
 func _ready():
+	return_button.grab_focus()
+
 	if GameStateManager.active_bounty == null:
 		return
 

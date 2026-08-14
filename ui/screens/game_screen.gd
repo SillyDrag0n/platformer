@@ -13,3 +13,9 @@ func on_collectible_award_received(total_award : int):
 
 func _on_pause_texture_button_pressed():
 	GameManager.pause_game()
+
+
+func _unhandled_input(event : InputEvent) -> void:
+	if event.is_action_pressed("pause"):
+		GameManager.pause_game()
+		get_viewport().set_input_as_handled()

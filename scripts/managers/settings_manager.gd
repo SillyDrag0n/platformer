@@ -23,6 +23,7 @@ func load_settings():
 		set_max_fps(settings_data.max_fps, settings_data.max_fps_index)
 		set_vsync_enabled(settings_data.vsync_enabled)
 		set_master_volume(settings_data.master_volume)
+		set_aim_sensitivity(settings_data.aim_sensitivity)
 
 
 func set_window_mode(window_mode : int, window_mode_index : int):
@@ -61,6 +62,11 @@ func set_master_volume(master_volume : float):
 	var master_bus_index := AudioServer.get_bus_index("Master")
 	AudioServer.set_bus_volume_db(master_bus_index, linear_to_db(master_volume))
 	settings_data.master_volume = master_volume
+
+
+func set_aim_sensitivity(aim_sensitivity : float):
+	GameInputEvents.aim_sensitivity = aim_sensitivity
+	settings_data.aim_sensitivity = aim_sensitivity
 
 
 func get_settings() -> SettingsDataResource:

@@ -54,9 +54,7 @@ func try_shoot() -> bool:
 func shoot():
 	var bullet_instance = bullet.instantiate() as Node2D
 	get_tree().current_scene.add_child(bullet_instance)
-	var camera = get_viewport().get_camera_2d()
-	var mouse_global = camera.get_global_mouse_position()
-	var shootdirection : Vector2 = (mouse_global - muzzle.global_position).normalized()
+	var shootdirection : Vector2 = GameInputEvents.aim_input(muzzle.global_position)
 
 	bullet_instance.direction = shootdirection
 	bullet_instance.rotation = bullet_instance.direction.angle()

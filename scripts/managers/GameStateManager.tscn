@@ -1,4 +1,4 @@
-[gd_scene load_steps=13 format=3 uid="uid://b2vp1eh6ugpb1"]
+[gd_scene load_steps=14 format=3 uid="uid://b2vp1eh6ugpb1"]
 
 [ext_resource type="Script" uid="uid://r6e2p1myj1t2" path="res://scripts/managers/game_state_manager.gd" id="1_xk7k0"]
 [ext_resource type="Script" uid="uid://1a50eu8xiuur" path="res://scripts/bounties/bounty_data.gd" id="2_15i0w"]
@@ -7,6 +7,7 @@
 [ext_resource type="Script" uid="uid://camrqsq3m0sth" path="res://scripts/bounties/region_data.gd" id="4_moqx8"]
 [ext_resource type="Script" uid="uid://djhxi31kg3jus" path="res://scripts/items/item_data.gd" id="5_ypgds"]
 [ext_resource type="Texture2D" uid="uid://xgv7mcdhswi4" path="res://icon.svg" id="6_u16yc"]
+[ext_resource type="Texture2D" uid="uid://dh65svwq2f0fd" path="res://enemies/bosses/sand_spirit/temp/sand_spirit_idle.png" id="7_sspic"]
 
 [sub_resource type="Resource" id="Resource_7qxxb"]
 script = ExtResource("5_ypgds")
@@ -21,6 +22,8 @@ script = ExtResource("2_15i0w")
 id = "1"
 title = "Sand Spirit"
 region_id = "1"
+description = "A restless spirit has been seen whipping up sandstorms at the edge of the plains, burying travelers' camps overnight. Locals want it put down before the dunes swallow the road entirely."
+icon = ExtResource("7_sspic")
 unlocked = true
 completed = false
 reward_claimed = false

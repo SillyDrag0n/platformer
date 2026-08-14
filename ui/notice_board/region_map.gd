@@ -5,12 +5,18 @@ func _ready():
 
 func spawn_bounties():
 	var bounties = GameStateManager.get_bounties_for_region(GameStateManager.current_region)
+	var first_poster : Node = null
 
 	for bounty in bounties:
 		if GameStateManager.is_bounty_unlocked(bounty.id):
-			spawn_poster(bounty)
+			var poster = spawn_poster(bounty)
+			if first_poster == null:
+				first_poster = poster
 
-func spawn_poster(bounty):
+	if first_poster:
+		first_poster.grab_focus_button()
+
+func spawn_poster(bounty) -> Node:
 	var poster_scene = preload("res://ui/notice_board/notice_board_bounty.tscn")
 	var poster = poster_scene.instantiate()
 
@@ -19,6 +25,7 @@ func spawn_poster(bounty):
 	poster.setup(bounty)
 
 	poster.bounty_selected.connect(_on_bounty_selected)
+	return poster
 
 func _on_bounty_selected(bounty):
 		GameStateManager.set_active_bounty(bounty)

@@ -1,11 +1,15 @@
 extends CanvasLayer
 
+@onready var respawn_button = $PanelContainer/VBoxContainer/RespawnButton
+
+
 func _ready():
 	PlayerManager.player_died.connect(show_death_screen)
 
 
 func show_death_screen():
 	visible = true
+	respawn_button.grab_focus()
 
 
 func return_to_hub():

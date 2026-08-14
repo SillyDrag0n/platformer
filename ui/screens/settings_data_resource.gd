@@ -9,3 +9,4 @@ class_name SettingsDataResource
 @export var max_fps_index : int = 0
 @export var vsync_enabled : bool = true
 @export var master_volume : float = 1.0
+@export var aim_sensitivity : float = 0.5

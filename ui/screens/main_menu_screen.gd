@@ -2,6 +2,13 @@ extends CanvasLayer
 
 var settings_menu_screen = preload("res://ui/screens/settings_menu_screen.tscn")
 
+@onready var play_button = $MarginContainer/PanelContainer/MarginContainer/VBoxContainer/PlayButton
+
+
+func _ready():
+	play_button.grab_focus()
+
+
 func _on_play_button_pressed():
 	GameManager.start_game()
 	queue_free()

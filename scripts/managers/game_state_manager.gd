@@ -1,5 +1,9 @@
 extends Node
 
+signal bounty_unlocked(bounty: BountyData)
+signal bounty_completed(bounty: BountyData)
+signal region_unlocked(region: RegionData)
+
 @export var bounties: Array[BountyData]
 @export var regions: Array[RegionData]
 
@@ -33,7 +37,9 @@ func is_region_unlocked(region_id: String) -> bool:
 
 func unlock_region(region_id: String):
 	if _region_lookup.has(region_id):
-		_region_lookup[region_id].unlocked = true
+		var region = _region_lookup[region_id]
+		region.unlocked = true
+		region_unlocked.emit(region)
 
 
 func get_unlocked_regions() -> Array[RegionData]:
@@ -63,18 +69,21 @@ func unlock_bounty(id: String):
 	var bounty = get_bounty_by_id(id)
 	if bounty:
 		bounty.unlocked = true
+		bounty_unlocked.emit(bounty)
 
 
 func complete_bounty(id: String):
 	var bounty = get_bounty_by_id(id)
 	if bounty:
 		bounty.completed = true
+		bounty_completed.emit(bounty)
 
 
 func complete_active_bounty():
 	var bounty = active_bounty
 	if bounty:
 		bounty.completed = true
+		bounty_completed.emit(bounty)
 
 
 func is_bounty_unlocked(id: String) -> bool:
