@@ -5,6 +5,8 @@ var current_interactions := []
 var can_interact := true
 
 func _input(event: InputEvent) -> void:
+	if InventoryManager.is_open:
+		return
 	if event.is_action_pressed("interact") and can_interact:
 		if current_interactions:
 			can_interact = false

@@ -4,6 +4,7 @@ signal updated_inventory
 
 var size: int = 20
 var start_items: Dictionary[ItemData, int]
+var is_open: bool = false
 
 # PURE DATA (no nodes)
 var item_slots: Array = []

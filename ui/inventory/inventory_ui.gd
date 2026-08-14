@@ -6,10 +6,13 @@ extends CanvasLayer
 func _ready():
 	InventoryManager.updated_inventory.connect(update_inventory_ui)
 	create_inventory_ui()
+	visible = false
+	InventoryManager.is_open = false
 
 func _process(_delta):
 	if GameInputEvents.inventory_input():
 		visible = !visible
+		InventoryManager.is_open = visible
 
 
 func update_inventory_ui():

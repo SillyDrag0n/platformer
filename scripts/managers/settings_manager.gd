@@ -20,6 +20,9 @@ func load_settings():
 	if settings_data != null:
 		set_window_mode(settings_data.window_mode, settings_data.window_mode_index)
 		set_resolution(settings_data.resolution, settings_data.resolution_index)
+		set_max_fps(settings_data.max_fps, settings_data.max_fps_index)
+		set_vsync_enabled(settings_data.vsync_enabled)
+		set_master_volume(settings_data.master_volume)
 
 
 func set_window_mode(window_mode : int, window_mode_index : int):
@@ -41,6 +44,23 @@ func set_resolution(resolution : Vector2i, resolution_index : int):
 	get_tree().root.content_scale_size = resolution
 	settings_data.resolution = resolution
 	settings_data.resolution_index = resolution_index
+
+
+func set_max_fps(max_fps : int, max_fps_index : int):
+	Engine.max_fps = max_fps
+	settings_data.max_fps = max_fps
+	settings_data.max_fps_index = max_fps_index
+
+
+func set_vsync_enabled(vsync_enabled : bool):
+	DisplayServer.window_set_vsync_mode(DisplayServer.VSYNC_ENABLED if vsync_enabled else DisplayServer.VSYNC_DISABLED)
+	settings_data.vsync_enabled = vsync_enabled
+
+
+func set_master_volume(master_volume : float):
+	var master_bus_index := AudioServer.get_bus_index("Master")
+	AudioServer.set_bus_volume_db(master_bus_index, linear_to_db(master_volume))
+	settings_data.master_volume = master_volume
 
 
 func get_settings() -> SettingsDataResource:
