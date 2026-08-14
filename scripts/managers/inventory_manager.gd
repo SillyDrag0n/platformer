@@ -1,6 +1,8 @@
 extends Node
 
 signal updated_inventory
+signal equipped_weapon_changed(weapon : WeaponItemData)
+signal equipped_ammo_changed(ammo : AmmoItemData)
 
 var size: int = 20
 var start_items: Dictionary[ItemData, int]
@@ -8,6 +10,8 @@ var is_open: bool = false
 
 # PURE DATA (no nodes)
 var item_slots: Array = []
+var equipped_weapon : WeaponItemData = null
+var equipped_ammo : AmmoItemData = null
 
 func _ready():
 	initialize_inventory()
@@ -67,6 +71,27 @@ func remove_item(item: ItemData):
 		slot["quantity"] -= 1
 
 	updated_inventory.emit()
+
+
+func equip_weapon(weapon: WeaponItemData) -> bool:
+	if weapon != null and get_item_slot_index(weapon) == -1:
+		return false
+
+	equipped_weapon = weapon
+	equipped_weapon_changed.emit(equipped_weapon)
+	return true
+
+
+func equip_ammo(ammo: AmmoItemData) -> bool:
+	if ammo != null:
+		if get_item_slot_index(ammo) == -1:
+			return false
+		if equipped_weapon != null and not equipped_weapon.compatible_ammo.is_empty() and not equipped_weapon.compatible_ammo.has(ammo):
+			return false
+
+	equipped_ammo = ammo
+	equipped_ammo_changed.emit(equipped_ammo)
+	return true
 
 
 func get_item_slot_index(item: ItemData) -> int:

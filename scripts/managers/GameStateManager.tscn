@@ -1,4 +1,4 @@
-[gd_scene load_steps=14 format=3 uid="uid://b2vp1eh6ugpb1"]
+[gd_scene load_steps=17 format=3 uid="uid://b2vp1eh6ugpb1"]
 
 [ext_resource type="Script" uid="uid://r6e2p1myj1t2" path="res://scripts/managers/game_state_manager.gd" id="1_xk7k0"]
 [ext_resource type="Script" uid="uid://1a50eu8xiuur" path="res://scripts/bounties/bounty_data.gd" id="2_15i0w"]
@@ -8,6 +8,9 @@
 [ext_resource type="Script" uid="uid://djhxi31kg3jus" path="res://scripts/items/item_data.gd" id="5_ypgds"]
 [ext_resource type="Texture2D" uid="uid://xgv7mcdhswi4" path="res://icon.svg" id="6_u16yc"]
 [ext_resource type="Texture2D" uid="uid://dh65svwq2f0fd" path="res://enemies/bosses/sand_spirit/temp/sand_spirit_idle.png" id="7_sspic"]
+[ext_resource type="Script" path="res://scripts/abilities/ability_data.gd" id="8_ability_data"]
+[ext_resource type="Resource" path="res://abilities/double_jump.tres" id="9_double_jump"]
+[ext_resource type="Resource" path="res://abilities/grapple_hook.tres" id="10_grapple_hook"]
 
 [sub_resource type="Resource" id="Resource_7qxxb"]
 script = ExtResource("5_ypgds")
@@ -31,6 +34,7 @@ map_position = Vector2(350, 450)
 level_scene = ExtResource("3_moqx8")
 boss_scene = ExtResource("3_v6kma")
 rewards = Array[ExtResource("5_ypgds")]([SubResource("Resource_7qxxb")])
+ability_rewards = Array[ExtResource("8_ability_data")]([ExtResource("9_double_jump"), ExtResource("10_grapple_hook")])
 metadata/_custom_type_script = "uid://1a50eu8xiuur"
 
 [sub_resource type="Resource" id="Resource_v6kma"]

@@ -6,6 +6,6 @@ extends Node2D
 
 func _on_area_2d_body_entered(body:Node2D) -> void:
 	if body.is_in_group("Player"):
-		respawn_marker.global_position = position
+		respawn_marker.global_position = global_position
 		checkpoint_active = true
 		animated_sprite_2d.play("active")

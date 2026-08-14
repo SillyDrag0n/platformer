@@ -29,6 +29,7 @@ SettingsManager="*res://scripts/managers/SettingsManager.tscn"
 UiManager="*res://scripts/managers/UiManager.tscn"
 InventoryManager="*res://scripts/managers/InventoryManager.tscn"
 GameStateManager="*res://scripts/managers/GameStateManager.tscn"
+AbilityManager="*res://scripts/managers/AbilityManager.tscn"
 
 [display]
 
@@ -36,7 +37,6 @@ window/size/viewport_width=1920
 window/size/viewport_height=1080
 window/size/mode=3
 window/stretch/mode="canvas_items"
-window/stretch/aspect="keep"
 
 [gui]
 

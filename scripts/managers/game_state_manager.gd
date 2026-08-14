@@ -122,3 +122,5 @@ func give_bounty_reward():
 	active_bounty.reward_claimed = true
 	for reward in active_bounty.rewards:
 		InventoryManager.add_item(reward)
+	for ability in active_bounty.ability_rewards:
+		AbilityManager.unlock_ability(ability)

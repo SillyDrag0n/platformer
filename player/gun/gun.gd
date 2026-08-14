@@ -3,12 +3,13 @@ extends Node2D
 var bullet = preload("res://player/gun/bullet/bullet.tscn")
 var muzzle_flash_effect = preload("res://player/gun/muzzle_flash_effect.tscn")
 
-@export var bullet_speed := 500
-@export var bullet_damage := 1
-#TODO: check if cooldown can be replaced by shoot_timer, why is it necessary?
-@export var cooldown := 0.75
-@export var magazine_max := 6
-@export var magazine_current := 6
+@export var default_weapon : WeaponItemData
+@export var default_ammo : AmmoItemData
+
+var weapon : WeaponItemData
+var ammo : AmmoItemData
+var magazine_current : int
+
 @onready var muzzle = $Muzzle
 @onready var shoot_timer = $ShootTimer
 @onready var reload_timer = $ReloadTimer
@@ -19,7 +20,10 @@ var muzzle_flash_effect = preload("res://player/gun/muzzle_flash_effect.tscn")
 
 
 func _ready():
-	shoot_timer.wait_time = cooldown
+	InventoryManager.equipped_weapon_changed.connect(_on_equipped_weapon_changed)
+	InventoryManager.equipped_ammo_changed.connect(_on_equipped_ammo_changed)
+	equip_weapon(InventoryManager.equipped_weapon if InventoryManager.equipped_weapon else default_weapon)
+	equip_ammo(InventoryManager.equipped_ammo if InventoryManager.equipped_ammo else default_ammo)
 
 func _process(_delta):
 	if GameInputEvents.reload_input():
@@ -27,16 +31,22 @@ func _process(_delta):
 	if !reload_timer.is_stopped():
 		reload_ui.set_value(reload_timer.time_left / reload_timer.wait_time)
 
-# --- Upgrade setters ---
-func set_cooldown(new_cooldown: float):
-	cooldown = new_cooldown
-	shoot_timer.wait_time = cooldown
+# --- Equipping ---
+func equip_weapon(new_weapon : WeaponItemData):
+	if new_weapon == null:
+		return
+	weapon = new_weapon
+	shoot_timer.wait_time = weapon.cooldown
+	magazine_current = weapon.magazine_size
 
-func set_damage(new_damage: int):
-	bullet_damage = new_damage
+func equip_ammo(new_ammo : AmmoItemData):
+	ammo = new_ammo
 
-func set_speed(new_speed: int):
-	bullet_speed = new_speed
+func _on_equipped_weapon_changed(new_weapon : WeaponItemData):
+	equip_weapon(new_weapon if new_weapon else default_weapon)
+
+func _on_equipped_ammo_changed(new_ammo : AmmoItemData):
+	equip_ammo(new_ammo if new_ammo else default_ammo)
 
 
 # --- Fire attempt ---
@@ -59,8 +69,8 @@ func shoot():
 	bullet_instance.direction = shootdirection
 	bullet_instance.rotation = bullet_instance.direction.angle()
 	bullet_instance.global_position = muzzle.global_position
-	bullet_instance.speed = bullet_speed
-	bullet_instance.damage_amount = bullet_damage
+	bullet_instance.speed = int(round(weapon.bullet_speed * (ammo.speed_modifier if ammo else 1.0)))
+	bullet_instance.damage_amount = int(round(weapon.bullet_damage * (ammo.damage_modifier if ammo else 1.0)))
 	gun_shot_sound.play()
 
 	var flash_instance = muzzle_flash_effect.instantiate() as Node2D
@@ -75,5 +85,5 @@ func reload():
 		gun_reload_sound.play()
 
 func _on_reload_timer_timeout() -> void:
-	magazine_current = magazine_max
+	magazine_current = weapon.magazine_size
 	reload_ui.hide()

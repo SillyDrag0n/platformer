@@ -11,6 +11,10 @@ extends Node2D
 @export var trajectory_width : float = 1.5
 @export var trajectory_dash_length : float = 8.0
 
+# Line stays at full trajectory_color.a out to this distance, then fades linearly to fully
+# transparent by trajectory_max_distance.
+@export var trajectory_fade_start_distance : float = 300.0
+
 # Same layers the bullet's own hitbox checks (see bullet.tscn Hitbox.collision_mask), so the
 # line always ends exactly where a shot fired right now would actually land.
 const TRAJECTORY_MASK : int = 1 | (1 << 2) # Ground (layer 1) + Enemy (layer 3)
@@ -39,8 +43,48 @@ func _update_trajectory(anchor_global : Vector2, direction : Vector2) -> void:
 	trajectory_end_global = result.position if result else ray_end
 
 
+# draw_dashed_line() only takes one flat color, so a distance-based fade needs each dash drawn
+# as its own segment with its own alpha instead of a single call.
+func _draw_fading_trajectory() -> void:
+	var from : Vector2 = to_local(trajectory_start_global)
+	var to : Vector2 = to_local(trajectory_end_global)
+
+	var total_length : float = from.distance_to(to)
+	if total_length <= 0.0:
+		return
+	var direction : Vector2 = (to - from) / total_length
+
+	var step := trajectory_dash_length * 2.0 # dash + gap
+	var travelled := 0.0
+
+	while travelled < total_length:
+		var alpha := _trajectory_alpha_at(travelled)
+		if alpha > 0.0:
+			var dash_end : float = min(travelled + trajectory_dash_length, total_length)
+			var color := trajectory_color
+			color.a = alpha
+			draw_line(from + direction * travelled, from + direction * dash_end, color, trajectory_width)
+
+		travelled += step
+
+
+# Full trajectory_color.a out to trajectory_fade_start_distance, then linearly down to 0 by
+# trajectory_max_distance. `distance` is measured from the line's own start (a little past the
+# reticle), not the player - close enough given fade distances are much larger than that offset.
+func _trajectory_alpha_at(distance : float) -> float:
+	if distance <= trajectory_fade_start_distance:
+		return trajectory_color.a
+
+	var fade_range := trajectory_max_distance - trajectory_fade_start_distance
+	if fade_range <= 0.0:
+		return 0.0
+
+	var t := (distance - trajectory_fade_start_distance) / fade_range
+	return trajectory_color.a * clampf(1.0 - t, 0.0, 1.0)
+
+
 func _draw() -> void:
-	draw_dashed_line(to_local(trajectory_start_global), to_local(trajectory_end_global), trajectory_color, trajectory_width, trajectory_dash_length)
+	_draw_fading_trajectory()
 
 	draw_arc(Vector2.ZERO, reticle_radius_px, 0.0, TAU, 20, reticle_color, 2.0, true)
 

@@ -1,0 +1,12 @@
+[gd_scene load_steps=7 format=3]
+
+[ext_resource type="Script" path="res://scripts/managers/ability_manager.gd" id="1_manager"]
+[ext_resource type="Script" path="res://scripts/abilities/ability_data.gd" id="2_ability_data"]
+[ext_resource type="Resource" path="res://abilities/double_jump.tres" id="3_double_jump"]
+[ext_resource type="Resource" path="res://abilities/grapple_hook.tres" id="4_grapple_hook"]
+[ext_resource type="Resource" path="res://abilities/deadeye.tres" id="5_deadeye"]
+[ext_resource type="Resource" path="res://abilities/dash.tres" id="6_dash"]
+
+[node name="AbilityManager" type="Node"]
+script = ExtResource("1_manager")
+abilities = Array[ExtResource("2_ability_data")]([ExtResource("3_double_jump"), ExtResource("4_grapple_hook"), ExtResource("5_deadeye"), ExtResource("6_dash")])

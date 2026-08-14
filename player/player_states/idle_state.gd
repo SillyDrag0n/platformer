@@ -41,7 +41,7 @@ func on_physics_process(delta : float):
 		transition.emit("ShootCrouch")
 
 	# grapple state
-	if GameInputEvents.grapple_input() and grapple_hook.find_anchor(character_body_2d.global_position) != null:
+	if AbilityManager.is_unlocked("grapple_hook") and GameInputEvents.grapple_input() and grapple_hook.find_anchor(character_body_2d.global_position) != null:
 		transition.emit("Grapple")
 
 

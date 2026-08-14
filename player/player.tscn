@@ -1,4 +1,4 @@
-[gd_scene load_steps=80 format=3 uid="uid://bfcmjoltsmsed"]
+[gd_scene load_steps=81 format=3 uid="uid://bfcmjoltsmsed"]
 
 [ext_resource type="Script" uid="uid://bw7oflms0slfo" path="res://player/player.gd" id="1_wqxfn"]
 [ext_resource type="Texture2D" uid="uid://gnuwn56p7uf0" path="res://player/player_states/sprites/player-idle.png" id="1_xd272"]
@@ -26,6 +26,7 @@
 [ext_resource type="Script" uid="uid://cibnp7clyrl0j" path="res://player/grapple/grapple_hook.gd" id="24_ghook"]
 [ext_resource type="Script" uid="uid://bh1k42yf6mcto" path="res://player/player_states/grapple_state.gd" id="25_gstate"]
 [ext_resource type="Script" uid="uid://d0mg64bkocjfe" path="res://player/aim_reticle/aim_reticle.gd" id="26_areticle"]
+[ext_resource type="Resource" path="res://items/weapons/revolver.tres" id="27_revolver"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_5kha7"]
 resource_local_to_scene = true
@@ -447,6 +448,7 @@ shape = SubResource("CapsuleShape2D_7slp3")
 
 [node name="Gun" type="Node2D" parent="."]
 script = ExtResource("10_e7oew")
+default_weapon = ExtResource("27_revolver")
 
 [node name="Muzzle" type="Marker2D" parent="Gun"]
 position = Vector2(19, -37)
@@ -527,13 +529,13 @@ max_horizontal_speed = 300
 
 [node name="Jump" type="Node" parent="StateMachine" node_paths=PackedStringArray("character_body_2d", "animated_sprite_2d", "grapple_hook")]
 script = ExtResource("15_vphvd")
-character_body_2d = NodePath("../..")
-animated_sprite_2d = NodePath("../../AnimatedSprite2D")
-grapple_hook = NodePath("../../GrappleHook")
 jump_height = -375.0
 jump_horizontal_speed = 425
 max_jump_horizontal_speed = 225
 max_jump_count = 2
+character_body_2d = NodePath("../..")
+animated_sprite_2d = NodePath("../../AnimatedSprite2D")
+grapple_hook = NodePath("../../GrappleHook")
 
 [node name="Grapple" type="Node" parent="StateMachine" node_paths=PackedStringArray("character_body_2d", "animated_sprite_2d", "grapple_hook")]
 script = ExtResource("25_gstate")

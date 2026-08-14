@@ -42,7 +42,7 @@ func on_physics_process(delta : float):
 		current_jump_count += 1
 	
 	# multiple jumps
-	if !character_body_2d.is_on_floor() and GameInputEvents.jump_input() and current_jump_count != max_jump_count:
+	if !character_body_2d.is_on_floor() and GameInputEvents.jump_input() and current_jump_count != _effective_max_jump_count():
 		character_body_2d.velocity.y = jump_height
 		current_jump_count += 1
 	
@@ -72,7 +72,7 @@ func on_physics_process(delta : float):
 		transition.emit("Idle")
 
 	# grapple state
-	if GameInputEvents.grapple_input() and grapple_hook.find_anchor(character_body_2d.global_position) != null:
+	if AbilityManager.is_unlocked("grapple_hook") and GameInputEvents.grapple_input() and grapple_hook.find_anchor(character_body_2d.global_position) != null:
 		transition.emit("Grapple")
 
 func enter():
@@ -91,3 +91,9 @@ func spawn_dust():
 	var dust = footstep_dust_effect.instantiate() as Node2D
 	dust.global_position = character_body_2d.global_position
 	character_body_2d.get_parent().add_child(dust)
+
+
+func _effective_max_jump_count() -> int:
+	if AbilityManager.is_unlocked("double_jump"):
+		return max_jump_count
+	return 1

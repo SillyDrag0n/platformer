@@ -15,6 +15,7 @@ class_name BountyData
 @export var level_scene: PackedScene
 @export var boss_scene: PackedScene
 @export var rewards: Array[ItemData]
+@export var ability_rewards: Array[AbilityData]
 
 
 func get_status_text() -> String:
