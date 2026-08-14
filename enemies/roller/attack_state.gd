@@ -13,15 +13,18 @@ func on_process(delta : float):
 
 
 func on_physics_process(delta : float):
+	if not is_instance_valid(player):
+		return
+
 	var direction : int
-	
+
 	if character_body_2d.global_position > player.global_position:
 		animated_sprite_2d.flip_h = false
 		direction = -1
 	elif character_body_2d.global_position < player.global_position:
 		animated_sprite_2d.flip_h = true
 		direction = 1
-	
+
 	animated_sprite_2d.play("attack")
 	animated_sprite_2d.rotation += rotation * delta
 
@@ -31,7 +34,11 @@ func on_physics_process(delta : float):
 
 
 func enter():
-	player = get_tree().get_nodes_in_group("Player")[0] as CharacterBody2D
+	var players := get_tree().get_nodes_in_group("Player")
+	if players.is_empty():
+		player = null
+	else:
+		player = players[0] as CharacterBody2D
 	max_speed = speed + 20
 
 

@@ -36,7 +36,7 @@ func _physics_process(delta):
 	else:
 		offset = lerp(offset, Vector2.ZERO, 10.5 * delta)
 		
-	if player != null:
+	if is_instance_valid(player):
 		var camera_position : Vector2
 		
 		if smoothing_enabled:

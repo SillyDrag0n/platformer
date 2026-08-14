@@ -13,11 +13,12 @@ func show_death_screen():
 
 
 func return_to_hub():
-	return
+	visible = false
+	SceneManager.transition_to_scene("Hub")
 
 
 func exit_game():
-	return
+	GameManager.exit_game()
 
 
 func _on_respawn_button_pressed() -> void:

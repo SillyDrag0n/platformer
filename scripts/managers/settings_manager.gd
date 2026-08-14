@@ -42,7 +42,7 @@ func set_window_mode(window_mode : int, window_mode_index : int):
 
 
 func set_resolution(resolution : Vector2i, resolution_index : int):
-	get_tree().root.content_scale_size = resolution
+	DisplayServer.window_set_size(resolution)
 	settings_data.resolution = resolution
 	settings_data.resolution_index = resolution_index
 
