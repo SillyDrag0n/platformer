@@ -36,6 +36,16 @@ static func reload_input() -> bool:
 	return reload_input
 
 
-static func inventory_input() -> bool: 
+static func inventory_input() -> bool:
 	var inventory_input : bool = Input.is_action_just_pressed("inventory")
 	return inventory_input
+
+
+static func grapple_input() -> bool:
+	var grapple_input : bool = Input.is_action_just_pressed("grapple")
+	return grapple_input
+
+
+static func climb_input() -> float:
+	var climb_input : float = Input.get_axis("force_fall", "climb_up")
+	return climb_input

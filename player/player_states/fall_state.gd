@@ -2,8 +2,10 @@ extends NodeState
 
 @export var character_body_2d : CharacterBody2D
 @export var animated_sprite_2d : AnimatedSprite2D
+@export var grapple_hook : Node2D
 @export var jump_horizontal_speed : int = 200
-@export var max_jump_horizontal_speed : int = 200	
+@export var max_jump_horizontal_speed : int = 200
+@export var air_deceleration : float = 1800
 
 @export_category("Fall State")
 @export var coyote_time : float = 0.1
@@ -29,10 +31,10 @@ func on_physics_process(delta : float):
 			character_body_2d.velocity.x += direction * jump_horizontal_speed
 			character_body_2d.velocity.x = clamp(character_body_2d.velocity.x, -max_jump_horizontal_speed, max_jump_horizontal_speed)
 		else:
-			character_body_2d.velocity.x = 0
-	
+			character_body_2d.velocity.x = move_toward(character_body_2d.velocity.x, 0, air_deceleration * delta)
+
 	character_body_2d.move_and_slide()
-	
+
 	# transitioning states
 
 	# idle state
@@ -43,6 +45,10 @@ func on_physics_process(delta : float):
 	# jump state
 	if GameInputEvents.jump_input() and coyote_jump:
 		transition.emit("Jump")
+
+	# grapple state
+	if GameInputEvents.grapple_input() and grapple_hook.find_anchor(character_body_2d.global_position) != null:
+		transition.emit("Grapple")
 
 
 func enter():
