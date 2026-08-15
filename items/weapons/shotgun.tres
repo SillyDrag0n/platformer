@@ -1,0 +1,17 @@
+[gd_resource type="Resource" script_class="WeaponItemData" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://scripts/items/weapon_item_data.gd" id="1_weapon"]
+
+[resource]
+script = ExtResource("1_weapon")
+display_name = "Shotgun"
+description = "Devastating up close, slow to bring back to bear."
+max_stack_size = 1
+price = 150
+bullet_speed = 450.0
+bullet_damage = 1
+cooldown = 1.1
+magazine_size = 2
+pellet_count = 6
+spread_angle_degrees = 24.0
+metadata/_custom_type_script = "res://scripts/items/weapon_item_data.gd"

@@ -1,0 +1,13 @@
+[gd_resource type="Resource" script_class="AmmoItemData" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://scripts/items/ammo_item_data.gd" id="1_ammo"]
+
+[resource]
+script = ExtResource("1_ammo")
+display_name = "Rapid Rounds"
+description = "Lighter, faster, hits softer."
+max_stack_size = 99
+price = 25
+damage_modifier = 0.7
+speed_modifier = 1.4
+metadata/_custom_type_script = "res://scripts/items/ammo_item_data.gd"

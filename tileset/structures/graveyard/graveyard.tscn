@@ -1,0 +1,29 @@
+[gd_scene load_steps=2 format=3]
+
+[ext_resource type="Texture2D" path="res://tileset/structures/graveyard/tombstone.svg" id="1_tombstone"]
+
+[node name="Graveyard" type="Node2D"]
+z_index = -10
+
+[node name="Tombstone1" type="Sprite2D" parent="."]
+position = Vector2(-60, -12)
+texture = ExtResource("1_tombstone")
+
+[node name="Tombstone2" type="Sprite2D" parent="."]
+position = Vector2(-20, -8)
+rotation = 0.05
+texture = ExtResource("1_tombstone")
+
+[node name="Tombstone3" type="Sprite2D" parent="."]
+position = Vector2(25, -14)
+rotation = -0.08
+texture = ExtResource("1_tombstone")
+
+[node name="Tombstone4" type="Sprite2D" parent="."]
+position = Vector2(65, -10)
+texture = ExtResource("1_tombstone")
+
+[node name="Tombstone5" type="Sprite2D" parent="."]
+position = Vector2(5, -30)
+scale = Vector2(0.85, 0.85)
+texture = ExtResource("1_tombstone")

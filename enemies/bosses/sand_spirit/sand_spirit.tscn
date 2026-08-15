@@ -217,7 +217,7 @@ radius = 17.0294
 
 [node name="SandSpirit" type="CharacterBody2D" node_paths=PackedStringArray("finite_state_machine", "animated_sprite")]
 collision_layer = 4
-collision_mask = 32
+collision_mask = 4128
 script = ExtResource("1_uepdw")
 finite_state_machine = NodePath("StateMachine")
 animated_sprite = NodePath("AnimatedSprite2D")

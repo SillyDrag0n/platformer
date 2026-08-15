@@ -123,6 +123,13 @@ static func reload_input() -> bool:
 	return reload_input
 
 
+static func swap_weapon_input() -> bool:
+	if is_input_locked():
+		return false
+	var swap_weapon_input : bool = Input.is_action_just_pressed("swap_weapon")
+	return swap_weapon_input
+
+
 static func inventory_input() -> bool:
 	var inventory_input : bool = Input.is_action_just_pressed("inventory")
 	return inventory_input
@@ -140,3 +147,17 @@ static func climb_input() -> float:
 		return 0.0
 	var climb_input : float = Input.get_axis("force_fall", "climb_up")
 	return climb_input
+
+
+static func dash_input() -> bool:
+	if is_input_locked():
+		return false
+	var dash_input : bool = Input.is_action_just_pressed("dash")
+	return dash_input
+
+
+static func deadeye_input() -> bool:
+	if is_input_locked():
+		return false
+	var deadeye_input : bool = Input.is_action_pressed("deadeye")
+	return deadeye_input

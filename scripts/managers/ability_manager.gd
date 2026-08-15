@@ -32,3 +32,7 @@ func unlock_ability(ability : AbilityData):
 
 func get_ability_by_id(id : String) -> AbilityData:
 	return _ability_lookup.get(id)
+
+
+func get_unlocked_ids() -> Array:
+	return _unlocked_ids.keys()

@@ -18,6 +18,7 @@ func start_game():
 
 
 func exit_game():
+	SaveManager.save_game()
 	get_tree().quit()
 
 

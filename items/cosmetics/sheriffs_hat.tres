@@ -1,0 +1,11 @@
+[gd_resource type="Resource" script_class="CosmeticItemData" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://scripts/items/cosmetic_item_data.gd" id="1_cosmetic"]
+
+[resource]
+script = ExtResource("1_cosmetic")
+display_name = "Sheriff's Hat"
+description = "A weathered tin star pinned to the brim."
+max_stack_size = 1
+slot = 0
+metadata/_custom_type_script = "res://scripts/items/cosmetic_item_data.gd"

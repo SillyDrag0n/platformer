@@ -1,4 +1,4 @@
-[gd_scene load_steps=17 format=3 uid="uid://b2vp1eh6ugpb1"]
+[gd_scene load_steps=24 format=3 uid="uid://b2vp1eh6ugpb1"]
 
 [ext_resource type="Script" uid="uid://r6e2p1myj1t2" path="res://scripts/managers/game_state_manager.gd" id="1_xk7k0"]
 [ext_resource type="Script" uid="uid://1a50eu8xiuur" path="res://scripts/bounties/bounty_data.gd" id="2_15i0w"]
@@ -11,6 +11,13 @@
 [ext_resource type="Script" path="res://scripts/abilities/ability_data.gd" id="8_ability_data"]
 [ext_resource type="Resource" path="res://abilities/double_jump.tres" id="9_double_jump"]
 [ext_resource type="Resource" path="res://abilities/grapple_hook.tres" id="10_grapple_hook"]
+[ext_resource type="Resource" path="res://items/weapons/shotgun.tres" id="11_shotgun"]
+[ext_resource type="Resource" path="res://items/ammo/heavy_rounds.tres" id="12_heavy_rounds"]
+[ext_resource type="Resource" path="res://items/ammo/rapid_rounds.tres" id="13_rapid_rounds"]
+[ext_resource type="Resource" path="res://items/cosmetics/sheriffs_hat.tres" id="14_sheriffs_hat"]
+[ext_resource type="Resource" path="res://items/cosmetics/duster_coat.tres" id="15_duster_coat"]
+[ext_resource type="Resource" path="res://items/cosmetics/engraved_grip.tres" id="16_engraved_grip"]
+[ext_resource type="Resource" path="res://items/cosmetics/bandana.tres" id="17_bandana"]
 
 [sub_resource type="Resource" id="Resource_7qxxb"]
 script = ExtResource("5_ypgds")
@@ -33,7 +40,7 @@ reward_claimed = false
 map_position = Vector2(350, 450)
 level_scene = ExtResource("3_moqx8")
 boss_scene = ExtResource("3_v6kma")
-rewards = Array[ExtResource("5_ypgds")]([SubResource("Resource_7qxxb")])
+rewards = Array[ExtResource("5_ypgds")]([SubResource("Resource_7qxxb"), ExtResource("11_shotgun"), ExtResource("12_heavy_rounds"), ExtResource("13_rapid_rounds"), ExtResource("14_sheriffs_hat"), ExtResource("15_duster_coat"), ExtResource("16_engraved_grip"), ExtResource("17_bandana")])
 ability_rewards = Array[ExtResource("8_ability_data")]([ExtResource("9_double_jump"), ExtResource("10_grapple_hook")])
 metadata/_custom_type_script = "uid://1a50eu8xiuur"
 

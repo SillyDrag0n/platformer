@@ -152,9 +152,9 @@ position = Vector2(3174, -225)
 position = Vector2(1536, -188)
 respawn_marker = NodePath("../../RespawnPosition")
 
-[node name="Checkpoint" parent="Checkpoints/Checkpoint" node_paths=PackedStringArray("respawn_marker") instance=ExtResource("8_wndkh")]
-position = Vector2(2964, -544)
-respawn_marker = NodePath("../../../RespawnPosition")
+[node name="Checkpoint2" parent="Checkpoints" node_paths=PackedStringArray("respawn_marker") instance=ExtResource("8_wndkh")]
+position = Vector2(4500, -732)
+respawn_marker = NodePath("../../RespawnPosition")
 
 [node name="GrappleAnchors" type="Node" parent="."]
 

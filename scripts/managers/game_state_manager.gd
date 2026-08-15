@@ -124,3 +124,4 @@ func give_bounty_reward():
 		InventoryManager.add_item(reward)
 	for ability in active_bounty.ability_rewards:
 		AbilityManager.unlock_ability(ability)
+	SaveManager.save_game()

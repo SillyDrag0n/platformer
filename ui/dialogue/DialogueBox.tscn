@@ -1,0 +1,81 @@
+[gd_scene load_steps=4 format=3]
+
+[ext_resource type="Script" path="res://ui/dialogue/dialogue_box.gd" id="1_dialogue"]
+[ext_resource type="FontFile" uid="uid://kiwlymd55nc2" path="res://ui/font/BoldPixels.ttf" id="2_font"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_dialogue"]
+content_margin_left = 320.0
+content_margin_top = 640.0
+content_margin_right = 320.0
+content_margin_bottom = 120.0
+
+[sub_resource type="LabelSettings" id="LabelSettings_speaker"]
+font = ExtResource("2_font")
+font_size = 28
+
+[node name="DialogueBox" type="CanvasLayer" node_paths=PackedStringArray("speaker_label", "text_label", "continue_button", "choice_buttons", "yes_button", "no_button")]
+script = ExtResource("1_dialogue")
+speaker_label = NodePath("Panel/MarginContainer/VBoxContainer/SpeakerLabel")
+text_label = NodePath("Panel/MarginContainer/VBoxContainer/ContentRow/TextLabel")
+continue_button = NodePath("Panel/MarginContainer/VBoxContainer/ContinueButton")
+choice_buttons = NodePath("Panel/MarginContainer/VBoxContainer/ContentRow/ChoiceButtons")
+yes_button = NodePath("Panel/MarginContainer/VBoxContainer/ContentRow/ChoiceButtons/YesButton")
+no_button = NodePath("Panel/MarginContainer/VBoxContainer/ContentRow/ChoiceButtons/NoButton")
+
+[node name="Panel" type="Panel" parent="."]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="MarginContainer" type="PanelContainer" parent="Panel"]
+layout_mode = 0
+offset_right = 1920.0
+offset_bottom = 1080.0
+theme_override_styles/panel = SubResource("StyleBoxEmpty_dialogue")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Panel/MarginContainer"]
+layout_mode = 2
+theme_override_constants/separation = 10
+
+[node name="SpeakerLabel" type="Label" parent="Panel/MarginContainer/VBoxContainer"]
+layout_mode = 2
+text = "Speaker"
+label_settings = SubResource("LabelSettings_speaker")
+
+[node name="ContentRow" type="HBoxContainer" parent="Panel/MarginContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_constants/separation = 16
+
+[node name="TextLabel" type="Label" parent="Panel/MarginContainer/VBoxContainer/ContentRow"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 1
+text = "..."
+autowrap_mode = 3
+
+[node name="ChoiceButtons" type="VBoxContainer" parent="Panel/MarginContainer/VBoxContainer/ContentRow"]
+visible = false
+layout_mode = 2
+size_flags_vertical = 1
+theme_override_constants/separation = 8
+
+[node name="YesButton" type="Button" parent="Panel/MarginContainer/VBoxContainer/ContentRow/ChoiceButtons"]
+custom_minimum_size = Vector2(140, 0)
+layout_mode = 2
+text = "Yes"
+
+[node name="NoButton" type="Button" parent="Panel/MarginContainer/VBoxContainer/ContentRow/ChoiceButtons"]
+custom_minimum_size = Vector2(140, 0)
+layout_mode = 2
+text = "No"
+
+[node name="ContinueButton" type="Button" parent="Panel/MarginContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 4
+text = "Continue"
+
+[connection signal="pressed" from="Panel/MarginContainer/VBoxContainer/ContentRow/ChoiceButtons/YesButton" to="." method="_on_yes_button_pressed"]
+[connection signal="pressed" from="Panel/MarginContainer/VBoxContainer/ContentRow/ChoiceButtons/NoButton" to="." method="_on_no_button_pressed"]
+[connection signal="pressed" from="Panel/MarginContainer/VBoxContainer/ContinueButton" to="." method="_on_continue_button_pressed"]

@@ -1,0 +1,39 @@
+[gd_scene load_steps=5 format=3]
+
+[ext_resource type="Script" path="res://tileset/structures/bank/bank.gd" id="1_bank"]
+[ext_resource type="Texture2D" path="res://tileset/structures/bank/bank.svg" id="2_texture"]
+[ext_resource type="PackedScene" uid="uid://s2gswtyrtm5x" path="res://interaction_component/interactable.tscn" id="3_interact"]
+[ext_resource type="FontFile" uid="uid://kiwlymd55nc2" path="res://ui/font/BoldPixels.ttf" id="4_font"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_bank"]
+size = Vector2(90, 90)
+
+[sub_resource type="LabelSettings" id="LabelSettings_nameplate"]
+font = ExtResource("4_font")
+font_size = 16
+outline_size = 4
+outline_color = Color(0, 0, 0, 1)
+
+[node name="Bank" type="Node2D"]
+z_index = -10
+script = ExtResource("1_bank")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+position = Vector2(0, -75)
+texture = ExtResource("2_texture")
+
+[node name="NameLabel" type="Label" parent="."]
+offset_left = -70.0
+offset_top = -172.0
+offset_right = 70.0
+offset_bottom = -148.0
+text = "Bank"
+label_settings = SubResource("LabelSettings_nameplate")
+horizontal_alignment = 1
+
+[node name="Interactable" parent="." instance=ExtResource("3_interact")]
+interact_name = "Enter Bank"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Interactable"]
+position = Vector2(0, -50)
+shape = SubResource("RectangleShape2D_bank")

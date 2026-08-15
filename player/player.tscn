@@ -1,4 +1,4 @@
-[gd_scene load_steps=81 format=3 uid="uid://bfcmjoltsmsed"]
+[gd_scene load_steps=83 format=3 uid="uid://bfcmjoltsmsed"]
 
 [ext_resource type="Script" uid="uid://bw7oflms0slfo" path="res://player/player.gd" id="1_wqxfn"]
 [ext_resource type="Texture2D" uid="uid://gnuwn56p7uf0" path="res://player/player_states/sprites/player-idle.png" id="1_xd272"]
@@ -27,6 +27,8 @@
 [ext_resource type="Script" uid="uid://bh1k42yf6mcto" path="res://player/player_states/grapple_state.gd" id="25_gstate"]
 [ext_resource type="Script" uid="uid://d0mg64bkocjfe" path="res://player/aim_reticle/aim_reticle.gd" id="26_areticle"]
 [ext_resource type="Resource" path="res://items/weapons/revolver.tres" id="27_revolver"]
+[ext_resource type="Script" path="res://player/player_states/dash_state.gd" id="28_dstate"]
+[ext_resource type="Resource" path="res://items/ammo/regular_rounds.tres" id="29_regular_rounds"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_5kha7"]
 resource_local_to_scene = true
@@ -449,6 +451,7 @@ shape = SubResource("CapsuleShape2D_7slp3")
 [node name="Gun" type="Node2D" parent="."]
 script = ExtResource("10_e7oew")
 default_weapon = ExtResource("27_revolver")
+default_ammo = ExtResource("29_regular_rounds")
 
 [node name="Muzzle" type="Marker2D" parent="Gun"]
 position = Vector2(19, -37)
@@ -507,27 +510,30 @@ debug_color = Color(0.913725, 0.141176, 0.631373, 0.419608)
 script = ExtResource("11_xte76")
 initial_node_state = NodePath("Idle")
 
-[node name="Idle" type="Node" parent="StateMachine" node_paths=PackedStringArray("character_body_2d", "animated_sprite_2d", "grapple_hook")]
+[node name="Idle" type="Node" parent="StateMachine" node_paths=PackedStringArray("character_body_2d", "animated_sprite_2d", "grapple_hook", "dash_state")]
 script = ExtResource("12_6j7f0")
 character_body_2d = NodePath("../..")
 animated_sprite_2d = NodePath("../../AnimatedSprite2D")
 grapple_hook = NodePath("../../GrappleHook")
+dash_state = NodePath("../Dash")
 
-[node name="Fall" type="Node" parent="StateMachine" node_paths=PackedStringArray("character_body_2d", "animated_sprite_2d", "grapple_hook")]
+[node name="Fall" type="Node" parent="StateMachine" node_paths=PackedStringArray("character_body_2d", "animated_sprite_2d", "grapple_hook", "dash_state")]
 script = ExtResource("13_r2qhm")
 character_body_2d = NodePath("../..")
 animated_sprite_2d = NodePath("../../AnimatedSprite2D")
 grapple_hook = NodePath("../../GrappleHook")
+dash_state = NodePath("../Dash")
 
-[node name="Run" type="Node" parent="StateMachine" node_paths=PackedStringArray("character_body_2d", "animated_sprite_2d", "grapple_hook")]
+[node name="Run" type="Node" parent="StateMachine" node_paths=PackedStringArray("character_body_2d", "animated_sprite_2d", "grapple_hook", "dash_state")]
 script = ExtResource("14_461ul")
 character_body_2d = NodePath("../..")
 animated_sprite_2d = NodePath("../../AnimatedSprite2D")
 grapple_hook = NodePath("../../GrappleHook")
+dash_state = NodePath("../Dash")
 speed = 350
 max_horizontal_speed = 300
 
-[node name="Jump" type="Node" parent="StateMachine" node_paths=PackedStringArray("character_body_2d", "animated_sprite_2d", "grapple_hook")]
+[node name="Jump" type="Node" parent="StateMachine" node_paths=PackedStringArray("character_body_2d", "animated_sprite_2d", "grapple_hook", "dash_state")]
 script = ExtResource("15_vphvd")
 jump_height = -375.0
 jump_horizontal_speed = 425
@@ -536,6 +542,13 @@ max_jump_count = 2
 character_body_2d = NodePath("../..")
 animated_sprite_2d = NodePath("../../AnimatedSprite2D")
 grapple_hook = NodePath("../../GrappleHook")
+dash_state = NodePath("../Dash")
+
+[node name="Dash" type="Node" parent="StateMachine" node_paths=PackedStringArray("character_body_2d", "animated_sprite_2d", "player")]
+script = ExtResource("28_dstate")
+character_body_2d = NodePath("../..")
+animated_sprite_2d = NodePath("../../AnimatedSprite2D")
+player = NodePath("../..")
 
 [node name="Grapple" type="Node" parent="StateMachine" node_paths=PackedStringArray("character_body_2d", "animated_sprite_2d", "grapple_hook")]
 script = ExtResource("25_gstate")

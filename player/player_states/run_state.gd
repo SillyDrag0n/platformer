@@ -3,6 +3,7 @@ extends NodeState
 @export var character_body_2d : CharacterBody2D
 @export var animated_sprite_2d : AnimatedSprite2D
 @export var grapple_hook : Node2D
+@export var dash_state : Node
 
 @export_category("Run State")
 @export var speed : int = 700
@@ -58,6 +59,10 @@ func on_physics_process(delta : float):
 	# grapple state
 	if AbilityManager.is_unlocked("grapple_hook") and GameInputEvents.grapple_input() and grapple_hook.find_anchor(character_body_2d.global_position) != null:
 		transition.emit("Grapple")
+
+	# dash state
+	if AbilityManager.is_unlocked("dash") and dash_state.can_dash() and GameInputEvents.dash_input():
+		transition.emit("Dash")
 
 
 func enter():

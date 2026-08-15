@@ -8,4 +8,5 @@ func _ready() -> void:
 
 func _on_interact():
 	interactable.is_interactable = false
-	SceneManager.transition_to_scene("Saloon")
+	SceneManager.set_pending_spawn_position(PlayerManager.player.global_position)
+	SceneManager.transition_to_scene_faded("Saloon")

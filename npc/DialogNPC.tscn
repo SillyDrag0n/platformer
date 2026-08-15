@@ -1,0 +1,43 @@
+[gd_scene load_steps=6 format=3]
+
+[ext_resource type="Script" path="res://npc/dialog_npc.gd" id="1_npc"]
+[ext_resource type="PackedScene" uid="uid://s2gswtyrtm5x" path="res://interaction_component/interactable.tscn" id="2_interact"]
+[ext_resource type="PackedScene" path="res://ui/dialogue/DialogueBox.tscn" id="3_dialogue"]
+[ext_resource type="FontFile" uid="uid://kiwlymd55nc2" path="res://ui/font/BoldPixels.ttf" id="4_font"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_npc"]
+size = Vector2(72, 90)
+
+[sub_resource type="LabelSettings" id="LabelSettings_nameplate"]
+font = ExtResource("4_font")
+font_size = 16
+outline_size = 4
+outline_color = Color(0, 0, 0, 1)
+
+[node name="DialogNPC" type="Node2D"]
+script = ExtResource("1_npc")
+speaker_name = "Townsfolk"
+
+[node name="Body" type="ColorRect" parent="."]
+offset_left = -16.0
+offset_top = -64.0
+offset_right = 16.0
+color = Color(0.309804, 0.415686, 0.376471, 1)
+
+[node name="NameLabel" type="Label" parent="."]
+offset_left = -60.0
+offset_top = -90.0
+offset_right = 60.0
+offset_bottom = -66.0
+text = "Townsfolk"
+label_settings = SubResource("LabelSettings_nameplate")
+horizontal_alignment = 1
+
+[node name="Interactable" parent="." instance=ExtResource("2_interact")]
+interact_name = "Talk"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Interactable"]
+position = Vector2(0, -35)
+shape = SubResource("RectangleShape2D_npc")
+
+[node name="DialogueBox" parent="." instance=ExtResource("3_dialogue")]

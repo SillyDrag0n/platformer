@@ -1,0 +1,56 @@
+[gd_scene load_steps=13 format=3]
+
+[ext_resource type="Script" path="res://npc/shop_npc.gd" id="1_dealer"]
+[ext_resource type="PackedScene" uid="uid://s2gswtyrtm5x" path="res://interaction_component/interactable.tscn" id="2_interact"]
+[ext_resource type="PackedScene" path="res://ui/shop/ShopUI.tscn" id="3_shop"]
+[ext_resource type="FontFile" uid="uid://kiwlymd55nc2" path="res://ui/font/BoldPixels.ttf" id="4_font"]
+[ext_resource type="Script" uid="uid://djhxi31kg3jus" path="res://scripts/items/item_data.gd" id="5_itemdata"]
+[ext_resource type="Resource" path="res://items/weapons/shotgun.tres" id="6_shotgun"]
+[ext_resource type="Resource" path="res://items/ammo/heavy_rounds.tres" id="7_heavy_rounds"]
+[ext_resource type="Resource" path="res://items/ammo/rapid_rounds.tres" id="8_rapid_rounds"]
+[ext_resource type="Resource" path="res://items/cosmetics/engraved_grip.tres" id="9_engraved_grip"]
+[ext_resource type="PackedScene" path="res://ui/dialogue/DialogueBox.tscn" id="10_dialogue"]
+[ext_resource type="Texture2D" path="res://tileset/structures/arms_dealer/arms_dealer_portrait.svg" id="11_portrait"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_dealer"]
+size = Vector2(72, 90)
+
+[sub_resource type="LabelSettings" id="LabelSettings_nameplate"]
+font = ExtResource("4_font")
+font_size = 16
+outline_size = 4
+outline_color = Color(0, 0, 0, 1)
+
+[node name="ArmsDealer" type="Node2D"]
+script = ExtResource("1_dealer")
+speaker_name = "Arms Dealer"
+greeting_line = "Hello there partner, ya wanna check out what I got?"
+
+[node name="Body" type="ColorRect" parent="."]
+offset_left = -16.0
+offset_top = -64.0
+offset_right = 16.0
+color = Color(0.376471, 0.278431, 0.184314, 1)
+
+[node name="NameLabel" type="Label" parent="."]
+offset_left = -60.0
+offset_top = -90.0
+offset_right = 60.0
+offset_bottom = -66.0
+text = "Arms Dealer"
+label_settings = SubResource("LabelSettings_nameplate")
+horizontal_alignment = 1
+
+[node name="Interactable" parent="." instance=ExtResource("2_interact")]
+interact_name = "Talk to Arms Dealer"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Interactable"]
+position = Vector2(0, -35)
+shape = SubResource("RectangleShape2D_dealer")
+
+[node name="ShopUi" parent="." instance=ExtResource("3_shop")]
+shop_title = "Arms Dealer"
+shop_items = Array[ExtResource("5_itemdata")]([ExtResource("6_shotgun"), ExtResource("7_heavy_rounds"), ExtResource("8_rapid_rounds"), ExtResource("9_engraved_grip")])
+portrait = ExtResource("11_portrait")
+
+[node name="DialogueBox" parent="." instance=ExtResource("10_dialogue")]
