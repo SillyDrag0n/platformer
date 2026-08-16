@@ -11,7 +11,6 @@ var _bounty_lookup: Dictionary = {}
 var _region_lookup: Dictionary = {}
 
 var active_bounty: BountyData = null
-var current_region: String = ""
 
 
 func _ready():
@@ -60,6 +59,16 @@ func get_bounties_for_region(region_id: String) -> Array[BountyData]:
 
 	for bounty in bounties:
 		if bounty.region_id == region_id:
+			result.append(bounty)
+
+	return result
+
+
+func get_unlocked_bounties() -> Array[BountyData]:
+	var result: Array[BountyData] = []
+
+	for bounty in bounties:
+		if bounty.unlocked:
 			result.append(bounty)
 
 	return result

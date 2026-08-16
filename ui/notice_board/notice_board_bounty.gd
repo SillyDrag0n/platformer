@@ -1,6 +1,6 @@
 extends Control
 
-signal bounty_selected(bounty_data)
+signal poster_pressed(bounty_data)
 
 var base_position: Vector2
 var bounty_data: BountyData
@@ -19,9 +19,14 @@ func _ready():
 func _process(_delta):
 	position.y = base_position.y + sin(Time.get_ticks_msec() * 0.004) * 5
 
-func _on_accept_button_pressed():
-	bounty_selected.emit(bounty_data)
+func _on_poster_pressed():
+	poster_pressed.emit(bounty_data)
 
 
 func grab_focus_button() -> void:
-	$AcceptButton.grab_focus()
+	$SelectButton.grab_focus()
+
+
+func set_interactive(enabled: bool) -> void:
+	$SelectButton.disabled = not enabled
+	$SelectButton.mouse_filter = Control.MOUSE_FILTER_STOP if enabled else Control.MOUSE_FILTER_IGNORE

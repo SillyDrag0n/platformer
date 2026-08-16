@@ -1,17 +1,17 @@
-[gd_scene load_steps=22 format=3 uid="uid://c6n8jr2h5x4qa"]
+[gd_scene load_steps=23 format=3 uid="uid://c6n8jr2h5x4qa"]
 
-[ext_resource type="Script" path="res://enemies/bandit/bandit.gd" id="1_dhyvq"]
+[ext_resource type="Script" uid="uid://bjpkacthwrb0w" path="res://enemies/bandit/bandit.gd" id="1_dhyvq"]
 [ext_resource type="Texture2D" uid="uid://bx16vh2lxo6ql" path="res://enemies/temp_files/temp-enemy-aggro.png" id="1_xuvgk"]
 [ext_resource type="Texture2D" uid="uid://b003taxp5u40m" path="res://enemies/temp_files/temp-enemy-shoot.png" id="2_8ytsa"]
 [ext_resource type="Texture2D" uid="uid://cltqpimt50u5r" path="res://enemies/temp_files/temp-enemy-idle.png" id="3_2b7ve"]
 [ext_resource type="Texture2D" uid="uid://dpf6fchvv1chn" path="res://enemies/temp_files/temp-enemy-walk.png" id="4_o2orx"]
 [ext_resource type="Script" uid="uid://7qf0q30y202f" path="res://scripts/state_machine/node_finite_state_machine.gd" id="6_7bufg"]
-[ext_resource type="Script" path="res://enemies/bandit/state_machine_controller.gd" id="6_hoo18"]
-[ext_resource type="Script" path="res://enemies/bandit/state_machine/idle_state.gd" id="7_dhyvq"]
-[ext_resource type="Script" path="res://enemies/bandit/state_machine/aggro_state.gd" id="8_hoo18"]
-[ext_resource type="Script" path="res://enemies/bandit/state_machine/attack_state.gd" id="9_axxec"]
-[ext_resource type="Script" path="res://enemies/bandit/state_machine/reload_state.gd" id="10_reload"]
-[ext_resource type="Script" path="res://enemies/bandit/state_machine/chase_state.gd" id="11_ct5ms"]
+[ext_resource type="Script" uid="uid://cwsd6cidseery" path="res://enemies/bandit/state_machine_controller.gd" id="6_hoo18"]
+[ext_resource type="Script" uid="uid://d1fe6hlbejxu3" path="res://enemies/bandit/state_machine/idle_state.gd" id="7_dhyvq"]
+[ext_resource type="Script" uid="uid://cn7bcfqt583mf" path="res://enemies/bandit/state_machine/aggro_state.gd" id="8_hoo18"]
+[ext_resource type="Script" uid="uid://bsq6s5qlvhbi2" path="res://enemies/bandit/state_machine/attack_state.gd" id="9_axxec"]
+[ext_resource type="Script" uid="uid://cdx315uq3pc2w" path="res://enemies/bandit/state_machine/reload_state.gd" id="10_reload"]
+[ext_resource type="Script" uid="uid://dg722wuwqqivp" path="res://enemies/bandit/state_machine/chase_state.gd" id="11_ct5ms"]
 [ext_resource type="Script" uid="uid://cl5kkl1jbwkie" path="res://enemies/_common/gravity.gd" id="12_hoo18"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_ybkpd"]
@@ -83,8 +83,8 @@ size = Vector2(500, 250)
 collision_layer = 4
 collision_mask = 387
 script = ExtResource("1_dhyvq")
-enemy_id = "bandit"
 gun_muzzle = NodePath("Muzzle")
+enemy_id = "bandit"
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
 sprite_frames = SubResource("SpriteFrames_hoo18")
@@ -148,10 +148,11 @@ script = ExtResource("9_axxec")
 character_body_2d = NodePath("../..")
 animated_sprite_2d = NodePath("../../AnimatedSprite2D")
 
-[node name="Reload" type="Node" parent="StateMachine" node_paths=PackedStringArray("character_body_2d", "animated_sprite_2d")]
+[node name="Reload" type="Node" parent="StateMachine" node_paths=PackedStringArray("character_body_2d", "animated_sprite_2d", "hurtbox_collision_shape")]
 script = ExtResource("10_reload")
 character_body_2d = NodePath("../..")
 animated_sprite_2d = NodePath("../../AnimatedSprite2D")
+hurtbox_collision_shape = NodePath("../../Hurtbox/CollisionShape2D")
 
 [node name="Chase" type="Node" parent="StateMachine" node_paths=PackedStringArray("character_body_2d", "animated_sprite_2d", "chase_timer")]
 script = ExtResource("11_ct5ms")
