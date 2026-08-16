@@ -1,7 +1,10 @@
-[gd_scene load_steps=3 format=3 uid="uid://5ebj4vx5tdb8"]
+[gd_scene load_steps=4 format=3 uid="uid://5ebj4vx5tdb8"]
 
 [ext_resource type="Script" uid="uid://bvxthyjjy6p5t" path="res://ui/notice_board/world_map.gd" id="1_t7sg5"]
 [ext_resource type="PackedScene" uid="uid://c0pu0vm3jdcja" path="res://ui/notice_board/RegionButton.tscn" id="2_0sdb1"]
+
+[sub_resource type="LabelSettings" id="LabelSettings_return"]
+font_size = 32
 
 [node name="WorldMap" type="Control"]
 layout_mode = 3
@@ -46,11 +49,25 @@ offset_bottom = 315.0
 text = "3"
 region_id = "3"
 
-[node name="ReturnButton" type="TextureButton" parent="."]
+[node name="ReturnButton" type="Button" parent="."]
 layout_mode = 0
-offset_right = 40.0
-offset_bottom = 40.0
+offset_left = 17.0
+offset_top = 957.0
+offset_right = 218.0
+offset_bottom = 1063.0
+
+[node name="Label" type="Label" parent="ReturnButton"]
+layout_mode = 0
+offset_left = 1.0
+offset_top = 1.0
+offset_right = 199.0
+offset_bottom = 104.0
+text = "Return"
+label_settings = SubResource("LabelSettings_return")
+horizontal_alignment = 1
+vertical_alignment = 1
 
 [connection signal="region_selected" from="RegionContainer/Region1Button" to="." method="_on_region_selected"]
 [connection signal="region_selected" from="RegionContainer/Region2Button" to="." method="_on_region_selected"]
 [connection signal="region_selected" from="RegionContainer/Region3Button" to="." method="_on_region_selected"]
+[connection signal="pressed" from="ReturnButton" to="." method="_on_return_button_pressed"]

@@ -1,13 +1,13 @@
-[gd_resource type="Resource" script_class="AmmoItemData" load_steps=2 format=3]
+[gd_resource type="Resource" script_class="AmmoItemData" load_steps=2 format=3 uid="uid://y4usj8hr1xuh"]
 
-[ext_resource type="Script" path="res://scripts/items/ammo_item_data.gd" id="1_ammo"]
+[ext_resource type="Script" uid="uid://cm0d1agj388pl" path="res://scripts/items/ammo_item_data.gd" id="1_ammo"]
 
 [resource]
 script = ExtResource("1_ammo")
-display_name = "Heavy Rounds"
-description = "Hits harder, flies slower."
-max_stack_size = 99
-price = 25
 damage_modifier = 1.5
 speed_modifier = 0.8
+display_name = "Heavy Rounds"
+description = "Hits harder, flies slower."
+max_stack_size = 1
+price = 25
 metadata/_custom_type_script = "res://scripts/items/ammo_item_data.gd"

@@ -1,4 +1,4 @@
-[gd_scene load_steps=9 format=3]
+[gd_scene load_steps=12 format=3]
 
 [ext_resource type="Script" path="res://levels/sheriffs_office_interior/sheriffs_office_interior.gd" id="1_ext01"]
 [ext_resource type="PackedScene" uid="uid://bfcmjoltsmsed" path="res://player/player.tscn" id="2_ext02"]
@@ -7,6 +7,9 @@
 [ext_resource type="PackedScene" uid="uid://dnko61n7gbtwq" path="res://ui/screens/death_screen.tscn" id="5_ext05"]
 [ext_resource type="PackedScene" uid="uid://rx3auanfsgp0" path="res://ui/inventory/InventoryUI.tscn" id="6_ext06"]
 [ext_resource type="PackedScene" uid="uid://s2gswtyrtm5x" path="res://interaction_component/interactable.tscn" id="7_ext07"]
+[ext_resource type="PackedScene" path="res://npc/DialogNPC.tscn" id="8_npc"]
+[ext_resource type="PackedScene" path="res://npc/QuestNPC.tscn" id="9_questnpc"]
+[ext_resource type="Resource" path="res://quests/kill_5_bandits.tres" id="10_bandit_quest"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_floor"]
 size = Vector2(900, 40)
@@ -110,6 +113,16 @@ visible = false
 
 [node name="InventoryUi" parent="." instance=ExtResource("6_ext06")]
 visible = false
+
+[node name="Sheriff" parent="." instance=ExtResource("8_npc")]
+position = Vector2(60, 100)
+speaker_name = "Sheriff"
+dialogue_lines = Array[String](["This town's been quiet lately. Aiming to keep it that way.", "Got a fella cooling off in the cell over there. Rustled the wrong man's cattle.", "You keep your nose clean and we won't have any trouble, partner."])
+
+[node name="Deputy" parent="." instance=ExtResource("9_questnpc")]
+position = Vector2(-50, 100)
+speaker_name = "Deputy"
+quest = ExtResource("10_bandit_quest")
 
 [node name="ExitDoor" parent="." instance=ExtResource("7_ext07")]
 position = Vector2(-380, 130)

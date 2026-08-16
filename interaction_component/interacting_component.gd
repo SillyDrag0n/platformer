@@ -9,11 +9,12 @@ func _input(event: InputEvent) -> void:
 		return
 	if event.is_action_pressed("interact") and can_interact:
 		if current_interactions:
+			get_viewport().set_input_as_handled()
 			can_interact = false
 			interact_label.hide()
-			
+
 			await current_interactions[0].interact.call()
-			
+
 			can_interact = true
 
 

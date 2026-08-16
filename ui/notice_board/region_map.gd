@@ -30,3 +30,6 @@ func spawn_poster(bounty) -> Node:
 func _on_bounty_selected(bounty):
 		GameStateManager.set_active_bounty(bounty)
 		GameStateManager.load_active_bounty_level()
+
+func _on_return_button_pressed():
+	get_tree().change_scene_to_file("res://ui/notice_board/world_map.tscn")

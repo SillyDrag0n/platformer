@@ -1,0 +1,43 @@
+[gd_scene load_steps=5 format=3]
+
+[ext_resource type="Texture2D" uid="uid://0k1r0nicc73v" path="res://enemies/_common/bullet/shot.png" id="1_0oo22"]
+[ext_resource type="Script" path="res://enemies/bandit/bandit_attack.gd" id="2_vp71c"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_vp71c"]
+atlas = ExtResource("1_0oo22")
+region = Rect2(96, 0, 12, 7)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_mh41o"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_vp71c")
+}],
+"loop": true,
+"name": &"shot",
+"speed": 5.0
+}]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_5ko8l"]
+size = Vector2(12, 2)
+
+[node name="BanditAttack" type="AnimatedSprite2D"]
+sprite_frames = SubResource("SpriteFrames_mh41o")
+animation = &"shot"
+script = ExtResource("2_vp71c")
+
+[node name="Timer" type="Timer" parent="."]
+wait_time = 5.0
+one_shot = true
+autostart = true
+
+[node name="Hurtbox" type="Area2D" parent="." groups=["Enemy"]]
+collision_layer = 1024
+collision_mask = 3
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Hurtbox"]
+shape = SubResource("RectangleShape2D_5ko8l")
+
+[connection signal="timeout" from="Timer" to="." method="_on_timer_timeout"]
+[connection signal="area_entered" from="Hurtbox" to="." method="_on_hurtbox_area_entered"]
+[connection signal="body_entered" from="Hurtbox" to="." method="_on_hurtbox_body_entered"]

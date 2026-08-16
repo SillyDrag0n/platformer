@@ -6,6 +6,7 @@ const HIT_FLASH_SHADER: Shader = preload("res://player/player_hit_flash_shader.t
 
 @export var health_amount: int = 3
 @export var damage_amount: int = 1
+@export var enemy_id: String = "" # matches QuestData.required_enemy_id for kill-count quests
 
 @onready var animated_sprite: AnimatedSprite2D = get_node_or_null("AnimatedSprite2D")
 
@@ -36,6 +37,7 @@ func flash_hit() -> void:
 
 
 func die() -> void:
+	QuestManager.report_kill(enemy_id)
 	var effect := DEATH_EFFECT.instantiate() as Node2D
 	effect.global_position = global_position
 	get_parent().add_child(effect)

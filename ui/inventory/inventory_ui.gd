@@ -2,6 +2,8 @@ extends CanvasLayer
 
 const BOUNTY_LIST_FONT = preload("res://ui/font/BoldPixels.ttf")
 
+@export var tab_container : TabContainer
+
 @export var item_grid : GridContainer
 @export var item_slot_scene : PackedScene
 
@@ -12,6 +14,9 @@ const BOUNTY_LIST_FONT = preload("res://ui/font/BoldPixels.ttf")
 @export var bounty_detail_icon : TextureRect
 @export var bounty_entry_scene : PackedScene
 @export var default_bounty_icon : Texture2D
+
+@export var quest_list_container : VBoxContainer
+@export var quest_entry_scene : PackedScene
 
 @export var slot_primary : LoadoutSlot
 @export var slot_secondary : LoadoutSlot
@@ -24,11 +29,24 @@ const BOUNTY_LIST_FONT = preload("res://ui/font/BoldPixels.ttf")
 @export var slot_weapon_skin_secondary : LoadoutSlot
 @export var slot_accessory : LoadoutSlot
 @export var abilities_list_container : VBoxContainer
-@export var item_picker : PopupPanel
+@export var item_picker : PanelContainer
+@export var item_picker_backdrop : Button
 @export var picker_list_container : VBoxContainer
 @export var picker_entry_scene : PackedScene
 
 var _picker_on_pick : Callable
+
+# Whether each quest tab section is expanded, keyed by the section keys used in
+# _add_quest_section() below - persists across refreshes since create_quests_ui() rebuilds the
+# section headers (and their toggle state) from scratch every time.
+var _quest_section_expanded : Dictionary = {
+	"in_progress": true,
+	"completed": true,
+}
+
+# section key -> its header Button, rebuilt every create_quests_ui() call - lets a header's own
+# press handler re-focus itself afterward instead of losing focus to the rebuild it triggered.
+var _quest_section_headers : Dictionary = {}
 
 func _ready():
 	InventoryManager.updated_inventory.connect(update_inventory_ui)
@@ -40,6 +58,10 @@ func _ready():
 	GameStateManager.bounty_unlocked.connect(_on_bounty_state_changed)
 	GameStateManager.bounty_completed.connect(_on_bounty_state_changed)
 	GameStateManager.region_unlocked.connect(_on_bounty_state_changed)
+
+	create_quests_ui()
+	QuestManager.quest_received.connect(_on_quest_state_changed)
+	QuestManager.quest_completed.connect(_on_quest_state_changed)
 
 	slot_primary.selected.connect(_open_weapon_picker.bind(InventoryManager.WeaponSlot.PRIMARY))
 	slot_secondary.selected.connect(_open_weapon_picker.bind(InventoryManager.WeaponSlot.SECONDARY))
@@ -59,32 +81,74 @@ func _ready():
 	InventoryManager.equipped_weapon_skin_changed.connect(func(_slot, _cosmetic): refresh_loadout_ui())
 	AbilityManager.ability_unlocked.connect(func(_ability): refresh_abilities_ui())
 
+	item_picker_backdrop.pressed.connect(_close_picker)
+
+	_wire_loadout_focus_neighbors()
+
 	refresh_loadout_ui()
 	refresh_abilities_ui()
 
 func _process(_delta):
+	@warning_ignore("static_called_on_instance")
 	if GameInputEvents.inventory_input():
 		_set_open(!visible)
 	elif visible and Input.is_action_just_pressed("ui_cancel"):
-		_set_open(false)
+		# A cancel press backs out one level at a time: close the picker first if it's open,
+		# only close the whole inventory once nothing else is on top of it.
+		if item_picker.visible:
+			_close_picker()
+		else:
+			_set_open(false)
+	elif visible and Input.is_action_just_pressed("tab_left"):
+		_cycle_tab(-1)
+	elif visible and Input.is_action_just_pressed("tab_right"):
+		_cycle_tab(1)
+
+
+# TabContainer's built-in tab bar only takes keyboard/gamepad focus if the player navigates to
+# it directly, which never happens here since default focus lands on the tab's content (see
+# _grab_default_focus() below) - so tab switching needs its own dedicated input instead.
+func _cycle_tab(direction : int) -> void:
+	var tab_count := tab_container.get_tab_count()
+	if tab_count == 0:
+		return
+	tab_container.current_tab = wrapi(tab_container.current_tab + direction, 0, tab_count)
+	_grab_default_focus.call_deferred()
 
 
 func _set_open(is_open : bool) -> void:
 	visible = is_open
 	InventoryManager.is_open = is_open
 	if is_open:
-		_grab_default_focus()
+		_grab_default_focus.call_deferred()
 	else:
+		# Closing the whole inventory should also drop the picker if it was left open -
+		# otherwise it stays visible over whatever level is behind the now-hidden inventory.
+		item_picker.visible = false
+		item_picker_backdrop.visible = false
 		SaveManager.save_game()
 
 
-# Only the bounty list is actually interactive right now (item slots are display-only), so
-# that's what controller/keyboard focus should land on when the panel opens.
+# Focuses the first focusable control inside whichever tab is currently showing - called on
+# open and on every tab switch, since the previously-focused control is very likely to be
+# invisible (inside a now-hidden tab) otherwise, leaving gamepad/keyboard navigation stuck.
 func _grab_default_focus() -> void:
-	for child in bounty_list_container.get_children():
-		if child is BountyEntry:
-			child.grab_focus_button()
-			return
+	var current_tab_control := tab_container.get_current_tab_control()
+	if current_tab_control == null:
+		return
+	var focusable := _find_first_focusable(current_tab_control)
+	if focusable:
+		focusable.grab_focus()
+
+
+func _find_first_focusable(node : Node) -> Control:
+	if node is Control and node.focus_mode != Control.FOCUS_NONE and node.is_visible_in_tree():
+		return node
+	for child in node.get_children():
+		var found := _find_first_focusable(child)
+		if found:
+			return found
+	return null
 
 
 func update_inventory_ui():
@@ -148,6 +212,62 @@ func _on_bounty_entry_selected(bounty : BountyData):
 	bounty_detail_icon.self_modulate = Color.WHITE if bounty.completed else Color.BLACK
 
 
+func _on_quest_state_changed(_data = null):
+	create_quests_ui()
+
+
+func create_quests_ui():
+	for child in quest_list_container.get_children():
+		child.queue_free()
+	_quest_section_headers.clear()
+
+	var in_progress_quests : Array[QuestData] = []
+	var completed_quests : Array[QuestData] = []
+	for quest in QuestManager.received_quests:
+		if QuestManager.is_completed(quest):
+			completed_quests.append(quest)
+		else:
+			in_progress_quests.append(quest)
+
+	_add_quest_section("in_progress", "In Progress", in_progress_quests)
+	_add_quest_section("completed", "Completed", completed_quests)
+
+
+func _add_quest_section(section_key : String, section_title : String, quests : Array[QuestData]) -> void:
+	var expanded : bool = _quest_section_expanded.get(section_key, true)
+
+	var header := Button.new()
+	header.text = ("▼  " if expanded else "▶  ") + section_title + " (%d)" % quests.size()
+	header.add_theme_font_override("font", BOUNTY_LIST_FONT)
+	header.add_theme_font_size_override("font_size", 24)
+	header.alignment = HORIZONTAL_ALIGNMENT_LEFT
+	header.flat = true
+	header.pressed.connect(func():
+		_quest_section_expanded[section_key] = !expanded
+		create_quests_ui()
+		_quest_section_headers[section_key].grab_focus()
+	)
+	quest_list_container.add_child(header)
+	_quest_section_headers[section_key] = header
+
+	if !expanded:
+		return
+
+	if quests.is_empty():
+		var empty_label := Label.new()
+		empty_label.text = "None yet."
+		empty_label.add_theme_font_override("font", BOUNTY_LIST_FONT)
+		empty_label.add_theme_font_size_override("font_size", 18)
+		empty_label.modulate = Color(0.6, 0.6, 0.6)
+		quest_list_container.add_child(empty_label)
+		return
+
+	for quest in quests:
+		var entry = quest_entry_scene.instantiate()
+		quest_list_container.add_child(entry)
+		entry.set_quest_data(quest)
+
+
 func refresh_loadout_ui():
 	slot_primary.set_item(InventoryManager.get_equipped_weapon(InventoryManager.WeaponSlot.PRIMARY))
 	slot_secondary.set_item(InventoryManager.get_equipped_weapon(InventoryManager.WeaponSlot.SECONDARY))
@@ -161,75 +281,160 @@ func refresh_loadout_ui():
 	slot_accessory.set_item(InventoryManager.get_equipped_cosmetic(CosmeticItemData.CosmeticSlot.ACCESSORY))
 
 
+# Godot's automatic focus-neighbor search (used everywhere else in this UI) is a geometric
+# heuristic and doesn't reliably cover this tab's 2-column grid, leaving some slots unreachable
+# by keyboard/gamepad - so the Loadout tab gets its neighbors wired explicitly instead.
+func _wire_loadout_focus_neighbors() -> void:
+	var b_primary := slot_primary.button
+	var b_secondary := slot_secondary.button
+	var b_utility := slot_utility.button
+	var b_ammo_primary := slot_ammo_primary.button
+	var b_ammo_secondary := slot_ammo_secondary.button
+	var b_weapon_skin_primary := slot_weapon_skin_primary.button
+	var b_weapon_skin_secondary := slot_weapon_skin_secondary.button
+	var b_hat := slot_hat.button
+	var b_outfit := slot_outfit.button
+	var b_accessory := slot_accessory.button
+
+	_link_row([b_primary, b_secondary, b_utility])
+	_link_row([b_ammo_primary, b_ammo_secondary])
+	_link_row([b_weapon_skin_primary, b_weapon_skin_secondary])
+	_link_row([b_hat, b_outfit, b_accessory])
+
+	_link_column([b_primary, b_ammo_primary, b_weapon_skin_primary, b_hat])
+	_link_column([b_secondary, b_ammo_secondary, b_weapon_skin_secondary, b_outfit])
+	_link_column([b_utility, b_accessory])
+
+
+func _link_row(buttons : Array) -> void:
+	for i in range(buttons.size()):
+		if i > 0:
+			buttons[i].focus_neighbor_left = buttons[i].get_path_to(buttons[i - 1])
+		if i < buttons.size() - 1:
+			buttons[i].focus_neighbor_right = buttons[i].get_path_to(buttons[i + 1])
+
+
+func _link_column(buttons : Array) -> void:
+	for i in range(buttons.size()):
+		if i > 0:
+			buttons[i].focus_neighbor_top = buttons[i].get_path_to(buttons[i - 1])
+		if i < buttons.size() - 1:
+			buttons[i].focus_neighbor_bottom = buttons[i].get_path_to(buttons[i + 1])
+
+
 func refresh_abilities_ui():
 	for child in abilities_list_container.get_children():
 		child.queue_free()
 
+	var unlocked_abilities : Array[AbilityData] = []
 	for ability in AbilityManager.abilities:
-		var unlocked : bool = AbilityManager.is_unlocked(ability.id)
+		if AbilityManager.is_unlocked(ability.id):
+			unlocked_abilities.append(ability)
+
+	if unlocked_abilities.is_empty():
+		var empty_label := Label.new()
+		empty_label.text = "No abilities unlocked yet."
+		empty_label.add_theme_font_override("font", BOUNTY_LIST_FONT)
+		empty_label.add_theme_font_size_override("font_size", 18)
+		empty_label.modulate = Color(0.6, 0.6, 0.6)
+		abilities_list_container.add_child(empty_label)
+		return
+
+	for ability in unlocked_abilities:
 		var row := Label.new()
-		row.text = ability.display_name + "  -  " + ("Unlocked" if unlocked else "Locked")
+		row.text = ability.display_name
 		row.add_theme_font_override("font", BOUNTY_LIST_FONT)
 		row.add_theme_font_size_override("font_size", 24)
-		row.modulate = Color(0.45, 0.85, 0.45) if unlocked else Color(0.6, 0.6, 0.6)
+		row.modulate = Color(0.45, 0.85, 0.45)
 		abilities_list_container.add_child(row)
 
 
 func _open_weapon_picker(slot : InventoryManager.WeaponSlot):
 	var candidates : Array = InventoryManager.get_owned_items_by_type(WeaponItemData)
-	_open_picker(candidates, func(item): InventoryManager.equip_weapon(slot, item))
+	# The primary weapon always has to be something - Gun.gd guarantees a default is equipped,
+	# so going without one isn't a state the player can choose here.
+	var allow_unequip := slot != InventoryManager.WeaponSlot.PRIMARY
+	_open_picker(candidates, InventoryManager.get_equipped_weapon(slot), func(item): InventoryManager.equip_weapon(slot, item), allow_unequip)
 
 
 func _open_utility_picker():
 	var candidates : Array = InventoryManager.get_owned_items_by_type(UtilityItemData)
-	_open_picker(candidates, func(item): InventoryManager.equip_utility(item))
+	_open_picker(candidates, InventoryManager.get_equipped_utility(), func(item): InventoryManager.equip_utility(item))
 
 
 func _open_ammo_picker(slot : InventoryManager.WeaponSlot):
 	var candidates : Array = InventoryManager.get_owned_items_by_type(AmmoItemData)
-	_open_picker(candidates, func(item): InventoryManager.equip_ammo(slot, item))
+	var allow_unequip := slot != InventoryManager.WeaponSlot.PRIMARY
+	_open_picker(candidates, InventoryManager.get_equipped_ammo(slot), func(item): InventoryManager.equip_ammo(slot, item), allow_unequip)
 
 
 func _open_cosmetic_picker(slot : CosmeticItemData.CosmeticSlot):
 	var candidates : Array[CosmeticItemData] = InventoryManager.get_owned_cosmetics_by_slot(slot)
-	_open_picker(candidates, func(item):
+	# The outfit slot always has a default outfit granted and equipped (see InventoryManager) -
+	# every other cosmetic slot (hat, accessory) is fine going bare.
+	var allow_unequip := slot != CosmeticItemData.CosmeticSlot.OUTFIT
+	_open_picker(candidates, InventoryManager.get_equipped_cosmetic(slot), func(item):
 		if item == null:
 			InventoryManager.unequip_cosmetic(slot)
 		else:
 			InventoryManager.equip_cosmetic(item)
-	)
+	, allow_unequip)
 
 
 func _open_weapon_skin_picker(slot : InventoryManager.WeaponSlot):
 	var candidates : Array[CosmeticItemData] = InventoryManager.get_owned_cosmetics_by_slot(CosmeticItemData.CosmeticSlot.WEAPON_SKIN)
-	_open_picker(candidates, func(item):
+	# A weapon always has some look even with no skin equipped, so that option reads as
+	# "Default" rather than "None (unequip)".
+	_open_picker(candidates, InventoryManager.get_equipped_weapon_skin(slot), func(item):
 		if item == null:
 			InventoryManager.unequip_weapon_skin(slot)
 		else:
 			InventoryManager.equip_weapon_skin(slot, item)
-	)
+	, true, "Default")
 
 
-func _open_picker(candidates : Array, on_pick : Callable):
+func _open_picker(candidates : Array, current_item : ItemData, on_pick : Callable, allow_unequip : bool = true, none_label : String = "None (unequip)") -> void:
 	_picker_on_pick = on_pick
 
 	for child in picker_list_container.get_children():
 		child.queue_free()
 
-	var none_entry = picker_entry_scene.instantiate()
-	picker_list_container.add_child(none_entry)
-	none_entry.set_item_data(null)
-	none_entry.selected.connect(_on_picker_item_selected)
+	var button_to_focus : Button = null
 
+	if allow_unequip:
+		var none_entry = picker_entry_scene.instantiate()
+		picker_list_container.add_child(none_entry)
+		none_entry.set_item_data(null, none_label)
+		none_entry.selected.connect(_on_picker_item_selected)
+		button_to_focus = none_entry.button
+
+	# Focuses whichever entry matches the item currently equipped in this slot, so reopening a
+	# dropdown highlights the current choice; falls back to the first entry when unequipping
+	# isn't an option here (so there's no "None" entry to default to instead).
 	for candidate in candidates:
 		var entry = picker_entry_scene.instantiate()
 		picker_list_container.add_child(entry)
 		entry.set_item_data(candidate)
 		entry.selected.connect(_on_picker_item_selected)
+		if candidate == current_item or button_to_focus == null:
+			button_to_focus = entry.button
 
-	item_picker.popup_centered(Vector2i(500, 600))
+	item_picker.visible = true
+	item_picker_backdrop.visible = true
+	if button_to_focus:
+		button_to_focus.grab_focus()
 
 
 func _on_picker_item_selected(item : ItemData):
 	_picker_on_pick.call(item)
-	item_picker.hide()
+	_close_picker()
+
+
+# item_picker used to be a PopupPanel (a native Window), which meant gamepad input never
+# reliably reached it - it's a plain embedded Control now, toggled the same way as every other
+# part of this UI, with item_picker_backdrop standing in for the modal dimming/click-outside-
+# to-close behavior a real popup would normally provide for free.
+func _close_picker() -> void:
+	item_picker.visible = false
+	item_picker_backdrop.visible = false
+	_grab_default_focus()

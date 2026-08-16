@@ -1,4 +1,4 @@
-[gd_scene load_steps=9 format=3]
+[gd_scene load_steps=10 format=3]
 
 [ext_resource type="Script" path="res://levels/post_office_interior/post_office_interior.gd" id="1_ext01"]
 [ext_resource type="PackedScene" uid="uid://bfcmjoltsmsed" path="res://player/player.tscn" id="2_ext02"]
@@ -7,6 +7,7 @@
 [ext_resource type="PackedScene" uid="uid://dnko61n7gbtwq" path="res://ui/screens/death_screen.tscn" id="5_ext05"]
 [ext_resource type="PackedScene" uid="uid://rx3auanfsgp0" path="res://ui/inventory/InventoryUI.tscn" id="6_ext06"]
 [ext_resource type="PackedScene" uid="uid://s2gswtyrtm5x" path="res://interaction_component/interactable.tscn" id="7_ext07"]
+[ext_resource type="PackedScene" path="res://npc/DialogNPC.tscn" id="8_npc"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_floor"]
 size = Vector2(900, 40)
@@ -52,6 +53,11 @@ visible = false
 
 [node name="InventoryUi" parent="." instance=ExtResource("6_ext06")]
 visible = false
+
+[node name="PostalClerk" parent="." instance=ExtResource("8_npc")]
+position = Vector2(60, 100)
+speaker_name = "Postal Clerk"
+dialogue_lines = Array[String](["Mail's running slow with the railway still finding its feet.", "Got a letter for you? Best hang onto it a while longer.", "Once that train's running regular, we'll have deliveries sorted."])
 
 [node name="ExitDoor" parent="." instance=ExtResource("7_ext07")]
 position = Vector2(-380, 130)

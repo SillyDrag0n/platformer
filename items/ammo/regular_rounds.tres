@@ -1,12 +1,13 @@
-[gd_resource type="Resource" script_class="AmmoItemData" load_steps=2 format=3]
+[gd_resource type="Resource" script_class="AmmoItemData" load_steps=2 format=3 uid="uid://oiho6600ty61"]
 
-[ext_resource type="Script" path="res://scripts/items/ammo_item_data.gd" id="1_ammo"]
+[ext_resource type="Script" uid="uid://cm0d1agj388pl" path="res://scripts/items/ammo_item_data.gd" id="1_ammo"]
 
 [resource]
 script = ExtResource("1_ammo")
-display_name = "Regular Rounds"
-description = "Standard-issue rounds. No frills."
-max_stack_size = 99
 damage_modifier = 1.0
 speed_modifier = 1.0
+display_name = "Regular Rounds"
+description = "Standard-issue rounds. No frills."
+max_stack_size = 1
+price = 0
 metadata/_custom_type_script = "res://scripts/items/ammo_item_data.gd"

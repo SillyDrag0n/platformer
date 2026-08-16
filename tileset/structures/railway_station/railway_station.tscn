@@ -1,9 +1,10 @@
-[gd_scene load_steps=5 format=3]
+[gd_scene load_steps=7 format=3]
 
 [ext_resource type="Script" path="res://tileset/structures/railway_station/railway_station.gd" id="1_rail"]
 [ext_resource type="Texture2D" path="res://tileset/structures/railway_station/railway_station.svg" id="2_texture"]
 [ext_resource type="PackedScene" uid="uid://s2gswtyrtm5x" path="res://interaction_component/interactable.tscn" id="3_interact"]
 [ext_resource type="FontFile" uid="uid://kiwlymd55nc2" path="res://ui/font/BoldPixels.ttf" id="4_font"]
+[ext_resource type="PackedScene" path="res://npc/DialogNPC.tscn" id="5_npc"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_rail"]
 size = Vector2(120, 80)
@@ -37,3 +38,8 @@ interact_name = "Wait for Train"
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Interactable"]
 position = Vector2(0, -50)
 shape = SubResource("RectangleShape2D_rail")
+
+[node name="StationMaster" parent="." instance=ExtResource("5_npc")]
+position = Vector2(140, 0)
+speaker_name = "Station Master"
+dialogue_lines = Array[String](["Line's still being laid down further out. No trains running just yet.", "Soon as the rails are done, you'll be able to ride clear across the territory.", "Patience, partner. Good things take time."])

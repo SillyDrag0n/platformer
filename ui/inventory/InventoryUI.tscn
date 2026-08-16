@@ -1,4 +1,4 @@
-[gd_scene load_steps=11 format=3 uid="uid://rx3auanfsgp0"]
+[gd_scene load_steps=12 format=3 uid="uid://rx3auanfsgp0"]
 
 [ext_resource type="Script" uid="uid://badieadd4juu0" path="res://ui/inventory/inventory_ui.gd" id="1_73x1u"]
 [ext_resource type="PackedScene" uid="uid://cb75n4qc854ox" path="res://ui/inventory/ItemSlot.tscn" id="2_73x1u"]
@@ -7,6 +7,7 @@
 [ext_resource type="PackedScene" path="res://ui/inventory/BountyEntry.tscn" id="5_bnty1"]
 [ext_resource type="PackedScene" path="res://ui/inventory/LoadoutSlot.tscn" id="6_loadout_slot"]
 [ext_resource type="PackedScene" path="res://ui/inventory/ItemPickerEntry.tscn" id="7_picker_entry"]
+[ext_resource type="PackedScene" path="res://ui/inventory/QuestEntry.tscn" id="8_quest_entry"]
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_mjk5w"]
 content_margin_left = 240.0
@@ -22,8 +23,9 @@ font_size = 48
 font = ExtResource("3_gvwsh")
 font_size = 32
 
-[node name="InventoryUi" type="CanvasLayer" node_paths=PackedStringArray("item_grid", "bounty_list_container", "bounty_title_label", "bounty_status_label", "bounty_description_label", "bounty_detail_icon", "slot_primary", "slot_secondary", "slot_utility", "slot_ammo_primary", "slot_ammo_secondary", "slot_hat", "slot_outfit", "slot_weapon_skin_primary", "slot_weapon_skin_secondary", "slot_accessory", "abilities_list_container", "item_picker", "picker_list_container")]
+[node name="InventoryUi" type="CanvasLayer" node_paths=PackedStringArray("tab_container", "item_grid", "bounty_list_container", "bounty_title_label", "bounty_status_label", "bounty_description_label", "bounty_detail_icon", "quest_list_container", "slot_primary", "slot_secondary", "slot_utility", "slot_ammo_primary", "slot_ammo_secondary", "slot_hat", "slot_outfit", "slot_weapon_skin_primary", "slot_weapon_skin_secondary", "slot_accessory", "abilities_list_container", "item_picker", "item_picker_backdrop", "picker_list_container")]
 script = ExtResource("1_73x1u")
+tab_container = NodePath("Panel/MarginContainer/TabContainer")
 item_grid = NodePath("Panel/MarginContainer/TabContainer/Items/ItemSlots/ItemsGridContainer")
 item_slot_scene = ExtResource("2_73x1u")
 bounty_list_container = NodePath("Panel/MarginContainer/TabContainer/Bounties/BountyList/ScrollContainer/BountyListContainer")
@@ -33,6 +35,8 @@ bounty_description_label = NodePath("Panel/MarginContainer/TabContainer/Bounties
 bounty_detail_icon = NodePath("Panel/MarginContainer/TabContainer/Bounties/Bounty Information/HBoxContainer/BountyInformationIcon/BountyIconTextureRect")
 bounty_entry_scene = ExtResource("5_bnty1")
 default_bounty_icon = ExtResource("2_h7hxg")
+quest_list_container = NodePath("Panel/MarginContainer/TabContainer/Quests/MarginContainer/ScrollContainer/QuestListContainer")
+quest_entry_scene = ExtResource("8_quest_entry")
 slot_primary = NodePath("Panel/MarginContainer/TabContainer/Loadout/ScrollContainer/VBoxContainer/EquipmentRow/PrimaryColumn/PrimarySlot")
 slot_secondary = NodePath("Panel/MarginContainer/TabContainer/Loadout/ScrollContainer/VBoxContainer/EquipmentRow/SecondaryColumn/SecondarySlot")
 slot_utility = NodePath("Panel/MarginContainer/TabContainer/Loadout/ScrollContainer/VBoxContainer/EquipmentRow/UtilitySlot")
@@ -45,6 +49,7 @@ slot_weapon_skin_secondary = NodePath("Panel/MarginContainer/TabContainer/Loadou
 slot_accessory = NodePath("Panel/MarginContainer/TabContainer/Loadout/ScrollContainer/VBoxContainer/CosmeticsRow/AccessorySlot")
 abilities_list_container = NodePath("Panel/MarginContainer/TabContainer/Loadout/ScrollContainer/VBoxContainer/AbilitiesListContainer")
 item_picker = NodePath("Panel/MarginContainer/TabContainer/Loadout/ItemPicker")
+item_picker_backdrop = NodePath("Panel/MarginContainer/TabContainer/Loadout/ItemPickerBackdrop")
 picker_list_container = NodePath("Panel/MarginContainer/TabContainer/Loadout/ItemPicker/MarginContainer/ScrollContainer/PickerListContainer")
 picker_entry_scene = ExtResource("7_picker_entry")
 
@@ -63,11 +68,137 @@ theme_override_styles/panel = SubResource("StyleBoxEmpty_mjk5w")
 
 [node name="TabContainer" type="TabContainer" parent="Panel/MarginContainer"]
 layout_mode = 2
-current_tab = 0
+current_tab = 3
 
-[node name="Items" type="Control" parent="Panel/MarginContainer/TabContainer"]
+[node name="Loadout" type="Control" parent="Panel/MarginContainer/TabContainer"]
+visible = false
 layout_mode = 2
 metadata/_tab_index = 0
+
+[node name="ScrollContainer" type="ScrollContainer" parent="Panel/MarginContainer/TabContainer/Loadout"]
+layout_mode = 0
+offset_left = 16.0
+offset_right = 1424.0
+offset_bottom = 840.0
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Panel/MarginContainer/TabContainer/Loadout/ScrollContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/separation = 20
+
+[node name="EquipmentHeader" type="Label" parent="Panel/MarginContainer/TabContainer/Loadout/ScrollContainer/VBoxContainer"]
+layout_mode = 2
+text = "Equipment"
+label_settings = SubResource("LabelSettings_73x1u")
+
+[node name="EquipmentRow" type="HBoxContainer" parent="Panel/MarginContainer/TabContainer/Loadout/ScrollContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_constants/separation = 12
+
+[node name="PrimaryColumn" type="VBoxContainer" parent="Panel/MarginContainer/TabContainer/Loadout/ScrollContainer/VBoxContainer/EquipmentRow"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/separation = 8
+
+[node name="PrimarySlot" parent="Panel/MarginContainer/TabContainer/Loadout/ScrollContainer/VBoxContainer/EquipmentRow/PrimaryColumn" instance=ExtResource("6_loadout_slot")]
+slot_name = "Primary Weapon"
+
+[node name="AmmoSlotPrimary" parent="Panel/MarginContainer/TabContainer/Loadout/ScrollContainer/VBoxContainer/EquipmentRow/PrimaryColumn" instance=ExtResource("6_loadout_slot")]
+slot_name = "Primary Ammo"
+
+[node name="WeaponSkinSlotPrimary" parent="Panel/MarginContainer/TabContainer/Loadout/ScrollContainer/VBoxContainer/EquipmentRow/PrimaryColumn" instance=ExtResource("6_loadout_slot")]
+slot_name = "Primary Weapon Skin"
+empty_label = "Default"
+
+[node name="SecondaryColumn" type="VBoxContainer" parent="Panel/MarginContainer/TabContainer/Loadout/ScrollContainer/VBoxContainer/EquipmentRow"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/separation = 8
+
+[node name="SecondarySlot" parent="Panel/MarginContainer/TabContainer/Loadout/ScrollContainer/VBoxContainer/EquipmentRow/SecondaryColumn" instance=ExtResource("6_loadout_slot")]
+slot_name = "Secondary Weapon"
+
+[node name="AmmoSlotSecondary" parent="Panel/MarginContainer/TabContainer/Loadout/ScrollContainer/VBoxContainer/EquipmentRow/SecondaryColumn" instance=ExtResource("6_loadout_slot")]
+slot_name = "Secondary Ammo"
+
+[node name="WeaponSkinSlotSecondary" parent="Panel/MarginContainer/TabContainer/Loadout/ScrollContainer/VBoxContainer/EquipmentRow/SecondaryColumn" instance=ExtResource("6_loadout_slot")]
+slot_name = "Secondary Weapon Skin"
+empty_label = "Default"
+
+[node name="UtilitySlot" parent="Panel/MarginContainer/TabContainer/Loadout/ScrollContainer/VBoxContainer/EquipmentRow" instance=ExtResource("6_loadout_slot")]
+size_flags_vertical = 0
+slot_name = "Utility"
+
+[node name="AbilitiesHeader" type="Label" parent="Panel/MarginContainer/TabContainer/Loadout/ScrollContainer/VBoxContainer"]
+layout_mode = 2
+text = "Abilities"
+label_settings = SubResource("LabelSettings_73x1u")
+
+[node name="AbilitiesListContainer" type="VBoxContainer" parent="Panel/MarginContainer/TabContainer/Loadout/ScrollContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_constants/separation = 4
+
+[node name="CosmeticsHeader" type="Label" parent="Panel/MarginContainer/TabContainer/Loadout/ScrollContainer/VBoxContainer"]
+layout_mode = 2
+text = "Cosmetics"
+label_settings = SubResource("LabelSettings_73x1u")
+
+[node name="CosmeticsRow" type="HBoxContainer" parent="Panel/MarginContainer/TabContainer/Loadout/ScrollContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_constants/separation = 12
+
+[node name="HatSlot" parent="Panel/MarginContainer/TabContainer/Loadout/ScrollContainer/VBoxContainer/CosmeticsRow" instance=ExtResource("6_loadout_slot")]
+slot_name = "Hat"
+
+[node name="OutfitSlot" parent="Panel/MarginContainer/TabContainer/Loadout/ScrollContainer/VBoxContainer/CosmeticsRow" instance=ExtResource("6_loadout_slot")]
+slot_name = "Outfit"
+empty_label = "Default"
+
+[node name="AccessorySlot" parent="Panel/MarginContainer/TabContainer/Loadout/ScrollContainer/VBoxContainer/CosmeticsRow" instance=ExtResource("6_loadout_slot")]
+slot_name = "Accessory"
+
+[node name="ItemPickerBackdrop" type="Button" parent="Panel/MarginContainer/TabContainer/Loadout"]
+visible = false
+self_modulate = Color(0, 0, 0, 0.5)
+layout_mode = 0
+offset_right = 1440.0
+offset_bottom = 840.0
+focus_mode = 0
+flat = true
+
+[node name="ItemPicker" type="PanelContainer" parent="Panel/MarginContainer/TabContainer/Loadout"]
+visible = false
+layout_mode = 0
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -250.0
+offset_top = -300.0
+offset_right = 250.0
+offset_bottom = 300.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="MarginContainer" type="MarginContainer" parent="Panel/MarginContainer/TabContainer/Loadout/ItemPicker"]
+layout_mode = 2
+theme_override_constants/margin_left = 12
+theme_override_constants/margin_top = 12
+theme_override_constants/margin_right = 12
+theme_override_constants/margin_bottom = 12
+
+[node name="ScrollContainer" type="ScrollContainer" parent="Panel/MarginContainer/TabContainer/Loadout/ItemPicker/MarginContainer"]
+layout_mode = 2
+
+[node name="PickerListContainer" type="VBoxContainer" parent="Panel/MarginContainer/TabContainer/Loadout/ItemPicker/MarginContainer/ScrollContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/separation = 6
+
+[node name="Items" type="Control" parent="Panel/MarginContainer/TabContainer"]
+visible = false
+layout_mode = 2
+metadata/_tab_index = 1
 
 [node name="ItemSlots" type="MarginContainer" parent="Panel/MarginContainer/TabContainer/Items"]
 layout_mode = 0
@@ -138,7 +269,7 @@ text_overrun_behavior = 1
 [node name="Bounties" type="Control" parent="Panel/MarginContainer/TabContainer"]
 visible = false
 layout_mode = 2
-metadata/_tab_index = 1
+metadata/_tab_index = 2
 
 [node name="BountyList" type="MarginContainer" parent="Panel/MarginContainer/TabContainer/Bounties"]
 layout_mode = 0
@@ -213,9 +344,8 @@ autowrap_mode = 3
 text_overrun_behavior = 1
 
 [node name="Quests" type="Control" parent="Panel/MarginContainer/TabContainer"]
-visible = false
 layout_mode = 2
-metadata/_tab_index = 2
+metadata/_tab_index = 3
 
 [node name="MarginContainer" type="MarginContainer" parent="Panel/MarginContainer/TabContainer/Quests"]
 layout_mode = 0
@@ -226,13 +356,19 @@ theme_override_constants/margin_top = 16
 theme_override_constants/margin_right = 16
 theme_override_constants/margin_bottom = 16
 
-[node name="VBoxContainer" type="VBoxContainer" parent="Panel/MarginContainer/TabContainer/Quests/MarginContainer"]
+[node name="ScrollContainer" type="ScrollContainer" parent="Panel/MarginContainer/TabContainer/Quests/MarginContainer"]
 layout_mode = 2
+horizontal_scroll_mode = 0
+
+[node name="QuestListContainer" type="VBoxContainer" parent="Panel/MarginContainer/TabContainer/Quests/MarginContainer/ScrollContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/separation = 10
 
 [node name="Map" type="Control" parent="Panel/MarginContainer/TabContainer"]
 visible = false
 layout_mode = 2
-metadata/_tab_index = 3
+metadata/_tab_index = 4
 
 [node name="MarginContainer" type="MarginContainer" parent="Panel/MarginContainer/TabContainer/Map"]
 layout_mode = 0
@@ -245,116 +381,3 @@ theme_override_constants/margin_bottom = 16
 
 [node name="TextureRect" type="TextureRect" parent="Panel/MarginContainer/TabContainer/Map/MarginContainer"]
 layout_mode = 2
-
-[node name="Loadout" type="Control" parent="Panel/MarginContainer/TabContainer"]
-visible = false
-layout_mode = 2
-metadata/_tab_index = 4
-
-[node name="ScrollContainer" type="ScrollContainer" parent="Panel/MarginContainer/TabContainer/Loadout"]
-layout_mode = 0
-offset_right = 1440.0
-offset_bottom = 840.0
-
-[node name="VBoxContainer" type="VBoxContainer" parent="Panel/MarginContainer/TabContainer/Loadout/ScrollContainer"]
-layout_mode = 2
-size_flags_horizontal = 3
-theme_override_constants/separation = 20
-
-[node name="EquipmentHeader" type="Label" parent="Panel/MarginContainer/TabContainer/Loadout/ScrollContainer/VBoxContainer"]
-layout_mode = 2
-text = "Equipment"
-label_settings = SubResource("LabelSettings_73x1u")
-
-[node name="EquipmentRow" type="HBoxContainer" parent="Panel/MarginContainer/TabContainer/Loadout/ScrollContainer/VBoxContainer"]
-layout_mode = 2
-theme_override_constants/separation = 12
-
-[node name="PrimaryColumn" type="VBoxContainer" parent="Panel/MarginContainer/TabContainer/Loadout/ScrollContainer/VBoxContainer/EquipmentRow"]
-layout_mode = 2
-size_flags_horizontal = 3
-theme_override_constants/separation = 8
-
-[node name="PrimarySlot" parent="Panel/MarginContainer/TabContainer/Loadout/ScrollContainer/VBoxContainer/EquipmentRow/PrimaryColumn" instance=ExtResource("6_loadout_slot")]
-layout_mode = 2
-slot_name = "Primary Weapon"
-
-[node name="AmmoSlotPrimary" parent="Panel/MarginContainer/TabContainer/Loadout/ScrollContainer/VBoxContainer/EquipmentRow/PrimaryColumn" instance=ExtResource("6_loadout_slot")]
-layout_mode = 2
-slot_name = "Primary Ammo"
-
-[node name="WeaponSkinSlotPrimary" parent="Panel/MarginContainer/TabContainer/Loadout/ScrollContainer/VBoxContainer/EquipmentRow/PrimaryColumn" instance=ExtResource("6_loadout_slot")]
-layout_mode = 2
-slot_name = "Primary Weapon Skin"
-
-[node name="SecondaryColumn" type="VBoxContainer" parent="Panel/MarginContainer/TabContainer/Loadout/ScrollContainer/VBoxContainer/EquipmentRow"]
-layout_mode = 2
-size_flags_horizontal = 3
-theme_override_constants/separation = 8
-
-[node name="SecondarySlot" parent="Panel/MarginContainer/TabContainer/Loadout/ScrollContainer/VBoxContainer/EquipmentRow/SecondaryColumn" instance=ExtResource("6_loadout_slot")]
-layout_mode = 2
-slot_name = "Secondary Weapon"
-
-[node name="AmmoSlotSecondary" parent="Panel/MarginContainer/TabContainer/Loadout/ScrollContainer/VBoxContainer/EquipmentRow/SecondaryColumn" instance=ExtResource("6_loadout_slot")]
-layout_mode = 2
-slot_name = "Secondary Ammo"
-
-[node name="WeaponSkinSlotSecondary" parent="Panel/MarginContainer/TabContainer/Loadout/ScrollContainer/VBoxContainer/EquipmentRow/SecondaryColumn" instance=ExtResource("6_loadout_slot")]
-layout_mode = 2
-slot_name = "Secondary Weapon Skin"
-
-[node name="UtilitySlot" parent="Panel/MarginContainer/TabContainer/Loadout/ScrollContainer/VBoxContainer/EquipmentRow" instance=ExtResource("6_loadout_slot")]
-layout_mode = 2
-size_flags_vertical = 0
-slot_name = "Utility"
-
-[node name="AbilitiesHeader" type="Label" parent="Panel/MarginContainer/TabContainer/Loadout/ScrollContainer/VBoxContainer"]
-layout_mode = 2
-text = "Abilities"
-label_settings = SubResource("LabelSettings_73x1u")
-
-[node name="AbilitiesListContainer" type="VBoxContainer" parent="Panel/MarginContainer/TabContainer/Loadout/ScrollContainer/VBoxContainer"]
-layout_mode = 2
-theme_override_constants/separation = 4
-
-[node name="CosmeticsHeader" type="Label" parent="Panel/MarginContainer/TabContainer/Loadout/ScrollContainer/VBoxContainer"]
-layout_mode = 2
-text = "Cosmetics"
-label_settings = SubResource("LabelSettings_73x1u")
-
-[node name="CosmeticsRow" type="HBoxContainer" parent="Panel/MarginContainer/TabContainer/Loadout/ScrollContainer/VBoxContainer"]
-layout_mode = 2
-theme_override_constants/separation = 12
-
-[node name="HatSlot" parent="Panel/MarginContainer/TabContainer/Loadout/ScrollContainer/VBoxContainer/CosmeticsRow" instance=ExtResource("6_loadout_slot")]
-layout_mode = 2
-slot_name = "Hat"
-
-[node name="OutfitSlot" parent="Panel/MarginContainer/TabContainer/Loadout/ScrollContainer/VBoxContainer/CosmeticsRow" instance=ExtResource("6_loadout_slot")]
-layout_mode = 2
-slot_name = "Outfit"
-
-[node name="AccessorySlot" parent="Panel/MarginContainer/TabContainer/Loadout/ScrollContainer/VBoxContainer/CosmeticsRow" instance=ExtResource("6_loadout_slot")]
-layout_mode = 2
-slot_name = "Accessory"
-
-[node name="ItemPicker" type="PopupPanel" parent="Panel/MarginContainer/TabContainer/Loadout"]
-size = Vector2i(500, 600)
-
-[node name="MarginContainer" type="MarginContainer" parent="Panel/MarginContainer/TabContainer/Loadout/ItemPicker"]
-layout_mode = 2
-offset_right = 500.0
-offset_bottom = 600.0
-theme_override_constants/margin_left = 12
-theme_override_constants/margin_top = 12
-theme_override_constants/margin_right = 12
-theme_override_constants/margin_bottom = 12
-
-[node name="ScrollContainer" type="ScrollContainer" parent="Panel/MarginContainer/TabContainer/Loadout/ItemPicker/MarginContainer"]
-layout_mode = 2
-
-[node name="PickerListContainer" type="VBoxContainer" parent="Panel/MarginContainer/TabContainer/Loadout/ItemPicker/MarginContainer/ScrollContainer"]
-layout_mode = 2
-size_flags_horizontal = 3
-theme_override_constants/separation = 6

@@ -56,3 +56,5 @@ text = "Return
 label_settings = SubResource("LabelSettings_gpn3y")
 horizontal_alignment = 1
 vertical_alignment = 1
+
+[connection signal="pressed" from="ReturnButton" to="." method="_on_return_button_pressed"]

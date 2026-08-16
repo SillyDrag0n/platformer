@@ -18,6 +18,8 @@ extends Resource
 
 @export var unlocked_ability_ids : Array[String] = []
 @export var completed_quest_ids : Array[String] = []
+@export var enemy_kill_counts : Dictionary = {} # enemy id -> kill count
+@export var received_quest_paths : Array[String] = []
 
 @export var bounty_states : Dictionary = {} # bounty id -> {unlocked, completed, reward_claimed}
 @export var region_states : Dictionary = {} # region id -> unlocked

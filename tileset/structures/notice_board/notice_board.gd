@@ -9,4 +9,5 @@ func _ready() -> void:
 
 func _on_interact():
 	interactable.is_interactable = false
+	SceneManager.set_pending_spawn_position(PlayerManager.player.global_position)
 	UiManager.open_world_map()

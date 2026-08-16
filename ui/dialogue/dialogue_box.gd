@@ -1,6 +1,8 @@
 class_name DialogueBox
 extends MenuPopup
 
+signal line_shown(line_index : int)
+
 @export var speaker_label : Label
 @export var text_label : Label
 @export var continue_button : Button
@@ -45,9 +47,19 @@ func show_choice(speaker_name : String, line : String, yes_text : String, no_tex
 	open()
 
 
+# MenuPopup.open() never grabs focus on its own, so without this a controller has no focused
+# button to press - Continue/Yes only worked via mouse click.
+func _on_opened() -> void:
+	if choice_buttons.visible:
+		yes_button.grab_focus()
+	else:
+		continue_button.grab_focus()
+
+
 func _refresh_current_line() -> void:
 	text_label.text = lines[line_index]
 	continue_button.text = "Close" if line_index == lines.size() - 1 else "Continue"
+	line_shown.emit(line_index)
 
 
 func _on_continue_button_pressed() -> void:

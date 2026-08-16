@@ -88,6 +88,8 @@ func try_shoot() -> bool:
 			magazine_current -= 1
 			shoot()
 			shoot_timer.start()
+			if magazine_current == 0:
+				reload()
 			return true
 		gun_empty_sound.play()
 		return false

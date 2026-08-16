@@ -1,0 +1,17 @@
+[gd_resource type="Resource" script_class="QuestData" load_steps=4 format=3]
+
+[ext_resource type="Script" uid="uid://dkcp28pvdhh40" path="res://scripts/quests/quest_data.gd" id="1_quest"]
+[ext_resource type="Script" uid="uid://djhxi31kg3jus" path="res://scripts/items/item_data.gd" id="2_item"]
+[ext_resource type="Resource" path="res://items/cosmetics/deputy_hat.tres" id="3_hat"]
+
+[resource]
+script = ExtResource("1_quest")
+id = "kill_5_bandits"
+title = "Bandit Trouble"
+description = "Kill 5 bandits to make the roads safer."
+offer_dialogue = Array[String](["Bandits have been raiding the trade routes outside town.", "Thin their numbers - bring me word that 5 of them are dealt with - and I'll make it worth your while."])
+complete_dialogue = Array[String](["Five bandits down. Roads are safer already.", "Here, take this - a deputy hat, official as they come. Much obliged, partner."])
+required_enemy_id = "bandit"
+required_kill_amount = 5
+reward_items = Array[ExtResource("2_item")]([ExtResource("3_hat")])
+metadata/_custom_type_script = "uid://dkcp28pvdhh40"

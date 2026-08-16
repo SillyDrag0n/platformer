@@ -13,6 +13,10 @@ var size: int = 20
 var start_items: Dictionary[ItemData, int]
 var is_open: bool = false
 
+# The player should never end up with no outfit equipped - granted and equipped up front so
+# there's always something here, matching how Gun.gd guarantees a default primary weapon/ammo.
+@export var default_outfit : CosmeticItemData = preload("res://items/cosmetics/default_outfit.tres")
+
 # PURE DATA (no nodes)
 var item_slots: Array = []
 var equipped_weapons : Dictionary = {} # WeaponSlot -> WeaponItemData
@@ -38,6 +42,10 @@ func initialize_inventory():
 	for item in start_items:
 		for i in range(start_items[item]):
 			add_item(item)
+
+	if default_outfit != null and get_equipped_cosmetic(CosmeticItemData.CosmeticSlot.OUTFIT) == null:
+		add_item(default_outfit)
+		equip_cosmetic(default_outfit)
 
 	updated_inventory.emit()
 

@@ -6,7 +6,7 @@ extends Node2D
 @export var reticle_color : Color = Color(1, 0.3, 0.3, 0.95)
 
 @export_category("Trajectory Line")
-@export var trajectory_max_distance : float = 900.0
+@export var trajectory_max_distance : float = 700.0
 @export var trajectory_color : Color = Color(1, 1, 1, 0.18)
 @export var trajectory_width : float = 1.5
 @export var trajectory_dash_length : float = 8.0
@@ -95,3 +95,4 @@ func _draw() -> void:
 	draw_line(Vector2(reticle_radius_px + gap, 0), Vector2(reticle_radius_px + gap + tick, 0), reticle_color, 2.0)
 	draw_line(Vector2(0, -reticle_radius_px - gap - tick), Vector2(0, -reticle_radius_px - gap), reticle_color, 2.0)
 	draw_line(Vector2(0, reticle_radius_px + gap), Vector2(0, reticle_radius_px + gap + tick), reticle_color, 2.0)
+ 

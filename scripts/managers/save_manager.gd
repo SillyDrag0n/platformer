@@ -44,6 +44,9 @@ func save_game():
 
 	data.unlocked_ability_ids.assign(AbilityManager.get_unlocked_ids())
 	data.completed_quest_ids.assign(QuestManager.completed_quest_ids)
+	data.enemy_kill_counts = QuestManager.enemy_kill_counts.duplicate()
+	for quest in QuestManager.received_quests:
+		data.received_quest_paths.append(quest.resource_path)
 
 	for bounty in GameStateManager.bounties:
 		data.bounty_states[bounty.id] = {
@@ -108,8 +111,14 @@ func load_game():
 	for id in data.unlocked_ability_ids:
 		AbilityManager.unlock(id)
 
+	for path in data.received_quest_paths:
+		if ResourceLoader.exists(path):
+			QuestManager.receive_quest(load(path))
+
 	for id in data.completed_quest_ids:
 		QuestManager.mark_completed(id)
+
+	QuestManager.enemy_kill_counts = data.enemy_kill_counts.duplicate()
 
 	for bounty_id in data.bounty_states:
 		var bounty : BountyData = GameStateManager.get_bounty_by_id(bounty_id)

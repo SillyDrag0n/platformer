@@ -1,0 +1,172 @@
+[gd_scene load_steps=22 format=3 uid="uid://c6n8jr2h5x4qa"]
+
+[ext_resource type="Script" path="res://enemies/bandit/bandit.gd" id="1_dhyvq"]
+[ext_resource type="Texture2D" uid="uid://bx16vh2lxo6ql" path="res://enemies/temp_files/temp-enemy-aggro.png" id="1_xuvgk"]
+[ext_resource type="Texture2D" uid="uid://b003taxp5u40m" path="res://enemies/temp_files/temp-enemy-shoot.png" id="2_8ytsa"]
+[ext_resource type="Texture2D" uid="uid://cltqpimt50u5r" path="res://enemies/temp_files/temp-enemy-idle.png" id="3_2b7ve"]
+[ext_resource type="Texture2D" uid="uid://dpf6fchvv1chn" path="res://enemies/temp_files/temp-enemy-walk.png" id="4_o2orx"]
+[ext_resource type="Script" uid="uid://7qf0q30y202f" path="res://scripts/state_machine/node_finite_state_machine.gd" id="6_7bufg"]
+[ext_resource type="Script" path="res://enemies/bandit/state_machine_controller.gd" id="6_hoo18"]
+[ext_resource type="Script" path="res://enemies/bandit/state_machine/idle_state.gd" id="7_dhyvq"]
+[ext_resource type="Script" path="res://enemies/bandit/state_machine/aggro_state.gd" id="8_hoo18"]
+[ext_resource type="Script" path="res://enemies/bandit/state_machine/attack_state.gd" id="9_axxec"]
+[ext_resource type="Script" path="res://enemies/bandit/state_machine/reload_state.gd" id="10_reload"]
+[ext_resource type="Script" path="res://enemies/bandit/state_machine/chase_state.gd" id="11_ct5ms"]
+[ext_resource type="Script" uid="uid://cl5kkl1jbwkie" path="res://enemies/_common/gravity.gd" id="12_hoo18"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ybkpd"]
+atlas = ExtResource("1_xuvgk")
+region = Rect2(0, 0, 32, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_bjy87"]
+atlas = ExtResource("2_8ytsa")
+region = Rect2(0, 0, 32, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_7bufg"]
+atlas = ExtResource("3_2b7ve")
+region = Rect2(0, 0, 32, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_dhyvq"]
+atlas = ExtResource("4_o2orx")
+region = Rect2(0, 0, 32, 64)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_hoo18"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_ybkpd")
+}],
+"loop": true,
+"name": &"aggro",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_bjy87")
+}],
+"loop": true,
+"name": &"attack",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_7bufg")
+}],
+"loop": true,
+"name": &"idle",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_dhyvq")
+}],
+"loop": true,
+"name": &"walk",
+"speed": 5.0
+}]
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_axxec"]
+radius = 12.0
+height = 60.0
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_xuvgk"]
+size = Vector2(800, 250)
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_dhyvq"]
+radius = 12.0
+height = 60.0
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_8ytsa"]
+size = Vector2(500, 250)
+
+[node name="Bandit" type="CharacterBody2D" node_paths=PackedStringArray("gun_muzzle")]
+collision_layer = 4
+collision_mask = 387
+script = ExtResource("1_dhyvq")
+enemy_id = "bandit"
+gun_muzzle = NodePath("Muzzle")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+sprite_frames = SubResource("SpriteFrames_hoo18")
+animation = &"idle"
+autoplay = "idle"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("CapsuleShape2D_axxec")
+
+[node name="AggroRange" type="Area2D" parent="."]
+collision_layer = 8
+collision_mask = 2
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="AggroRange"]
+shape = SubResource("RectangleShape2D_xuvgk")
+debug_color = Color(0.219608, 0, 0.67451, 0.423529)
+
+[node name="Hurtbox" type="Area2D" parent="." groups=["Enemy"]]
+collision_layer = 4
+collision_mask = 32
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Hurtbox"]
+shape = SubResource("CapsuleShape2D_dhyvq")
+
+[node name="AttackRange" type="Area2D" parent="."]
+collision_layer = 64
+collision_mask = 2
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="AttackRange"]
+shape = SubResource("RectangleShape2D_8ytsa")
+debug_color = Color(0.819608, 0.67451, 0.156863, 0.364706)
+
+[node name="ChaseTimer" type="Timer" parent="."]
+wait_time = 2.0
+one_shot = true
+
+[node name="Muzzle" type="Marker2D" parent="."]
+position = Vector2(-15, -7.5)
+
+[node name="StateMachineController" type="Node" parent="." node_paths=PackedStringArray("node_finite_state_machine", "chase_timer")]
+script = ExtResource("6_hoo18")
+node_finite_state_machine = NodePath("../StateMachine")
+chase_timer = NodePath("../ChaseTimer")
+
+[node name="StateMachine" type="Node" parent="." node_paths=PackedStringArray("initial_node_state")]
+script = ExtResource("6_7bufg")
+initial_node_state = NodePath("Idle")
+
+[node name="Idle" type="Node" parent="StateMachine" node_paths=PackedStringArray("character_body_2d", "animated_sprite_2d")]
+script = ExtResource("7_dhyvq")
+character_body_2d = NodePath("../..")
+animated_sprite_2d = NodePath("../../AnimatedSprite2D")
+
+[node name="Aggro" type="Node" parent="StateMachine" node_paths=PackedStringArray("character_body_2d", "animated_sprite_2d")]
+script = ExtResource("8_hoo18")
+character_body_2d = NodePath("../..")
+animated_sprite_2d = NodePath("../../AnimatedSprite2D")
+
+[node name="Attack" type="Node" parent="StateMachine" node_paths=PackedStringArray("character_body_2d", "animated_sprite_2d")]
+script = ExtResource("9_axxec")
+character_body_2d = NodePath("../..")
+animated_sprite_2d = NodePath("../../AnimatedSprite2D")
+
+[node name="Reload" type="Node" parent="StateMachine" node_paths=PackedStringArray("character_body_2d", "animated_sprite_2d")]
+script = ExtResource("10_reload")
+character_body_2d = NodePath("../..")
+animated_sprite_2d = NodePath("../../AnimatedSprite2D")
+
+[node name="Chase" type="Node" parent="StateMachine" node_paths=PackedStringArray("character_body_2d", "animated_sprite_2d", "chase_timer")]
+script = ExtResource("11_ct5ms")
+character_body_2d = NodePath("../..")
+animated_sprite_2d = NodePath("../../AnimatedSprite2D")
+chase_timer = NodePath("../../ChaseTimer")
+
+[node name="Gravity" type="Node" parent="." node_paths=PackedStringArray("character_body_2d", "animated_sprite_2d")]
+script = ExtResource("12_hoo18")
+character_body_2d = NodePath("..")
+animated_sprite_2d = NodePath("../AnimatedSprite2D")
+
+[connection signal="body_entered" from="AggroRange" to="StateMachineController" method="_on_aggro_range_body_entered"]
+[connection signal="body_exited" from="AggroRange" to="StateMachineController" method="_on_aggro_range_body_exited"]
+[connection signal="area_entered" from="Hurtbox" to="." method="_on_hurtbox_area_entered"]
+[connection signal="body_entered" from="AttackRange" to="StateMachineController" method="_on_attack_range_body_entered"]
+[connection signal="body_exited" from="AttackRange" to="StateMachineController" method="_on_attack_range_body_exited"]
+[connection signal="timeout" from="ChaseTimer" to="StateMachineController" method="_on_chase_timer_timeout"]
