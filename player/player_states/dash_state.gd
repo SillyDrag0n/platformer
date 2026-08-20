@@ -32,7 +32,7 @@ func on_physics_process(delta : float):
 	character_body_2d.move_and_slide()
 
 	if dash_timer <= 0.0:
-		transition.emit("Fall")
+		transition.emit("Normal")
 
 
 func enter():

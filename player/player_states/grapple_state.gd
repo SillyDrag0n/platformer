@@ -30,7 +30,7 @@ func on_process(delta : float):
 
 func on_physics_process(delta : float):
 	if not is_instance_valid(anchor):
-		transition.emit("Fall")
+		transition.emit("Normal")
 		return
 
 	var anchor_position : Vector2 = anchor.global_position
@@ -97,17 +97,17 @@ func on_physics_process(delta : float):
 	# jump releases the hook and keeps the swing momentum, plus a small upward boost
 	if GameInputEvents.jump_input():
 		character_body_2d.velocity.y -= release_jump_boost
-		transition.emit("Fall")
+		transition.emit("Normal")
 		return
 
 	# pressing grapple again lets go without a boost
 	if GameInputEvents.grapple_input():
-		transition.emit("Fall")
+		transition.emit("Normal")
 		return
 
 	# landed on the ground while swinging
 	if character_body_2d.is_on_floor():
-		transition.emit("Idle")
+		transition.emit("Normal")
 
 
 func enter():

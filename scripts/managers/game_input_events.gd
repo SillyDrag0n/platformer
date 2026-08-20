@@ -98,7 +98,7 @@ static func shoot_input() -> bool:
 static func crouch_input() -> bool:
 	if is_input_locked():
 		return false
-	var crouch_input : bool = Input.is_action_just_pressed("crouch")
+	var crouch_input : bool = Input.is_action_pressed("crouch")
 	return crouch_input
 
 

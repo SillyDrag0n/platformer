@@ -12,6 +12,7 @@ var ammo : AmmoItemData
 var magazine_current : int
 
 @onready var muzzle = $Muzzle
+@onready var weapon_sprite : Sprite2D = $Weapon
 @onready var shoot_timer = $ShootTimer
 @onready var reload_timer = $ReloadTimer
 @onready var reload_ui = $ReloadUi
@@ -19,10 +20,13 @@ var magazine_current : int
 @onready var gun_reload_sound = $GunReload
 @onready var gun_empty_sound = $GunEmpty
 
+@onready var player = get_parent()
+
 
 func _ready():
 	InventoryManager.equipped_weapon_changed.connect(_on_equipped_weapon_changed)
 	InventoryManager.equipped_ammo_changed.connect(_on_equipped_ammo_changed)
+	InventoryManager.equipped_weapon_skin_changed.connect(_on_equipped_weapon_skin_changed)
 	# Primary starts unequipped in InventoryManager itself - grant and equip the default weapon
 	# there (rather than only falling back to it locally below) so InventoryManager stays the
 	# accurate source of truth for what's equipped, matching what Gun.gd actually fires.
@@ -41,6 +45,15 @@ func _process(_delta):
 		swap_weapon()
 	if !reload_timer.is_stopped():
 		reload_ui.set_value(reload_timer.time_left / reload_timer.wait_time)
+	if player.is_shooting:
+		try_shoot()
+
+	# Points the gun (and, since Muzzle is a child of this node, the muzzle/bullet spawn point
+	# along with it) at the aim direction every frame, regardless of gameplay state - matching how
+	# AimReticle already tracks aim unconditionally today.
+	var aim_dir : Vector2 = GameInputEvents.aim_input(global_position)
+	rotation = aim_dir.angle()
+	weapon_sprite.flip_v = aim_dir.x < 0.0
 
 # --- Equipping ---
 func swap_weapon():
@@ -60,6 +73,7 @@ func _refresh_active_weapon():
 			new_weapon = default_weapon
 	equip_weapon(new_weapon)
 	_refresh_active_ammo()
+	_refresh_weapon_skin()
 
 func equip_weapon(new_weapon : WeaponItemData):
 	if new_weapon == null:
@@ -72,6 +86,12 @@ func _refresh_active_ammo():
 	var new_ammo = InventoryManager.get_equipped_ammo(active_slot)
 	ammo = new_ammo if new_ammo else default_ammo
 
+# Weapon skins are equipped per-WeaponSlot rather than as a single global cosmetic slot, so this
+# is resolved here (where active_slot already lives) instead of the generic cosmetics listener.
+func _refresh_weapon_skin():
+	var skin : CosmeticItemData = InventoryManager.get_equipped_weapon_skin(active_slot)
+	weapon_sprite.texture = skin.texture if skin else null
+
 func _on_equipped_weapon_changed(slot : InventoryManager.WeaponSlot, _new_weapon : WeaponItemData):
 	if slot == active_slot:
 		_refresh_active_weapon()
@@ -79,6 +99,10 @@ func _on_equipped_weapon_changed(slot : InventoryManager.WeaponSlot, _new_weapon
 func _on_equipped_ammo_changed(slot : InventoryManager.WeaponSlot, _new_ammo : AmmoItemData):
 	if slot == active_slot:
 		_refresh_active_ammo()
+
+func _on_equipped_weapon_skin_changed(slot : InventoryManager.WeaponSlot, _cosmetic : CosmeticItemData):
+	if slot == active_slot:
+		_refresh_weapon_skin()
 
 
 # --- Fire attempt ---

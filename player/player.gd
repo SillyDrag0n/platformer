@@ -4,10 +4,12 @@ const DEADEYE_TIME_SCALE := 0.35
 
 var player_death_effect = preload("res://player/player_death_effect/player_death_effect.tscn")
 
-@onready var animated_sprite_2d = $AnimatedSprite2D
-@onready var muzzle : Marker2D = $Muzzle
+@onready var legs : AnimatedSprite2D = $Body/Legs
+@onready var upper_body : AnimatedSprite2D = $Body/UpperBody
+@onready var state_machine : NodeFiniteStateMachine = $StateMachine
 
 var is_invulnerable : bool = false
+var is_shooting : bool = false
 
 func _ready() -> void:
 	PlayerManager.player = self
@@ -19,6 +21,11 @@ func _process(_delta) -> void:
 		Engine.time_scale = DEADEYE_TIME_SCALE
 	elif Engine.time_scale != 1.0:
 		Engine.time_scale = 1.0
+
+	# Shooting is a plain state-independent flag now rather than living inside ground-only shoot
+	# states - gated to Normal so Dash/Grapple/Hurt/Dead still can't fire, matching what those
+	# states already never allowed.
+	is_shooting = GameInputEvents.shoot_input() and state_machine.current_node_state.name.to_lower() == "normal"
 
 
 func set_invulnerable(value : bool) -> void:
@@ -50,18 +57,18 @@ func take_hit(damage : int):
 		return
 	flash_hit()
 	HealthManager.decrease_health(damage)
-	check_player_health()
+	if HealthManager.current_health == 0:
+		state_machine.transition_to("Dead")
+	else:
+		state_machine.transition_to("Hurt")
 
 
 func flash_hit():
 	var tween = get_tree().create_tween()
-	tween.tween_property(animated_sprite_2d, "material:shader_parameter/enabled", true, 0)
-	tween.tween_property(animated_sprite_2d, "material:shader_parameter/enabled", false, 0.2)
-
-
-func check_player_health():
-	if HealthManager.current_health == 0:
-		player_death()
+	tween.tween_property(legs, "material:shader_parameter/enabled", true, 0)
+	tween.parallel().tween_property(upper_body, "material:shader_parameter/enabled", true, 0)
+	tween.tween_property(legs, "material:shader_parameter/enabled", false, 0.2)
+	tween.parallel().tween_property(upper_body, "material:shader_parameter/enabled", false, 0.2)
 
 
 func _exit_tree():
