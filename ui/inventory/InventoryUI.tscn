@@ -25,18 +25,19 @@ font_size = 32
 
 [node name="InventoryUi" type="CanvasLayer" node_paths=PackedStringArray("tab_container", "item_grid", "bounty_list_container", "bounty_title_label", "bounty_status_label", "bounty_description_label", "bounty_detail_icon", "quest_list_container", "slot_primary", "slot_secondary", "slot_utility", "slot_ammo_primary", "slot_ammo_secondary", "slot_hat", "slot_outfit", "slot_weapon_skin_primary", "slot_weapon_skin_secondary", "slot_accessory", "abilities_list_container", "item_picker", "item_picker_backdrop", "picker_list_container")]
 script = ExtResource("1_73x1u")
+item_slot_scene = ExtResource("2_73x1u")
+bounty_entry_scene = ExtResource("5_bnty1")
+default_bounty_icon = ExtResource("2_h7hxg")
+quest_entry_scene = ExtResource("8_quest_entry")
+picker_entry_scene = ExtResource("7_picker_entry")
 tab_container = NodePath("Panel/MarginContainer/TabContainer")
 item_grid = NodePath("Panel/MarginContainer/TabContainer/Items/ItemSlots/ItemsGridContainer")
-item_slot_scene = ExtResource("2_73x1u")
 bounty_list_container = NodePath("Panel/MarginContainer/TabContainer/Bounties/BountyList/ScrollContainer/BountyListContainer")
 bounty_title_label = NodePath("Panel/MarginContainer/TabContainer/Bounties/Bounty Information/HBoxContainer/VBoxContainer/PanelContainer/BountyTitleLabel")
 bounty_status_label = NodePath("Panel/MarginContainer/TabContainer/Bounties/Bounty Information/HBoxContainer/VBoxContainer/BountyStatusLabel")
 bounty_description_label = NodePath("Panel/MarginContainer/TabContainer/Bounties/Bounty Information/HBoxContainer/VBoxContainer/PanelContainer2/BountyDescriptionLabel")
 bounty_detail_icon = NodePath("Panel/MarginContainer/TabContainer/Bounties/Bounty Information/HBoxContainer/BountyInformationIcon/BountyIconTextureRect")
-bounty_entry_scene = ExtResource("5_bnty1")
-default_bounty_icon = ExtResource("2_h7hxg")
 quest_list_container = NodePath("Panel/MarginContainer/TabContainer/Quests/MarginContainer/ScrollContainer/QuestListContainer")
-quest_entry_scene = ExtResource("8_quest_entry")
 slot_primary = NodePath("Panel/MarginContainer/TabContainer/Loadout/ScrollContainer/VBoxContainer/EquipmentRow/PrimaryColumn/PrimarySlot")
 slot_secondary = NodePath("Panel/MarginContainer/TabContainer/Loadout/ScrollContainer/VBoxContainer/EquipmentRow/SecondaryColumn/SecondarySlot")
 slot_utility = NodePath("Panel/MarginContainer/TabContainer/Loadout/ScrollContainer/VBoxContainer/EquipmentRow/UtilitySlot")
@@ -51,7 +52,6 @@ abilities_list_container = NodePath("Panel/MarginContainer/TabContainer/Loadout/
 item_picker = NodePath("Panel/MarginContainer/TabContainer/Loadout/ItemPicker")
 item_picker_backdrop = NodePath("Panel/MarginContainer/TabContainer/Loadout/ItemPickerBackdrop")
 picker_list_container = NodePath("Panel/MarginContainer/TabContainer/Loadout/ItemPicker/MarginContainer/ScrollContainer/PickerListContainer")
-picker_entry_scene = ExtResource("7_picker_entry")
 
 [node name="Panel" type="Panel" parent="."]
 anchors_preset = 15

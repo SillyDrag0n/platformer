@@ -1,0 +1,9 @@
+{
+	"servers": {
+		"godot_mcp": {
+			"url": "https://github.com/Coding-Solo/godot-mcp",
+			"type": "http"
+		}
+	},
+	"inputs": []
+}

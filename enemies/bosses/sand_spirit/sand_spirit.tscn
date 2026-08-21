@@ -234,7 +234,7 @@ shape = SubResource("CircleShape2D_hufni")
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
 scale = Vector2(0.75, 0.75)
 sprite_frames = SubResource("SpriteFrames_uepdw")
-animation = &"ambushAttack"
+animation = &"idle"
 autoplay = "idle"
 
 [node name="Hurtbox" type="Area2D" parent="."]

@@ -161,3 +161,17 @@ static func deadeye_input() -> bool:
 		return false
 	var deadeye_input : bool = Input.is_action_pressed("deadeye")
 	return deadeye_input
+
+
+static func throw_input_just_pressed() -> bool:
+	if is_input_locked():
+		return false
+	var throw_input_just_pressed : bool = Input.is_action_just_pressed("throw_dynamite")
+	return throw_input_just_pressed
+
+
+static func throw_input_just_released() -> bool:
+	if is_input_locked():
+		return false
+	var throw_input_just_released : bool = Input.is_action_just_released("throw_dynamite")
+	return throw_input_just_released
