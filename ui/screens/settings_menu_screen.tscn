@@ -80,6 +80,13 @@ max_value = 100.0
 step = 1.0
 value = 50.0
 
+[node name="LanguageLabel" type="Label" parent="MarginContainer/PanelContainer/MarginContainer/VBoxContainer"]
+layout_mode = 2
+text = "Language"
+
+[node name="LanguageOptionButton" type="OptionButton" parent="MarginContainer/PanelContainer/MarginContainer/VBoxContainer"]
+layout_mode = 2
+
 [node name="MainMenuButton" type="Button" parent="MarginContainer/PanelContainer/MarginContainer/VBoxContainer"]
 layout_mode = 2
 text = "MAIN MENU"
@@ -90,4 +97,5 @@ text = "MAIN MENU"
 [connection signal="toggled" from="MarginContainer/PanelContainer/MarginContainer/VBoxContainer/VSyncCheckButton" to="." method="_on_v_sync_check_button_toggled"]
 [connection signal="value_changed" from="MarginContainer/PanelContainer/MarginContainer/VBoxContainer/MasterVolumeSlider" to="." method="_on_master_volume_slider_value_changed"]
 [connection signal="value_changed" from="MarginContainer/PanelContainer/MarginContainer/VBoxContainer/AimSensitivitySlider" to="." method="_on_aim_sensitivity_slider_value_changed"]
+[connection signal="item_selected" from="MarginContainer/PanelContainer/MarginContainer/VBoxContainer/LanguageOptionButton" to="." method="_on_language_option_button_item_selected"]
 [connection signal="pressed" from="MarginContainer/PanelContainer/MarginContainer/VBoxContainer/MainMenuButton" to="." method="_on_main_menu_button_pressed"]

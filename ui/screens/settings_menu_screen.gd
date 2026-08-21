@@ -6,6 +6,7 @@ extends CanvasLayer
 @onready var vsync_check_button = $MarginContainer/PanelContainer/MarginContainer/VBoxContainer/VSyncCheckButton
 @onready var master_volume_slider = $MarginContainer/PanelContainer/MarginContainer/VBoxContainer/MasterVolumeSlider
 @onready var aim_sensitivity_slider = $MarginContainer/PanelContainer/MarginContainer/VBoxContainer/AimSensitivitySlider
+@onready var language_option_button = $MarginContainer/PanelContainer/MarginContainer/VBoxContainer/LanguageOptionButton
 
 var window_modes : Dictionary = {"Fullscreen" : DisplayServer.WINDOW_MODE_EXCLUSIVE_FULLSCREEN,
 								 "Window" : DisplayServer.WINDOW_MODE_WINDOWED,
@@ -26,6 +27,11 @@ var max_fps_options : Dictionary = {"Unlimited" : 0,
 									"144" : 144,
 									"240" : 240}
 
+# Language names are shown in their own language rather than translated,
+# so "de" always reads "Deutsch" no matter which locale is active.
+var language_display_names : Dictionary = {"en" : "English",
+											"de" : "Deutsch"}
+
 
 func _ready():
 	for window_mode in window_modes:
@@ -36,6 +42,9 @@ func _ready():
 
 	for max_fps_option in max_fps_options:
 		max_fps_option_button.add_item(max_fps_option)
+
+	for language_code in SettingsManager.available_languages:
+		language_option_button.add_item(language_display_names[language_code])
 
 	initialise_controls()
 	window_mode_option_button.grab_focus()
@@ -56,6 +65,7 @@ func initialise_controls():
 	vsync_check_button.button_pressed = settings_data.vsync_enabled
 	master_volume_slider.value = settings_data.master_volume * 100.0
 	aim_sensitivity_slider.value = settings_data.aim_sensitivity * 100.0
+	language_option_button.selected = settings_data.language_index
 
 
 func _on_window_mode_option_button_item_selected(index):
@@ -83,6 +93,11 @@ func _on_master_volume_slider_value_changed(value):
 
 func _on_aim_sensitivity_slider_value_changed(value):
 	SettingsManager.set_aim_sensitivity(value / 100.0)
+
+
+func _on_language_option_button_item_selected(index):
+	var language_code = SettingsManager.available_languages[index]
+	SettingsManager.set_language(language_code, index)
 
 
 func _on_main_menu_button_pressed():

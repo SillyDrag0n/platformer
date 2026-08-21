@@ -6,6 +6,8 @@ var settings_data : SettingsDataResource
 var save_settings_path = "user://game_data/"
 var save_file_name = "settings_data.tres"
 
+var available_languages : Array[String] = ["en", "de"]
+
 
 func load_settings():
 	if !DirAccess.dir_exists_absolute(save_settings_path):
@@ -24,6 +26,7 @@ func load_settings():
 		set_vsync_enabled(settings_data.vsync_enabled)
 		set_master_volume(settings_data.master_volume)
 		set_aim_sensitivity(settings_data.aim_sensitivity)
+		set_language(settings_data.language_code, settings_data.language_index)
 
 
 func set_window_mode(window_mode : int, window_mode_index : int):
@@ -67,6 +70,12 @@ func set_master_volume(master_volume : float):
 func set_aim_sensitivity(aim_sensitivity : float):
 	GameInputEvents.aim_sensitivity = aim_sensitivity
 	settings_data.aim_sensitivity = aim_sensitivity
+
+
+func set_language(language_code : String, language_index : int):
+	TranslationServer.set_locale(language_code)
+	settings_data.language_code = language_code
+	settings_data.language_index = language_index
 
 
 func get_settings() -> SettingsDataResource:
