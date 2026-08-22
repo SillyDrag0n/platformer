@@ -34,7 +34,7 @@ boss_arena = NodePath("BossArena")
 player = NodePath("Player")
 
 [node name="Player" parent="." instance=ExtResource("4_wndkh")]
-position = Vector2(64, 185)
+position = Vector2(1623, -277)
 
 [node name="PlayerCamera" type="Camera2D" parent="." node_paths=PackedStringArray("player")]
 position = Vector2(3500, -900)
@@ -155,7 +155,7 @@ position = Vector2(3174, -225)
 [node name="Checkpoints" type="Node" parent="."]
 
 [node name="Checkpoint" parent="Checkpoints" node_paths=PackedStringArray("respawn_marker") instance=ExtResource("8_wndkh")]
-position = Vector2(1538, -188)
+position = Vector2(1540, -190)
 respawn_marker = NodePath("../../RespawnPosition")
 
 [node name="Checkpoint2" parent="Checkpoints" node_paths=PackedStringArray("respawn_marker") instance=ExtResource("8_wndkh")]
