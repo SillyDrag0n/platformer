@@ -91,26 +91,56 @@ stale.
   - No dedicated hurt, dash, or grapple(swim/swing) poses — hurt reuses idle,
     grapple reuses fall, dash reuses walk sped up
     (`player/lower_body_controller.gd`).
-  - No dedicated death pose — `dead_state.gd` just freezes on whatever frame
-    was last playing.
+  - ~~No dedicated death pose~~ — **done 2026-08-23**: added a "death" clip
+    (`player.tscn`, keyframes `Hip`/`FootR Target`/`FootL Target` over 0.4s
+    into a collapsed pose) that `lower_body_controller.gd` now plays on
+    entering "Dead". `player.gd`'s `player_death()` delays the poof
+    effect/removal by 0.5s (`DEATH_POSE_DURATION`) so the collapse is
+    actually visible first; verified via a headless harness that the player
+    stays alive/in-tree through the delay and `player_died` fires exactly
+    once, not duplicated by a second hit landing mid-collapse (the state
+    machine's same-state guard already prevents that). Upper body
+    (arms/head) still just freezes on last pose, since
+    `upper_body_controller.gd` already skips updating them in "Dead" - not
+    touched. Pose values are first-pass/eyeballed like other IK tuning in
+    this project; check it in-editor to confirm it reads as "collapsing" and
+    not anatomically odd, since it was authored blind.
   - The legs don't visually turn to face the movement direction (only the
     walk-cycle IK *targets* mirror, not the leg bones/sprites themselves).
-    Two fixes were attempted and reverted: mirroring the leg bones via
-    negative scale broke their CCDIK hip/knee constraints (glitched out), and
-    flipping the leg sprite textures alone looked wrong without rotation
-    compensation. Needs a fresh approach — possibly a proper CCDIK constraint
-    re-derivation (like was done for the arm elbow) rather than a quick fix.
+    Three fixes attempted and reverted so far:
+    1. Mirroring `LegR`/`LegL` via negative scale, with the *original*
+       (unmirrored) CCDIK knee constraint left in place — glitched, because
+       the constraint's local-space meaning flips under a mirrored parent.
+    2. The same scale-mirror, this time with the knee constraint correctly
+       re-derived (`new_min/max = PI - old_max/min`, verified against Godot
+       4.4's actual `SkeletonModification2DCCDIK::_execute_ccdik_joint`
+       source and confirmed by a headless harness that reads the real bone
+       rotation). The math was right, but it doesn't matter: `LegR`/`LegL`
+       are themselves CCDIK-driven bones (hip = joint 0 in their own chain),
+       and CCDIK rewrites its owned bones' entire local transform every
+       frame, including recomputing scale from `get_global_scale()` — which
+       discards the negative sign and folds the reflection into a rotation
+       change instead. The `scale.x` assignment gets silently overwritten
+       every frame; the leg never actually mirrors.
+    3. Flipping the leg sprite textures (`flip_h`) without touching bone
+       transforms at all — sidesteps the CCDIK-scale problem entirely, but
+       looked wrong (reason not fully diagnosed — candidates: the small but
+       nonzero `LegR`/`LegL` anchor asymmetry like arms had, and/or
+       uncompensated bone rotation composing badly with the flip, same
+       mechanism as the head fix but across a 2-bone chain instead of 1).
+    **Conclusion: a bone/scale-based mirror is architecturally blocked for
+    any bone CCDIK directly drives.** The remaining realistic paths are (a)
+    insert a plain (non-CCDIK) wrapper `Node2D` between `Hip` and
+    `LegR`/`LegL` to hold the mirror scale, so CCDIK only owns the bones
+    below it — requires careful `.tscn` bone-tree surgery, ideally done in
+    the editor rather than by hand; or (b) retry the sprite `flip_h`
+    approach with the leg anchor-position fix applied too (see the arm
+    shoulder-anchor fix earlier for the pattern) before giving up on it.
   - Arm/head aim-IK is functional but the reach radii/origins in
     `upper_body_controller.gd` are still first-pass, eyeballed values — may
     need further visual tuning.
 - **Bandit enemy has no dedicated crouch/reload animation** — reuses a
   squashed, darkened idle pose (`enemies/bandit/state_machine/reload_state.gd`).
-- **Respawn doesn't reset the resource/health bar UI** — existing `#TODO` in
-  `scripts/managers/respawn_manager.gd`.
-- **Checkpoints share a single respawn marker** rather than each having their
-  own — whichever checkpoint was most recently triggered overwrites the same
-  `RespawnPosition` node's position. Works, but means only "last touched
-  checkpoint" is remembered, not a per-checkpoint save.
 
 ## Design Pillars (draft — refine as needed)
 

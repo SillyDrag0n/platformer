@@ -2,6 +2,9 @@ extends CharacterBody2D
 
 const DEADEYE_TIME_SCALE := 0.35
 const HIT_FLASH_SHADER : Shader = preload("res://player/player_hit_flash_shader.tres")
+# Slightly longer than the "death" animation's own length (0.4s, see player.tscn) so the collapse
+# has visibly settled into its final pose before the poof effect/death screen cut it short.
+const DEATH_POSE_DURATION := 0.5
 
 var player_death_effect = preload("res://player/player_death_effect/player_death_effect.tscn")
 
@@ -55,8 +58,12 @@ func set_invulnerable(value : bool) -> void:
 	is_invulnerable = value
 
 
-func player_death():
+func player_death() -> void:
+	# Reset immediately (not after the delay below) so a deadeye-slowed death still plays the
+	# collapse pose and poof effect at normal speed rather than in slow motion.
 	Engine.time_scale = 1.0
+	await get_tree().create_timer(DEATH_POSE_DURATION).timeout
+
 	var player_death_effect_instance = player_death_effect.instantiate() as Node2D
 	player_death_effect_instance.global_position = global_position
 	get_parent().add_child(player_death_effect_instance)

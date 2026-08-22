@@ -26,8 +26,10 @@ func _physics_process(_delta : float) -> void:
 	var state_name : String = state_machine.current_node_state.name.to_lower()
 	match state_name:
 		"dead":
-			# Terminal state - freeze on whatever pose was last playing rather than picking a new one.
-			return
+			# Plays once (non-looping clip) and then holds its final frame - play_clip()'s
+			# current_animation guard means this only actually triggers .play() on the first frame
+			# of the state, so the collapse isn't restarted every subsequent frame.
+			play_clip("death", 1.0)
 		"hurt":
 			# No dedicated hurt pose yet - reuse idle, same placeholder convention the old
 			# animation_controller.gd used before the skeleton rig existed.

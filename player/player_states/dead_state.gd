@@ -13,9 +13,11 @@ func on_physics_process(delta : float):
 
 
 func enter():
-	# Terminal state - no dedicated death pose exists yet, so the last active frame just freezes
-	# rather than looping something misleading like idle. player_death() queue_frees the whole
-	# player shortly after this, so there's nothing further for this state to drive.
+	# Terminal state - lower_body_controller.gd plays the "death" collapse clip once it sees this
+	# state, and upper_body_controller.gd stops updating arm/head aim targets entirely (its own
+	# "dead" guard), freezing them where they last were. player_death() delays the poof
+	# effect/removal just long enough for the collapse to actually be seen before the player node
+	# is gone, so there's nothing further for this state itself to drive.
 	character_body_2d.velocity = Vector2.ZERO
 	player.player_death()
 
