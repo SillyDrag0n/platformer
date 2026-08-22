@@ -1,7 +1,6 @@
 extends NodeState
 
 @export var character_body_2d : CharacterBody2D
-@export var animated_sprite_2d : AnimatedSprite2D
 @export var player : Node
 
 @export_category("Dash State")
@@ -38,17 +37,21 @@ func on_physics_process(delta : float):
 func enter():
 	var direction : float = GameInputEvents.movement_input()
 	if direction == 0.0:
-		direction = -1.0 if animated_sprite_2d.flip_h else 1.0
+		direction = last_facing()
 
 	dash_direction = Vector2(direction, 0.0)
 	dash_timer = dash_duration
 	cooldown_remaining = dash_cooldown
 
 	player.set_invulnerable(true)
-	# No dedicated dash sprite exists yet - reuse the run animation as a placeholder.
-	animated_sprite_2d.play("run")
 
 
 func exit():
 	player.set_invulnerable(false)
-	animated_sprite_2d.stop()
+
+
+# Pose selection for Dash lives in lower_body_controller.gd (which plays the walk cycle faster
+# while this state is active) - this only needs a facing to dash toward when there's no held
+# movement input, so it falls back to whichever way the character last actually faced.
+func last_facing() -> float:
+	return sign(character_body_2d.velocity.x) if character_body_2d.velocity.x != 0.0 else 1.0

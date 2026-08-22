@@ -18,8 +18,8 @@
 [ext_resource type="TileSet" uid="uid://ddclxatqibdkx" path="res://tileset/desert_decorations_tileset.tres" id="12_decorations"]
 [ext_resource type="PackedScene" path="res://tileset/structures/railway_station/railway_station.tscn" id="12_rail"]
 [ext_resource type="TileSet" uid="uid://dknxmyabj3msh" path="res://tileset/desert_foreground_tileset.tres" id="13_foreground"]
-[ext_resource type="TileSet" path="res://tileset/desert_breakables_tileset.tres" id="14_breakables"]
 [ext_resource type="PackedScene" path="res://tileset/structures/graveyard/graveyard.tscn" id="13_grave"]
+[ext_resource type="TileSet" uid="uid://bm6iyhti1uwgi" path="res://tileset/desert_breakables_tileset.tres" id="14_breakables"]
 
 [node name="HubLevel" type="Node2D"]
 script = ExtResource("8_hub")

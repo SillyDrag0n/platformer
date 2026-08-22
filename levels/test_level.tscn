@@ -17,8 +17,8 @@
 [ext_resource type="TileSet" uid="uid://ddclxatqibdkx" path="res://tileset/desert_decorations_tileset.tres" id="12_decorations"]
 [ext_resource type="Texture2D" uid="uid://bao5suuofbayn" path="res://tileset/paralax_backgrounds/Parallax1.png" id="13_0vv12"]
 [ext_resource type="TileSet" uid="uid://dknxmyabj3msh" path="res://tileset/desert_foreground_tileset.tres" id="13_foreground"]
-[ext_resource type="TileSet" path="res://tileset/desert_breakables_tileset.tres" id="14_breakables"]
 [ext_resource type="PackedScene" uid="uid://b760t7e0aygod" path="res://levels/boss_arena/boss_arena.tscn" id="14_arena"]
+[ext_resource type="TileSet" uid="uid://bm6iyhti1uwgi" path="res://tileset/desert_breakables_tileset.tres" id="14_breakables"]
 [ext_resource type="PackedScene" path="res://levels/grapple_anchor/grapple_anchor.tscn" id="15_ganchor"]
 [ext_resource type="PackedScene" uid="uid://c6n8jr2h5x4qa" path="res://enemies/bandit/bandit.tscn" id="16_bandit"]
 
@@ -34,7 +34,7 @@ boss_arena = NodePath("BossArena")
 player = NodePath("Player")
 
 [node name="Player" parent="." instance=ExtResource("4_wndkh")]
-position = Vector2(36, 214)
+position = Vector2(64, 185)
 
 [node name="PlayerCamera" type="Camera2D" parent="." node_paths=PackedStringArray("player")]
 position = Vector2(3500, -900)
@@ -155,7 +155,7 @@ position = Vector2(3174, -225)
 [node name="Checkpoints" type="Node" parent="."]
 
 [node name="Checkpoint" parent="Checkpoints" node_paths=PackedStringArray("respawn_marker") instance=ExtResource("8_wndkh")]
-position = Vector2(1536, -188)
+position = Vector2(1538, -188)
 respawn_marker = NodePath("../../RespawnPosition")
 
 [node name="Checkpoint2" parent="Checkpoints" node_paths=PackedStringArray("respawn_marker") instance=ExtResource("8_wndkh")]

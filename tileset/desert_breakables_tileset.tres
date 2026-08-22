@@ -1,4 +1,4 @@
-[gd_resource type="TileSet" load_steps=3 format=3]
+[gd_resource type="TileSet" load_steps=3 format=3 uid="uid://bm6iyhti1uwgi"]
 
 [ext_resource type="Texture2D" uid="uid://dlgq45pbrfxiy" path="res://tileset/Desert tileset.png" id="1"]
 

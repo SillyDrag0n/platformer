@@ -1,7 +1,6 @@
 extends NodeState
 
 @export var character_body_2d : CharacterBody2D
-@export var animated_sprite_2d : AnimatedSprite2D
 @export var grapple_hook : Node2D
 
 @export_category("Grapple State")
@@ -54,8 +53,6 @@ func on_physics_process(delta : float):
 		if pump_time < pump_sustain_time:
 			velocity += tangent_dir * direction * swing_force * delta
 			pump_time += delta
-
-		animated_sprite_2d.flip_h = direction < 0.0
 	else:
 		pump_direction = 0.0
 		pump_time = 0.0
@@ -119,10 +116,8 @@ func enter():
 	rope_length = clamp(character_body_2d.global_position.distance_to(anchor.global_position), min_rope_length, max_rope_length)
 	pump_direction = 0.0
 	pump_time = 0.0
-	animated_sprite_2d.play("fall")
 
 
 func exit():
 	anchor = null
 	grapple_hook.hide_rope()
-	animated_sprite_2d.stop()

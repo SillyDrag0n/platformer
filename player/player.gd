@@ -1,12 +1,28 @@
 extends CharacterBody2D
 
 const DEADEYE_TIME_SCALE := 0.35
+const HIT_FLASH_SHADER : Shader = preload("res://player/player_hit_flash_shader.tres")
 
 var player_death_effect = preload("res://player/player_death_effect/player_death_effect.tscn")
 
-@onready var legs : AnimatedSprite2D = $Body/Legs
-@onready var upper_body : AnimatedSprite2D = $Body/UpperBody
 @onready var state_machine : NodeFiniteStateMachine = $StateMachine
+
+@onready var body_sprites : Array[Sprite2D] = [
+	$Animation/Body/Torso,
+	$Animation/Bones/Skeleton2D/Hip/LegR/LegR,
+	$Animation/Bones/Skeleton2D/Hip/LegR/ShinR/ShinR,
+	$Animation/Bones/Skeleton2D/Hip/LegR/ShinR/FootR/FootR,
+	$Animation/Bones/Skeleton2D/Hip/ArmR/ArmR,
+	$Animation/Bones/Skeleton2D/Hip/ArmR/ForearmR/ForearmR,
+	$Animation/Bones/Skeleton2D/Hip/ArmL/ArmL,
+	$Animation/Bones/Skeleton2D/Hip/ArmL/ForearmL/ForearmL,
+	$Animation/Bones/Skeleton2D/Hip/LegL/LegL,
+	$Animation/Bones/Skeleton2D/Hip/LegL/ShinL/ShinL,
+	$Animation/Bones/Skeleton2D/Hip/LegL/ShinL/FootL/FootL,
+	$Animation/Bones/Skeleton2D/Hip/Head/Head,
+]
+
+var hit_flash_material : ShaderMaterial
 
 var is_invulnerable : bool = false
 var is_shooting : bool = false
@@ -14,6 +30,13 @@ var is_shooting : bool = false
 func _ready() -> void:
 	PlayerManager.player = self
 	PlayerManager.player_spawned.emit(self)
+
+	# One shared material across every body-part sprite so a single tween flashes the whole rig
+	# at once, instead of needing a separate material/tween per limb.
+	hit_flash_material = ShaderMaterial.new()
+	hit_flash_material.shader = HIT_FLASH_SHADER
+	for sprite in body_sprites:
+		sprite.material = hit_flash_material
 
 
 func _process(_delta) -> void:
@@ -65,10 +88,8 @@ func take_hit(damage : int):
 
 func flash_hit():
 	var tween = get_tree().create_tween()
-	tween.tween_property(legs, "material:shader_parameter/enabled", true, 0)
-	tween.parallel().tween_property(upper_body, "material:shader_parameter/enabled", true, 0)
-	tween.tween_property(legs, "material:shader_parameter/enabled", false, 0.2)
-	tween.parallel().tween_property(upper_body, "material:shader_parameter/enabled", false, 0.2)
+	tween.tween_property(hit_flash_material, "shader_parameter/enabled", true, 0)
+	tween.tween_property(hit_flash_material, "shader_parameter/enabled", false, 0.2)
 
 
 func _exit_tree():

@@ -199,7 +199,6 @@ pause={
 [internationalization]
 
 locale/translations=PackedStringArray("res://localization/translations.en.translation", "res://localization/translations.de.translation")
-locale/fallback="en"
 
 [layer_names]
 

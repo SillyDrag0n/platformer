@@ -1,10 +1,19 @@
 extends Node2D
 
+signal shot_fired
+
 var bullet = preload("res://player/gun/bullet/bullet.tscn")
 var muzzle_flash_effect = preload("res://player/gun/muzzle_flash_effect.tscn")
 
 @export var default_weapon : WeaponItemData
 @export var default_ammo : AmmoItemData
+
+# The hand's IK target (upper_body_controller.gd's arm_r_target) - the muzzle tracks it directly
+# each frame rather than rotating around Gun's own fixed pivot, so bullets spawn from the front of
+# the hand the player actually sees instead of a separately-tuned circle that drifted from it.
+@export var arm_r_target : Node2D
+# How far in front of the hand grip (arm_r_target) the barrel tip sits, along the aim direction.
+@export var muzzle_forward_offset : float = 8.0
 
 var active_slot : InventoryManager.WeaponSlot = InventoryManager.WeaponSlot.PRIMARY
 var weapon : WeaponItemData
@@ -39,6 +48,11 @@ func _ready():
 	_refresh_active_weapon()
 
 func _process(_delta):
+	# Recomputed first, before try_shoot(), so a bullet fired this frame spawns from this frame's
+	# hand position rather than one left over from last frame.
+	var aim_dir : Vector2 = GameInputEvents.aim_input(arm_r_target.global_position)
+	muzzle.global_position = arm_r_target.global_position + aim_dir * muzzle_forward_offset
+
 	if GameInputEvents.reload_input():
 		reload()
 	if GameInputEvents.swap_weapon_input():
@@ -48,10 +62,9 @@ func _process(_delta):
 	if player.is_shooting:
 		try_shoot()
 
-	# Points the gun (and, since Muzzle is a child of this node, the muzzle/bullet spawn point
-	# along with it) at the aim direction every frame, regardless of gameplay state - matching how
-	# AimReticle already tracks aim unconditionally today.
-	var aim_dir : Vector2 = GameInputEvents.aim_input(global_position)
+	# Points the gun sprite at the aim direction every frame, regardless of gameplay state -
+	# matching how AimReticle already tracks aim unconditionally today. Gun's own transform no
+	# longer drives the muzzle position (set above), so this is purely cosmetic now.
 	rotation = aim_dir.angle()
 	weapon_sprite.flip_v = aim_dir.x < 0.0
 
@@ -130,6 +143,7 @@ func shoot():
 			angle_offset = lerp(-spread_rad / 2.0, spread_rad / 2.0, float(i) / float(pellet_count - 1))
 		_fire_bullet(shootdirection.rotated(angle_offset))
 
+	shot_fired.emit()
 	gun_shot_sound.play()
 
 	var flash_instance = muzzle_flash_effect.instantiate() as Node2D

@@ -1,7 +1,6 @@
 extends NodeState
 
 @export var character_body_2d : CharacterBody2D
-@export var legs : AnimatedSprite2D
 
 @export_category("Hurt State")
 @export var hurt_duration : float = 0.3
@@ -28,10 +27,7 @@ func on_physics_process(delta : float):
 
 func enter():
 	hurt_timer = hurt_duration
-	# No dedicated hurt pose exists yet - reuse idle as a placeholder, same convention Dash/Grapple
-	# already use for their own missing art (dash reuses "run", grapple reuses "fall").
-	legs.play("idle")
 
 
 func exit():
-	legs.stop()
+	pass

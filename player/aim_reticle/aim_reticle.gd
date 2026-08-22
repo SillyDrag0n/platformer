@@ -1,7 +1,11 @@
 extends Node2D
 
 @export var radius : float = 70.0
-@export var anchor_offset : Vector2 = Vector2(0, -37)
+# gun.gd's Muzzle marker - the exact point bullets and muzzle flash actually spawn from. Anchoring
+# here (instead of a separately-tuned fixed offset) guarantees the reticle and trajectory line
+# always sit on the same ray bullets actually travel, with no separate value to drift out of sync
+# if the muzzle's own position ever changes.
+@export var muzzle : Node2D
 @export var reticle_radius_px : float = 6.0
 @export var reticle_color : Color = Color(1, 0.3, 0.3, 0.95)
 
@@ -24,9 +28,9 @@ var trajectory_end_global : Vector2
 
 
 func _process(_delta : float) -> void:
-	var anchor_global : Vector2 = get_parent().to_global(anchor_offset)
+	var anchor_global : Vector2 = muzzle.global_position
 	var direction : Vector2 = GameInputEvents.aim_input(anchor_global)
-	position = anchor_offset + direction * radius
+	position = get_parent().to_local(anchor_global) + direction * radius
 	_update_trajectory(anchor_global, direction)
 	queue_redraw()
 
