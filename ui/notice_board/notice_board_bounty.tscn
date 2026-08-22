@@ -1,4 +1,4 @@
-[gd_scene load_steps=6 format=3 uid="uid://rl5na08yw0jq"]
+[gd_scene load_steps=8 format=3 uid="uid://rl5na08yw0jq"]
 
 [ext_resource type="Script" uid="uid://b6y7vwjqumun3" path="res://ui/notice_board/notice_board_bounty.gd" id="1_dtji8"]
 [ext_resource type="FontFile" uid="uid://kiwlymd55nc2" path="res://ui/font/BoldPixels.ttf" id="1_kfug1"]
@@ -13,6 +13,22 @@ font_color = Color(0, 0, 0, 1)
 font = ExtResource("1_kfug1")
 font_size = 24
 font_color = Color(0, 0, 0, 1)
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_selectbtn"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_selected"]
+draw_center = false
+border_width_left = 6
+border_width_top = 6
+border_width_right = 6
+border_width_bottom = 6
+border_color = Color(1, 0.75, 0.1, 1)
+corner_radius_top_left = 6
+corner_radius_top_right = 6
+corner_radius_bottom_right = 6
+corner_radius_bottom_left = 6
+shadow_color = Color(1, 0.75, 0.1, 0.55)
+shadow_size = 8
 
 [node name="NoticeBoardBounty" type="ColorRect"]
 custom_minimum_size = Vector2(350, 416)
@@ -70,7 +86,6 @@ autowrap_mode = 1
 clip_text = true
 
 [node name="SelectButton" type="Button" parent="."]
-self_modulate = Color(1, 1, 1, 0)
 custom_minimum_size = Vector2(325, 400)
 layout_mode = 0
 offset_left = 13.0
@@ -78,5 +93,10 @@ offset_top = 8.0
 offset_right = 338.0
 offset_bottom = 408.0
 mouse_default_cursor_shape = 3
+theme_override_styles/focus = SubResource("StyleBoxFlat_selected")
+theme_override_styles/normal = SubResource("StyleBoxEmpty_selectbtn")
+theme_override_styles/hover = SubResource("StyleBoxEmpty_selectbtn")
+theme_override_styles/pressed = SubResource("StyleBoxEmpty_selectbtn")
+theme_override_styles/disabled = SubResource("StyleBoxEmpty_selectbtn")
 
 [connection signal="pressed" from="SelectButton" to="." method="_on_poster_pressed"]

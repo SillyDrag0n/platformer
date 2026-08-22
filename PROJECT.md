@@ -56,6 +56,11 @@ snapshot, not a source of truth; re-check the code for current state.
 - **Player systems:** upper/lower body controllers, state machine
   (`normal`, `dash`, `grapple`, `hurt`, `dead`), gun + aim reticle, dynamite,
   grapple hook, hit-flash shader, death effect, cosmetics.
+  - Upper body (arms/head) uses CCDIK to continuously aim at the mouse/stick,
+    independent of the lower body's keyframed walk cycle. Muzzle position and
+    the aim reticle/trajectory line both track the hand's actual IK target
+    rather than a separately-tuned fixed point, so they stay visually aligned
+    with where shots actually originate.
 - **Abilities (unlockable):** dash, double jump, grapple hook, deadeye.
 - **Enemies:** bandit, skeleton, cactus (unique "only attacks when approached"
   behavior), boss enemies, shared `_common` enemy base logic.
@@ -65,9 +70,47 @@ snapshot, not a source of truth; re-check the code for current state.
 - **Levels/hub:** hub level (town) plus interiors — arms dealer, bank, post
   office, saloon, sheriff's office — and a boss arena, checkpoints, a
   grapple-anchor system, and a test level for prototyping.
+- **UI:** bounty board (notice board of available contracts, keyboard/gamepad
+  focus + click selection with a visible highlight on the selected posting).
 - **Managers (autoloads):** Collectible, Game, GameInputEvents, Health, Player,
   Respawn, Scene, Settings, UI, Inventory, GameState, Ability, Quest, Save.
 - **Localization:** in progress (`localization/` folder, translations added).
+- **Testing:** GUT unit test framework (`addons/gut/`, CLI-only, see
+  `test/unit/`) covering the pure-logic autoload managers (Inventory, Health,
+  Quest). Run via
+  `"D:\Godot\Godot_v4.4.1-stable_win64.exe" --headless -s addons/gut/gut_cmdln.gd -gexit`.
+  Run this after any bigger change, not just when someone asks.
+
+## Known Issues / TODO
+
+Gaps found while working in the code — not exhaustive, just what's been
+noticed so far. Remove items once actually fixed instead of leaving them
+stale.
+
+- **Player animations are largely placeholder/incomplete:**
+  - No dedicated hurt, dash, or grapple(swim/swing) poses — hurt reuses idle,
+    grapple reuses fall, dash reuses walk sped up
+    (`player/lower_body_controller.gd`).
+  - No dedicated death pose — `dead_state.gd` just freezes on whatever frame
+    was last playing.
+  - The legs don't visually turn to face the movement direction (only the
+    walk-cycle IK *targets* mirror, not the leg bones/sprites themselves).
+    Two fixes were attempted and reverted: mirroring the leg bones via
+    negative scale broke their CCDIK hip/knee constraints (glitched out), and
+    flipping the leg sprite textures alone looked wrong without rotation
+    compensation. Needs a fresh approach — possibly a proper CCDIK constraint
+    re-derivation (like was done for the arm elbow) rather than a quick fix.
+  - Arm/head aim-IK is functional but the reach radii/origins in
+    `upper_body_controller.gd` are still first-pass, eyeballed values — may
+    need further visual tuning.
+- **Bandit enemy has no dedicated crouch/reload animation** — reuses a
+  squashed, darkened idle pose (`enemies/bandit/state_machine/reload_state.gd`).
+- **Respawn doesn't reset the resource/health bar UI** — existing `#TODO` in
+  `scripts/managers/respawn_manager.gd`.
+- **Checkpoints share a single respawn marker** rather than each having their
+  own — whichever checkpoint was most recently triggered overwrites the same
+  `RespawnPosition` node's position. Works, but means only "last touched
+  checkpoint" is remembered, not a per-checkpoint save.
 
 ## Design Pillars (draft — refine as needed)
 
