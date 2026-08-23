@@ -1,17 +1,18 @@
-[gd_resource type="Resource" script_class="ThrowableItemData" load_steps=3 format=3]
+[gd_resource type="Resource" script_class="ThrowableItemData" load_steps=3 format=3 uid="uid://d3wludyvbhee1"]
 
-[ext_resource type="Script" path="res://scripts/items/throwable_item_data.gd" id="1_throwable"]
-[ext_resource type="Texture2D" uid="uid://bxdcjvvtdewh5" path="res://items/key_items/testitem.png" id="2_icon"]
+[ext_resource type="Texture2D" uid="uid://c3afnfbaafsk1" path="res://items/utility/dynamite.png" id="1_c0hqf"]
+[ext_resource type="Script" uid="uid://cns65ici21k7h" path="res://scripts/items/throwable_item_data.gd" id="1_throwable"]
 
 [resource]
 script = ExtResource("1_throwable")
-display_name = "Dynamite"
-description = "A lit stick of dynamite. Throw it and take cover - it explodes shortly after the fuse is lit, damaging enemies and shattering weak terrain nearby."
-max_stack_size = 10
-icon = ExtResource("2_icon")
-throw_speed = 500.0
+throw_speed = 850.0
 gravity = 1400.0
-fuse_time = 2.0
-explosion_damage = 4
-explosion_radius = 64.0
-metadata/_custom_type_script = "res://scripts/items/throwable_item_data.gd"
+throw_cooldown = 0.4
+fuse_time = 3.0
+explosion_damage = 8
+explosion_radius = 100.0
+display_name = "Dynamite"
+description = "A lit stick of dynamite. Throw it and take cover - it explodes shortly after the fuse is lit, dealing heavy damage to anything caught in the blast (yourself included) and shattering weak terrain nearby."
+max_stack_size = 3
+icon = ExtResource("1_c0hqf")
+price = 15

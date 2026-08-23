@@ -1,6 +1,12 @@
 class_name WeaponItemData
 extends ItemData
 
+@export_category("Appearance")
+# Shown in the player's hand while this weapon is equipped, overridden by an equipped weapon skin
+# if one is active (see Gun._refresh_weapon_skin). Lets each weapon (revolver, shotgun, ...) carry
+# its own default in-hand sprite without needing a cosmetic skin just to be visible at all.
+@export var world_texture : Texture2D
+
 @export_category("Weapon Stats")
 @export var bullet_speed : float = 500.0
 @export var bullet_damage : int = 1

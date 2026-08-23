@@ -216,6 +216,7 @@ height = 42.0
 radius = 17.0294
 
 [node name="SandSpirit" type="CharacterBody2D" node_paths=PackedStringArray("finite_state_machine", "animated_sprite")]
+z_index = 50
 collision_layer = 4
 collision_mask = 4128
 script = ExtResource("1_uepdw")

@@ -1,8 +1,9 @@
-[gd_scene load_steps=5 format=3 uid="uid://dabxfx3538yx0"]
+[gd_scene load_steps=7 format=3 uid="uid://dabxfx3538yx0"]
 
 [ext_resource type="Script" uid="uid://fer1o12lr8yv" path="res://ui/screens/game_screen.gd" id="1_jadqt"]
 [ext_resource type="PackedScene" uid="uid://cqhro705skse6" path="res://ui/resource_bar/resource_bar.tscn" id="1_qquvf"]
 [ext_resource type="Texture2D" uid="uid://bn2eyu7maqlb6" path="res://collectibles/coins-and-gems.png" id="2_iatnl"]
+[ext_resource type="FontFile" uid="uid://kiwlymd55nc2" path="res://ui/font/BoldPixels.ttf" id="3_utility_qty"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_quest_popup"]
 bg_color = Color(0.160784, 0.117647, 0.0823529, 0.92)
@@ -11,6 +12,12 @@ border_width_top = 2
 border_width_right = 2
 border_width_bottom = 2
 border_color = Color(0.6, 0.45, 0.25, 1)
+
+[sub_resource type="LabelSettings" id="LabelSettings_utility_qty"]
+font = ExtResource("3_utility_qty")
+font_size = 20
+outline_size = 4
+outline_color = Color(0, 0, 0, 1)
 
 [node name="GameScreen" type="CanvasLayer"]
 script = ExtResource("1_jadqt")
@@ -64,6 +71,47 @@ layout_mode = 2
 theme_override_font_sizes/font_size = 16
 text = "[Q] Swap Weapon"
 visible = false
+
+[node name="UtilityDisplay" type="ColorRect" parent="."]
+visible = false
+custom_minimum_size = Vector2(64, 64)
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -74.0
+offset_top = -74.0
+offset_right = -10.0
+offset_bottom = -10.0
+grow_horizontal = 0
+grow_vertical = 0
+color = Color(1, 1, 1, 0.15)
+
+[node name="Icon" type="TextureRect" parent="UtilityDisplay"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+expand_mode = 1
+stretch_mode = 5
+
+[node name="QuantityLabel" type="Label" parent="UtilityDisplay"]
+layout_mode = 1
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -26.0
+offset_top = -24.0
+grow_horizontal = 0
+grow_vertical = 0
+label_settings = SubResource("LabelSettings_utility_qty")
+horizontal_alignment = 2
+vertical_alignment = 2
 
 [node name="QuestPopup" type="PanelContainer" parent="."]
 clip_contents = true

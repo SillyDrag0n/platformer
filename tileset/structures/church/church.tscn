@@ -8,7 +8,7 @@
 size = Vector2(70, 70)
 
 [node name="Church" type="Node2D"]
-z_index = -10
+z_index = 20
 script = ExtResource("1_3qtpi")
 
 [node name="Sprite2D" type="Sprite2D" parent="."]

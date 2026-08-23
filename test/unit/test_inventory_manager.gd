@@ -106,3 +106,42 @@ func test_equip_weapon_of_null_unequips_the_slot():
 
 	assert_true(result, "null is always a valid 'unequip' value")
 	assert_null(inventory.get_equipped_weapon(InventoryManagerScript.WeaponSlot.PRIMARY))
+
+
+func test_cycle_utility_selects_first_owned_item_when_none_equipped():
+	var item := UtilityItemData.new()
+	inventory.add_item(item)
+
+	inventory.cycle_utility()
+
+	assert_eq(inventory.get_equipped_utility(), item)
+
+
+func test_cycle_utility_advances_to_the_next_owned_item():
+	var item_a := UtilityItemData.new()
+	var item_b := UtilityItemData.new()
+	inventory.add_item(item_a)
+	inventory.add_item(item_b)
+	inventory.equip_utility(item_a)
+
+	inventory.cycle_utility()
+
+	assert_eq(inventory.get_equipped_utility(), item_b)
+
+
+func test_cycle_utility_wraps_around_to_the_first_owned_item():
+	var item_a := UtilityItemData.new()
+	var item_b := UtilityItemData.new()
+	inventory.add_item(item_a)
+	inventory.add_item(item_b)
+	inventory.equip_utility(item_b)
+
+	inventory.cycle_utility()
+
+	assert_eq(inventory.get_equipped_utility(), item_a)
+
+
+func test_cycle_utility_with_nothing_owned_leaves_it_unequipped():
+	inventory.cycle_utility()
+
+	assert_null(inventory.get_equipped_utility())

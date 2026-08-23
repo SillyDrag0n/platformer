@@ -73,6 +73,23 @@ func add_item(item: ItemData) -> bool:
 	return true
 
 
+# Tops up an already-owned item's quantity to amount (capped at its max stack), without ever
+# lowering it - e.g. Spirit refilling to a fixed charge count on entering a level, whether the
+# player is at 0 or already sitting on more than that from pickups.
+func refill_item(item: ItemData, amount: int) -> void:
+	var slot_index = get_item_slot_index(item)
+	if slot_index == -1:
+		return
+
+	var slot = item_slots[slot_index]
+	var target : int = mini(amount, item.max_stack_size)
+	if slot["quantity"] >= target:
+		return
+
+	slot["quantity"] = target
+	updated_inventory.emit()
+
+
 func remove_item(item: ItemData):
 	var slot_index = get_item_slot_index(item)
 	if slot_index == -1:
@@ -126,6 +143,19 @@ func equip_utility(utility: UtilityItemData) -> bool:
 
 func get_equipped_utility() -> UtilityItemData:
 	return equipped_utility
+
+
+# Picks the next owned utility item after whichever is currently equipped, wrapping back to the
+# first once it runs off the end. If nothing is currently equipped (or the equipped item isn't
+# owned anymore), current_index comes back -1 and this lands on index 0, i.e. the first owned item.
+func cycle_utility() -> void:
+	var owned : Array = get_owned_items_by_type(UtilityItemData)
+	if owned.is_empty():
+		equip_utility(null)
+		return
+
+	var current_index := owned.find(equipped_utility)
+	equip_utility(owned[(current_index + 1) % owned.size()])
 
 
 func equip_cosmetic(cosmetic: CosmeticItemData) -> bool:

@@ -52,5 +52,23 @@ text = "CONTINUE"
 layout_mode = 2
 text = "MAIN MENU"
 
+[node name="ResetSaveButton" type="Button" parent="MarginContainer/PanelContainer/MarginContainer/VBoxContainer"]
+layout_mode = 2
+text = "RESET SAVE"
+
+[node name="UnlockGrappleButton" type="Button" parent="MarginContainer/PanelContainer/MarginContainer/VBoxContainer"]
+layout_mode = 2
+text = "UNLOCK GRAPPLE (DEBUG)"
+
+[node name="ResetSaveConfirmDialog" type="ConfirmationDialog" parent="."]
+process_mode = 3
+title = "Reset Save?"
+dialog_text = "This will permanently erase all inventory, quest, and bounty progress. This cannot be undone."
+ok_button_text = "Reset"
+cancel_button_text = "Cancel"
+
 [connection signal="pressed" from="MarginContainer/PanelContainer/MarginContainer/VBoxContainer/ContinueButton" to="." method="_on_continue_button_pressed"]
 [connection signal="pressed" from="MarginContainer/PanelContainer/MarginContainer/VBoxContainer/MainMenuButton" to="." method="_on_main_menu_button_pressed"]
+[connection signal="pressed" from="MarginContainer/PanelContainer/MarginContainer/VBoxContainer/ResetSaveButton" to="." method="_on_reset_save_button_pressed"]
+[connection signal="pressed" from="MarginContainer/PanelContainer/MarginContainer/VBoxContainer/UnlockGrappleButton" to="." method="_on_unlock_grapple_button_pressed"]
+[connection signal="confirmed" from="ResetSaveConfirmDialog" to="." method="_on_reset_save_confirm_dialog_confirmed"]

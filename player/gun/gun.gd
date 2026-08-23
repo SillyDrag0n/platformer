@@ -12,8 +12,13 @@ var muzzle_flash_effect = preload("res://player/gun/muzzle_flash_effect.tscn")
 # each frame rather than rotating around Gun's own fixed pivot, so bullets spawn from the front of
 # the hand the player actually sees instead of a separately-tuned circle that drifted from it.
 @export var arm_r_target : Node2D
-# How far in front of the hand grip (arm_r_target) the barrel tip sits, along the aim direction.
-@export var muzzle_forward_offset : float = 8.0
+# Where the barrel tip sits relative to the grip (grip_point below), in the same unrotated local
+# space as weapon_sprite.offset - x is forward along the aim direction, y is the perpendicular
+# correction (negative = up when aiming right) for how far the tip sits off that straight line.
+@export var muzzle_local_offset : Vector2 = Vector2(8.0, -2.0)
+# ReloadUi is top_level (see player.tscn) so it doesn't spin along with Gun's rotation below -
+# this is its fixed position relative to Gun's own (non-rotating) origin.
+@export var reload_ui_offset : Vector2 = Vector2(-25.0, -75.0)
 
 var active_slot : InventoryManager.WeaponSlot = InventoryManager.WeaponSlot.PRIMARY
 var weapon : WeaponItemData
@@ -51,7 +56,14 @@ func _process(_delta):
 	# Recomputed first, before try_shoot(), so a bullet fired this frame spawns from this frame's
 	# hand position rather than one left over from last frame.
 	var aim_dir : Vector2 = GameInputEvents.aim_input(arm_r_target.global_position)
-	muzzle.global_position = arm_r_target.global_position + aim_dir * muzzle_forward_offset
+	weapon_sprite.global_position = arm_r_target.global_position
+	# weapon_sprite.offset (tuned in the editor to seat the gun art in the hand) is in the sprite's
+	# own local space, so it has to be rotated into world space by the current aim direction here -
+	# muzzle/flash/bullets/aim reticle all derive their position from Muzzle below, so lining this
+	# up keeps all of them seated on the gun art instead of the raw IK hand point.
+	var grip_point : Vector2 = arm_r_target.global_position + weapon_sprite.offset.rotated(aim_dir.angle())
+	muzzle.global_position = grip_point + muzzle_local_offset.rotated(aim_dir.angle())
+	reload_ui.global_position = global_position + reload_ui_offset
 
 	if GameInputEvents.reload_input():
 		reload()
@@ -101,9 +113,10 @@ func _refresh_active_ammo():
 
 # Weapon skins are equipped per-WeaponSlot rather than as a single global cosmetic slot, so this
 # is resolved here (where active_slot already lives) instead of the generic cosmetics listener.
+# Falls back to the weapon's own world_texture so the gun is visible even with no skin equipped.
 func _refresh_weapon_skin():
 	var skin : CosmeticItemData = InventoryManager.get_equipped_weapon_skin(active_slot)
-	weapon_sprite.texture = skin.texture if skin else null
+	weapon_sprite.texture = skin.texture if skin else weapon.world_texture
 
 func _on_equipped_weapon_changed(slot : InventoryManager.WeaponSlot, _new_weapon : WeaponItemData):
 	if slot == active_slot:
@@ -149,11 +162,11 @@ func shoot():
 	var flash_instance = muzzle_flash_effect.instantiate() as Node2D
 	flash_instance.global_position = muzzle.global_position
 	flash_instance.rotation = shootdirection.angle()
-	get_tree().current_scene.add_child(flash_instance)
+	ProjectileLayer.spawn(flash_instance)
 
 func _fire_bullet(direction : Vector2):
 	var bullet_instance = bullet.instantiate() as Node2D
-	get_tree().current_scene.add_child(bullet_instance)
+	ProjectileLayer.spawn(bullet_instance)
 
 	bullet_instance.direction = direction
 	bullet_instance.rotation = direction.angle()

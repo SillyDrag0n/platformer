@@ -47,12 +47,11 @@ func _physics_process(delta):
 		global_position = camera_position.floor()
 		global_position.y -= 100
 
-# func screen_shake(intensity: int, time:float):
-func screen_shake():
+func screen_shake(intensity: float = 8.0, duration: float = 0.5) -> void:
 	randomize()
 	noise.seed = randi()
 	noise.frequency = 2.0
 
-	shake_intensity = 8
-	active_shake_time = 0.5
+	shake_intensity = intensity
+	active_shake_time = duration
 	shake_time = 0.0

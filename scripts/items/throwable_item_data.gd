@@ -4,6 +4,7 @@ extends UtilityItemData
 @export_category("Throw Stats")
 @export var throw_speed : float = 500.0
 @export var gravity : float = 1400.0
+@export var throw_cooldown : float = 1.0
 
 @export_category("Explosion")
 @export var fuse_time : float = 2.0

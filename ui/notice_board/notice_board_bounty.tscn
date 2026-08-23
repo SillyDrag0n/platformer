@@ -18,18 +18,6 @@ font_color = Color(0, 0, 0, 1)
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_selected"]
 draw_center = false
-border_width_left = 6
-border_width_top = 6
-border_width_right = 6
-border_width_bottom = 6
-border_color = Color(1, 0.75, 0.1, 1)
-corner_radius_top_left = 6
-corner_radius_top_right = 6
-corner_radius_bottom_right = 6
-corner_radius_bottom_left = 6
-shadow_color = Color(1, 0.75, 0.1, 0.55)
-shadow_size = 8
-
 [node name="NoticeBoardBounty" type="ColorRect"]
 custom_minimum_size = Vector2(350, 416)
 offset_right = 350.0

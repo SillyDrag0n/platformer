@@ -1,6 +1,7 @@
-[gd_scene load_steps=3 format=3]
+[gd_scene load_steps=4 format=3]
 
 [ext_resource type="Script" path="res://player/dynamite/dynamite.gd" id="1_dynamite"]
+[ext_resource type="Texture2D" uid="uid://c3afnfbaafsk1" path="res://items/utility/dynamite.png" id="2_sprite"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_body"]
 radius = 6.0
@@ -13,12 +14,12 @@ script = ExtResource("1_dynamite")
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 shape = SubResource("CircleShape2D_body")
 
-[node name="Sprite" type="Polygon2D" parent="."]
-color = Color(0.75, 0.15, 0.1, 1)
-polygon = PackedVector2Array(-3, -7, 3, -7, 3, 7, -3, 7)
+[node name="Sprite" type="Sprite2D" parent="."]
+scale = Vector2(0.35, 0.35)
+texture = ExtResource("2_sprite")
 
 [node name="FuseSpark" type="Polygon2D" parent="."]
-position = Vector2(0, -7)
+position = Vector2(-7, -7)
 color = Color(1, 0.85, 0.2, 1)
 polygon = PackedVector2Array(-1.5, -2, 1.5, -2, 1.5, 1, -1.5, 1)
 

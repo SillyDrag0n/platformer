@@ -89,7 +89,7 @@ func _end_attack():
 func _spawn_effect(effect_scene: PackedScene):
 	var effect = effect_scene.instantiate() as Node2D
 	effect.global_position = boss.global_position
-	boss.get_parent().add_child(effect)
+	ProjectileLayer.spawn(effect)
 
 func _move_horizontal_toward_player(speed: float):
 	if PlayerManager.player == null:

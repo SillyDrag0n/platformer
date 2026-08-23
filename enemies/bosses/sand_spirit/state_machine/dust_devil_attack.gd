@@ -35,7 +35,7 @@ func spawn_dust_devils(count):
 
 		var warning = dust_devil_warning_scene.instantiate() as Node2D
 		warning.global_position = spawn_pos
-		boss.get_parent().add_child(warning)
+		ProjectileLayer.spawn(warning)
 
 	await get_tree().create_timer(WARNING_DURATION).timeout
 
@@ -46,6 +46,6 @@ func spawn_dust_devils(count):
 		dust_devil.damage_amount = 1
 		dust_devil.speed = 120 + boss.phase * 20
 		dust_devil.life_time = 3.0 + boss.phase * 1.5
-		boss.get_parent().add_child(dust_devil)
+		ProjectileLayer.spawn(dust_devil)
 
 	finished.emit()

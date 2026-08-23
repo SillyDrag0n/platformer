@@ -29,7 +29,7 @@ size = Vector2(37, 48)
 size = Vector2(32, 48)
 
 [node name="Goal" type="StaticBody2D"]
-z_index = 1
+z_index = 20
 collision_layer = 512
 script = ExtResource("1_sq3m3")
 next_scene = "Hub"

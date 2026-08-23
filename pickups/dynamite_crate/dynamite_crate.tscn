@@ -1,0 +1,20 @@
+[gd_scene load_steps=3 format=3]
+
+[ext_resource type="Script" path="res://pickups/dynamite_crate/dynamite_crate.gd" id="1_crate"]
+[ext_resource type="PackedScene" uid="uid://s2gswtyrtm5x" path="res://interaction_component/interactable.tscn" id="2_interact"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_crate"]
+size = Vector2(28, 28)
+
+[node name="DynamiteCrate" type="Node2D"]
+script = ExtResource("1_crate")
+
+[node name="Sprite" type="Polygon2D" parent="."]
+color = Color(0.55, 0.38, 0.2, 1)
+polygon = PackedVector2Array(-14, -14, 14, -14, 14, 14, -14, 14)
+
+[node name="Interactable" parent="." instance=ExtResource("2_interact")]
+interact_name = "Open Crate (Dynamite)"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Interactable"]
+shape = SubResource("RectangleShape2D_crate")

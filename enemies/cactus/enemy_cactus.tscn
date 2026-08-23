@@ -142,6 +142,7 @@ size = Vector2(700, 200)
 size = Vector2(500, 180)
 
 [node name="EnemyCactus" type="CharacterBody2D" node_paths=PackedStringArray("attack_spawns_left_01", "attack_spawns_left_02", "attack_spawns_right_01", "attack_spawns_right_02") groups=["Enemy"]]
+z_index = 50
 collision_layer = 4
 collision_mask = 387
 script = ExtResource("1_xddwv")

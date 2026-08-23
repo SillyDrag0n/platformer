@@ -8,7 +8,7 @@
 size = Vector2(44, 51)
 
 [node name="NoticeBoard" type="Node2D"]
-z_index = -1
+z_index = 20
 script = ExtResource("1_3yclc")
 
 [node name="Sprite2D" type="Sprite2D" parent="."]

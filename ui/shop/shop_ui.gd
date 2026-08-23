@@ -47,7 +47,10 @@ func refresh_shop_ui() -> void:
 
 
 func _on_entry_buy_pressed(item : ItemData) -> void:
-	if item.max_stack_size <= 1 and InventoryManager.is_owned(item):
+	# Covers both non-stackable items (max_stack_size 1, e.g. weapons) and stackable ones already
+	# at their cap (e.g. dynamite at 3/3) - add_item() would otherwise silently start a second,
+	# invisible slot instead of actually stacking once the first one is full.
+	if InventoryManager.get_owned_quantity(item) >= item.max_stack_size:
 		return
 	if !CollectibleManager.can_afford(item.price):
 		return

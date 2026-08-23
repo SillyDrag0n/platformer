@@ -20,7 +20,7 @@ func shoot():
 		projectile.direction = (PlayerManager.player.global_position - projectile.global_position).normalized()
 		projectile.damage_amount = 1
 		projectile.speed = 320
-		boss.get_parent().add_child(projectile)
+		ProjectileLayer.spawn(projectile)
 
 func finish_next_frame():
 	await get_tree().process_frame

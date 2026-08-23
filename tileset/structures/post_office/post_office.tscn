@@ -15,7 +15,7 @@ outline_size = 4
 outline_color = Color(0, 0, 0, 1)
 
 [node name="PostOffice" type="Node2D"]
-z_index = -10
+z_index = 20
 script = ExtResource("1_post")
 
 [node name="Sprite2D" type="Sprite2D" parent="."]

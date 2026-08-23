@@ -1,5 +1,8 @@
 extends Node2D
 
+const SPIRIT_ITEM : ItemData = preload("res://items/utility/spirit.tres")
+const SPIRIT_REFILL_AMOUNT : int = 3
+
 @export var camera: Camera2D
 @export var respawn_marker: Marker2D
 @export var boss_spawn_marker: Marker2D
@@ -7,10 +10,11 @@ extends Node2D
 @export var player: CharacterBody2D
 @export var level_id : String
 
-		
+
 func _ready():
 	await get_tree().process_frame
 	RespawnManager.set_respawn_nodes(camera, respawn_marker, self)
+	InventoryManager.refill_item(SPIRIT_ITEM, SPIRIT_REFILL_AMOUNT)
 	spawn_boss()
 
 

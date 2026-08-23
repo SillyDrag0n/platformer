@@ -38,7 +38,7 @@ func spawn_attacks(spawnpoint, direction):
 	var attack = cactus_attack.instantiate() as Node2D
 	attack.global_position = spawnpoint.global_position
 	attack.direction = direction
-	get_tree().current_scene.add_child(attack)
+	ProjectileLayer.spawn(attack)
 
 func enemy_animations():
 	if current_state == State.Idle:

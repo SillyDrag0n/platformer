@@ -8,6 +8,18 @@ func _ready():
 	load_game()
 
 
+# Wipes save_data.tres and restarts the game so every manager re-initializes from scratch through
+# its own _ready(), instead of hand-resetting every piece of scattered runtime state (equipped
+# items, quest progress, the shared BountyData/RegionData resources GameStateManager mutates in
+# place, etc.) one by one and risking missing something.
+func reset_save() -> void:
+	var full_path := save_path + save_file_name
+	if FileAccess.file_exists(full_path):
+		DirAccess.remove_absolute(full_path)
+	OS.create_instance([])
+	get_tree().quit()
+
+
 func save_game():
 	var data := SaveDataResource.new()
 

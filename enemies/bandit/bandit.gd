@@ -59,7 +59,7 @@ func shoot():
 	get_player_position()
 	attack.direction = (player_global_position - global_position).normalized()
 	attack.rotation = attack.direction.angle()
-	get_tree().current_scene.add_child(attack)
+	ProjectileLayer.spawn(attack)
 
 
 func get_player_position():

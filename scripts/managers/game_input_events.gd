@@ -163,15 +163,22 @@ static func deadeye_input() -> bool:
 	return deadeye_input
 
 
-static func throw_input_just_pressed() -> bool:
+static func use_utility_just_pressed() -> bool:
 	if is_input_locked():
 		return false
-	var throw_input_just_pressed : bool = Input.is_action_just_pressed("throw_dynamite")
-	return throw_input_just_pressed
+	var use_utility_just_pressed : bool = Input.is_action_just_pressed("use_utility")
+	return use_utility_just_pressed
 
 
-static func throw_input_just_released() -> bool:
+static func use_utility_just_released() -> bool:
 	if is_input_locked():
 		return false
-	var throw_input_just_released : bool = Input.is_action_just_released("throw_dynamite")
-	return throw_input_just_released
+	var use_utility_just_released : bool = Input.is_action_just_released("use_utility")
+	return use_utility_just_released
+
+
+static func cycle_utility_just_pressed() -> bool:
+	if is_input_locked():
+		return false
+	var cycle_utility_just_pressed : bool = Input.is_action_just_pressed("cycle_utility")
+	return cycle_utility_just_pressed

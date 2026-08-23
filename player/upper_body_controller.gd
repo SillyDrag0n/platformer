@@ -62,7 +62,7 @@ func _ready() -> void:
 	head_sprite_rest_position = head_sprite.position
 
 
-func _physics_process(delta : float) -> void:
+func _process(delta : float) -> void:
 	if state_machine.current_node_state.name.to_lower() == "dead":
 		return
 
