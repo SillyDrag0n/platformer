@@ -679,7 +679,7 @@ rest = Transform2D(1, 0, 0, 1, 0.039325, 3)
 position = Vector2(-3.00141, 1.00142)
 rotation = -0.0488666
 scale = Vector2(1.00002, 1.00002)
-rest = Transform2D(0.998828, -0.0488482, 0.0488482, 0.998828, -3.00141, 1.00142)
+rest = Transform2D(0.999152, -0.0417148, 0.0417148, 0.999152, -3.00146, 1.00146)
 metadata/_local_pose_override_enabled_ = true
 
 [node name="LegR" type="Sprite2D" parent="Animation/Bones/Skeleton2D/Hip/LegR"]
@@ -691,7 +691,7 @@ offset = Vector2(3, -4)
 position = Vector2(-1.99966, 13.9987)
 rotation = 0.0704991
 scale = Vector2(0.999929, 0.999929)
-rest = Transform2D(0.997445, 0.0704357, -0.0704357, 0.997445, -1.99966, 13.9987)
+rest = Transform2D(0.998328, 0.0561413, -0.0561413, 0.998328, -1.99963, 13.9988)
 metadata/_local_pose_override_enabled_ = true
 
 [node name="ShinR" type="Sprite2D" parent="Animation/Bones/Skeleton2D/Hip/LegR/ShinR"]
@@ -702,7 +702,8 @@ offset = Vector2(5, -17)
 [node name="FootR" type="Bone2D" parent="Animation/Bones/Skeleton2D/Hip/LegR/ShinR"]
 position = Vector2(-1.00014, 14.0017)
 rotation = -0.0324462
-rest = Transform2D(0.999477, -0.0324406, 0.0324406, 0.999477, -1.00014, 14.0017)
+scale = Vector2(1, 1)
+rest = Transform2D(0.999659, -0.0237074, 0.0237074, 0.999659, -1.00011, 14.0018)
 auto_calculate_length_and_angle = false
 length = 3.0
 bone_angle = 0.0
@@ -717,7 +718,7 @@ offset = Vector2(7, -30)
 position = Vector2(-7.00128, -17.999)
 rotation = 0.255864
 scale = Vector2(1.00003, 1.00003)
-rest = Transform2D(0.967473, 0.253089, -0.253089, 0.967473, -7.00128, -17.999)
+rest = Transform2D(0.996907, 0.0789538, -0.0789538, 0.996907, -7.00128, -17.999)
 metadata/_local_pose_override_enabled_ = true
 
 [node name="ArmR" type="Sprite2D" parent="Animation/Bones/Skeleton2D/Hip/ArmR"]
@@ -729,7 +730,7 @@ offset = Vector2(7, 15)
 position = Vector2(-4.99908, 7.99891)
 rotation = -0.187099
 scale = Vector2(0.999913, 0.999913)
-rest = Transform2D(0.982463, -0.185993, 0.185993, 0.982463, -4.99908, 7.99891)
+rest = Transform2D(0.98688, 0.160901, -0.160901, 0.98688, -4.99907, 7.99894)
 auto_calculate_length_and_angle = false
 length = 8.0
 bone_angle = 45.0
@@ -747,7 +748,7 @@ position = Vector2(6.23958, 6.21686)
 position = Vector2(5.00001, -16.9993)
 rotation = -0.3317
 scale = Vector2(1.00003, 1.00003)
-rest = Transform2D(0.945521, -0.325662, 0.325662, 0.945521, 5.00001, -16.9993)
+rest = Transform2D(0.985579, -0.169412, 0.169412, 0.985579, 5.00001, -16.9993)
 metadata/_local_pose_override_enabled_ = true
 
 [node name="ArmL" type="Sprite2D" parent="Animation/Bones/Skeleton2D/Hip/ArmL"]
@@ -759,7 +760,7 @@ offset = Vector2(-5, 14)
 position = Vector2(5.00005, 6.99992)
 rotation = 0.335957
 scale = Vector2(0.999964, 0.999964)
-rest = Transform2D(0.944061, 0.329661, -0.329661, 0.944061, 5.00005, 6.99992)
+rest = Transform2D(0.982655, 0.185248, -0.185248, 0.982655, 5.00005, 6.99993)
 auto_calculate_length_and_angle = false
 length = 8.0
 bone_angle = 115.0
@@ -775,9 +776,9 @@ position = Vector2(-4.02673, 7.92152)
 
 [node name="LegL" type="Bone2D" parent="Animation/Bones/Skeleton2D/Hip"]
 position = Vector2(3.0016, 1.00183)
-rotation = -0.0476287
-scale = Vector2(1.00005, 1.00005)
-rest = Transform2D(0.999651, -0.0279214, 0.0279214, 0.999651, 3.0016, 1.00183)
+rotation = -0.0279239
+scale = Vector2(1.00004, 1.00004)
+rest = Transform2D(0.998911, -0.0476129, 0.0476129, 0.998911, 3.0016, 1.00183)
 metadata/_local_pose_override_enabled_ = true
 
 [node name="LegL" type="Sprite2D" parent="Animation/Bones/Skeleton2D/Hip/LegL"]
@@ -789,7 +790,7 @@ offset = Vector2(-3, -4)
 position = Vector2(2.00005, 10.9986)
 rotation = 0.0255829
 scale = Vector2(0.999906, 0.999906)
-rest = Transform2D(0.999579, 0.0255777, -0.0255777, 0.999579, 2.00005, 10.9986)
+rest = Transform2D(0.999913, 0, 0, 0.999913, 2.00006, 10.9986)
 metadata/_local_pose_override_enabled_ = true
 
 [node name="ShinL" type="Sprite2D" parent="Animation/Bones/Skeleton2D/Hip/LegL/ShinL"]
@@ -801,7 +802,7 @@ offset = Vector2(-5, -15)
 position = Vector2(-1.00041, 14.0028)
 rotation = -0.0107745
 scale = Vector2(1.00002, 1.00002)
-rest = Transform2D(0.999963, -0.0107745, 0.0107745, 0.999963, -1.00041, 14.0028)
+rest = Transform2D(0.999328, 0.0353376, -0.0353376, 0.999328, -1.00042, 14.0028)
 auto_calculate_length_and_angle = false
 length = 4.0
 bone_angle = 0.0
@@ -816,7 +817,7 @@ offset = Vector2(-5, -29)
 position = Vector2(-1.27542, -20.9965)
 rotation = -0.0120916
 scale = Vector2(1.00008, 1.00008)
-rest = Transform2D(1.00001, -0.0120923, 0.0120923, 1.00001, -1.27542, -20.9965)
+rest = Transform2D(1.00001, -0.0120922, 0.0120922, 1.00001, -1.27542, -20.9965)
 auto_calculate_length_and_angle = false
 length = 4.0
 bone_angle = 0.0
