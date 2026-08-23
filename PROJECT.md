@@ -105,37 +105,41 @@ stale.
     touched. Pose values are first-pass/eyeballed like other IK tuning in
     this project; check it in-editor to confirm it reads as "collapsing" and
     not anatomically odd, since it was authored blind.
-  - The legs don't visually turn to face the movement direction (only the
-    walk-cycle IK *targets* mirror, not the leg bones/sprites themselves).
-    Three fixes attempted and reverted so far:
-    1. Mirroring `LegR`/`LegL` via negative scale, with the *original*
-       (unmirrored) CCDIK knee constraint left in place — glitched, because
-       the constraint's local-space meaning flips under a mirrored parent.
-    2. The same scale-mirror, this time with the knee constraint correctly
-       re-derived (`new_min/max = PI - old_max/min`, verified against Godot
-       4.4's actual `SkeletonModification2DCCDIK::_execute_ccdik_joint`
-       source and confirmed by a headless harness that reads the real bone
-       rotation). The math was right, but it doesn't matter: `LegR`/`LegL`
-       are themselves CCDIK-driven bones (hip = joint 0 in their own chain),
-       and CCDIK rewrites its owned bones' entire local transform every
-       frame, including recomputing scale from `get_global_scale()` — which
-       discards the negative sign and folds the reflection into a rotation
-       change instead. The `scale.x` assignment gets silently overwritten
-       every frame; the leg never actually mirrors.
-    3. Flipping the leg sprite textures (`flip_h`) without touching bone
-       transforms at all — sidesteps the CCDIK-scale problem entirely, but
-       looked wrong (reason not fully diagnosed — candidates: the small but
-       nonzero `LegR`/`LegL` anchor asymmetry like arms had, and/or
-       uncompensated bone rotation composing badly with the flip, same
-       mechanism as the head fix but across a 2-bone chain instead of 1).
-    **Conclusion: a bone/scale-based mirror is architecturally blocked for
-    any bone CCDIK directly drives.** The remaining realistic paths are (a)
-    insert a plain (non-CCDIK) wrapper `Node2D` between `Hip` and
-    `LegR`/`LegL` to hold the mirror scale, so CCDIK only owns the bones
-    below it — requires careful `.tscn` bone-tree surgery, ideally done in
-    the editor rather than by hand; or (b) retry the sprite `flip_h`
-    approach with the leg anchor-position fix applied too (see the arm
-    shoulder-anchor fix earlier for the pattern) before giving up on it.
+  - ~~The legs don't visually turn to face the movement direction~~ **Fixed**
+    by replacing CCDIK on the leg chain with the third-party **SoupIK**
+    addon (`addons/soupik/`, vendored from
+    `ZedManul/souperior-2d-skeleton-modifications`, MIT). Three earlier
+    fixes (negative-scale mirror with original constraint; the same with a
+    correctly re-derived constraint; sprite `flip_h` alone) all failed
+    because Godot's built-in `SkeletonModification2DCCDIK` rewrites its
+    owned bones' entire local transform every frame from
+    `get_global_scale()`, which discards a mirror's negative sign — a
+    real, unresolved Godot 4 engine limitation
+    ([godotengine/godot#86868](https://github.com/godotengine/godot/issues/86868)),
+    not a tuning mistake. SoupIK's `SoupTwoBoneIK` avoids this by reading
+    `sign(bone.global_transform.determinant())` directly and setting
+    `global_rotation` instead of reconstructing local transform from scale,
+    plus exposing a `flip_bend_direction` toggle for picking the correct
+    knee-bend solution. `LegR`/`LegL` now use `SoupTwoBoneIK` nodes
+    (`Animation/SoupIK/LegR IK`, `LegL IK` in `player.tscn`), driven by
+    `lower_body_controller.gd`'s existing `facing` value; the foot `LookAt`
+    modifications and all arm/head CCDIK stayed on the built-in system
+    (single-bone or unmirrored, not affected by this bug). The addon's
+    `main` branch (no tagged releases) needed three `@export_custom(
+    PROPERTY_HINT_GROUP_ENABLE, ...)` calls patched to plain `@export`
+    since that hint isn't available in this project's pinned Godot 4.4.1 —
+    same "don't blindly trust a stated version range" lesson learned from
+    pinning GUT to 9.4.0 (see Testing, above). Verified headlessly (bone rotations/positions
+    genuinely change and the knee's angle *relative to the thigh* stays
+    consistent across facing flips, as a correct mirror should — see
+    `git log` for the harness used) and the leg sprites were **not**
+    re-flipped, on the reasoning that the bend is now a real geometric turn
+    toward an already-mirrored target rather than a texture-space
+    reflection (same reason arms are left unflipped). Still needs a look in
+    the actual editor/game to confirm it *reads* right — the headless check
+    only proves the numbers move sensibly, not that the pixel art looks
+    anatomically correct; it's possible the legs still need the sprite-flip
+    treatment after all.
   - Arm/head aim-IK is functional but the reach radii/origins in
     `upper_body_controller.gd` are still first-pass, eyeballed values — may
     need further visual tuning.

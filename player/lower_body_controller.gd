@@ -9,6 +9,19 @@ extends Node
 @export var state_machine : NodeFiniteStateMachine
 @export var animation_player : AnimationPlayer
 @export var leg_targets : Node2D
+@export var leg_r_ik : SoupTwoBoneIK
+@export var leg_l_ik : SoupTwoBoneIK
+
+@export_category("Leg Sprites")
+# flip_h'd + offset-mirrored to match facing, same pattern as upper_body_controller.gd's
+# head_sprite - the IK solve only rotates these bones, it never mirrors the texture's own
+# left/right asymmetry, so the sprites need their own explicit flip.
+@export var leg_r_sprite : Sprite2D
+@export var shin_r_sprite : Sprite2D
+@export var foot_r_sprite : Sprite2D
+@export var leg_l_sprite : Sprite2D
+@export var shin_l_sprite : Sprite2D
+@export var foot_l_sprite : Sprite2D
 
 @export_category("Walk Cycle")
 @export var walk_speed_reference : float = 300.0
@@ -18,6 +31,14 @@ extends Node
 @export var dash_speed_scale : float = 1.8
 
 var facing : float = 1.0
+var _leg_sprites : Array[Sprite2D] = []
+var _leg_sprite_rest_offsets : Array[Vector2] = []
+
+
+func _ready() -> void:
+	_leg_sprites = [leg_r_sprite, shin_r_sprite, foot_r_sprite, leg_l_sprite, shin_l_sprite, foot_l_sprite]
+	for sprite in _leg_sprites:
+		_leg_sprite_rest_offsets.append(sprite.offset)
 
 
 func _physics_process(_delta : float) -> void:
@@ -78,3 +99,18 @@ func update_facing() -> void:
 	if direction != 0.0:
 		facing = signf(direction)
 	leg_targets.scale.x = facing
+	# Inverted relative to the naive guess: SoupTwoBoneIK's two elbow/knee solutions come out
+	# backwards from what you'd expect here, confirmed by checking in-game rather than reasoning
+	# about it - flip_bend_direction=false is actually the "knee bends toward facing" solution
+	# when facing is negative, not positive.
+	leg_r_ik.flip_bend_direction = facing > 0.0
+	leg_l_ik.flip_bend_direction = facing > 0.0
+
+	# The IK solve only rotates the bones toward the (already-mirrored) foot target - it never
+	# mirrors the sprite texture's own left/right asymmetry, so that still needs an explicit flip,
+	# same as head_sprite in upper_body_controller.gd. offset (not position) is what these leg
+	# sprites use for their rest-pose nudge off the bone origin, so that's what needs negating to
+	# keep it on the correct side of the flip.
+	for i in _leg_sprites.size():
+		_leg_sprites[i].flip_h = facing < 0.0
+		_leg_sprites[i].offset.x = _leg_sprite_rest_offsets[i].x * facing

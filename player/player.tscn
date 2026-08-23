@@ -1,4 +1,4 @@
-[gd_scene load_steps=57 format=3 uid="uid://bfcmjoltsmsed"]
+[gd_scene load_steps=56 format=3 uid="uid://bfcmjoltsmsed"]
 
 [ext_resource type="Script" uid="uid://bw7oflms0slfo" path="res://player/player.gd" id="1_wqxfn"]
 [ext_resource type="Texture2D" uid="uid://dd0dac6elifu6" path="res://player/sprites/head.png" id="2_knn7v"]
@@ -38,6 +38,7 @@
 [ext_resource type="Resource" path="res://items/utility/spirit.tres" id="43_spirit_item"]
 [ext_resource type="Script" uid="uid://dixqogvvhibvo" path="res://scripts/items/utility_item_data.gd" id="44_utilityitemdata"]
 [ext_resource type="AudioStream" uid="uid://jo4ccjvk88ki" path="res://player/utility/sounds/spirit_drink.wav" id="45_spiritdrinksound"]
+[ext_resource type="Script" uid="uid://bnso0mph1tb11" path="res://addons/soupik/modifications/soup_two_bone_ik.gd" id="46_soupik"]
 
 [sub_resource type="SkeletonModification2DLookAt" id="SkeletonModification2DLookAt_2uvqg"]
 bone_index = 3
@@ -48,52 +49,6 @@ constraint_angle_min = 345.0
 constraint_angle_max = -315.0
 constraint_angle_invert = true
 constraint_in_localspace = true
-
-[sub_resource type="SkeletonModification2DCCDIK" id="SkeletonModification2DCCDIK_2uvqg"]
-target_nodepath = NodePath("../../IKTargets/LegTargets/FootR Target")
-tip_nodepath = NodePath("Hip/LegR/ShinR/FootR")
-ccdik_data_chain_length = 2
-joint_data/0/bone_index = 1
-joint_data/0/bone2d_node = NodePath("Hip/LegR")
-joint_data/0/rotate_from_joint = false
-joint_data/0/enable_constraint = true
-joint_data/0/constraint_angle_min = 25.0
-joint_data/0/constraint_angle_max = -30.0
-joint_data/0/constraint_angle_invert = true
-joint_data/0/constraint_in_localspace = true
-joint_data/0/editor_draw_gizmo = true
-joint_data/1/bone_index = 2
-joint_data/1/bone2d_node = NodePath("Hip/LegR/ShinR")
-joint_data/1/rotate_from_joint = false
-joint_data/1/enable_constraint = true
-joint_data/1/constraint_angle_min = 0.0
-joint_data/1/constraint_angle_max = 45.0
-joint_data/1/constraint_angle_invert = false
-joint_data/1/constraint_in_localspace = true
-joint_data/1/editor_draw_gizmo = false
-
-[sub_resource type="SkeletonModification2DCCDIK" id="SkeletonModification2DCCDIK_1s1yo"]
-target_nodepath = NodePath("../../IKTargets/LegTargets/FootL Target")
-tip_nodepath = NodePath("Hip/LegL/ShinL/FootL")
-ccdik_data_chain_length = 2
-joint_data/0/bone_index = 8
-joint_data/0/bone2d_node = NodePath("Hip/LegL")
-joint_data/0/rotate_from_joint = false
-joint_data/0/enable_constraint = true
-joint_data/0/constraint_angle_min = -35.0
-joint_data/0/constraint_angle_max = 25.0
-joint_data/0/constraint_angle_invert = true
-joint_data/0/constraint_in_localspace = true
-joint_data/0/editor_draw_gizmo = false
-joint_data/1/bone_index = 9
-joint_data/1/bone2d_node = NodePath("Hip/LegL/ShinL")
-joint_data/1/rotate_from_joint = false
-joint_data/1/enable_constraint = true
-joint_data/1/constraint_angle_min = 45.0
-joint_data/1/constraint_angle_max = 0.0
-joint_data/1/constraint_angle_invert = false
-joint_data/1/constraint_in_localspace = true
-joint_data/1/editor_draw_gizmo = false
 
 [sub_resource type="SkeletonModification2DCCDIK" id="SkeletonModification2DCCDIK_5ejfk"]
 target_nodepath = NodePath("../../IKTargets/ArmR Target")
@@ -148,14 +103,12 @@ constraint_in_localspace = true
 
 [sub_resource type="SkeletonModificationStack2D" id="SkeletonModificationStack2D_1s1yo"]
 enabled = true
-modification_count = 7
+modification_count = 5
 modifications/0 = SubResource("SkeletonModification2DLookAt_2uvqg")
-modifications/1 = SubResource("SkeletonModification2DCCDIK_2uvqg")
-modifications/2 = SubResource("SkeletonModification2DCCDIK_1s1yo")
-modifications/3 = SubResource("SkeletonModification2DCCDIK_5ejfk")
-modifications/4 = SubResource("SkeletonModification2DCCDIK_jd2rm")
-modifications/5 = SubResource("SkeletonModification2DCCDIK_q28gw")
-modifications/6 = SubResource("SkeletonModification2DLookAt_1s1yo")
+modifications/1 = SubResource("SkeletonModification2DCCDIK_5ejfk")
+modifications/2 = SubResource("SkeletonModification2DCCDIK_jd2rm")
+modifications/3 = SubResource("SkeletonModification2DCCDIK_q28gw")
+modifications/4 = SubResource("SkeletonModification2DLookAt_1s1yo")
 
 [sub_resource type="Animation" id="Animation_5ejfk"]
 length = 0.001
@@ -677,10 +630,9 @@ rest = Transform2D(1, 0, 0, 1, 0.039325, 3)
 
 [node name="LegR" type="Bone2D" parent="Animation/Bones/Skeleton2D/Hip"]
 position = Vector2(-3.00141, 1.00142)
-rotation = -0.0488666
+rotation = 0.335854
 scale = Vector2(1.00002, 1.00002)
 rest = Transform2D(0.999152, -0.0417148, 0.0417148, 0.999152, -3.00146, 1.00146)
-metadata/_local_pose_override_enabled_ = true
 
 [node name="LegR" type="Sprite2D" parent="Animation/Bones/Skeleton2D/Hip/LegR"]
 z_index = 30
@@ -689,10 +641,9 @@ offset = Vector2(3, -4)
 
 [node name="ShinR" type="Bone2D" parent="Animation/Bones/Skeleton2D/Hip/LegR"]
 position = Vector2(-1.99966, 13.9987)
-rotation = 0.0704991
+rotation = 0.0705775
 scale = Vector2(0.999929, 0.999929)
 rest = Transform2D(0.998328, 0.0561413, -0.0561413, 0.998328, -1.99963, 13.9988)
-metadata/_local_pose_override_enabled_ = true
 
 [node name="ShinR" type="Sprite2D" parent="Animation/Bones/Skeleton2D/Hip/LegR/ShinR"]
 z_index = 31
@@ -702,7 +653,6 @@ offset = Vector2(5, -17)
 [node name="FootR" type="Bone2D" parent="Animation/Bones/Skeleton2D/Hip/LegR/ShinR"]
 position = Vector2(-1.00014, 14.0017)
 rotation = -0.0324462
-scale = Vector2(1, 1)
 rest = Transform2D(0.999659, -0.0237074, 0.0237074, 0.999659, -1.00011, 14.0018)
 auto_calculate_length_and_angle = false
 length = 3.0
@@ -776,10 +726,9 @@ position = Vector2(-4.02673, 7.92152)
 
 [node name="LegL" type="Bone2D" parent="Animation/Bones/Skeleton2D/Hip"]
 position = Vector2(3.0016, 1.00183)
-rotation = -0.0279239
+rotation = 0.0974126
 scale = Vector2(1.00004, 1.00004)
 rest = Transform2D(0.998911, -0.0476129, 0.0476129, 0.998911, 3.0016, 1.00183)
-metadata/_local_pose_override_enabled_ = true
 
 [node name="LegL" type="Sprite2D" parent="Animation/Bones/Skeleton2D/Hip/LegL"]
 z_index = 20
@@ -788,10 +737,9 @@ offset = Vector2(-3, -4)
 
 [node name="ShinL" type="Bone2D" parent="Animation/Bones/Skeleton2D/Hip/LegL"]
 position = Vector2(2.00005, 10.9986)
-rotation = 0.0255829
+rotation = -0.251203
 scale = Vector2(0.999906, 0.999906)
 rest = Transform2D(0.999913, 0, 0, 0.999913, 2.00006, 10.9986)
-metadata/_local_pose_override_enabled_ = true
 
 [node name="ShinL" type="Sprite2D" parent="Animation/Bones/Skeleton2D/Hip/LegL/ShinL"]
 z_index = 21
@@ -858,6 +806,20 @@ position = Vector2(10, -18)
 libraries = {
 &"": SubResource("AnimationLibrary_1s1yo")
 }
+
+[node name="SoupIK" type="Node2D" parent="Animation"]
+
+[node name="LegR IK" type="Node2D" parent="Animation/SoupIK" node_paths=PackedStringArray("target_node", "joint_one_bone_node", "joint_two_bone_node")]
+script = ExtResource("46_soupik")
+target_node = NodePath("../../IKTargets/LegTargets/FootR Target")
+joint_one_bone_node = NodePath("../../Bones/Skeleton2D/Hip/LegR")
+joint_two_bone_node = NodePath("../../Bones/Skeleton2D/Hip/LegR/ShinR")
+
+[node name="LegL IK" type="Node2D" parent="Animation/SoupIK" node_paths=PackedStringArray("target_node", "joint_one_bone_node", "joint_two_bone_node")]
+script = ExtResource("46_soupik")
+target_node = NodePath("../../IKTargets/LegTargets/FootL Target")
+joint_one_bone_node = NodePath("../../Bones/Skeleton2D/Hip/LegL")
+joint_two_bone_node = NodePath("../../Bones/Skeleton2D/Hip/LegL/ShinL")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 visible = false
@@ -990,12 +952,20 @@ script = ExtResource("32_dead")
 character_body_2d = NodePath("../..")
 player = NodePath("../..")
 
-[node name="LowerBodyController" type="Node" parent="." node_paths=PackedStringArray("character_body_2d", "state_machine", "animation_player", "leg_targets")]
+[node name="LowerBodyController" type="Node" parent="." node_paths=PackedStringArray("character_body_2d", "state_machine", "animation_player", "leg_targets", "leg_r_ik", "leg_l_ik", "leg_r_sprite", "shin_r_sprite", "foot_r_sprite", "leg_l_sprite", "shin_l_sprite", "foot_l_sprite")]
 script = ExtResource("33_lowerbody")
 character_body_2d = NodePath("..")
 state_machine = NodePath("../StateMachine")
 animation_player = NodePath("../Animation/AnimationPlayer")
 leg_targets = NodePath("../Animation/IKTargets/LegTargets")
+leg_r_ik = NodePath("../Animation/SoupIK/LegR IK")
+leg_l_ik = NodePath("../Animation/SoupIK/LegL IK")
+leg_r_sprite = NodePath("../Animation/Bones/Skeleton2D/Hip/LegR/LegR")
+shin_r_sprite = NodePath("../Animation/Bones/Skeleton2D/Hip/LegR/ShinR/ShinR")
+foot_r_sprite = NodePath("../Animation/Bones/Skeleton2D/Hip/LegR/ShinR/FootR/FootR")
+leg_l_sprite = NodePath("../Animation/Bones/Skeleton2D/Hip/LegL/LegL")
+shin_l_sprite = NodePath("../Animation/Bones/Skeleton2D/Hip/LegL/ShinL/ShinL")
+foot_l_sprite = NodePath("../Animation/Bones/Skeleton2D/Hip/LegL/ShinL/FootL/FootL")
 
 [node name="UpperBodyController" type="Node" parent="." node_paths=PackedStringArray("character_body_2d", "state_machine", "gun", "head_target", "arm_r_target", "arm_l_target", "body", "head_sprite")]
 script = ExtResource("33_upperbody")
