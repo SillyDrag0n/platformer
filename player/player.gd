@@ -5,6 +5,11 @@ const HIT_FLASH_SHADER : Shader = preload("res://player/player_hit_flash_shader.
 # Slightly longer than the "death" animation's own length (0.4s, see player.tscn) so the collapse
 # has visibly settled into its final pose before the poof effect/death screen cut it short.
 const DEATH_POSE_DURATION := 0.5
+# One-time horizontal nudge on getting hit, so lower_body_controller.gd's procedural hurt pose
+# (which staggers opposite current velocity) has real motion to react to even when the player was
+# standing still - matches release_jump_boost's magnitude in grapple_state.gd for a similarly
+# small "pop", not a heavy launch.
+const HURT_KNOCKBACK_SPEED := 150.0
 
 var player_death_effect = preload("res://player/player_death_effect/player_death_effect.tscn")
 
@@ -73,24 +78,40 @@ func player_death() -> void:
 
 func _on_hurtbox_body_entered(body : Node2D):
 	if body.is_in_group("Enemy"):
-		take_hit(body.damage_amount)
+		take_hit(body.damage_amount, body)
 
 
 func _on_hurtbox_area_entered(area : Area2D) -> void:
 	var source := area.get_parent()
 	if source != null and source.has_method("get_damage_amount"):
-		take_hit(source.get_damage_amount())
+		take_hit(source.get_damage_amount(), source if source is Node2D else null)
 
 
-func take_hit(damage : int):
+func take_hit(damage : int, source : Node2D = null):
 	if is_invulnerable:
 		return
 	flash_hit()
 	HealthManager.decrease_health(damage)
 	if HealthManager.current_health == 0:
 		state_machine.transition_to("Dead")
+		return
+	apply_hurt_knockback(source)
+	state_machine.transition_to("Hurt")
+
+
+# Gives lower_body_controller.gd's procedural hurt pose (which reads current velocity) real
+# motion to stagger against, even if the player was standing still when hit. Pushes away from
+# whatever dealt the damage; falls back to opposite the player's current motion if no source
+# position is available (e.g. damage from a hazard that isn't a Node2D).
+func apply_hurt_knockback(source : Node2D) -> void:
+	var knockback_dir : float
+	if source != null:
+		knockback_dir = signf(global_position.x - source.global_position.x)
+		if knockback_dir == 0.0:
+			knockback_dir = 1.0
 	else:
-		state_machine.transition_to("Hurt")
+		knockback_dir = -signf(velocity.x) if velocity.x != 0.0 else 1.0
+	velocity.x = knockback_dir * HURT_KNOCKBACK_SPEED
 
 
 func flash_hit():

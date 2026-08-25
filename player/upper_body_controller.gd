@@ -12,6 +12,11 @@ extends Node
 @export var arm_l_target : Node2D
 @export var body : Node2D
 @export var head_sprite : Sprite2D
+# Read-only here - lower_body_controller.gd owns crouch/dash/hurt/grapple's Hip offsets. Without
+# this, arm/head targets (and anything anchored off them, like Gun.gd's muzzle and the aim
+# reticle) stay at a fixed height while the rest of the body visibly moves with Hip, since none of
+# them were ever computed relative to Hip's current position - only their own fixed origins.
+@export var hip : Bone2D
 
 # Each target tracks aim direction as origin + aim_dir * radius. Defaults are approximated from
 # the targets' original rest positions in player.tscn - first-pass values, meant to be tuned in
@@ -51,6 +56,7 @@ extends Node
 var recoil_offset : Vector2 = Vector2.ZERO
 var body_facing : float = 1.0
 var head_sprite_rest_position : Vector2
+var hip_rest_position : Vector2
 
 
 func _ready() -> void:
@@ -60,6 +66,7 @@ func _ready() -> void:
 	# doesn't get touched by flip_h (that only mirrors the rendered texture, not the node's own
 	# transform), so left uncorrected it drags that same rightward nudge along on the left side too.
 	head_sprite_rest_position = head_sprite.position
+	hip_rest_position = hip.position
 
 
 func _process(delta : float) -> void:
@@ -106,9 +113,15 @@ func _process(delta : float) -> void:
 	var head_offset : Vector2 = head_dir * head_radius + recoil_offset * 0.3
 	if body_facing < 0.0:
 		head_offset = -head_offset
-	head_target.position = head_origin + head_offset
-	arm_r_target.position = arm_r_origin + aim_dir * arm_r_radius + recoil_offset
-	arm_l_target.position = arm_l_origin + aim_dir * arm_l_radius + recoil_offset
+
+	# Whatever lower_body_controller.gd did to Hip this frame (crouch, dash lean, hurt kick,
+	# grapple sway) - added on top so the arms/head/gun/reticle move with the rest of the body
+	# instead of staying pinned at standing height.
+	var hip_offset : Vector2 = hip.position - hip_rest_position
+
+	head_target.position = head_origin + head_offset + hip_offset
+	arm_r_target.position = arm_r_origin + aim_dir * arm_r_radius + recoil_offset + hip_offset
+	arm_l_target.position = arm_l_origin + aim_dir * arm_l_radius + recoil_offset + hip_offset
 
 
 func _on_gun_shot_fired() -> void:

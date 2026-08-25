@@ -134,9 +134,162 @@ noticed so far. Remove items once actually fixed instead of leaving them
 stale.
 
 - **Player animations are largely placeholder/incomplete:**
-  - No dedicated hurt, dash, or grapple(swim/swing) poses — hurt reuses idle,
-    grapple reuses fall, dash reuses walk sped up
-    (`player/lower_body_controller.gd`).
+  - ~~Crouch-while-walking fix caused a "spasm," then broke death entirely~~
+    — **done 2026-08-25** (regression introduced and fixed within the same
+    session as the crouch-while-walking work below). Root cause:
+    `apply_crouch_pose()` (`hip.position.y += crouch_hip_drop`) ran in
+    `_physics_process`, but `AnimationPlayer` was still on its default
+    automatic idle-process callback — so its own per-idle-frame update kept
+    re-writing `Hip.position` from the idle/walk curve, racing my
+    physics-process write with no defined order between the two.
+    Confirmed headlessly (not guessed): `Hip.position.y` visibly
+    **alternated** between the crouched and un-crouched value every single
+    frame while crouch was held — the reported "spasm." Fixed by setting
+    `AnimationPlayer.callback_mode_process = MANUAL` (`player.tscn`) and
+    having `lower_body_controller.gd`'s `play_clip()` call
+    `animation_player.advance(delta)` itself, once per physics frame, right
+    before `apply_crouch_pose()` runs — making this file the sole writer of
+    `Hip.position` at a fully deterministic point, with nothing left to
+    race. That surfaced a second, previously-latent bug: pushing a
+    **non-looping** clip (`death`) past its own length via manual
+    `advance()` clears `AnimationPlayer.current_animation` to `""` and
+    `is_playing()` to `false` **immediately**, unlike automatic idle-process
+    ticking, which just holds the final frame — so `play_clip()`'s old
+    guard (`if animation_player.current_animation != clip_name`) saw
+    `"" != "death"` the instant the collapse finished and restarted it,
+    forever, an infinite replay loop that hadn't existed before (`death`
+    was the only non-looping clip, so idle/walk/jump/fall never triggered
+    it during earlier testing). Fixed by guarding on a locally-tracked
+    `_current_clip_name` instead of the engine's own (now unreliable)
+    `current_animation`. Verified headlessly, tick-by-tick, for both:
+    crouch holds steady across 60 held-frames (no more alternation), and
+    death advances 1→13 over its 0.4s length then holds flat at 13
+    indefinitely (confirmed past tick 55, no restart). `speed_scale` was
+    separately confirmed to still work correctly under manual `advance()`
+    (`advance(0.1)` at `speed_scale=3.0` measured exactly 3× the
+    `speed_scale=1.0` distance) before relying on it for dash/walk-speed
+    scaling. GUT suite still 28/28. Not yet confirmed in-editor — this fix
+    in particular touches core animation plumbing (not just pose numbers),
+    so it's worth a real look before trusting it fully.
+  - ~~Gun and aim reticle don't move with the rest of the body~~ — **done
+    2026-08-25**: same root cause as the Torso fix below, one layer further
+    out. `Gun.gd` sets its weapon sprite/muzzle directly from
+    `arm_r_target.global_position` (bypassing the bone chain entirely, for
+    exact hand alignment), and `AimReticle` anchors to that same muzzle —
+    so both transitively depend on `arm_r_target`. But `upper_body_controller
+    .gd` computed `arm_r_target`/`arm_l_target`/`head_target` purely from
+    fixed origins + aim direction, never accounting for `Hip`'s current
+    position — so crouching (or dash/hurt/grapple's Hip lean) moved the
+    torso and legs but left the gun, reticle, trajectory line, and off-hand
+    floating at standing height. Fixed by giving `upper_body_controller.gd`
+    its own `hip` reference and cached rest position (mirroring
+    `lower_body_controller.gd`'s pattern), and adding `hip.position -
+    hip_rest_position` to all three target positions each frame. Verified
+    headlessly: manually offsetting `Hip` by the crouch clip's ~13px and
+    re-running both controllers' `_process()` shows `arm_r_target`,
+    `head_target`, the gun's `Muzzle`, and `AimReticle` all move by exactly
+    that same offset. GUT suite still 28/28. Not yet confirmed in-editor.
+  - ~~Torso doesn't move with the rest of the body~~ — **done 2026-08-25**:
+    `Body/Torso` is a flat sprite outside the `Bones/Skeleton2D` chain, so
+    nothing was ever making it track `Hip`'s own position — true in every
+    clip (idle/walk's bob included), just most visible in crouch, whose
+    larger Hip drop made the torso staying put obvious. Fixed generally
+    (not crouch-specifically) by having `lower_body_controller.gd` set
+    `body.position` to `Hip`'s live offset from its cached rest position at
+    the end of every `_physics_process`, after whichever branch (clip-based
+    or procedural) ran that frame — one place, covers all poses including
+    the new procedural ones above. Also bumped the "crouch" clip's Hip drop
+    from ~5px to ~13px (`player.tscn`), which was reported as "barely bends
+    the knees" — deepens the knee bend for free since `SoupTwoBoneIK` must
+    bend more to close a shorter hip-to-foot distance, no new foot keyframes
+    needed. Verified headlessly that Body's offset matches Hip's exactly
+    for both a procedural pose (Dash) and the crouch clip (driven directly
+    via `AnimationPlayer.advance()`), and the crouch Hip drop lands at
+    ~13px. GUT suite still 28/28. Not yet confirmed in-editor.
+  - ~~Couldn't crouch while walking~~ — **done 2026-08-25**: the dedicated
+    "crouch" clip required `direction == 0.0` to even be selected, so
+    holding crouch while moving just played "walk" at standing height —
+    reported by the project owner wanting to duck under gunfire mid-stride,
+    which didn't work at all. Fixed by retiring the "crouch" clip entirely
+    (removed from `player.tscn` — dead now that this exists) in favor of
+    treating crouch as a Hip-offset **modifier** layered on top of
+    whichever base clip (idle or walk) `play_normal_clip()` already picked,
+    via a new `apply_crouch_pose()`: `hip.position.y += crouch_hip_drop`
+    (`@export`, default 13, replaces the old clip's baked-in value) whenever
+    grounded + crouch held, regardless of movement direction. Idle/walk
+    keep playing normally underneath — full gait, footsteps, everything —
+    just from a lower Hip height, so `SoupTwoBoneIK` bends the knees more
+    to close the shorter reach exactly as it already did for the old static
+    crouch. `apply_crouch_collision()`'s gate also had the same
+    stationary-only restriction removed, so the hitbox now actually shrinks
+    while crouch-walking too, not just while standing still — the entire
+    point of the feature (a hittable-profile reduction you can use while
+    moving). Verified headlessly end-to-end against `test_level.tscn` with
+    real simulated input (`Input.action_press("crouch")` +
+    `action_press("move_right")`): grounded, `velocity.x` at full run speed
+    (300), `walk` clip playing, Hip dropped ~13px, collision shrunk — all
+    simultaneously. GUT suite still 28/28. Not yet confirmed in-editor.
+  - ~~Player's collision shapes don't crouch~~ — **done 2026-08-25** (found
+    while checking the torso fix above, then fixed same session at the
+    project owner's request). `lower_body_controller.gd`'s new
+    `apply_crouch_collision()` shrinks the body's own `CollisionShape2D`
+    (`CapsuleShape2D`, rest radius 8 / height 66) from the top only — bottom
+    edge held fixed via a matching position shift, so feet don't sink into
+    the floor and crouching can actually fit under something shorter than
+    standing height, not just look shorter — by `crouch_collision_shrink`
+    (`@export`, default 13, matched to the crouch clip's Hip drop above).
+    `Hurtbox/HurtboxCollisionShape2D` only translates by the same amount
+    (no resize), since the torso sprite itself doesn't compress when
+    crouching, just moves down with the rest of the upper body via the
+    Torso-follows-Hip fix — the hittable zone should move the same way, not
+    change shape. The capsule's shared `Shape2D` resource is duplicated
+    once in `_ready()` before mutating `.height`, so this doesn't leak into
+    other instances of the scene. Both shapes are driven by the same
+    grounded-and-crouch-input condition `play_normal_clip()` already uses
+    to pick the "crouch" clip, so the hitbox and the visible pose can't
+    desync. Verified headlessly: crouching shrinks height while keeping the
+    capsule's bottom edge at the exact same world position, moves the
+    hurtbox down by exactly the shrink amount, and un-crouching restores
+    both shapes to their exact original transform. GUT suite still 28/28.
+    No level geometry exists yet that would actually require the shorter
+    hitbox (no crawl spaces) — this just makes crouching mechanically real
+    instead of purely cosmetic, ready for when one does.
+  - ~~No dedicated hurt, dash, or grapple(swim/swing) poses~~ — **done
+    2026-08-25**: replaced the idle/fall/walk placeholder reuse with
+    procedural poses computed live in `lower_body_controller.gd`
+    (`apply_dash_pose()`/`apply_hurt_pose()`/`apply_grapple_pose()`), the
+    same "compute from physics state every frame, no keyframes" approach
+    `upper_body_controller.gd` already used for arm/head aiming — chosen
+    because hand-keyframing new clips isn't something the project owner
+    feels confident doing. `animation_player.stop()` now runs on entering
+    these three states so the procedural code has sole control of
+    `Hip`/`FootR Target`/`FootL Target`; a `sin(progress * PI)` ease drives
+    each pose from its state's own timer (`dash_state.dash_timer`/
+    `dash_duration`, `hurt_state.hurt_timer`/`hurt_duration`) back to the
+    rest transforms `lower_body_controller.gd` now caches once in
+    `_ready()`. Grapple's swing trail reuses the existing `facing` variable
+    (already velocity-derived, see `update_facing()`) rather than
+    re-deriving tangent/anchor math grapple_state.gd already owns, and eases
+    to a tucked pose when `GameInputEvents.climb_input()` is active. All
+    offset/angle amplitudes are `@export` (`Dash Pose`/`Hurt Pose`/`Grapple
+    Pose` categories) for Inspector-only tuning, no re-keyframing needed.
+    Companion change: `player.gd`'s `take_hit()` now applies a small
+    one-time knockback (`HURT_KNOCKBACK_SPEED`, pushing away from whatever
+    dealt the damage, or opposite current velocity if no source is
+    available) so the hurt stagger has real motion to react to even when
+    the player was standing still — previously `take_hit()` applied zero
+    velocity change. Verified headlessly (not just static reading): a
+    throwaway harness instantiated `player.tscn` and drove each pose
+    function directly across progress 0→0.5→1, confirming poses start/end
+    exactly at the cached rest transform, move mid-pose, both legs get an
+    identical relative offset in Hurt, the Hip offset flips sign with
+    `facing`, and Grapple's local foot offset is direction-agnostic by
+    design (magnitude-only; left/right mirroring is `leg_targets.scale.x`'s
+    job, same as every other pose) while still scaling with swing speed.
+    Existing GUT suite (28/28) still passes. Still needs an in-editor/in-game
+    look — the headless check only proves the numbers move sensibly on the
+    intended curve, not that the poses read right as pixel art; amplitudes
+    are first-pass guesses meant to be tuned via the new Inspector sliders.
   - ~~No dedicated death pose~~ — **done 2026-08-23**: added a "death" clip
     (`player.tscn`, keyframes `Hip`/`FootR Target`/`FootL Target` over 0.4s
     into a collapsed pose) that `lower_body_controller.gd` now plays on

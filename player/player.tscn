@@ -1,4 +1,4 @@
-[gd_scene load_steps=56 format=3 uid="uid://bfcmjoltsmsed"]
+[gd_scene load_steps=55 format=3 uid="uid://bfcmjoltsmsed"]
 
 [ext_resource type="Script" uid="uid://bw7oflms0slfo" path="res://player/player.gd" id="1_wqxfn"]
 [ext_resource type="Texture2D" uid="uid://dd0dac6elifu6" path="res://player/sprites/head.png" id="2_knn7v"]
@@ -219,46 +219,6 @@ tracks/8/keys = {
 "transitions": PackedFloat32Array(1),
 "update": 0,
 "values": [Vector2(0.0131083, 0.999914)]
-}
-
-[sub_resource type="Animation" id="Animation_crouch"]
-resource_name = "crouch"
-length = 0.15
-tracks/0/type = "value"
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/path = NodePath("Bones/Skeleton2D/Hip:position")
-tracks/0/interp = 1
-tracks/0/loop_wrap = false
-tracks/0/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 0,
-"values": [Vector2(0.0131083, 6)]
-}
-tracks/1/type = "value"
-tracks/1/imported = false
-tracks/1/enabled = true
-tracks/1/path = NodePath("IKTargets/LegTargets/FootR Target:position")
-tracks/1/interp = 1
-tracks/1/loop_wrap = false
-tracks/1/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 0,
-"values": [Vector2(-11, 34)]
-}
-tracks/2/type = "value"
-tracks/2/imported = false
-tracks/2/enabled = true
-tracks/2/path = NodePath("IKTargets/LegTargets/FootL Target:position")
-tracks/2/interp = 1
-tracks/2/loop_wrap = false
-tracks/2/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 0,
-"values": [Vector2(7, 31)]
 }
 
 [sub_resource type="Animation" id="Animation_death"]
@@ -588,7 +548,6 @@ tracks/8/keys = {
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_1s1yo"]
 _data = {
 &"RESET": SubResource("Animation_5ejfk"),
-&"crouch": SubResource("Animation_crouch"),
 &"death": SubResource("Animation_death"),
 &"fall": SubResource("Animation_fall"),
 &"idle": SubResource("Animation_idle"),
@@ -803,6 +762,7 @@ position = Vector2(-8, 0)
 position = Vector2(10, -18)
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="Animation"]
+callback_mode_process = 2
 libraries = {
 &"": SubResource("AnimationLibrary_1s1yo")
 }
@@ -952,7 +912,7 @@ script = ExtResource("32_dead")
 character_body_2d = NodePath("../..")
 player = NodePath("../..")
 
-[node name="LowerBodyController" type="Node" parent="." node_paths=PackedStringArray("character_body_2d", "state_machine", "animation_player", "leg_targets", "leg_r_ik", "leg_l_ik", "leg_r_sprite", "shin_r_sprite", "foot_r_sprite", "leg_l_sprite", "shin_l_sprite", "foot_l_sprite")]
+[node name="LowerBodyController" type="Node" parent="." node_paths=PackedStringArray("character_body_2d", "state_machine", "animation_player", "leg_targets", "leg_r_ik", "leg_l_ik", "hip", "body", "dash_state", "hurt_state", "collision_shape", "hurtbox_collision_shape", "leg_r_sprite", "shin_r_sprite", "foot_r_sprite", "leg_l_sprite", "shin_l_sprite", "foot_l_sprite")]
 script = ExtResource("33_lowerbody")
 character_body_2d = NodePath("..")
 state_machine = NodePath("../StateMachine")
@@ -960,6 +920,12 @@ animation_player = NodePath("../Animation/AnimationPlayer")
 leg_targets = NodePath("../Animation/IKTargets/LegTargets")
 leg_r_ik = NodePath("../Animation/SoupIK/LegR IK")
 leg_l_ik = NodePath("../Animation/SoupIK/LegL IK")
+hip = NodePath("../Animation/Bones/Skeleton2D/Hip")
+body = NodePath("../Animation/Body")
+dash_state = NodePath("../StateMachine/Dash")
+hurt_state = NodePath("../StateMachine/Hurt")
+collision_shape = NodePath("../CollisionShape2D")
+hurtbox_collision_shape = NodePath("../Hurtbox/HurtboxCollisionShape2D")
 leg_r_sprite = NodePath("../Animation/Bones/Skeleton2D/Hip/LegR/LegR")
 shin_r_sprite = NodePath("../Animation/Bones/Skeleton2D/Hip/LegR/ShinR/ShinR")
 foot_r_sprite = NodePath("../Animation/Bones/Skeleton2D/Hip/LegR/ShinR/FootR/FootR")
@@ -967,7 +933,7 @@ leg_l_sprite = NodePath("../Animation/Bones/Skeleton2D/Hip/LegL/LegL")
 shin_l_sprite = NodePath("../Animation/Bones/Skeleton2D/Hip/LegL/ShinL/ShinL")
 foot_l_sprite = NodePath("../Animation/Bones/Skeleton2D/Hip/LegL/ShinL/FootL/FootL")
 
-[node name="UpperBodyController" type="Node" parent="." node_paths=PackedStringArray("character_body_2d", "state_machine", "gun", "head_target", "arm_r_target", "arm_l_target", "body", "head_sprite")]
+[node name="UpperBodyController" type="Node" parent="." node_paths=PackedStringArray("character_body_2d", "state_machine", "gun", "head_target", "arm_r_target", "arm_l_target", "body", "head_sprite", "hip")]
 script = ExtResource("33_upperbody")
 character_body_2d = NodePath("..")
 state_machine = NodePath("../StateMachine")
@@ -977,6 +943,7 @@ arm_r_target = NodePath("../Animation/IKTargets/ArmR Target")
 arm_l_target = NodePath("../Animation/IKTargets/ArmL Target")
 body = NodePath("../Animation/Body")
 head_sprite = NodePath("../Animation/Bones/Skeleton2D/Hip/Head/Head")
+hip = NodePath("../Animation/Bones/Skeleton2D/Hip")
 
 [node name="InteractingComponent" parent="." instance=ExtResource("23_s7qer")]
 
