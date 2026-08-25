@@ -36,6 +36,52 @@ Each level is meant to read like its own small story, not just a combat arena �
 enemies should have distinctive behaviors/mechanics tied to their folklore
 identity (e.g. a living cactus enemy that only attacks when you get too close).
 
+Supernatural creatures have **always existed** in this world — they aren't a
+recent invasion or a twist, just part of how the setting works. Not every
+creature needs an explanation. Three rough categories:
+
+- **Weird wildlife:** living cacti, strange animals, small spirits — simply
+  part of everyday life, background flavor more than threats.
+- **Dangerous creatures:** powerful beings that normally stay in remote
+  territories but become a threat when humans disturb their habitat.
+- **Legendary beings:** extremely rare creatures tied to old folklore and the
+  larger mystery — the ones bounties eventually escalate toward.
+
+## Story & Narrative Arc
+
+**Premise:** The protagonist loses his job and is nearly broke. He starts
+taking bounty-hunting jobs because he needs money. At first it's simple: take
+jobs → earn money → buy equipment → take harder jobs. His first serious
+bounty introduces him to something much bigger.
+
+**Protagonist arc:** He doesn't start as a hero — he's simply trying to
+rebuild his life.
+
+> He takes the first bounty because he needs money.
+> He keeps going because he's becoming good at it.
+> Eventually, he starts caring about the people and strange world he's
+> become part of.
+
+**First region — The Plains** establishes the template arc
+(investigate → understand → hunt) that later regions can riff on:
+
+- **Level 1 — Investigation.** The player helps a farmer/old man because they
+  need the money. Strange creatures are encountered along the way. Eventually
+  they discover a much more dangerous creature responsible for the problem.
+  The player confronts it but is too weak and escapes.
+- **Level 2 — The Shaman.** The player travels across the Plains to a remote
+  shaman for information. The shaman explains that the creature has always
+  existed, but human expansion is destroying its territory and making it
+  aggressive.
+- **Level 3 — The Hunt.** The player tracks the creature into its remaining
+  territory and defeats it.
+
+**Larger story:** As the player travels to new regions, they discover that
+human expansion is increasingly colliding with the supernatural world.
+Meanwhile, strange phenomena and fragments of forgotten folklore suggest that
+something deeper may be happening — the overarching mystery beyond the
+bounty-of-the-week structure.
+
 ## Current Stage
 
 **Core mechanics / prototyping.** Foundational systems (movement, combat,
@@ -157,6 +203,20 @@ stale.
 4. **Creatures behave, not just spawn** — enemies get distinct AI/mechanics
    tied to their folklore identity rather than reskinned generic enemies.
 
+## Design Philosophy (scope discipline)
+
+Keep the game focused on **action-platforming**, not RPG systems. Concretely:
+
+- **Bounties are the main progression track**; quests are optional — jobs,
+  favors, lore, and relationships layered on top, not required to advance.
+- **Reuse existing mechanics** rather than constantly adding new ones for each
+  new bounty or region.
+- **Creatures get variety through behavior and combinations**, not sheer
+  headcount — a handful of well-differentiated enemy types combined in new
+  ways beats a long roster of one-note enemies.
+- **Regions differentiate through setting, atmosphere, creatures, and
+  situations** — not by requiring wholly new mechanics per region.
+
 ## Open Questions / To Fill In
 
 These aren't derivable from the code — fill in when decided so this doc stays
@@ -166,8 +226,10 @@ useful:
 - Team size — solo, or collaborators involved?
 - Rough timeline / milestones (first playable demo, vertical slice, etc.)?
 - Monetization / pricing plan?
-- Story/narrative arc beyond the bounty-of-the-week structure — is there an
-  overarching plot or antagonist?
+- What exactly is the "something deeper" behind the strange phenomena/
+  forgotten-folklore thread — is there a concrete overarching antagonist or
+  mystery planned yet, beyond the region-by-region human-expansion-vs-
+  supernatural pattern?
 - Art direction reference points (pixel art style, palette, specific games as
   visual touchstones)?
 - Audio direction (music genre references, sound design tone)?
