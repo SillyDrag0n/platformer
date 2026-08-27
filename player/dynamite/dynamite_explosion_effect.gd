@@ -20,6 +20,8 @@ var radius : float = 64.0
 var _progress : float = 0.0
 
 @onready var explosion_sound : AudioStreamPlayer2D = $ExplosionSound
+@onready var explosion_deep : AudioStreamPlayer2D = $ExplosionDeep
+@onready var explosion_crack : AudioStreamPlayer2D = $ExplosionCrack
 @onready var debris : GPUParticles2D = $Debris
 @onready var smoke : GPUParticles2D = $Smoke
 
@@ -29,7 +31,12 @@ func set_radius(new_radius : float) -> void:
 
 
 func _ready() -> void:
+	explosion_sound.pitch_scale = randf_range(0.96, 1.04)
+	explosion_deep.pitch_scale = randf_range(0.58, 0.66)
+	explosion_crack.pitch_scale = randf_range(1.28, 1.38)
 	explosion_sound.play()
+	explosion_deep.play()
+	get_tree().create_timer(0.018).timeout.connect(explosion_crack.play)
 	_shake_camera()
 
 	var tween := create_tween()
@@ -38,6 +45,8 @@ func _ready() -> void:
 	# The shockwave circle and particles only animate for so long, but the sound can outlast
 	# them - don't cut anything off partway through by freeing on the shortest one's schedule.
 	var lifetime : float = maxf(DURATION, explosion_sound.stream.get_length())
+	lifetime = maxf(lifetime, explosion_deep.stream.get_length())
+	lifetime = maxf(lifetime, explosion_crack.stream.get_length() + 0.018)
 	lifetime = maxf(lifetime, debris.lifetime)
 	lifetime = maxf(lifetime, smoke.lifetime)
 	get_tree().create_timer(lifetime).timeout.connect(queue_free)

@@ -14,6 +14,7 @@ const HURT_KNOCKBACK_SPEED := 150.0
 var player_death_effect = preload("res://player/player_death_effect/player_death_effect.tscn")
 
 @onready var state_machine : NodeFiniteStateMachine = $StateMachine
+@onready var dynamite_thrower : Node = $DynamiteThrower
 
 @onready var body_sprites : Array[Sprite2D] = [
 	$Animation/Body/Torso,
@@ -56,7 +57,9 @@ func _process(_delta) -> void:
 	# Shooting is a plain state-independent flag now rather than living inside ground-only shoot
 	# states - gated to Normal so Dash/Grapple/Hurt/Dead still can't fire, matching what those
 	# states already never allowed.
-	is_shooting = GameInputEvents.shoot_input() and state_machine.current_node_state.name.to_lower() == "normal"
+	is_shooting = GameInputEvents.shoot_input() \
+		and state_machine.current_node_state.name.to_lower() == "normal" \
+		and dynamite_thrower.held_dynamite == null
 
 
 func set_invulnerable(value : bool) -> void:

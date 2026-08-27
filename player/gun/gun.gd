@@ -133,6 +133,8 @@ func _on_equipped_weapon_skin_changed(slot : InventoryManager.WeaponSlot, _cosme
 
 # --- Fire attempt ---
 func try_shoot() -> bool:
+	if player.dynamite_thrower.held_dynamite != null:
+		return false
 	if shoot_timer.is_stopped() and reload_timer.is_stopped():
 		if magazine_current > 0:
 			magazine_current -= 1

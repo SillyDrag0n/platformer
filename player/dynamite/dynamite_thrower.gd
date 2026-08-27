@@ -8,9 +8,11 @@ const TRAJECTORY_MAX_TIME : float = 2.0
 
 var dynamite_scene = preload("res://player/dynamite/dynamite.tscn")
 
-@onready var throw_marker : Marker2D = $ThrowMarker
 @onready var trajectory_line : Line2D = $TrajectoryLine
 @onready var player = get_parent()
+@onready var gun : Node2D = player.get_node("Gun")
+@onready var aim_reticle : Node2D = player.get_node("AimReticle")
+@onready var hand_target : Node2D = player.get_node("Animation/IKTargets/ArmR Target")
 
 var held_dynamite : Node2D = null
 # Snapshot of whichever ThrowableItemData was equipped when the pin was pulled, so a mid-hold
@@ -27,13 +29,14 @@ func _process(delta) -> void:
 		held_dynamite = null
 		held_item_data = null
 		trajectory_line.points = PackedVector2Array()
+		_set_holding_visuals(false)
 
 	if held_dynamite == null:
 		if cooldown_remaining <= 0.0 and GameInputEvents.use_utility_just_pressed() and player.state_machine.current_node_state.name.to_lower() == "normal":
 			_pull_dynamite()
 		return
 
-	held_dynamite.global_position = throw_marker.global_position
+	held_dynamite.global_position = hand_target.global_position
 	_update_trajectory_preview()
 
 	if GameInputEvents.use_utility_just_released():
@@ -52,12 +55,13 @@ func _pull_dynamite() -> void:
 
 	held_dynamite = dynamite_scene.instantiate()
 	ProjectileLayer.spawn(held_dynamite)
-	held_dynamite.global_position = throw_marker.global_position
+	held_dynamite.global_position = hand_target.global_position
 	held_dynamite.throw_speed = item.throw_speed
 	held_dynamite.gravity = item.gravity
 	held_dynamite.explosion_damage = item.explosion_damage
 	held_dynamite.explosion_radius = item.explosion_radius
 	held_dynamite.light_fuse(item.fuse_time)
+	_set_holding_visuals(true)
 
 
 func _release_dynamite() -> void:
@@ -68,6 +72,12 @@ func _release_dynamite() -> void:
 	held_dynamite = null
 	held_item_data = null
 	trajectory_line.points = PackedVector2Array()
+	_set_holding_visuals(false)
+
+
+func _set_holding_visuals(is_holding : bool) -> void:
+	gun.visible = not is_holding
+	aim_reticle.visible = not is_holding
 
 
 # Traces the same ballistic arc the dynamite will actually follow once thrown (see dynamite.gd's
