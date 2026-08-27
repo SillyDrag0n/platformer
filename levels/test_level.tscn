@@ -21,8 +21,8 @@
 [ext_resource type="TileSet" uid="uid://bm6iyhti1uwgi" path="res://tileset/desert_breakables_tileset.tres" id="14_breakables"]
 [ext_resource type="PackedScene" path="res://levels/grapple_anchor/grapple_anchor.tscn" id="15_ganchor"]
 [ext_resource type="PackedScene" uid="uid://c6n8jr2h5x4qa" path="res://enemies/bandit/bandit.tscn" id="16_bandit"]
-[ext_resource type="PackedScene" path="res://pickups/dynamite_pickup/dynamite_pickup.tscn" id="17_dynamite_pickup"]
 [ext_resource type="PackedScene" path="res://pickups/dynamite_crate/dynamite_crate.tscn" id="18_dynamite_crate"]
+[ext_resource type="PackedScene" uid="uid://csgm32q30dv5t" path="res://enemies/hoop_snake/hoop_snake.tscn" id="19_hoop_snake"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_8hjdj"]
 size = Vector2(944, 50)
@@ -36,7 +36,7 @@ boss_arena = NodePath("BossArena")
 player = NodePath("Player")
 
 [node name="Player" parent="." instance=ExtResource("4_wndkh")]
-position = Vector2(1230, -237)
+position = Vector2(67, 179)
 
 [node name="PlayerCamera" type="Camera2D" parent="." node_paths=PackedStringArray("player")]
 position = Vector2(3500, -900)
@@ -147,6 +147,9 @@ texture = ExtResource("13_0vv12")
 [node name="Bandit" parent="Enemies" instance=ExtResource("16_bandit")]
 position = Vector2(1798, 124)
 
+[node name="HoopSnake" parent="Enemies" instance=ExtResource("19_hoop_snake")]
+position = Vector2(771, 203)
+
 [node name="EnemyCactus" parent="Enemies" instance=ExtResource("9_ly3hx")]
 position = Vector2(947, 206)
 
@@ -157,9 +160,6 @@ position = Vector2(3801, -368)
 position = Vector2(3174, -225)
 
 [node name="Pickups" type="Node" parent="."]
-
-[node name="DynamitePickup" parent="Pickups" instance=ExtResource("17_dynamite_pickup")]
-position = Vector2(400, 190)
 
 [node name="DynamiteCrate" parent="Pickups" instance=ExtResource("18_dynamite_crate")]
 position = Vector2(1700, 143)

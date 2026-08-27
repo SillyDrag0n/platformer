@@ -81,7 +81,10 @@ func player_death() -> void:
 
 func _on_hurtbox_body_entered(body : Node2D):
 	if body.is_in_group("Enemy"):
-		take_hit(body.damage_amount, body)
+		if body.has_method("attach_to_player"):
+			body.attach_to_player(self)
+		else:
+			take_hit(body.damage_amount, body)
 
 
 func _on_hurtbox_area_entered(area : Area2D) -> void:
@@ -115,6 +118,31 @@ func apply_hurt_knockback(source : Node2D) -> void:
 	else:
 		knockback_dir = -signf(velocity.x) if velocity.x != 0.0 else 1.0
 	velocity.x = knockback_dir * HURT_KNOCKBACK_SPEED
+
+
+# Called by a snake-like enemy instead of take_hit() when it grabs on rather than just hitting the
+# player - returns whether the attach actually took (refused while invulnerable, or if the hit was
+# lethal), so the caller knows not to consider itself attached.
+func attach_snake(snake : Node2D) -> bool:
+	if is_invulnerable:
+		return false
+	flash_hit()
+	HealthManager.decrease_health(snake.damage_amount)
+	if HealthManager.current_health == 0:
+		state_machine.transition_to("Dead")
+		return false
+	var snake_state : Node = state_machine.get_node("SnakeAttached")
+	snake_state.snake = snake
+	state_machine.transition_to("SnakeAttached")
+	return true
+
+
+# Called by the snake if it dies while still attached (e.g. shot off the player's legs), so the
+# player isn't left stuck in SnakeAttached forever with no snake left to shake off.
+func notify_snake_detached(snake : Node2D) -> void:
+	var current := state_machine.current_node_state
+	if current.name.to_lower() == "snakeattached" and current.snake == snake:
+		state_machine.transition_to("Normal")
 
 
 func flash_hit():

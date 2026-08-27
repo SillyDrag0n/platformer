@@ -1,4 +1,4 @@
-[gd_scene load_steps=54 format=3 uid="uid://bfcmjoltsmsed"]
+[gd_scene load_steps=55 format=3 uid="uid://bfcmjoltsmsed"]
 
 [ext_resource type="Script" uid="uid://bw7oflms0slfo" path="res://player/player.gd" id="1_wqxfn"]
 [ext_resource type="Texture2D" uid="uid://dd0dac6elifu6" path="res://player/sprites/head.png" id="2_knn7v"]
@@ -40,6 +40,7 @@
 [ext_resource type="AudioStream" uid="uid://jo4ccjvk88ki" path="res://player/utility/sounds/spirit_drink.wav" id="45_spiritdrinksound"]
 [ext_resource type="Script" uid="uid://bnso0mph1tb11" path="res://addons/soupik/modifications/soup_two_bone_ik.gd" id="46_soupik"]
 [ext_resource type="Script" uid="uid://b4u1tvhlw4d2g" path="res://addons/soupik/modifications/soup_look_at.gd" id="47_soup_look_at"]
+[ext_resource type="Script" uid="uid://dwssgakw2jrf7" path="res://player/player_states/snake_attached_state.gd" id="48_snakeattached"]
 
 [sub_resource type="SkeletonModification2DCCDIK" id="SkeletonModification2DCCDIK_5ejfk"]
 target_nodepath = NodePath("../../IKTargets/ArmR Target")
@@ -590,12 +591,11 @@ offset = Vector2(5, -17)
 
 [node name="FootR" type="Bone2D" parent="Animation/Bones/Skeleton2D/Hip/LegR/ShinR"]
 position = Vector2(-1.00014, 14.0017)
-rotation = -0.0324462
+rotation = 0.51616
 rest = Transform2D(0.999659, -0.0237074, 0.0237074, 0.999659, -1.00011, 14.0018)
 auto_calculate_length_and_angle = false
 length = 3.0
 bone_angle = 0.0
-metadata/_local_pose_override_enabled_ = true
 
 [node name="FootR" type="Sprite2D" parent="Animation/Bones/Skeleton2D/Hip/LegR/ShinR/FootR"]
 z_index = 32
@@ -686,13 +686,12 @@ offset = Vector2(-5, -15)
 
 [node name="FootL" type="Bone2D" parent="Animation/Bones/Skeleton2D/Hip/LegL/ShinL"]
 position = Vector2(-1.00041, 14.0028)
-rotation = -0.0107745
+rotation = 0.530156
 scale = Vector2(1.00002, 1.00002)
 rest = Transform2D(0.999328, 0.0353376, -0.0353376, 0.999328, -1.00042, 14.0028)
 auto_calculate_length_and_angle = false
 length = 4.0
 bone_angle = 0.0
-metadata/_local_pose_override_enabled_ = true
 
 [node name="FootL" type="Sprite2D" parent="Animation/Bones/Skeleton2D/Hip/LegL/ShinL/FootL"]
 z_index = 22
@@ -898,6 +897,11 @@ character_body_2d = NodePath("../..")
 
 [node name="Dead" type="Node" parent="StateMachine" node_paths=PackedStringArray("character_body_2d", "player")]
 script = ExtResource("32_dead")
+character_body_2d = NodePath("../..")
+player = NodePath("../..")
+
+[node name="SnakeAttached" type="Node" parent="StateMachine" node_paths=PackedStringArray("character_body_2d", "player")]
+script = ExtResource("48_snakeattached")
 character_body_2d = NodePath("../..")
 player = NodePath("../..")
 

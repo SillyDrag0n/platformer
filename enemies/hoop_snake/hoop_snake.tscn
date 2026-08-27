@@ -1,0 +1,106 @@
+[gd_scene load_steps=14 format=3 uid="uid://csgm32q30dv5t"]
+
+[ext_resource type="Script" uid="uid://iv7n3yy07m0v" path="res://enemies/hoop_snake/hoop_snake.gd" id="1_snake"]
+[ext_resource type="Texture2D" uid="uid://cisnr4xiue8s3" path="res://enemies/hoop_snake/hoop_snake_roll.png" id="2_texture"]
+[ext_resource type="Script" uid="uid://7qf0q30y202f" path="res://scripts/state_machine/node_finite_state_machine.gd" id="3_fsm"]
+[ext_resource type="Script" uid="uid://c56biulv5tymk" path="res://enemies/hoop_snake/state_machine/idle_state.gd" id="4_idle"]
+[ext_resource type="Script" uid="uid://cljvv3ivvve0y" path="res://enemies/hoop_snake/state_machine/roll_state.gd" id="5_roll"]
+[ext_resource type="Script" uid="uid://deshpdrwsocjk" path="res://enemies/hoop_snake/state_machine/recover_state.gd" id="6_recover"]
+[ext_resource type="Script" uid="uid://bb1iit2nfhq60" path="res://enemies/hoop_snake/state_machine/attached_state.gd" id="7_attached"]
+[ext_resource type="Script" uid="uid://cl5kkl1jbwkie" path="res://enemies/_common/gravity.gd" id="8_gravity"]
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_snake"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("2_texture")
+}],
+"loop": true,
+"name": &"roll",
+"speed": 5.0
+}]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_body"]
+radius = 16.0
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_aggro"]
+size = Vector2(700, 200)
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_hurtbox"]
+radius = 16.0
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_detector"]
+size = Vector2(48, 48)
+
+[node name="HoopSnake" type="CharacterBody2D"]
+z_index = 50
+collision_layer = 4
+collision_mask = 387
+script = ExtResource("1_snake")
+health_amount = 1
+enemy_id = "hoop_snake"
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+sprite_frames = SubResource("SpriteFrames_snake")
+animation = &"roll"
+autoplay = "roll"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("CircleShape2D_body")
+
+[node name="AggroRange" type="Area2D" parent="."]
+collision_layer = 8
+collision_mask = 2
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="AggroRange"]
+shape = SubResource("RectangleShape2D_aggro")
+debug_color = Color(0.219608, 0, 0.67451, 0.423529)
+
+[node name="Hurtbox" type="Area2D" parent="." groups=["Enemy"]]
+collision_layer = 4
+collision_mask = 32
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Hurtbox"]
+shape = SubResource("CircleShape2D_hurtbox")
+
+[node name="PlayerDetector" type="Area2D" parent="."]
+position = Vector2(0, -17)
+collision_layer = 0
+collision_mask = 2
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="PlayerDetector"]
+position = Vector2(0, 17)
+shape = SubResource("RectangleShape2D_detector")
+debug_color = Color(0.741176, 0.0235294, 0.482353, 0.419608)
+
+[node name="StateMachine" type="Node" parent="." node_paths=PackedStringArray("initial_node_state")]
+script = ExtResource("3_fsm")
+initial_node_state = NodePath("Idle")
+
+[node name="Idle" type="Node" parent="StateMachine" node_paths=PackedStringArray("character_body_2d")]
+script = ExtResource("4_idle")
+character_body_2d = NodePath("../..")
+
+[node name="Roll" type="Node" parent="StateMachine" node_paths=PackedStringArray("character_body_2d", "animated_sprite_2d")]
+script = ExtResource("5_roll")
+character_body_2d = NodePath("../..")
+animated_sprite_2d = NodePath("../../AnimatedSprite2D")
+
+[node name="Recover" type="Node" parent="StateMachine" node_paths=PackedStringArray("character_body_2d", "animated_sprite_2d")]
+script = ExtResource("6_recover")
+character_body_2d = NodePath("../..")
+animated_sprite_2d = NodePath("../../AnimatedSprite2D")
+
+[node name="Attached" type="Node" parent="StateMachine" node_paths=PackedStringArray("character_body_2d", "collision_shape")]
+script = ExtResource("7_attached")
+character_body_2d = NodePath("../..")
+collision_shape = NodePath("../../CollisionShape2D")
+
+[node name="Gravity" type="Node" parent="." node_paths=PackedStringArray("character_body_2d", "animated_sprite_2d")]
+script = ExtResource("8_gravity")
+character_body_2d = NodePath("..")
+animated_sprite_2d = NodePath("../AnimatedSprite2D")
+
+[connection signal="body_entered" from="AggroRange" to="." method="_on_aggro_range_body_entered"]
+[connection signal="area_entered" from="Hurtbox" to="." method="_on_hurtbox_area_entered"]
+[connection signal="body_entered" from="PlayerDetector" to="." method="_on_player_detector_body_entered"]
