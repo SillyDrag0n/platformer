@@ -99,6 +99,10 @@ var _foot_r_target_rest : Transform2D
 var _foot_l_target_rest : Transform2D
 var _foot_r_lookat_rest : Transform2D
 var _foot_l_lookat_rest : Transform2D
+var _leg_r_bone_rest_position : Vector2
+var _leg_l_bone_rest_position : Vector2
+var _leg_r_bone_rest_scale : Vector2
+var _leg_l_bone_rest_scale : Vector2
 var _collision_shape_rest_height : float
 var _collision_shape_rest_position : Vector2
 var _hurtbox_collision_shape_rest_position : Vector2
@@ -122,6 +126,10 @@ func _ready() -> void:
 	_foot_l_target_rest = _foot_l_target.transform
 	_foot_r_lookat_rest = _foot_r_lookat.transform
 	_foot_l_lookat_rest = _foot_l_lookat.transform
+	_leg_r_bone_rest_position = leg_r_ik.joint_one_bone_node.position
+	_leg_l_bone_rest_position = leg_l_ik.joint_one_bone_node.position
+	_leg_r_bone_rest_scale = leg_r_ik.joint_one_bone_node.scale
+	_leg_l_bone_rest_scale = leg_l_ik.joint_one_bone_node.scale
 
 	# Duplicated so shrinking it at runtime doesn't mutate the shared CapsuleShape2D resource
 	# every instance of this scene would otherwise point at.
@@ -220,21 +228,24 @@ func update_facing() -> void:
 	if direction != 0.0:
 		facing = signf(direction)
 	leg_targets.scale.x = facing
-	# Inverted relative to the naive guess: SoupTwoBoneIK's two elbow/knee solutions come out
-	# backwards from what you'd expect here, confirmed by checking in-game rather than reasoning
-	# about it - flip_bend_direction=false is actually the "knee bends toward facing" solution
-	# when facing is negative, not positive.
-	leg_r_ik.flip_bend_direction = facing > 0.0
-	leg_l_ik.flip_bend_direction = facing > 0.0
+	leg_r_ik.joint_one_bone_node.position = Vector2(
+		_leg_r_bone_rest_position.x * facing, _leg_r_bone_rest_position.y)
+	leg_l_ik.joint_one_bone_node.position = Vector2(
+		_leg_l_bone_rest_position.x * facing, _leg_l_bone_rest_position.y)
+	leg_r_ik.joint_one_bone_node.scale = Vector2(
+		_leg_r_bone_rest_scale.x * facing, _leg_r_bone_rest_scale.y)
+	leg_l_ik.joint_one_bone_node.scale = Vector2(
+		_leg_l_bone_rest_scale.x * facing, _leg_l_bone_rest_scale.y)
+	# Keep the authored bend solution constant; SoupIK's determinant handling supplies the
+	# mirrored bend when the leg branch has a negative horizontal scale.
+	leg_r_ik.flip_bend_direction = true
+	leg_l_ik.flip_bend_direction = true
 
-	# The IK solve only rotates the bones toward the (already-mirrored) foot target - it never
-	# mirrors the sprite texture's own left/right asymmetry, so that still needs an explicit flip,
-	# same as head_sprite in upper_body_controller.gd. offset (not position) is what these leg
-	# sprites use for their rest-pose nudge off the bone origin, so that's what needs negating to
-	# keep it on the correct side of the flip.
+	# The mirrored Bone2D branches already mirror their child textures and offsets. Applying
+	# flip_h here as well would mirror the shin and foot artwork twice.
 	for i in _leg_sprites.size():
-		_leg_sprites[i].flip_h = facing < 0.0
-		_leg_sprites[i].offset.x = _leg_sprite_rest_offsets[i].x * facing
+		_leg_sprites[i].flip_h = false
+		_leg_sprites[i].offset = _leg_sprite_rest_offsets[i]
 
 
 # Lunge/skate silhouette that peaks mid-dash and eases back to neutral by the end, so it blends

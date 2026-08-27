@@ -134,6 +134,77 @@ noticed so far. Remove items once actually fixed instead of leaving them
 stale.
 
 - **Player animations are largely placeholder/incomplete:**
+  - ~~Knee bends to the anatomically wrong side partway through the walk
+    cycle when facing left~~ — **done 2026-08-25.** Preceded by an
+    abandoned attempt at true pixel-perfect mirroring: inserting a plain
+    `Node2D` wrapper between `Hip` and each leg's root bone (`LegR`/`LegL`)
+    to hold a mirror scale, so the whole posed limb reflects as one rigid
+    transform instead of being independently IK-derived. **That crashed
+    the engine** — `Skeleton2D` lost track of all 6 leg bones
+    (`bones.size()` dropped from 12 to 6) and segfaulted in
+    `get_index_in_skeleton` (`skeleton_2d.cpp:409`) the moment a
+    non-`Bone2D` node sat between `Hip` and `LegR`/`LegL`, contradicting
+    what reading `Bone2D`/`SoupTwoBoneIK` source suggested should work —
+    Godot 4.4.1's `Skeleton2D` does not tolerate that specific insertion.
+    Fully reverted and confirmed clean (GUT 28/28, clean scene load,
+    flip_h fix's own check). **Do not retry via text edits** — not that
+    exact form, and not "make the wrapper a real `Bone2D`" either (would
+    need renumbering every other `bone_index` reference in the file, and a
+    *plain* wrapper already crashed things, so that variant is higher
+    risk, not lower). If true pixel-perfect mirroring is wanted later, do
+    the restructuring in the Godot editor itself (visual skeleton tools +
+    undo + immediate error feedback).
+    User then clarified they didn't need pixel-perfect, just "correctly
+    orientated" — which pointed at a real, separate, much smaller bug:
+    `leg_r_ik.flip_bend_direction`/`leg_l_ik.flip_bend_direction` were
+    toggled by `facing` (`facing > 0.0`). Verified headlessly (sampling
+    real simulated walking, not just the rest pose) that this toggle was
+    wrong: walking right held the knee consistently on one side of the
+    hip-foot line for the entire cycle (0 sign flips across 90 samples),
+    but walking left crossed to the wrong side 1-3 times per cycle with a
+    visible snap each time. Fixed by making `flip_bend_direction` a fixed
+    `true` for both legs (no longer toggled by facing at all, set once in
+    `_ready()` instead of every frame in `update_facing()`) — since the leg
+    bones' own origin sits close to the mirror axis, the same bend choice
+    works cleanly in both directions: 0 sign flips in either direction
+    across 90 samples each, and the rotation ranges end up nearly identical
+    between left/right. (The handful of near-zero-magnitude "flips" seen in
+    one earlier run were confirmed to be measurement noise at the moment
+    the leg is naturally straight mid-swing, not a real defect — checked
+    via the cross-product's magnitude distribution, not just its sign.)
+    True pixel-perfect mirroring remains a known, deliberately-not-pursued
+    gap (see the crashed-wrapper-attempt note above) — this fix only
+    guarantees anatomically correct orientation, which is what was
+    actually asked for. GUT suite still 28/28. Not yet confirmed in-editor.
+  - ~~Legs look "inside-out" facing left~~ — **done 2026-08-25**, pre-existing
+    bug surfaced by the crouch-while-walking work prompting more left-facing
+    testing (not something this session's changes caused). `update_facing()`
+    was `flip_h`-ing each leg sprite (thigh/shin/foot × 2) whenever facing
+    left, on top of the leg bones' own genuine IK-driven rotation toward the
+    already-mirrored `FootTarget` (via `leg_targets.scale.x = facing` +
+    `SoupTwoBoneIK.flip_bend_direction`). That rotation alone already
+    presents the correctly-mirrored leg; flip_h'ing the texture on top of
+    it double-mirrors it — reported precisely as "the inside of the legs is
+    now outward." Same class of mistake the comment block explicitly
+    warned against for arms ("their CCDIK joint constraints... mirroring
+    that parent via negative scale would... make the limbs bend wrong") but
+    had been applied to legs anyway, contradicting the leg-IK-fix session's
+    own original reasoning (see the SoupIK entry below: "the leg sprites
+    were **not** re-flipped, on the reasoning that the bend is now a real
+    geometric turn... same reason arms are left unflipped" — that reasoning
+    was right; a flip_h block existed on the legs anyway by the time this
+    session found it). Fixed by removing the leg-sprite `flip_h`/`offset`
+    block from `update_facing()` entirely (also removed the now-dead
+    `leg_r_sprite`/`shin_r_sprite`/`foot_r_sprite`/`leg_l_sprite`/
+    `shin_l_sprite`/`foot_l_sprite` exports and their node-path wiring in
+    `player.tscn`, and the `_leg_sprites`/`_leg_sprite_rest_offsets` caches
+    in `lower_body_controller.gd`, since nothing else used them) — legs are
+    now mirrored purely by the IK rotation, same as arms. Verified
+    headlessly that `flip_h` stays `false` and each sprite's `offset` stays
+    at its rest value regardless of facing, while `leg_targets.scale.x` and
+    `SoupTwoBoneIK.flip_bend_direction` still correctly flip (position
+    mirroring untouched). GUT suite still 28/28. Not yet confirmed
+    in-editor.
   - ~~Crouch-while-walking fix caused a "spasm," then broke death entirely~~
     — **done 2026-08-25** (regression introduced and fixed within the same
     session as the crouch-while-walking work below). Root cause:
@@ -290,6 +361,82 @@ stale.
     look — the headless check only proves the numbers move sensibly on the
     intended curve, not that the poses read right as pixel art; amplitudes
     are first-pass guesses meant to be tuned via the new Inspector sliders.
+  - **Walking left reads as "walking backward" — LegL/LegR use distinct,
+    non-mirror-symmetric art, and four more fix attempts failed 2026-08-26.**
+    This is the "possible the legs still need the sprite-flip treatment
+    after all" caveat below being confirmed true. `leg_right.png`/
+    `shin_right.png`/`foot_right.png` and the `_left` set are NOT mirror
+    images of each other (confirmed via a PowerShell/System.Drawing
+    non-transparent-pixel bounding-box scan of all six PNGs) — `leg_right`
+    has visibly more shape detail (a boot/knee bulge) than `leg_left`'s
+    plainer silhouette. A rotation-only reach (what SoupIK already does,
+    see below) can't reflect that asymmetry — only an actual mirror
+    transform can. Four approaches tried and reverted, in order:
+    1. **Swap which texture+offset sits on the always-on-top `LegR`/`ShinR`/
+       `FootR` sprites vs `LegL`/etc based on facing** (near/far art
+       swap) — legs visibly collapsed into a bunched clump near the hip.
+    2. **Same texture swap, but leave each sprite's `offset` fixed to its
+       own node instead of swapping it too** — user reported "legs are
+       crossed... feet are also messed up," and clarified the actual want
+       was structural: "while walking right, LegR should be in front. The
+       same sprite should be in front when moving left but now in the
+       position of LegL" — i.e. `LegR`'s texture identity should stay fixed
+       and always-on-top, but the IK chain itself should occupy the spatial
+       role `LegL` used to.
+    3. **Reassign which `FootTarget` node each `SoupTwoBoneIK`'s
+       `target_node` points to when facing flips** (`leg_r_ik` → `FootL
+       Target` while facing left, instead of always `FootR Target`) — this
+       is what attempt 2's clarification actually seemed to ask for, but
+       it's geometrically broken: `FootR Target` sits at local `(-18, 30)`
+       and `FootL Target` at `(5, 31)` — **not mirror-symmetric** — while
+       `LegR`'s own bone anchor is at `(-3, 1)` and `LegL`'s at `(3, 1)`.
+       Reassigning `leg_r_ik` (anchored left of hip) to reach for `FootL
+       Target` (positioned right of hip) makes it reach across the body's
+       centerline. Confirmed via reading the actual rest positions, not
+       guessed. User: "still fucked up" (crossed legs again, different
+       cause than attempt 2).
+    4. **Mirror `LegR`/`LegL`'s own `Bone2D.scale.x` directly**
+       (`leg_r_ik.joint_one_bone_node.scale.x = facing`), reverting the
+       target/texture swaps from attempts 2-3 entirely. `SoupTwoBoneIK`
+       looked purpose-built for this: it derives `scale_orient` from
+       `sign(joint_one_bone_node.global_transform.determinant())` and
+       threads it through the whole bend/angle formula. Verified headlessly
+       (no NaN, plausible non-degenerate positions, determinant genuinely
+       flips negative on facing left) and reasoned through the transform
+       algebra by hand (see git history of this doc/conversation if
+       recovering the derivation matters) — but user tested it in-editor
+       and reported "it just doesn't work at all." **Root cause not fully
+       confirmed** — the leading theory: `SoupTwoBoneIK.handle_ik()` sets
+       `joint_one_bone_node.global_rotation = ...`, and Godot's
+       `global_rotation` *setter* re-decomposes/recomposes the local
+       transform using its own canonical convention (decomposed scale.x is
+       always reported/reconstructed non-negative; a reflection's sign
+       always lands on scale.y instead) — so even though `scale_orient`
+       correctly sees the reflection for the BEND-ANGLE math, the bone's
+       actual rendered basis vectors after that write may not end up as a
+       true mirror-across-local-X of the unmirrored case. Unconfirmed
+       whether this theory is actually why it looked wrong in-game, since
+       it was never visually inspected together with the user (see below).
+    **All four attempts fully reverted** (`git checkout -- 
+    player/lower_body_controller.gd player/player.tscn`) — the leg-facing
+    code is back to exactly what SoupIK migration originally landed (this
+    same bullet's parent entry above), GUT 28/28. This TODO item is
+    reopened, not done.
+    **Process notes for next attempt:** (a) the user explicitly does not
+    want Claude launching the game/taking screenshots to self-diagnose this
+    — ask for a screenshot or ask them to test in-editor instead, see
+    [[feedback_visual_bugs_ask_first]]; (b) given seven total dead ends now
+    across two IK-system generations (three CCDIK-era, one SoupIK
+    orientation-only fix that stuck, four more SoupIK-era chirality
+    attempts today), a purely-code, no-visual-feedback-loop attempt is
+    unlikely to succeed on the next try either — worth explicitly proposing
+    to the user, before writing more code, either (a) iterating live
+    together in-editor (them screenshotting each attempt) rather than
+    shipping a full guess, or (b) reconsidering whether `leg_left.png`/
+    `leg_right.png` etc. being deliberately *different* (not mirror-image)
+    art is worth the ongoing implementation cost vs. simpler
+    mirror-symmetric art that a plain `flip_h`/rotation approach (the
+    already-working SoupIK baseline) would just handle for free.
   - ~~No dedicated death pose~~ — **done 2026-08-23**: added a "death" clip
     (`player.tscn`, keyframes `Hip`/`FootR Target`/`FootL Target` over 0.4s
     into a collapsed pose) that `lower_body_controller.gd` now plays on
