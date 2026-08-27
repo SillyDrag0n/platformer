@@ -31,13 +31,13 @@ func _ready() -> void:
 
 func set_bounty_data(new_bounty : BountyData):
 	bounty = new_bounty
-	title_label.text = bounty.title
+	title_label.text = tr(bounty.title)
 	icon_rect.texture = bounty.icon if bounty.icon else default_icon
 	# undefeated bounties show as a silhouette so the boss isn't spoiled ahead of the fight
 	icon_rect.self_modulate = Color.WHITE if bounty.completed else Color.BLACK
 
 	var status_text := bounty.get_status_text()
-	status_label.text = status_text
+	status_label.text = tr(status_text)
 	status_label.modulate = STATUS_COLORS.get(status_text, Color.WHITE)
 
 	modulate.a = 1.0 if bounty.unlocked else 0.5

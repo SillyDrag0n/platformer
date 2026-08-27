@@ -69,7 +69,7 @@ func initialise_controls():
 
 
 func _on_window_mode_option_button_item_selected(index):
-	var window_mode = window_modes.get(window_mode_option_button.get_item_text(index)) as int
+	var window_mode = window_modes.values()[index] as int
 	SettingsManager.set_window_mode(window_mode, index)
 
 
@@ -79,7 +79,7 @@ func _on_resolution_option_button_item_selected(index):
 
 
 func _on_max_fps_option_button_item_selected(index):
-	var max_fps = max_fps_options.get(max_fps_option_button.get_item_text(index)) as int
+	var max_fps = max_fps_options.values()[index] as int
 	SettingsManager.set_max_fps(max_fps, index)
 
 

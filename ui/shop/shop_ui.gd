@@ -14,7 +14,7 @@ extends MenuPopup
 
 func _ready() -> void:
 	super._ready()
-	title_label.text = shop_title
+	title_label.text = tr(shop_title)
 	portrait_rect.texture = portrait
 	portrait_rect.visible = portrait != null
 	CollectibleManager.on_collectible_award_received.connect(_on_currency_changed)
@@ -30,7 +30,7 @@ func _on_currency_changed(_total : int) -> void:
 
 
 func _refresh_currency_label() -> void:
-	currency_label.text = "Gold: %d" % CollectibleManager.total_award_amount
+	currency_label.text = tr("Gold: %d") % CollectibleManager.total_award_amount
 
 
 func refresh_shop_ui() -> void:

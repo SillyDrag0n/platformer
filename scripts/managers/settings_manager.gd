@@ -9,6 +9,10 @@ var save_file_name = "settings_data.tres"
 var available_languages : Array[String] = ["en", "de"]
 
 
+func _ready() -> void:
+	load_settings()
+
+
 func load_settings():
 	if !DirAccess.dir_exists_absolute(save_settings_path):
 		DirAccess.make_dir_absolute(save_settings_path)

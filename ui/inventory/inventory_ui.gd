@@ -173,7 +173,7 @@ func create_bounty_ui():
 	for child in bounty_list_container.get_children():
 		child.queue_free()
 
-	bounty_title_label.text = "Select a bounty"
+	bounty_title_label.text = tr("Select a bounty")
 	bounty_status_label.text = ""
 	bounty_description_label.text = ""
 	bounty_detail_icon.texture = default_bounty_icon
@@ -181,7 +181,7 @@ func create_bounty_ui():
 
 	for region in GameStateManager.regions:
 		var header := Label.new()
-		header.text = region.name if region.unlocked else (region.name + " (Locked)")
+		header.text = tr(region.name) if region.unlocked else (tr(region.name) + " (" + tr("Locked") + ")")
 		header.add_theme_font_override("font", BOUNTY_LIST_FONT)
 		header.add_theme_font_size_override("font_size", 28)
 		header.modulate = Color(1, 1, 1) if region.unlocked else Color(0.6, 0.6, 0.6)
@@ -190,7 +190,7 @@ func create_bounty_ui():
 		var region_bounties : Array[BountyData] = GameStateManager.get_bounties_for_region(region.id)
 		if region_bounties.is_empty():
 			var empty_label := Label.new()
-			empty_label.text = "No bounties posted yet."
+			empty_label.text = tr("No bounties posted yet.")
 			empty_label.add_theme_font_override("font", BOUNTY_LIST_FONT)
 			empty_label.add_theme_font_size_override("font_size", 20)
 			empty_label.modulate = Color(0.6, 0.6, 0.6)
@@ -205,9 +205,9 @@ func create_bounty_ui():
 
 
 func _on_bounty_entry_selected(bounty : BountyData):
-	bounty_title_label.text = bounty.title
-	bounty_status_label.text = bounty.get_status_text()
-	bounty_description_label.text = bounty.description if bounty.description != "" else "No details available yet."
+	bounty_title_label.text = tr(bounty.title)
+	bounty_status_label.text = tr(bounty.get_status_text())
+	bounty_description_label.text = tr(bounty.description) if bounty.description != "" else tr("No details available yet.")
 	bounty_detail_icon.texture = bounty.icon if bounty.icon else default_bounty_icon
 	bounty_detail_icon.self_modulate = Color.WHITE if bounty.completed else Color.BLACK
 
@@ -229,8 +229,8 @@ func create_quests_ui():
 		else:
 			in_progress_quests.append(quest)
 
-	_add_quest_section("in_progress", "In Progress", in_progress_quests)
-	_add_quest_section("completed", "Completed", completed_quests)
+	_add_quest_section("in_progress", tr("In Progress"), in_progress_quests)
+	_add_quest_section("completed", tr("Completed"), completed_quests)
 
 
 func _add_quest_section(section_key : String, section_title : String, quests : Array[QuestData]) -> void:
@@ -255,7 +255,7 @@ func _add_quest_section(section_key : String, section_title : String, quests : A
 
 	if quests.is_empty():
 		var empty_label := Label.new()
-		empty_label.text = "None yet."
+		empty_label.text = tr("None yet.")
 		empty_label.add_theme_font_override("font", BOUNTY_LIST_FONT)
 		empty_label.add_theme_font_size_override("font_size", 18)
 		empty_label.modulate = Color(0.6, 0.6, 0.6)
@@ -333,7 +333,7 @@ func refresh_abilities_ui():
 
 	if unlocked_abilities.is_empty():
 		var empty_label := Label.new()
-		empty_label.text = "No abilities unlocked yet."
+		empty_label.text = tr("No abilities unlocked yet.")
 		empty_label.add_theme_font_override("font", BOUNTY_LIST_FONT)
 		empty_label.add_theme_font_size_override("font_size", 18)
 		empty_label.modulate = Color(0.6, 0.6, 0.6)

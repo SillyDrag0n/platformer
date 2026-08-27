@@ -24,8 +24,8 @@ func _ready():
 
 
 func _on_quest_received(quest : QuestData) -> void:
-	quest_popup_title_label.text = "Quest received: " + quest.title
-	quest_popup_description_label.text = quest.description
+	quest_popup_title_label.text = tr("Quest received: %s") % tr(quest.title)
+	quest_popup_description_label.text = tr(quest.description)
 	quest_popup.visible = true
 	quest_popup_timer.start()
 

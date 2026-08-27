@@ -50,7 +50,7 @@ player = NodePath("../Player")
 smoothing_distance = 1
 
 [node name="RespawnPosition" type="Marker2D" parent="."]
-position = Vector2(64, 210)
+position = Vector2(64, 200)
 
 [node name="BossSpawnPosition" type="Marker2D" parent="."]
 position = Vector2(3500, -900)

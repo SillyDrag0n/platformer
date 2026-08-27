@@ -26,13 +26,13 @@ func set_item_data(new_item : ItemData, none_label : String = "None (unequip)") 
 	item = new_item
 	if item and item.icon:
 		icon_rect.texture = item.icon
-		name_label.text = item.display_name
+		name_label.text = tr(item.display_name)
 	elif item:
 		icon_rect.texture = empty_texture
-		name_label.text = item.display_name
+		name_label.text = tr(item.display_name)
 	else:
 		icon_rect.texture = empty_texture
-		name_label.text = none_label
+		name_label.text = tr(none_label)
 
 
 func _on_button_pressed() -> void:

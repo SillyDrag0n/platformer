@@ -12,7 +12,7 @@ func set_quest_data(quest : QuestData) -> void:
 	var current : int = QuestManager.get_progress_current(quest)
 	var target : int = QuestManager.get_progress_target(quest)
 
-	title_label.text = quest.title
-	status_label.text = "Completed" if completed else "%d / %d" % [current, target]
+	title_label.text = tr(quest.title)
+	status_label.text = tr("Completed") if completed else "%d / %d" % [current, target]
 	progress_bar.value = QuestManager.get_progress_fraction(quest) * 100.0
-	description_label.text = quest.description
+	description_label.text = tr(quest.description)

@@ -24,8 +24,8 @@ func show_dialogue(speaker_name : String, dialogue_lines : Array[String]) -> voi
 	continue_button.show()
 	choice_buttons.hide()
 
-	speaker_label.text = speaker_name
-	lines = dialogue_lines
+	speaker_label.text = tr(speaker_name)
+	lines = dialogue_lines.map(func(line): return tr(line))
 	line_index = 0
 	_refresh_current_line()
 	open()
@@ -37,13 +37,13 @@ func show_dialogue(speaker_name : String, dialogue_lines : Array[String]) -> voi
 func show_choice(speaker_name : String, line : String, yes_text : String, no_text : String, on_yes : Callable, on_no : Callable) -> void:
 	continue_button.hide()
 	choice_buttons.show()
-	yes_button.text = yes_text
-	no_button.text = no_text
+	yes_button.text = tr(yes_text)
+	no_button.text = tr(no_text)
 	_on_yes = on_yes
 	_on_no = on_no
 
-	speaker_label.text = speaker_name
-	text_label.text = line
+	speaker_label.text = tr(speaker_name)
+	text_label.text = tr(line)
 	open()
 
 
@@ -58,7 +58,7 @@ func _on_opened() -> void:
 
 func _refresh_current_line() -> void:
 	text_label.text = lines[line_index]
-	continue_button.text = "Close" if line_index == lines.size() - 1 else "Continue"
+	continue_button.text = tr("Close") if line_index == lines.size() - 1 else tr("CONTINUE")
 	line_shown.emit(line_index)
 
 
