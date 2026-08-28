@@ -9,6 +9,12 @@ extends NodeState
 @export var max_horizontal_speed : int = 300
 @export var slow_down_speed : int = 1700
 
+@export_category("Crouch")
+# Grounded + crouch held is the same scope lower_body_controller.gd uses for the crouch pose and
+# collision shrink - matching it here is what actually makes crouch-walking slower instead of just
+# shorter.
+@export var crouch_speed_scale : float = 0.5
+
 @export_category("Jump")
 @export var jump_height : float = -375
 @export var jump_horizontal_speed : int = 425
@@ -73,9 +79,11 @@ func on_physics_process(delta : float):
 
 	# horizontal movement
 	if was_on_floor:
+		var speed_scale : float = crouch_speed_scale if GameInputEvents.crouch_input() else 1.0
 		if direction:
-			character_body_2d.velocity.x += direction * run_speed
-			character_body_2d.velocity.x = clamp(character_body_2d.velocity.x, -max_horizontal_speed, max_horizontal_speed)
+			character_body_2d.velocity.x += direction * run_speed * speed_scale
+			var max_speed : float = max_horizontal_speed * speed_scale
+			character_body_2d.velocity.x = clamp(character_body_2d.velocity.x, -max_speed, max_speed)
 		else:
 			character_body_2d.velocity.x = move_toward(character_body_2d.velocity.x, 0, slow_down_speed)
 	else:

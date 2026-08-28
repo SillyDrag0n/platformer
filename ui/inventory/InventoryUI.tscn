@@ -1,5 +1,6 @@
-[gd_scene load_steps=12 format=3 uid="uid://rx3auanfsgp0"]
+[gd_scene load_steps=14 format=3 uid="uid://rx3auanfsgp0"]
 
+[ext_resource type="Theme" uid="uid://ddr12d5h68dd1" path="res://ui/theme/game_theme.tres" id="0_theme"]
 [ext_resource type="Script" uid="uid://badieadd4juu0" path="res://ui/inventory/inventory_ui.gd" id="1_73x1u"]
 [ext_resource type="PackedScene" uid="uid://cb75n4qc854ox" path="res://ui/inventory/ItemSlot.tscn" id="2_73x1u"]
 [ext_resource type="Texture2D" uid="uid://xgv7mcdhswi4" path="res://icon.svg" id="2_h7hxg"]
@@ -14,6 +15,8 @@ content_margin_left = 240.0
 content_margin_top = 108.0
 content_margin_right = 240.0
 content_margin_bottom = 108.0
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_plain"]
 
 [sub_resource type="LabelSettings" id="LabelSettings_73x1u"]
 font = ExtResource("3_gvwsh")
@@ -59,6 +62,7 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+theme = ExtResource("0_theme")
 
 [node name="MarginContainer" type="PanelContainer" parent="Panel"]
 layout_mode = 0
@@ -247,6 +251,7 @@ size_flags_horizontal = 3
 layout_direction = 2
 layout_mode = 2
 size_flags_vertical = 0
+theme_override_styles/panel = SubResource("StyleBoxEmpty_plain")
 
 [node name="ItemNameLabel" type="Label" parent="Panel/MarginContainer/TabContainer/Items/Item Information/HBoxContainer/VBoxContainer/PanelContainer"]
 layout_mode = 2
@@ -257,6 +262,7 @@ label_settings = SubResource("LabelSettings_73x1u")
 clip_contents = true
 layout_mode = 2
 size_flags_vertical = 0
+theme_override_styles/panel = SubResource("StyleBoxEmpty_plain")
 
 [node name="ItemDescriptionLabel" type="Label" parent="Panel/MarginContainer/TabContainer/Items/Item Information/HBoxContainer/VBoxContainer/PanelContainer2"]
 custom_minimum_size = Vector2(0, 165)
@@ -322,6 +328,7 @@ size_flags_horizontal = 3
 [node name="PanelContainer" type="PanelContainer" parent="Panel/MarginContainer/TabContainer/Bounties/Bounty Information/HBoxContainer/VBoxContainer"]
 layout_mode = 2
 size_flags_vertical = 0
+theme_override_styles/panel = SubResource("StyleBoxEmpty_plain")
 
 [node name="BountyTitleLabel" type="Label" parent="Panel/MarginContainer/TabContainer/Bounties/Bounty Information/HBoxContainer/VBoxContainer/PanelContainer"]
 layout_mode = 2
@@ -336,6 +343,7 @@ label_settings = SubResource("LabelSettings_hu5s4")
 clip_contents = true
 layout_mode = 2
 size_flags_vertical = 3
+theme_override_styles/panel = SubResource("StyleBoxEmpty_plain")
 
 [node name="BountyDescriptionLabel" type="Label" parent="Panel/MarginContainer/TabContainer/Bounties/Bounty Information/HBoxContainer/VBoxContainer/PanelContainer2"]
 layout_mode = 2

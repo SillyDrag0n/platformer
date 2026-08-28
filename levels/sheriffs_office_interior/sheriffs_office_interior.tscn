@@ -1,6 +1,6 @@
-[gd_scene load_steps=12 format=3]
+[gd_scene load_steps=13 format=3 uid="uid://c1w1rj7bdri48"]
 
-[ext_resource type="Script" path="res://levels/sheriffs_office_interior/sheriffs_office_interior.gd" id="1_ext01"]
+[ext_resource type="Script" uid="uid://ca0tkarogdgd5" path="res://levels/sheriffs_office_interior/sheriffs_office_interior.gd" id="1_ext01"]
 [ext_resource type="PackedScene" uid="uid://bfcmjoltsmsed" path="res://player/player.tscn" id="2_ext02"]
 [ext_resource type="Script" uid="uid://chd8hkfd628j6" path="res://player/player_camera.gd" id="3_ext03"]
 [ext_resource type="PackedScene" uid="uid://dabxfx3538yx0" path="res://ui/screens/game_screen.tscn" id="4_ext04"]
@@ -26,7 +26,6 @@ color = Color(0.286275, 0.219608, 0.14902, 1)
 polygon = PackedVector2Array(-500, -350, 500, -350, 500, 170, -500, 170)
 
 [node name="Floor" type="StaticBody2D" parent="."]
-collision_layer = 1
 collision_mask = 0
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Floor"]
@@ -121,8 +120,8 @@ dialogue_lines = Array[String](["This town's been quiet lately. Aiming to keep i
 
 [node name="Deputy" parent="." instance=ExtResource("9_questnpc")]
 position = Vector2(-50, 100)
-speaker_name = "Deputy"
 quest = ExtResource("10_bandit_quest")
+speaker_name = "Deputy"
 
 [node name="ExitDoor" parent="." instance=ExtResource("7_ext07")]
 position = Vector2(-380, 130)

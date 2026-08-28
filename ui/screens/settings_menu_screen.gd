@@ -1,12 +1,16 @@
 extends CanvasLayer
 
-@onready var window_mode_option_button = $MarginContainer/PanelContainer/MarginContainer/VBoxContainer/WindowModeOptionButton
-@onready var resolution_option_button = $MarginContainer/PanelContainer/MarginContainer/VBoxContainer/ResolutionOptionButton
-@onready var max_fps_option_button = $MarginContainer/PanelContainer/MarginContainer/VBoxContainer/MaxFpsOptionButton
-@onready var vsync_check_button = $MarginContainer/PanelContainer/MarginContainer/VBoxContainer/VSyncCheckButton
-@onready var master_volume_slider = $MarginContainer/PanelContainer/MarginContainer/VBoxContainer/MasterVolumeSlider
-@onready var aim_sensitivity_slider = $MarginContainer/PanelContainer/MarginContainer/VBoxContainer/AimSensitivitySlider
-@onready var language_option_button = $MarginContainer/PanelContainer/MarginContainer/VBoxContainer/LanguageOptionButton
+const ControlBindingRowScene = preload("res://ui/screens/control_binding_row.tscn")
+
+@onready var window_mode_option_button = $MarginContainer/PanelContainer/MarginContainer/VBoxContainer/TabContainer/General/WindowModeOptionButton
+@onready var resolution_option_button = $MarginContainer/PanelContainer/MarginContainer/VBoxContainer/TabContainer/General/ResolutionOptionButton
+@onready var max_fps_option_button = $MarginContainer/PanelContainer/MarginContainer/VBoxContainer/TabContainer/General/MaxFpsOptionButton
+@onready var vsync_check_button = $MarginContainer/PanelContainer/MarginContainer/VBoxContainer/TabContainer/General/VSyncCheckButton
+@onready var master_volume_slider = $MarginContainer/PanelContainer/MarginContainer/VBoxContainer/TabContainer/General/MasterVolumeSlider
+@onready var aim_sensitivity_slider = $MarginContainer/PanelContainer/MarginContainer/VBoxContainer/TabContainer/General/AimSensitivitySlider
+@onready var language_option_button = $MarginContainer/PanelContainer/MarginContainer/VBoxContainer/TabContainer/General/LanguageOptionButton
+@onready var controls_list = $MarginContainer/PanelContainer/MarginContainer/VBoxContainer/TabContainer/Controls/VBoxContainer
+@onready var reset_controls_button = $MarginContainer/PanelContainer/MarginContainer/VBoxContainer/TabContainer/Controls/VBoxContainer/ResetControlsButton
 
 var window_modes : Dictionary = {"Fullscreen" : DisplayServer.WINDOW_MODE_EXCLUSIVE_FULLSCREEN,
 								 "Window" : DisplayServer.WINDOW_MODE_WINDOWED,
@@ -47,10 +51,15 @@ func _ready():
 		language_option_button.add_item(language_display_names[language_code])
 
 	initialise_controls()
+	_populate_control_bindings()
 	window_mode_option_button.grab_focus()
 
 
 func _unhandled_input(event : InputEvent) -> void:
+	# A rebind row mid-capture should swallow Escape itself (to cancel listening) rather than
+	# have it bubble up here and close the whole settings screen.
+	if _is_any_control_row_listening():
+		return
 	if event.is_action_pressed("ui_cancel"):
 		_on_main_menu_button_pressed()
 		get_viewport().set_input_as_handled()
@@ -66,6 +75,35 @@ func initialise_controls():
 	master_volume_slider.value = settings_data.master_volume * 100.0
 	aim_sensitivity_slider.value = settings_data.aim_sensitivity * 100.0
 	language_option_button.selected = settings_data.language_index
+
+
+func _populate_control_bindings() -> void:
+	for action_name in SettingsManager.REBINDABLE_ACTIONS:
+		var row = ControlBindingRowScene.instantiate()
+		controls_list.add_child(row)
+		controls_list.move_child(row, reset_controls_button.get_index())
+		row.set_action(action_name, action_name.capitalize())
+		row.rebind_requested.connect(_on_control_rebind_requested)
+
+
+func _is_any_control_row_listening() -> bool:
+	for row in controls_list.get_children():
+		if row.has_method("is_currently_listening") and row.is_currently_listening():
+			return true
+	return false
+
+
+func _on_control_rebind_requested(_action_name : String) -> void:
+	for row in controls_list.get_children():
+		if row.has_method("refresh"):
+			row.refresh()
+
+
+func _on_reset_controls_button_pressed() -> void:
+	SettingsManager.reset_bindings()
+	for row in controls_list.get_children():
+		if row.has_method("refresh"):
+			row.refresh()
 
 
 func _on_window_mode_option_button_item_selected(index):

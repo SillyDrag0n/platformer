@@ -19,6 +19,39 @@ font_size = 20
 outline_size = 4
 outline_color = Color(0, 0, 0, 1)
 
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_snake_hint_panel"]
+bg_color = Color(0.117647, 0.0470588, 0.0392157, 0.92)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.85098, 0.270588, 0.121569, 1)
+corner_radius_top_left = 6
+corner_radius_top_right = 6
+corner_radius_bottom_right = 6
+corner_radius_bottom_left = 6
+
+[sub_resource type="LabelSettings" id="LabelSettings_snake_hint"]
+font = ExtResource("3_utility_qty")
+font_size = 18
+font_color = Color(1, 0.917647, 0.858824, 1)
+outline_size = 4
+outline_color = Color(0, 0, 0, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_snake_hint_bg"]
+bg_color = Color(0, 0, 0, 0.4)
+corner_radius_top_left = 4
+corner_radius_top_right = 4
+corner_radius_bottom_right = 4
+corner_radius_bottom_left = 4
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_snake_hint_fill"]
+bg_color = Color(0.960784, 0.376471, 0.129412, 1)
+corner_radius_top_left = 4
+corner_radius_top_right = 4
+corner_radius_bottom_right = 4
+corner_radius_bottom_left = 4
+
 [node name="GameScreen" type="CanvasLayer"]
 script = ExtResource("1_jadqt")
 
@@ -71,6 +104,42 @@ layout_mode = 2
 theme_override_font_sizes/font_size = 16
 text = "[Q] Swap Weapon"
 visible = false
+
+[node name="SnakeGrabHint" type="PanelContainer" parent="."]
+visible = false
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -110.0
+offset_top = 24.0
+offset_right = 110.0
+offset_bottom = 78.0
+grow_horizontal = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_snake_hint_panel")
+
+[node name="MarginContainer" type="MarginContainer" parent="SnakeGrabHint"]
+layout_mode = 2
+theme_override_constants/margin_left = 14
+theme_override_constants/margin_top = 8
+theme_override_constants/margin_right = 14
+theme_override_constants/margin_bottom = 10
+
+[node name="VBoxContainer" type="VBoxContainer" parent="SnakeGrabHint/MarginContainer"]
+layout_mode = 2
+theme_override_constants/separation = 6
+
+[node name="Label" type="Label" parent="SnakeGrabHint/MarginContainer/VBoxContainer"]
+layout_mode = 2
+label_settings = SubResource("LabelSettings_snake_hint")
+text = "MASH JUMP!"
+horizontal_alignment = 1
+
+[node name="ProgressBar" type="ProgressBar" parent="SnakeGrabHint/MarginContainer/VBoxContainer"]
+custom_minimum_size = Vector2(180, 10)
+layout_mode = 2
+theme_override_styles/background = SubResource("StyleBoxFlat_snake_hint_bg")
+theme_override_styles/fill = SubResource("StyleBoxFlat_snake_hint_fill")
+show_percentage = false
 
 [node name="UtilityDisplay" type="ColorRect" parent="."]
 visible = false

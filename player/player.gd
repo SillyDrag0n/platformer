@@ -121,20 +121,27 @@ func apply_hurt_knockback(source : Node2D) -> void:
 
 
 # Called by a snake-like enemy instead of take_hit() when it grabs on rather than just hitting the
-# player - returns whether the attach actually took (refused while invulnerable, or if the hit was
-# lethal), so the caller knows not to consider itself attached.
+# player - returns whether the attach actually took (refused while invulnerable), so the caller
+# knows not to consider itself attached. Doesn't deal damage itself - the snake bites periodically
+# while attached instead (see SnakeAttached state's apply_snake_bite() calls).
 func attach_snake(snake : Node2D) -> bool:
 	if is_invulnerable:
-		return false
-	flash_hit()
-	HealthManager.decrease_health(snake.damage_amount)
-	if HealthManager.current_health == 0:
-		state_machine.transition_to("Dead")
 		return false
 	var snake_state : Node = state_machine.get_node("SnakeAttached")
 	snake_state.snake = snake
 	state_machine.transition_to("SnakeAttached")
 	return true
+
+
+# Periodic damage tick from a snake attached to the player's legs - skips the Hurt state/knockback
+# that take_hit() would trigger, since getting bitten shouldn't interrupt the ongoing struggle.
+func apply_snake_bite(damage : int) -> void:
+	if is_invulnerable:
+		return
+	flash_hit()
+	HealthManager.decrease_health(damage)
+	if HealthManager.current_health == 0:
+		state_machine.transition_to("Dead")
 
 
 # Called by the snake if it dies while still attached (e.g. shot off the player's legs), so the

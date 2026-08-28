@@ -3,8 +3,8 @@ extends ColorRect
 
 signal selected(item : ItemData)
 
-const NORMAL_COLOR := Color(1, 1, 1, 0.15)
-const FOCUSED_COLOR := Color(1, 1, 1, 0.45)
+const NORMAL_COLOR := Color(0.945098, 0.882353, 0.760784, 0.15)
+const FOCUSED_COLOR := Color(0.960784, 0.615686, 0.156863, 0.6)
 
 var item : ItemData
 

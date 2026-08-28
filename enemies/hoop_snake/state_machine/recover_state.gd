@@ -4,13 +4,22 @@ extends NodeState
 @export var animated_sprite_2d : AnimatedSprite2D
 @export var friction : float = 600.0
 
+# A roll that ends because the player jumped clean over it (has_overshot_player()) means the snake
+# is already facing the wrong way with nothing blocking it - it should spin back around and chase
+# again almost immediately, not sit through the same long pause a roll that dead-ended at a wall
+# or ledge needs before re-aiming.
+@export var overshoot_pause_scale : float = 0.3
+
 var pause_timer : float = 0.0
 var is_stopped : bool = false
 
 
 func enter():
 	is_stopped = false
-	pause_timer = character_body_2d.recover_pause
+	var pause : float = character_body_2d.recover_pause
+	if character_body_2d.has_overshot_player():
+		pause *= overshoot_pause_scale
+	pause_timer = pause
 
 
 func physics_update(delta):

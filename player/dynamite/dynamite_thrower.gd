@@ -2,7 +2,9 @@ extends Node2D
 
 # Ground (layer 1) and OneWayPlatform (layer 8) - what the trajectory preview should stop at,
 # matching what the thrown dynamite itself can actually land on.
-const TRAJECTORY_COLLISION_MASK : int = 1 | (1 << 7)
+const TRAJECTORY_GROUND_MASK : int = 1
+const TRAJECTORY_ONE_WAY_MASK : int = 1 << 7
+const TRAJECTORY_COLLISION_MASK : int = TRAJECTORY_GROUND_MASK | TRAJECTORY_ONE_WAY_MASK
 const TRAJECTORY_STEP_TIME : float = 0.05
 const TRAJECTORY_MAX_TIME : float = 2.0
 
@@ -100,7 +102,13 @@ func _update_trajectory_preview() -> void:
 		var query := PhysicsRayQueryParameters2D.create(previous, point)
 		query.collision_mask = TRAJECTORY_COLLISION_MASK
 		var result := space_state.intersect_ray(query)
-		if not result.is_empty():
+		# intersect_ray() ignores one-way collision direction entirely (unlike the real dynamite's
+		# move_and_slide()), so a platform it should be able to rise through from underneath would
+		# otherwise wrongly cut the preview short. Only let a one-way-only hit stop the arc while
+		# it's actually descending onto it - same "solid from above, open from below" rule the
+		# thrown dynamite already gets for free.
+		var is_descending : bool = point.y >= previous.y
+		if not result.is_empty() and (is_descending or not _is_one_way_only(result.collider)):
 			points.append(trajectory_line.to_local(result.position))
 			break
 
@@ -108,3 +116,10 @@ func _update_trajectory_preview() -> void:
 		previous = point
 
 	trajectory_line.points = points
+
+
+func _is_one_way_only(collider : Object) -> bool:
+	if not (collider is CollisionObject2D):
+		return false
+	var layer : int = collider.collision_layer
+	return (layer & TRAJECTORY_ONE_WAY_MASK) != 0 and (layer & TRAJECTORY_GROUND_MASK) == 0

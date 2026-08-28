@@ -2,7 +2,7 @@ extends Enemy
 
 const GROUND_MASK : int = 1 | (1 << 7) # Ground (layer 1) + OneWayPlatform (layer 8) - anything the snake can roll on
 
-@export var roll_speed : float = 260.0
+@export var roll_speed : float = 340.0
 @export var visual_radius : float = 12.0 # purely cosmetic - controls how fast the sprite spins while rolling
 @export var recover_pause : float = 0.6 # how long the snake sits still after coasting to a stop before re-aiming and rolling again
 # Player.tscn's collision capsule is centered on the player's own origin (not the feet), so +24

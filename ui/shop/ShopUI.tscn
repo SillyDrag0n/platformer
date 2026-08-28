@@ -1,5 +1,6 @@
-[gd_scene load_steps=5 format=3]
+[gd_scene load_steps=6 format=3]
 
+[ext_resource type="Theme" uid="uid://ddr12d5h68dd1" path="res://ui/theme/game_theme.tres" id="0_theme"]
 [ext_resource type="Script" path="res://ui/shop/shop_ui.gd" id="1_shop"]
 [ext_resource type="FontFile" uid="uid://kiwlymd55nc2" path="res://ui/font/BoldPixels.ttf" id="2_font"]
 [ext_resource type="PackedScene" path="res://ui/shop/ShopEntry.tscn" id="3_entry"]
@@ -19,7 +20,7 @@ script = ExtResource("1_shop")
 entry_scene = ExtResource("3_entry")
 title_label = NodePath("Panel/MarginContainer/VBoxContainer/HeaderRow/TitleLabel")
 currency_label = NodePath("Panel/MarginContainer/VBoxContainer/HeaderRow/CurrencyLabel")
-portrait_rect = NodePath("Panel/MarginContainer/VBoxContainer/CounterRow/PortraitRect")
+portrait_rect = NodePath("Panel/MarginContainer/VBoxContainer/CounterRow/PortraitFrame/PortraitRect")
 entry_list_container = NodePath("Panel/MarginContainer/VBoxContainer/CounterRow/ScrollContainer/EntryListContainer")
 
 [node name="Panel" type="Panel" parent="."]
@@ -28,6 +29,7 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+theme = ExtResource("0_theme")
 
 [node name="MarginContainer" type="PanelContainer" parent="Panel"]
 layout_mode = 0
@@ -59,8 +61,12 @@ layout_mode = 2
 size_flags_vertical = 3
 theme_override_constants/separation = 24
 
-[node name="PortraitRect" type="TextureRect" parent="Panel/MarginContainer/VBoxContainer/CounterRow"]
+[node name="PortraitFrame" type="PanelContainer" parent="Panel/MarginContainer/VBoxContainer/CounterRow"]
 custom_minimum_size = Vector2(380, 0)
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="PortraitRect" type="TextureRect" parent="Panel/MarginContainer/VBoxContainer/CounterRow/PortraitFrame"]
 layout_mode = 2
 size_flags_vertical = 3
 expand_mode = 1

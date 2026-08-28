@@ -12,3 +12,12 @@ class_name SettingsDataResource
 @export var aim_sensitivity : float = 0.5
 @export var language_code : String = "en"
 @export var language_index : int = 0
+
+# action name (String) -> InputEvent override, or `false` for an action explicitly left unbound
+# (e.g. after its key was taken over by another rebound action). Actions with no entry here keep
+# using project.godot's default binding.
+@export var custom_bindings : Dictionary = {}
+
+# Same idea as custom_bindings, but for the action's controller (joypad button) slot instead of
+# its keyboard/mouse slot - the two are rebound independently.
+@export var custom_joypad_bindings : Dictionary = {}

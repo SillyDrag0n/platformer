@@ -1,4 +1,4 @@
-[gd_scene load_steps=7 format=4 uid="uid://cqm71wt701u0"]
+[gd_scene load_steps=11 format=4 uid="uid://cqm71wt701u0"]
 
 [ext_resource type="Script" uid="uid://da3wuvwjv2qc8" path="res://ui/screens/main_menu_screen.gd" id="1_d1gqu"]
 [ext_resource type="Theme" uid="uid://ddr12d5h68dd1" path="res://ui/theme/game_theme.tres" id="2_mgnvx"]
@@ -6,6 +6,25 @@
 [ext_resource type="TileSet" path="res://tileset/desert_owp_tileset.tres" id="11_owp"]
 [ext_resource type="TileSet" path="res://tileset/desert_decorations_tileset.tres" id="12_decorations"]
 [ext_resource type="TileSet" path="res://tileset/desert_foreground_tileset.tres" id="13_foreground"]
+[ext_resource type="FontFile" path="res://ui/font/SuperCursed-E40Vz.ttf" id="20_title_font"]
+[ext_resource type="FontFile" path="res://ui/font/BoldPixels.ttf" id="21_subtitle_font"]
+
+[sub_resource type="LabelSettings" id="LabelSettings_title"]
+font = ExtResource("20_title_font")
+font_size = 72
+font_color = Color(0.94902, 0.760784, 0.376471, 1)
+outline_size = 10
+outline_color = Color(0.180392, 0.0823529, 0.0470588, 1)
+shadow_size = 6
+shadow_color = Color(0, 0, 0, 0.5)
+shadow_offset = Vector2(4, 5)
+
+[sub_resource type="LabelSettings" id="LabelSettings_subtitle"]
+font = ExtResource("21_subtitle_font")
+font_size = 16
+font_color = Color(0.929412, 0.882353, 0.796078, 1)
+outline_size = 4
+outline_color = Color(0.101961, 0.054902, 0.0313725, 1)
 
 [node name="MainMenuScreen" type="CanvasLayer"]
 process_mode = 3
@@ -71,6 +90,30 @@ z_index = 2
 tile_map_data = PackedByteArray("AABtACMAAQAgAAgAAABtACQAAQAgAAkAAABtACUAAQAgAAoAAABuACMAAQAhAAgAAABuACQAAQAhAAkAAABuACUAAQAhAAoAAABtACsAAQAmAAUAAABtACwAAQAmAAYAAABtAC0AAQAmAAcAAABuACsAAQAnAAUAAABuACwAAQAnAAYAAABuAC0AAQAnAAcAAABwACsAAQAmAAUAAABwACwAAQAmAAYAAABwAC0AAQAmAAcAAABxACsAAQAnAAUAAABxACwAAQAnAAYAAABxAC0AAQAnAAcAAABrACsAAQAkAAgAAABrACwAAQAkAAkAAABrAC0AAQAkAAoAAABsACsAAQAlAAgAAABsACwAAQAlAAkAAABsAC0AAQAlAAoAAABvACcAAQAeAAMAAABvACgAAQAeAAQAAABvACkAAQAeAAUAAABwACcAAQAfAAMAAABwACgAAQAfAAQAAABwACkAAQAfAAUAAAAoADIAAQAJAAEAAAAoADMAAQAJAAIAAAApADIAAQAKAAEAAAApADMAAQAKAAIAAAAqADIAAQALAAEAAAAqADMAAQALAAIAAAArADIAAQAMAAEAAAArADMAAQAMAAIAAAAsADIAAQANAAEAAAAsADMAAQANAAIAAAALADIAAQACAAgAAAAMADIAAQADAAgAAABSACYAAQAAAAAAAABSACcAAQAAAAEAAABSACgAAQAAAAIAAABSACkAAQAAAAMAAABTACYAAQABAAAAAABTACcAAQABAAEAAABTACgAAQABAAIAAABTACkAAQABAAMAAABmACsAAQAAAAUAAABmACwAAQAAAAYAAABmAC0AAQAAAAcAAABnACsAAQABAAUAAABnACwAAQABAAYAAABnAC0AAQABAAcAAAA=")
 tile_set = ExtResource("13_foreground")
 rendering_quadrant_size = 32
+
+[node name="TitleContainer" type="VBoxContainer" parent="."]
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -420.0
+offset_top = 60.0
+offset_right = 420.0
+offset_bottom = 200.0
+grow_horizontal = 2
+theme_override_constants/separation = 2
+
+[node name="TitleLabel" type="Label" parent="TitleContainer"]
+layout_mode = 2
+label_settings = SubResource("LabelSettings_title")
+text = "WESTERN BOUNTY HUNTER"
+horizontal_alignment = 1
+autowrap_mode = 2
+
+[node name="SubtitleLabel" type="Label" parent="TitleContainer"]
+layout_mode = 2
+label_settings = SubResource("LabelSettings_subtitle")
+text = "A WEIRD WEST ADVENTURE"
+horizontal_alignment = 1
 
 [connection signal="pressed" from="MarginContainer/PanelContainer/MarginContainer/VBoxContainer/PlayButton" to="." method="_on_play_button_pressed"]
 [connection signal="pressed" from="MarginContainer/PanelContainer/MarginContainer/VBoxContainer/SettingsButton" to="." method="_on_settings_button_pressed"]

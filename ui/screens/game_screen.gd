@@ -12,6 +12,9 @@ extends CanvasLayer
 @onready var utility_icon = $UtilityDisplay/Icon
 @onready var utility_quantity_label = $UtilityDisplay/QuantityLabel
 
+@onready var snake_grab_hint = $SnakeGrabHint
+@onready var snake_grab_progress_bar = $SnakeGrabHint/MarginContainer/VBoxContainer/ProgressBar
+
 
 func _ready():
 	CollectibleManager.on_collectible_award_received.connect(on_collectible_award_received)
@@ -19,8 +22,29 @@ func _ready():
 	InventoryManager.equipped_utility_changed.connect(_on_equipped_utility_changed)
 	InventoryManager.updated_inventory.connect(_update_utility_display)
 	QuestManager.quest_received.connect(_on_quest_received)
+	PlayerManager.snake_grab_started.connect(_on_snake_grab_started)
+	PlayerManager.snake_grab_progress.connect(_on_snake_grab_progress)
+	PlayerManager.snake_grab_ended.connect(_on_snake_grab_ended)
 	_update_swap_weapon_hint()
 	_update_utility_display()
+
+
+func _on_snake_grab_started(jump_presses_required : int) -> void:
+	snake_grab_progress_bar.max_value = jump_presses_required
+	snake_grab_progress_bar.value = 0
+	snake_grab_hint.modulate.a = 0.0
+	snake_grab_hint.visible = true
+	create_tween().tween_property(snake_grab_hint, "modulate:a", 1.0, 0.15)
+
+
+func _on_snake_grab_progress(press_count : int, _jump_presses_required : int) -> void:
+	snake_grab_progress_bar.value = press_count
+
+
+func _on_snake_grab_ended() -> void:
+	var tween := create_tween()
+	tween.tween_property(snake_grab_hint, "modulate:a", 0.0, 0.15)
+	tween.tween_callback(func(): snake_grab_hint.visible = false)
 
 
 func _on_quest_received(quest : QuestData) -> void:
