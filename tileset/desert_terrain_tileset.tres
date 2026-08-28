@@ -1,10 +1,10 @@
 [gd_resource type="TileSet" load_steps=3 format=3 uid="uid://dxdum0wlxjwk"]
 
-[ext_resource type="Texture2D" uid="uid://dlgq45pbrfxiy" path="res://tileset/Desert tileset.png" id="1"]
+[ext_resource type="Texture2D" uid="uid://dvtvp2vxy65oe" path="res://tileset/Desert tileset.png" id="1_ad6g4"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_1"]
 resource_name = "Background"
-texture = ExtResource("1")
+texture = ExtResource("1_ad6g4")
 16:14/0 = 0
 17:14/0 = 0
 18:14/0 = 0

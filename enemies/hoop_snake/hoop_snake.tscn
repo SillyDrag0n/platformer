@@ -1,7 +1,7 @@
 [gd_scene load_steps=14 format=3 uid="uid://csgm32q30dv5t"]
 
 [ext_resource type="Script" uid="uid://iv7n3yy07m0v" path="res://enemies/hoop_snake/hoop_snake.gd" id="1_snake"]
-[ext_resource type="Texture2D" uid="uid://cisnr4xiue8s3" path="res://enemies/hoop_snake/hoop_snake_roll.png" id="2_texture"]
+[ext_resource type="Texture2D" uid="uid://bnp4mp314bou4" path="res://enemies/hoop_snake/hoop_snake_roll.png" id="2_texture"]
 [ext_resource type="Script" uid="uid://7qf0q30y202f" path="res://scripts/state_machine/node_finite_state_machine.gd" id="3_fsm"]
 [ext_resource type="Script" uid="uid://c56biulv5tymk" path="res://enemies/hoop_snake/state_machine/idle_state.gd" id="4_idle"]
 [ext_resource type="Script" uid="uid://cljvv3ivvve0y" path="res://enemies/hoop_snake/state_machine/roll_state.gd" id="5_roll"]

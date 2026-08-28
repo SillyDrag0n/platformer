@@ -32,6 +32,7 @@ func refresh() -> void:
 	listen_mode = ListenMode.NONE
 	bind_button.text = SettingsManager.get_binding_display_text(action_name)
 	joypad_bind_button.text = SettingsManager.get_joypad_binding_display_text(action_name)
+	UiNavigationRepeater.suspended = false
 
 
 func _on_bind_button_pressed() -> void:
@@ -40,6 +41,7 @@ func _on_bind_button_pressed() -> void:
 	listen_mode = ListenMode.KEYBOARD
 	bind_button.text = "Press a key..."
 	bind_button.release_focus()
+	UiNavigationRepeater.suspended = true
 
 
 func _on_joypad_bind_button_pressed() -> void:
@@ -48,6 +50,7 @@ func _on_joypad_bind_button_pressed() -> void:
 	listen_mode = ListenMode.JOYPAD
 	joypad_bind_button.text = "Press a button..."
 	joypad_bind_button.release_focus()
+	UiNavigationRepeater.suspended = true
 
 
 # Escape cancels listening instead of binding to it, since Escape is already "pause"/ui_cancel.

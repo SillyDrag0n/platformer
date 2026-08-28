@@ -1,6 +1,6 @@
 [gd_resource type="Theme" load_steps=17 format=3 uid="uid://ddr12d5h68dd1"]
 
-[ext_resource type="FontFile" uid="uid://ut073u8v0810" path="res://ui/theme/GravityRegular5.ttf" id="1_su2wq"]
+[ext_resource type="FontFile" uid="uid://gfad15qupac4" path="res://ui/theme/GravityRegular5.ttf" id="1_su2wq"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_hcobb"]
 content_margin_left = 18.0
@@ -176,10 +176,10 @@ corner_radius_top_left = 4
 corner_radius_top_right = 4
 
 [resource]
-Button/colors/font_color = Color(0.945098, 0.882353, 0.760784, 1)
+Button/colors/font_color = Color(1, 1, 1, 1)
 Button/colors/font_disabled_color = Color(0.6, 0.56, 0.52, 0.6)
 Button/colors/font_hover_color = Color(0.196078, 0.109804, 0.0627451, 1)
-Button/colors/font_pressed_color = Color(0.945098, 0.882353, 0.760784, 1)
+Button/colors/font_pressed_color = Color(1, 1, 1, 1)
 Button/font_sizes/font_size = 18
 Button/fonts/font = ExtResource("1_su2wq")
 Button/styles/disabled = SubResource("StyleBoxFlat_hcobb")
@@ -187,7 +187,7 @@ Button/styles/focus = SubResource("StyleBoxFlat_vid0s")
 Button/styles/hover = SubResource("StyleBoxFlat_8furu")
 Button/styles/normal = SubResource("StyleBoxFlat_s2uc0")
 Button/styles/pressed = SubResource("StyleBoxFlat_x8v1b")
-Label/colors/font_color = Color(0.945098, 0.882353, 0.760784, 1)
+Label/colors/font_color = Color(1, 1, 1, 1)
 Label/colors/font_outline_color = Color(0.0705882, 0.0392157, 0.0235294, 1)
 Label/constants/outline_size = 2
 Label/font_sizes/font_size = 18
@@ -202,9 +202,9 @@ PopupMenu/styles/hover = SubResource("StyleBoxFlat_jy6v6")
 PopupMenu/styles/panel = SubResource("StyleBoxFlat_c8e8d")
 ProgressBar/styles/background = SubResource("StyleBoxFlat_progress_bg")
 ProgressBar/styles/fill = SubResource("StyleBoxFlat_progress_fill")
-TabContainer/colors/font_hovered_color = Color(0.945098, 0.882353, 0.760784, 1)
+TabContainer/colors/font_hovered_color = Color(1, 1, 1, 1)
 TabContainer/colors/font_selected_color = Color(0.196078, 0.109804, 0.0627451, 1)
-TabContainer/colors/font_unselected_color = Color(0.784314, 0.72549, 0.635294, 1)
+TabContainer/colors/font_unselected_color = Color(1, 1, 1, 1)
 TabContainer/font_sizes/font_size = 18
 TabContainer/fonts/font = ExtResource("1_su2wq")
 TabContainer/styles/panel = SubResource("StyleBoxEmpty_tabpanel")

@@ -10,6 +10,8 @@ const ControlBindingRowScene = preload("res://ui/screens/control_binding_row.tsc
 @onready var aim_sensitivity_slider = $MarginContainer/PanelContainer/MarginContainer/VBoxContainer/TabContainer/General/AimSensitivitySlider
 @onready var ui_scale_slider = $MarginContainer/PanelContainer/MarginContainer/VBoxContainer/TabContainer/General/UiScaleSlider
 @onready var language_option_button = $MarginContainer/PanelContainer/MarginContainer/VBoxContainer/TabContainer/General/LanguageOptionButton
+@onready var tab_container : TabContainer = $MarginContainer/PanelContainer/MarginContainer/VBoxContainer/TabContainer
+@onready var controls_scroll_container = $MarginContainer/PanelContainer/MarginContainer/VBoxContainer/TabContainer/Controls
 @onready var controls_list = $MarginContainer/PanelContainer/MarginContainer/VBoxContainer/TabContainer/Controls/VBoxContainer
 @onready var reset_controls_button = $MarginContainer/PanelContainer/MarginContainer/VBoxContainer/TabContainer/Controls/VBoxContainer/ResetControlsButton
 
@@ -53,8 +55,18 @@ func _ready():
 
 	initialise_controls()
 	_populate_control_bindings()
+	_connect_scroll_follow(reset_controls_button)
 	SettingsManager.apply_ui_scale(self)
-	window_mode_option_button.grab_focus()
+	_grab_default_focus()
+
+
+func _process(_delta):
+	if _is_any_control_row_listening():
+		return
+	if Input.is_action_just_pressed("tab_left"):
+		_cycle_tab(-1)
+	elif Input.is_action_just_pressed("tab_right"):
+		_cycle_tab(1)
 
 
 func _unhandled_input(event : InputEvent) -> void:
@@ -65,6 +77,39 @@ func _unhandled_input(event : InputEvent) -> void:
 	if event.is_action_pressed("ui_cancel"):
 		_on_main_menu_button_pressed()
 		get_viewport().set_input_as_handled()
+
+
+# TabContainer's built-in tab bar only takes keyboard/gamepad focus if the player navigates to
+# it directly, which never happens here since default focus lands on the tab's content - so tab
+# switching gets its own dedicated input, same as the inventory screen (see inventory_ui.gd).
+func _cycle_tab(direction : int) -> void:
+	var tab_count := tab_container.get_tab_count()
+	if tab_count == 0:
+		return
+	tab_container.current_tab = wrapi(tab_container.current_tab + direction, 0, tab_count)
+	_grab_default_focus.call_deferred()
+
+
+# Focuses the first focusable control inside whichever tab is currently showing - called on
+# open and on every tab switch, since the previously-focused control is very likely to be
+# inside a now-hidden tab otherwise, leaving gamepad/keyboard navigation stuck.
+func _grab_default_focus() -> void:
+	var current_tab_control := tab_container.get_current_tab_control()
+	if current_tab_control == null:
+		return
+	var focusable := _find_first_focusable(current_tab_control)
+	if focusable:
+		focusable.grab_focus()
+
+
+func _find_first_focusable(node : Node) -> Control:
+	if node is Control and node.focus_mode != Control.FOCUS_NONE and node.is_visible_in_tree():
+		return node
+	for child in node.get_children():
+		var found := _find_first_focusable(child)
+		if found:
+			return found
+	return null
 
 
 func initialise_controls():
@@ -81,12 +126,43 @@ func initialise_controls():
 
 
 func _populate_control_bindings() -> void:
+	var rows : Array = []
 	for action_name in SettingsManager.REBINDABLE_ACTIONS:
 		var row = ControlBindingRowScene.instantiate()
 		controls_list.add_child(row)
 		controls_list.move_child(row, reset_controls_button.get_index())
 		row.set_action(action_name, action_name.capitalize())
 		row.rebind_requested.connect(_on_control_rebind_requested)
+		_connect_scroll_follow(row.bind_button)
+		_connect_scroll_follow(row.joypad_bind_button)
+		rows.append(row)
+	_wire_control_row_focus_neighbors(rows)
+
+
+# ScrollContainer does not scroll to a focused child on its own, so each focusable control below
+# the fold has to ask it to explicitly once it is focused.
+func _connect_scroll_follow(control : Control) -> void:
+	control.focus_entered.connect(controls_scroll_container.ensure_control_visible.bind(control))
+
+
+# The rows live in a ScrollContainer, so Godot's automatic (spatial) focus search can jump
+# straight to MainMenuButton instead of the next row once that row is scrolled out of view -
+# a not-yet-visible row is still farther away than MainMenuButton is. Chaining focus_neighbor_top/
+# bottom explicitly keeps "down" moving through the list until the actual last row is reached,
+# with _connect_scroll_follow() bringing each newly focused row into view along the way.
+func _wire_control_row_focus_neighbors(rows : Array) -> void:
+	for i in rows.size():
+		var row = rows[i]
+		var next_row = rows[i + 1] if i + 1 < rows.size() else null
+		if next_row:
+			row.bind_button.focus_neighbor_bottom = row.bind_button.get_path_to(next_row.bind_button)
+			row.joypad_bind_button.focus_neighbor_bottom = row.joypad_bind_button.get_path_to(next_row.joypad_bind_button)
+			next_row.bind_button.focus_neighbor_top = next_row.bind_button.get_path_to(row.bind_button)
+			next_row.joypad_bind_button.focus_neighbor_top = next_row.joypad_bind_button.get_path_to(row.joypad_bind_button)
+		else:
+			row.bind_button.focus_neighbor_bottom = row.bind_button.get_path_to(reset_controls_button)
+			row.joypad_bind_button.focus_neighbor_bottom = row.joypad_bind_button.get_path_to(reset_controls_button)
+			reset_controls_button.focus_neighbor_top = reset_controls_button.get_path_to(row.bind_button)
 
 
 func _is_any_control_row_listening() -> bool:
