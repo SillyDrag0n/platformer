@@ -6,6 +6,7 @@ var settings_menu_screen = preload("res://ui/screens/settings_menu_screen.tscn")
 
 
 func _ready():
+	SettingsManager.apply_ui_scale(self)
 	play_button.grab_focus()
 
 

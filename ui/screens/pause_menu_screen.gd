@@ -5,6 +5,7 @@ extends CanvasLayer
 
 
 func _ready():
+	SettingsManager.apply_ui_scale(self)
 	continue_button.grab_focus()
 
 

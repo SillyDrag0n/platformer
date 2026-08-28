@@ -4,6 +4,7 @@ extends CanvasLayer
 
 
 func _ready():
+	SettingsManager.apply_ui_scale(self)
 	PlayerManager.player_died.connect(show_death_screen)
 
 

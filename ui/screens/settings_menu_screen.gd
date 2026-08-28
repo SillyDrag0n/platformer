@@ -8,6 +8,7 @@ const ControlBindingRowScene = preload("res://ui/screens/control_binding_row.tsc
 @onready var vsync_check_button = $MarginContainer/PanelContainer/MarginContainer/VBoxContainer/TabContainer/General/VSyncCheckButton
 @onready var master_volume_slider = $MarginContainer/PanelContainer/MarginContainer/VBoxContainer/TabContainer/General/MasterVolumeSlider
 @onready var aim_sensitivity_slider = $MarginContainer/PanelContainer/MarginContainer/VBoxContainer/TabContainer/General/AimSensitivitySlider
+@onready var ui_scale_slider = $MarginContainer/PanelContainer/MarginContainer/VBoxContainer/TabContainer/General/UiScaleSlider
 @onready var language_option_button = $MarginContainer/PanelContainer/MarginContainer/VBoxContainer/TabContainer/General/LanguageOptionButton
 @onready var controls_list = $MarginContainer/PanelContainer/MarginContainer/VBoxContainer/TabContainer/Controls/VBoxContainer
 @onready var reset_controls_button = $MarginContainer/PanelContainer/MarginContainer/VBoxContainer/TabContainer/Controls/VBoxContainer/ResetControlsButton
@@ -52,6 +53,7 @@ func _ready():
 
 	initialise_controls()
 	_populate_control_bindings()
+	SettingsManager.apply_ui_scale(self)
 	window_mode_option_button.grab_focus()
 
 
@@ -74,6 +76,7 @@ func initialise_controls():
 	vsync_check_button.button_pressed = settings_data.vsync_enabled
 	master_volume_slider.value = settings_data.master_volume * 100.0
 	aim_sensitivity_slider.value = settings_data.aim_sensitivity * 100.0
+	ui_scale_slider.value = settings_data.ui_scale * 100.0
 	language_option_button.selected = settings_data.language_index
 
 
@@ -131,6 +134,11 @@ func _on_master_volume_slider_value_changed(value):
 
 func _on_aim_sensitivity_slider_value_changed(value):
 	SettingsManager.set_aim_sensitivity(value / 100.0)
+
+
+func _on_ui_scale_slider_value_changed(value):
+	SettingsManager.set_ui_scale(value / 100.0)
+	SettingsManager.apply_ui_scale(self)
 
 
 func _on_language_option_button_item_selected(index):

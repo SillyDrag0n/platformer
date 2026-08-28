@@ -1,7 +1,6 @@
-[gd_scene load_steps=4 format=3 uid="uid://bnpci6lx6d0ve"]
+[gd_scene load_steps=3 format=3 uid="uid://bnpci6lx6d0ve"]
 
 [ext_resource type="Script" uid="uid://cw2hqkapp34wy" path="res://ui/settings_menu_screen.gd" id="1_kdqj1"]
-[ext_resource type="Texture2D" uid="uid://dixf3cwo2jdnw" path="res://ui/background.png" id="2_gidpi"]
 [ext_resource type="Theme" uid="uid://ddr12d5h68dd1" path="res://ui/theme/game_theme.tres" id="3_in15j"]
 
 [node name="SettingsMenuScreen" type="CanvasLayer"]
@@ -9,18 +8,13 @@ process_mode = 3
 layer = 2
 script = ExtResource("1_kdqj1")
 
-[node name="Background" type="TextureRect" parent="."]
-modulate = Color(0.564706, 0.407843, 0.34902, 0.490196)
+[node name="Dimmer" type="ColorRect" parent="."]
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_left = -332.0
-offset_top = -68.0
-offset_right = 244.0
-offset_bottom = 14.0
 grow_horizontal = 2
 grow_vertical = 2
-texture = ExtResource("2_gidpi")
+color = Color(0.0705882, 0.0392157, 0.0235294, 0.6)
 
 [node name="MarginContainer" type="MarginContainer" parent="."]
 anchors_preset = 15
@@ -37,20 +31,22 @@ size_flags_vertical = 4
 
 [node name="MarginContainer" type="MarginContainer" parent="MarginContainer/PanelContainer"]
 layout_mode = 2
-theme_override_constants/margin_left = 15
-theme_override_constants/margin_top = 10
-theme_override_constants/margin_right = 15
-theme_override_constants/margin_bottom = 10
+theme_override_constants/margin_left = 26
+theme_override_constants/margin_top = 20
+theme_override_constants/margin_right = 26
+theme_override_constants/margin_bottom = 20
 
 [node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/PanelContainer/MarginContainer"]
 layout_mode = 2
+theme_override_constants/separation = 14
 
 [node name="TabContainer" type="TabContainer" parent="MarginContainer/PanelContainer/MarginContainer/VBoxContainer"]
-custom_minimum_size = Vector2(460, 360)
+custom_minimum_size = Vector2(900, 560)
 layout_mode = 2
 
 [node name="General" type="VBoxContainer" parent="MarginContainer/PanelContainer/MarginContainer/VBoxContainer/TabContainer"]
 layout_mode = 2
+theme_override_constants/separation = 12
 
 [node name="WindowModeOptionButton" type="OptionButton" parent="MarginContainer/PanelContainer/MarginContainer/VBoxContainer/TabContainer/General"]
 layout_mode = 2
@@ -87,6 +83,18 @@ max_value = 100.0
 step = 1.0
 value = 50.0
 
+[node name="UiScaleLabel" type="Label" parent="MarginContainer/PanelContainer/MarginContainer/VBoxContainer/TabContainer/General"]
+layout_mode = 2
+text = "UI Scale"
+
+[node name="UiScaleSlider" type="HSlider" parent="MarginContainer/PanelContainer/MarginContainer/VBoxContainer/TabContainer/General"]
+custom_minimum_size = Vector2(0, 24)
+layout_mode = 2
+min_value = 80.0
+max_value = 150.0
+step = 5.0
+value = 100.0
+
 [node name="LanguageLabel" type="Label" parent="MarginContainer/PanelContainer/MarginContainer/VBoxContainer/TabContainer/General"]
 layout_mode = 2
 text = "Language"
@@ -101,7 +109,7 @@ horizontal_scroll_mode = 0
 [node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/PanelContainer/MarginContainer/VBoxContainer/TabContainer/Controls"]
 layout_mode = 2
 size_flags_horizontal = 3
-theme_override_constants/separation = 6
+theme_override_constants/separation = 10
 
 [node name="ResetControlsButton" type="Button" parent="MarginContainer/PanelContainer/MarginContainer/VBoxContainer/TabContainer/Controls/VBoxContainer"]
 layout_mode = 2
@@ -117,6 +125,7 @@ text = "MAIN MENU"
 [connection signal="toggled" from="MarginContainer/PanelContainer/MarginContainer/VBoxContainer/TabContainer/General/VSyncCheckButton" to="." method="_on_v_sync_check_button_toggled"]
 [connection signal="value_changed" from="MarginContainer/PanelContainer/MarginContainer/VBoxContainer/TabContainer/General/MasterVolumeSlider" to="." method="_on_master_volume_slider_value_changed"]
 [connection signal="value_changed" from="MarginContainer/PanelContainer/MarginContainer/VBoxContainer/TabContainer/General/AimSensitivitySlider" to="." method="_on_aim_sensitivity_slider_value_changed"]
+[connection signal="value_changed" from="MarginContainer/PanelContainer/MarginContainer/VBoxContainer/TabContainer/General/UiScaleSlider" to="." method="_on_ui_scale_slider_value_changed"]
 [connection signal="item_selected" from="MarginContainer/PanelContainer/MarginContainer/VBoxContainer/TabContainer/General/LanguageOptionButton" to="." method="_on_language_option_button_item_selected"]
 [connection signal="pressed" from="MarginContainer/PanelContainer/MarginContainer/VBoxContainer/TabContainer/Controls/VBoxContainer/ResetControlsButton" to="." method="_on_reset_controls_button_pressed"]
 [connection signal="pressed" from="MarginContainer/PanelContainer/MarginContainer/VBoxContainer/MainMenuButton" to="." method="_on_main_menu_button_pressed"]

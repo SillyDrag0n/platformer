@@ -46,6 +46,7 @@ func load_settings():
 		set_vsync_enabled(settings_data.vsync_enabled)
 		set_master_volume(settings_data.master_volume)
 		set_aim_sensitivity(settings_data.aim_sensitivity)
+		set_ui_scale(settings_data.ui_scale)
 		set_language(settings_data.language_code, settings_data.language_index)
 		_apply_custom_bindings()
 
@@ -91,6 +92,24 @@ func set_master_volume(master_volume : float):
 func set_aim_sensitivity(aim_sensitivity : float):
 	GameInputEvents.aim_sensitivity = aim_sensitivity
 	settings_data.aim_sensitivity = aim_sensitivity
+
+
+func set_ui_scale(ui_scale : float) -> void:
+	settings_data.ui_scale = ui_scale
+
+
+# Scales an entire menu screen uniformly around the viewport's center, so bumping UI Scale makes
+# it bigger without drifting off-center - CanvasLayer has no anchor/pivot system of its own like
+# Control does, so the centering has to be done by hand via `offset` (the standard "scale around
+# point P" formula: offset = P * (1 - scale) keeps P itself fixed under the transform). Call once
+# from a screen's _ready(); the settings screen also calls it again on slider change for a live
+# preview instead of needing a persistent signal connection (which would outlive short-lived
+# popup screens like this one and Pause).
+func apply_ui_scale(canvas_layer : CanvasLayer) -> void:
+	var viewport_center : Vector2 = canvas_layer.get_viewport().get_visible_rect().size / 2.0
+	var scale_value : float = settings_data.ui_scale
+	canvas_layer.scale = Vector2(scale_value, scale_value)
+	canvas_layer.offset = viewport_center * (1.0 - scale_value)
 
 
 func set_language(language_code : String, language_index : int):

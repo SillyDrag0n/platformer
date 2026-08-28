@@ -6,6 +6,7 @@ var bounty_reward = preload("res://ui/screens/bounty_reward.tscn")
 
 
 func _ready():
+	SettingsManager.apply_ui_scale(self)
 	return_button.grab_focus()
 
 	if GameStateManager.active_bounty == null:
