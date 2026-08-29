@@ -1,6 +1,8 @@
 class_name SaveDataResource
 extends Resource
 
+@export var player_name : String = ""
+
 # Item ownership/equipment is saved as resource paths rather than the resources themselves -
 # ItemData/WeaponItemData/etc. are shared content templates (authored .tres files), not
 # per-save data, so a save file only needs to remember *which* ones the player has.
@@ -23,3 +25,5 @@ extends Resource
 
 @export var bounty_states : Dictionary = {} # bounty id -> {unlocked, completed, reward_claimed}
 @export var region_states : Dictionary = {} # region id -> unlocked
+
+@export var has_shown_hub_welcome : bool = false

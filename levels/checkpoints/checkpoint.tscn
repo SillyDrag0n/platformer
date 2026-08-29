@@ -1,8 +1,8 @@
 [gd_scene load_steps=12 format=3 uid="uid://c1cg0fctna23d"]
 
 [ext_resource type="Script" uid="uid://c4r8w4i2j6e12" path="res://levels/checkpoints/checkpoint.gd" id="1_50yp4"]
-[ext_resource type="Texture2D" uid="uid://13mervrh330a" path="res://levels/checkpoints/campfire_active.png" id="1_o48dn"]
-[ext_resource type="Texture2D" uid="uid://cskqtqhwxrpoe" path="res://levels/checkpoints/campfire_inactive.png" id="2_50yp4"]
+[ext_resource type="Texture2D" uid="uid://crm7l1yuusrml" path="res://levels/checkpoints/sprites/campfire_active.png" id="1_o48dn"]
+[ext_resource type="Texture2D" uid="uid://dupjlhguw5jwy" path="res://levels/checkpoints/sprites/campfire_inactive.png" id="2_50yp4"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_q5j1l"]
 atlas = ExtResource("1_o48dn")

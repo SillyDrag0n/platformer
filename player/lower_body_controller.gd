@@ -58,6 +58,14 @@ extends Node
 @export var walk_speed_reference : float = 300.0
 @export var min_walk_speed_scale : float = 0.5
 
+@export_category("Footsteps")
+@export var footstep_player : AudioStreamPlayer2D
+@export var footstep_sounds : Array[AudioStream] = []
+# Local times (seconds) within the "walk" clip where a foot actually plants - matches that clip's
+# own Hip-bob keyframes (see player.tscn's "walk" Animation resource), not just an even split of
+# its length, so the sound lines up with the pose instead of an arbitrary fraction of the cycle.
+@export var footstep_times : PackedFloat32Array = [0.15, 0.45]
+
 @export_category("Dash")
 @export var dash_speed_scale : float = 1.8
 
@@ -184,7 +192,12 @@ func play_normal_clip(delta : float) -> void:
 		play_clip("fall", 1.0, delta)
 	elif direction != 0.0:
 		var speed_ratio : float = clampf(absf(character_body_2d.velocity.x) / walk_speed_reference, min_walk_speed_scale, 1.0)
+		# Captured before advance() moves the clip forward - play_clip() resets position to 0 on
+		# the frame "walk" starts (was some other clip last frame), which is the correct "before"
+		# time to compare against for that frame too.
+		var before_time : float = animation_player.current_animation_position if _current_clip_name == "walk" else 0.0
 		play_clip("walk", speed_ratio, delta)
+		_check_footsteps(before_time, animation_player.current_animation_position)
 	else:
 		play_clip("idle", 1.0, delta)
 
@@ -216,6 +229,33 @@ func play_clip(clip_name : String, speed_scale : float, delta : float) -> void:
 		_current_clip_name = clip_name
 	animation_player.speed_scale = speed_scale
 	animation_player.advance(delta)
+
+
+# Ties footsteps to the walk clip's own timeline (scaled by speed_scale in play_normal_clip())
+# rather than a fixed real-time interval, so a slow walk and a full sprint each get footsteps at
+# the cadence the legs are actually moving at, for free.
+func _check_footsteps(before_time : float, after_time : float) -> void:
+	if footstep_player == null or footstep_sounds.is_empty():
+		return
+	var clip_length : float = animation_player.current_animation_length
+	if clip_length <= 0.0:
+		return
+	for step_time in footstep_times:
+		if _crossed_time(before_time, after_time, step_time):
+			_play_footstep()
+
+
+# True if playback advanced past step_time between two samples of the clip's position, including
+# the case where it looped back to 0 in between (after_time < before_time).
+func _crossed_time(before_time : float, after_time : float, step_time : float) -> bool:
+	if after_time >= before_time:
+		return before_time < step_time and after_time >= step_time
+	return before_time < step_time or after_time >= step_time
+
+
+func _play_footstep() -> void:
+	footstep_player.stream = footstep_sounds[randi() % footstep_sounds.size()]
+	footstep_player.play()
 
 
 # Legs mirror to face whichever way the character is actually moving. Falls back to velocity

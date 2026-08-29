@@ -15,6 +15,12 @@ extends CanvasLayer
 @onready var snake_grab_hint = $SnakeGrabHint
 @onready var snake_grab_progress_bar = $SnakeGrabHint/MarginContainer/VBoxContainer/ProgressBar
 
+@onready var action_hint : PanelContainer = $ActionHint
+@onready var action_hint_label : Label = $ActionHint/MarginContainer/VBoxContainer/Label
+
+var _hint_watch_action : StringName = &""
+var _hint_showing := false
+
 
 func _ready():
 	CollectibleManager.on_collectible_award_received.connect(on_collectible_award_received)
@@ -84,6 +90,31 @@ func _update_utility_display():
 	utility_icon.texture = item.empty_icon if quantity <= 0 and item.empty_icon != null else item.icon
 	utility_quantity_label.text = str(quantity)
 	utility_quantity_label.visible = quantity > 1
+
+
+func show_hint(watch_action : StringName, hint_text_format : String) -> void:
+	if _hint_showing:
+		return
+	_hint_showing = true
+	_hint_watch_action = watch_action
+	var key_label := SettingsManager.get_joypad_binding_display_text(watch_action) \
+		if GameInputEvents.controller_active else SettingsManager.get_binding_display_text(watch_action)
+	action_hint_label.text = hint_text_format % key_label
+	action_hint.modulate.a = 0.0
+	action_hint.visible = true
+	create_tween().tween_property(action_hint, "modulate:a", 1.0, 0.15)
+
+
+func _dismiss_hint() -> void:
+	_hint_showing = false
+	var tween := create_tween()
+	tween.tween_property(action_hint, "modulate:a", 0.0, 0.15)
+	tween.tween_callback(func(): action_hint.visible = false)
+
+
+func _process(_delta : float) -> void:
+	if _hint_showing and Input.is_action_just_pressed(_hint_watch_action):
+		_dismiss_hint()
 
 
 func _on_pause_texture_button_pressed():

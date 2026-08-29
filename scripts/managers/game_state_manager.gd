@@ -12,6 +12,12 @@ var _region_lookup: Dictionary = {}
 
 var active_bounty: BountyData = null
 
+# Gates WelcomeNPC's auto-greet timer (see npc/welcome_npc.gd) - without this, re-entering the
+# Hub before ever talking to him restarts _ready() and re-arms the timer every time, forcing the
+# greeting on every hub spawn-in instead of just the first. Persisted by SaveManager so it also
+# stays suppressed across a full game restart, not just within one session.
+var has_shown_hub_welcome: bool = false
+
 
 func _ready():
 	_build_lookups()
@@ -27,6 +33,12 @@ func _build_lookups():
 	for region in regions:
 		_region_lookup[region.id] = region
 	
+
+func get_region_by_id(id: String) -> RegionData:
+	if _region_lookup.has(id):
+		return _region_lookup[id]
+	return null
+
 
 func is_region_unlocked(region_id: String) -> bool:
 	if _region_lookup.has(region_id):
@@ -86,6 +98,7 @@ func complete_bounty(id: String):
 	if bounty:
 		bounty.completed = true
 		bounty_completed.emit(bounty)
+		_unlock_dependent_bounties(bounty.id)
 
 
 func complete_active_bounty():
@@ -93,6 +106,16 @@ func complete_active_bounty():
 	if bounty:
 		bounty.completed = true
 		bounty_completed.emit(bounty)
+		_unlock_dependent_bounties(bounty.id)
+
+
+# Bounties can declare a requires_bounty_id prerequisite (e.g. the Sand Spirit bounty only
+# becomes available once the tutorial bounty is done) - checked here rather than at board/journal
+# display time so completion, not just region unlock, is what dependent bounties key off.
+func _unlock_dependent_bounties(completed_bounty_id: String) -> void:
+	for bounty in bounties:
+		if bounty.requires_bounty_id == completed_bounty_id and not bounty.unlocked:
+			unlock_bounty(bounty.id)
 
 
 func is_bounty_unlocked(id: String) -> bool:
@@ -111,7 +134,7 @@ func set_active_bounty(bounty: BountyData):
 
 func load_active_bounty_level():
 	if active_bounty and active_bounty.level_scene:
-		get_tree().change_scene_to_packed(active_bounty.level_scene)
+		SceneManager.transition_to_packed_scene(active_bounty.level_scene)
 
 
 func clear_active_bounty():

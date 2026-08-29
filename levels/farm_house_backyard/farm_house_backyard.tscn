@@ -1,0 +1,124 @@
+[gd_scene load_steps=12 format=3]
+
+[ext_resource type="Script" path="res://levels/farm_house_backyard/farm_house_backyard.gd" id="1_ext01"]
+[ext_resource type="PackedScene" uid="uid://bfcmjoltsmsed" path="res://player/player.tscn" id="2_ext02"]
+[ext_resource type="Script" uid="uid://chd8hkfd628j6" path="res://player/player_camera.gd" id="3_ext03"]
+[ext_resource type="PackedScene" uid="uid://dabxfx3538yx0" path="res://ui/screens/game_screen.tscn" id="4_ext04"]
+[ext_resource type="PackedScene" uid="uid://dnko61n7gbtwq" path="res://ui/screens/death_screen.tscn" id="5_ext05"]
+[ext_resource type="PackedScene" uid="uid://rx3auanfsgp0" path="res://ui/inventory/InventoryUI.tscn" id="6_ext06"]
+[ext_resource type="PackedScene" uid="uid://s2gswtyrtm5x" path="res://interaction_component/interactable.tscn" id="7_ext07"]
+[ext_resource type="PackedScene" path="res://interaction_component/hint_zone.tscn" id="8_ext08"]
+[ext_resource type="PackedScene" path="res://npc/BountyTurnInNPC.tscn" id="9_ext09"]
+[ext_resource type="PackedScene" path="res://pickups/dynamite_pickup/dynamite_pickup.tscn" id="10_ext10"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_ground"]
+size = Vector2(2300, 40)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_gate"]
+size = Vector2(60, 100)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_jumpblock"]
+size = Vector2(60, 50)
+
+[node name="FarmHouseBackyard" type="Node2D"]
+script = ExtResource("1_ext01")
+
+[node name="Background" type="Polygon2D" parent="."]
+z_index = -10
+color = Color(0.611765, 0.588235, 0.462745, 1)
+polygon = PackedVector2Array(-500, -350, 1900, -350, 1900, 170, -500, 170)
+
+[node name="Ground" type="StaticBody2D" parent="."]
+collision_layer = 1
+collision_mask = 0
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Ground"]
+position = Vector2(700, 150)
+shape = SubResource("RectangleShape2D_ground")
+
+[node name="GroundVisual" type="Polygon2D" parent="Ground"]
+z_index = -5
+position = Vector2(0, 150)
+color = Color(0.34902, 0.286275, 0.164706, 1)
+polygon = PackedVector2Array(-450, -20, 1850, -20, 1850, 20, -450, 20)
+
+[node name="JumpBlock" type="StaticBody2D" parent="."]
+position = Vector2(300, 105)
+collision_layer = 1
+collision_mask = 0
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="JumpBlock"]
+shape = SubResource("RectangleShape2D_jumpblock")
+
+[node name="BlockVisual" type="Polygon2D" parent="JumpBlock"]
+z_index = -5
+color = Color(0.34902, 0.286275, 0.164706, 1)
+polygon = PackedVector2Array(-30, -25, 30, -25, 30, 25, -30, 25)
+
+[node name="Player" parent="." instance=ExtResource("2_ext02")]
+position = Vector2(0, 100)
+
+[node name="PlayerCamera" type="Camera2D" parent="." node_paths=PackedStringArray("player")]
+position = Vector2(0, 60)
+zoom = Vector2(2, 2)
+script = ExtResource("3_ext03")
+player = NodePath("../Player")
+
+[node name="RespawnPosition" type="Marker2D" parent="."]
+position = Vector2(0, 100)
+
+[node name="GameScreen" parent="." instance=ExtResource("4_ext04")]
+
+[node name="DeathScreen" parent="." instance=ExtResource("5_ext05")]
+visible = false
+
+[node name="InventoryUi" parent="." instance=ExtResource("6_ext06")]
+visible = false
+
+[node name="ExitDoor" parent="." instance=ExtResource("7_ext07")]
+position = Vector2(-380, 130)
+interact_name = "Exit Farm House"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="ExitDoor"]
+position = Vector2(0, -50)
+shape = SubResource("RectangleShape2D_gate")
+
+[node name="DoorVisual" type="Polygon2D" parent="ExitDoor"]
+color = Color(0.45, 0.32, 0.18, 1)
+polygon = PackedVector2Array(-30, -100, 30, -100, 30, 0, -30, 0)
+
+[node name="HintZoneJump" parent="." instance=ExtResource("8_ext08")]
+position = Vector2(220, 90)
+watch_action = &"jump"
+hint_text_format = "Press %s to Jump"
+
+[node name="HintZoneCrouch" parent="." instance=ExtResource("8_ext08")]
+position = Vector2(500, 90)
+watch_action = &"crouch"
+hint_text_format = "Press %s to Crouch"
+
+[node name="HintZoneShoot" parent="." instance=ExtResource("8_ext08")]
+position = Vector2(700, 90)
+watch_action = &"shoot"
+hint_text_format = "Press %s to Shoot"
+
+[node name="HintZoneReload" parent="." instance=ExtResource("8_ext08")]
+position = Vector2(900, 90)
+watch_action = &"reload"
+hint_text_format = "Press %s to Reload"
+
+[node name="DynamitePickup" parent="." instance=ExtResource("10_ext10")]
+position = Vector2(1100, 120)
+
+[node name="HintZoneInventory" parent="." instance=ExtResource("8_ext08")]
+position = Vector2(1200, 90)
+watch_action = &"inventory"
+hint_text_format = "Press %s to Open Inventory"
+
+[node name="HintZoneInteract" parent="." instance=ExtResource("8_ext08")]
+position = Vector2(1400, 90)
+watch_action = &"interact"
+hint_text_format = "Press %s to Interact"
+
+[node name="Hutch" parent="." instance=ExtResource("9_ext09")]
+position = Vector2(1600, 130)

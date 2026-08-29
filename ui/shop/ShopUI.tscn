@@ -15,13 +15,15 @@ content_margin_bottom = 140.0
 font = ExtResource("2_font")
 font_size = 40
 
-[node name="ShopUi" type="CanvasLayer" node_paths=PackedStringArray("title_label", "currency_label", "portrait_rect", "entry_list_container")]
+[node name="ShopUi" type="CanvasLayer" node_paths=PackedStringArray("title_label", "currency_label", "portrait_rect", "entry_list_container", "entry_list_scroll", "close_button")]
 script = ExtResource("1_shop")
 entry_scene = ExtResource("3_entry")
 title_label = NodePath("Panel/MarginContainer/VBoxContainer/HeaderRow/TitleLabel")
 currency_label = NodePath("Panel/MarginContainer/VBoxContainer/HeaderRow/CurrencyLabel")
 portrait_rect = NodePath("Panel/MarginContainer/VBoxContainer/CounterRow/PortraitFrame/PortraitRect")
 entry_list_container = NodePath("Panel/MarginContainer/VBoxContainer/CounterRow/ScrollContainer/EntryListContainer")
+entry_list_scroll = NodePath("Panel/MarginContainer/VBoxContainer/CounterRow/ScrollContainer")
+close_button = NodePath("Panel/MarginContainer/VBoxContainer/CloseButton")
 
 [node name="Panel" type="Panel" parent="."]
 anchors_preset = 15

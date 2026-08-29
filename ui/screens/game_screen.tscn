@@ -52,7 +52,7 @@ corner_radius_top_right = 4
 corner_radius_bottom_right = 4
 corner_radius_bottom_left = 4
 
-[node name="GameScreen" type="CanvasLayer"]
+[node name="GameScreen" type="CanvasLayer" groups=["hud"]]
 script = ExtResource("1_jadqt")
 
 [node name="MarginContainer" type="MarginContainer" parent="."]
@@ -140,6 +140,36 @@ layout_mode = 2
 theme_override_styles/background = SubResource("StyleBoxFlat_snake_hint_bg")
 theme_override_styles/fill = SubResource("StyleBoxFlat_snake_hint_fill")
 show_percentage = false
+
+[node name="ActionHint" type="PanelContainer" parent="."]
+visible = false
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -140.0
+offset_top = -78.0
+offset_right = 140.0
+offset_bottom = -24.0
+grow_horizontal = 2
+grow_vertical = 0
+theme_override_styles/panel = SubResource("StyleBoxFlat_snake_hint_panel")
+
+[node name="MarginContainer" type="MarginContainer" parent="ActionHint"]
+layout_mode = 2
+theme_override_constants/margin_left = 14
+theme_override_constants/margin_top = 8
+theme_override_constants/margin_right = 14
+theme_override_constants/margin_bottom = 10
+
+[node name="VBoxContainer" type="VBoxContainer" parent="ActionHint/MarginContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="ActionHint/MarginContainer/VBoxContainer"]
+layout_mode = 2
+label_settings = SubResource("LabelSettings_snake_hint")
+horizontal_alignment = 1
 
 [node name="UtilityDisplay" type="ColorRect" parent="."]
 visible = false

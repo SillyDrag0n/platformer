@@ -1,0 +1,21 @@
+[gd_scene load_steps=5 format=3]
+
+[ext_resource type="Script" path="res://scripts/managers/ui_sound_player.gd" id="1_script"]
+[ext_resource type="AudioStream" path="res://ui/sounds/ui_move.wav" id="2_move"]
+[ext_resource type="AudioStream" path="res://ui/sounds/ui_confirm.wav" id="3_confirm"]
+[ext_resource type="AudioStream" path="res://ui/sounds/ui_cancel.wav" id="4_cancel"]
+
+[node name="UiSoundPlayer" type="Node"]
+script = ExtResource("1_script")
+
+[node name="MovePlayer" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("2_move")
+volume_db = -10.0
+
+[node name="ConfirmPlayer" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("3_confirm")
+volume_db = -6.0
+
+[node name="CancelPlayer" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("4_cancel")
+volume_db = -6.0

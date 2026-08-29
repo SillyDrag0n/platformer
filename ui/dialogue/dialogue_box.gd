@@ -25,7 +25,12 @@ func show_dialogue(speaker_name : String, dialogue_lines : Array[String]) -> voi
 	choice_buttons.hide()
 
 	speaker_label.text = tr(speaker_name)
-	lines = dialogue_lines.map(func(line): return tr(line))
+	# map()'s return value is always a plain untyped Array (its callback could return anything),
+	# even when called on an Array[String] - assigning that straight into lines (Array[String])
+	# is what threw "Trying to assign an array of type 'Array' to a variable of type
+	# 'Array[String]'" here. Array.assign() copies elements in while enforcing the receiving
+	# array's own type, which a plain `=` assignment doesn't.
+	lines.assign(dialogue_lines.map(func(line): return tr(line)))
 	line_index = 0
 	_refresh_current_line()
 	open()

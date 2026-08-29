@@ -7,6 +7,9 @@ class_name BountyData
 @export_multiline var description: String
 @export var icon: Texture2D
 
+# If set, GameStateManager only auto-unlocks this bounty once the bounty with this id completes.
+@export var requires_bounty_id: String = ""
+
 @export var unlocked: bool = false
 @export var completed: bool = false
 @export var reward_claimed: bool = false

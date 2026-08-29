@@ -1,0 +1,17 @@
+[gd_scene load_steps=3 format=3]
+
+[ext_resource type="Script" path="res://interaction_component/hint_zone.gd" id="1_hintzone"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_hintzone"]
+size = Vector2(80, 100)
+
+[node name="HintZone" type="Area2D"]
+collision_layer = 0
+collision_mask = 2
+script = ExtResource("1_hintzone")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("RectangleShape2D_hintzone")
+debug_color = Color(0.2, 0.6, 1.0, 0.42)
+
+[connection signal="body_entered" from="." to="." method="_on_hint_zone_body_entered"]

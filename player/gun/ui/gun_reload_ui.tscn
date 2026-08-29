@@ -1,7 +1,7 @@
 [gd_scene load_steps=3 format=3 uid="uid://1nt6653rbtnu"]
 
-[ext_resource type="Script" uid="uid://cyvfma543jhlx" path="res://ui/gun_reload_ui.gd" id="1_q0txs"]
-[ext_resource type="Texture2D" uid="uid://bg1ov3cuomo81" path="res://ui/progress-bar-circle.png" id="2_au8wg"]
+[ext_resource type="Script" uid="uid://cyvfma543jhlx" path="res://player/gun/ui/gun_reload_ui.gd" id="1_q0txs"]
+[ext_resource type="Texture2D" uid="uid://b4qkhioa01v58" path="res://player/gun/ui/progress-bar-circle.png" id="2_au8wg"]
 
 [node name="GunReloadUi" type="Control"]
 layout_mode = 3

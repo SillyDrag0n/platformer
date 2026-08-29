@@ -1,4 +1,4 @@
-[gd_scene load_steps=55 format=3 uid="uid://bfcmjoltsmsed"]
+[gd_scene load_steps=58 format=3 uid="uid://bfcmjoltsmsed"]
 
 [ext_resource type="Script" uid="uid://bw7oflms0slfo" path="res://player/player.gd" id="1_wqxfn"]
 [ext_resource type="Texture2D" uid="uid://2gu7psnfksko" path="res://player/sprites/head.png" id="2_knn7v"]
@@ -41,6 +41,9 @@
 [ext_resource type="Script" uid="uid://bnso0mph1tb11" path="res://addons/soupik/modifications/soup_two_bone_ik.gd" id="46_soupik"]
 [ext_resource type="Script" uid="uid://b4u1tvhlw4d2g" path="res://addons/soupik/modifications/soup_look_at.gd" id="47_soup_look_at"]
 [ext_resource type="Script" uid="uid://dwssgakw2jrf7" path="res://player/player_states/snake_attached_state.gd" id="48_snakeattached"]
+[ext_resource type="AudioStream" uid="uid://c0ja5af3bbcqb" path="res://player/sounds/footsteps/footstep_01.wav" id="49_footstep1"]
+[ext_resource type="AudioStream" uid="uid://6l170h7sw45i" path="res://player/sounds/footsteps/footstep_02.wav" id="50_footstep2"]
+[ext_resource type="AudioStream" uid="uid://c80spagn5t5w" path="res://player/sounds/footsteps/footstep_03.wav" id="51_footstep3"]
 
 [sub_resource type="SkeletonModification2DCCDIK" id="SkeletonModification2DCCDIK_5ejfk"]
 target_nodepath = NodePath("../../IKTargets/ArmR Target")
@@ -604,7 +607,7 @@ offset = Vector2(7, -30)
 
 [node name="ArmR" type="Bone2D" parent="Animation/Bones/Skeleton2D/Hip"]
 position = Vector2(-7.00128, -17.999)
-rotation = 0.255864
+rotation = 0.00437538
 scale = Vector2(1.00003, 1.00003)
 rest = Transform2D(0.996907, 0.0789538, -0.0789538, 0.996907, -7.00128, -17.999)
 metadata/_local_pose_override_enabled_ = true
@@ -616,7 +619,7 @@ offset = Vector2(7, 15)
 
 [node name="ForearmR" type="Bone2D" parent="Animation/Bones/Skeleton2D/Hip/ArmR"]
 position = Vector2(-4.99908, 7.99891)
-rotation = -0.187099
+rotation = 0.367672
 scale = Vector2(0.999913, 0.999913)
 rest = Transform2D(0.98688, 0.160901, -0.160901, 0.98688, -4.99907, 7.99894)
 auto_calculate_length_and_angle = false
@@ -634,7 +637,7 @@ position = Vector2(6.23958, 6.21686)
 
 [node name="ArmL" type="Bone2D" parent="Animation/Bones/Skeleton2D/Hip"]
 position = Vector2(5.00001, -16.9993)
-rotation = -0.3317
+rotation = -0.0555
 scale = Vector2(1.00003, 1.00003)
 rest = Transform2D(0.985579, -0.169412, 0.169412, 0.985579, 5.00001, -16.9993)
 metadata/_local_pose_override_enabled_ = true
@@ -646,7 +649,7 @@ offset = Vector2(-5, 14)
 
 [node name="ForearmL" type="Bone2D" parent="Animation/Bones/Skeleton2D/Hip/ArmL"]
 position = Vector2(5.00005, 6.99992)
-rotation = 0.335957
+rotation = -0.0611596
 scale = Vector2(0.999964, 0.999964)
 rest = Transform2D(0.982655, 0.185248, -0.185248, 0.982655, 5.00005, 6.99993)
 auto_calculate_length_and_angle = false
@@ -700,7 +703,7 @@ offset = Vector2(-5, -29)
 
 [node name="Head" type="Bone2D" parent="Animation/Bones/Skeleton2D/Hip"]
 position = Vector2(-1.27542, -20.9965)
-rotation = -0.0120916
+rotation = 0.167748
 scale = Vector2(1.00008, 1.00008)
 rest = Transform2D(1.00001, -0.0120922, 0.0120922, 1.00001, -1.27542, -20.9965)
 auto_calculate_length_and_angle = false
@@ -905,7 +908,7 @@ script = ExtResource("48_snakeattached")
 character_body_2d = NodePath("../..")
 player = NodePath("../..")
 
-[node name="LowerBodyController" type="Node" parent="." node_paths=PackedStringArray("character_body_2d", "state_machine", "animation_player", "leg_targets", "leg_r_ik", "leg_l_ik", "hip", "body", "dash_state", "hurt_state", "collision_shape", "hurtbox_collision_shape", "leg_r_sprite", "shin_r_sprite", "foot_r_sprite", "leg_l_sprite", "shin_l_sprite", "foot_l_sprite")]
+[node name="LowerBodyController" type="Node" parent="." node_paths=PackedStringArray("character_body_2d", "state_machine", "animation_player", "leg_targets", "leg_r_ik", "leg_l_ik", "hip", "body", "dash_state", "hurt_state", "collision_shape", "hurtbox_collision_shape", "leg_r_sprite", "shin_r_sprite", "foot_r_sprite", "leg_l_sprite", "shin_l_sprite", "foot_l_sprite", "footstep_player")]
 script = ExtResource("33_lowerbody")
 character_body_2d = NodePath("..")
 state_machine = NodePath("../StateMachine")
@@ -925,6 +928,11 @@ foot_r_sprite = NodePath("../Animation/Bones/Skeleton2D/Hip/LegR/ShinR/FootR/Foo
 leg_l_sprite = NodePath("../Animation/Bones/Skeleton2D/Hip/LegL/LegL")
 shin_l_sprite = NodePath("../Animation/Bones/Skeleton2D/Hip/LegL/ShinL/ShinL")
 foot_l_sprite = NodePath("../Animation/Bones/Skeleton2D/Hip/LegL/ShinL/FootL/FootL")
+footstep_player = NodePath("FootstepPlayer")
+footstep_sounds = Array[AudioStream]([ExtResource("49_footstep1"), ExtResource("50_footstep2"), ExtResource("51_footstep3")])
+
+[node name="FootstepPlayer" type="AudioStreamPlayer2D" parent="LowerBodyController"]
+volume_db = -4.0
 
 [node name="UpperBodyController" type="Node" parent="." node_paths=PackedStringArray("character_body_2d", "state_machine", "gun", "head_target", "arm_r_target", "arm_l_target", "body", "head_sprite", "hip")]
 script = ExtResource("33_upperbody")

@@ -1,6 +1,8 @@
 class_name MenuPopup
 extends CanvasLayer
 
+signal closed
+
 
 func _ready() -> void:
 	visible = false
@@ -24,6 +26,7 @@ func open() -> void:
 func close() -> void:
 	visible = false
 	InventoryManager.is_open = false
+	closed.emit()
 	_on_closed()
 
 

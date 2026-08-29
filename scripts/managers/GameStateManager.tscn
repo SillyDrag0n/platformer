@@ -1,4 +1,4 @@
-[gd_scene load_steps=24 format=3 uid="uid://b2vp1eh6ugpb1"]
+[gd_scene load_steps=27 format=3 uid="uid://b2vp1eh6ugpb1"]
 
 [ext_resource type="Script" uid="uid://r6e2p1myj1t2" path="res://scripts/managers/game_state_manager.gd" id="1_xk7k0"]
 [ext_resource type="Script" uid="uid://1a50eu8xiuur" path="res://scripts/bounties/bounty_data.gd" id="2_15i0w"]
@@ -18,6 +18,8 @@
 [ext_resource type="Resource" path="res://items/cosmetics/duster_coat.tres" id="15_duster_coat"]
 [ext_resource type="Resource" path="res://items/cosmetics/engraved_grip.tres" id="16_engraved_grip"]
 [ext_resource type="Resource" path="res://items/cosmetics/bandana.tres" id="17_bandana"]
+[ext_resource type="PackedScene" path="res://levels/farm_house_backyard/farm_house_backyard.tscn" id="18_backyard"]
+[ext_resource type="Resource" path="res://items/ammo/regular_rounds.tres" id="19_regular_rounds"]
 
 [sub_resource type="Resource" id="Resource_7qxxb"]
 script = ExtResource("5_ypgds")
@@ -34,7 +36,8 @@ title = "Sand Spirit"
 region_id = "1"
 description = "A restless spirit has been seen whipping up sandstorms at the edge of the plains, burying travelers' camps overnight. Locals want it put down before the dunes swallow the road entirely."
 icon = ExtResource("7_sspic")
-unlocked = true
+requires_bounty_id = "tutorial_missing_cattle"
+unlocked = false
 completed = false
 reward_claimed = false
 map_position = Vector2(350, 450)
@@ -65,7 +68,21 @@ name = "Swamp"
 unlocked = false
 metadata/_custom_type_script = "uid://camrqsq3m0sth"
 
+[sub_resource type="Resource" id="Resource_tutcattl"]
+script = ExtResource("2_15i0w")
+id = "tutorial_missing_cattle"
+title = "Missing Cattle"
+region_id = "1"
+description = "A rancher on the edge of town says something's been at his herd."
+unlocked = false
+completed = false
+reward_claimed = false
+map_position = Vector2(300, 500)
+level_scene = ExtResource("18_backyard")
+rewards = Array[ExtResource("5_ypgds")]([SubResource("Resource_7qxxb"), ExtResource("19_regular_rounds")])
+metadata/_custom_type_script = "uid://1a50eu8xiuur"
+
 [node name="GameStateManager" type="Node"]
 script = ExtResource("1_xk7k0")
-bounties = Array[ExtResource("2_15i0w")]([SubResource("Resource_15i0w")])
+bounties = Array[ExtResource("2_15i0w")]([SubResource("Resource_15i0w"), SubResource("Resource_tutcattl")])
 regions = Array[ExtResource("4_moqx8")]([SubResource("Resource_v6kma"), SubResource("Resource_moqx8"), SubResource("Resource_nl1aw")])

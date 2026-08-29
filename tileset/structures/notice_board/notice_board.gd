@@ -1,7 +1,5 @@
 extends Node2D
 
-@export var notice_board_ui: CanvasItem
-
 @onready var interactable: Area2D = $Interactable
 
 func _ready() -> void:

@@ -35,6 +35,7 @@ SaveManager="*res://scripts/managers/SaveManager.tscn"
 ProjectileLayer="*res://scripts/managers/ProjectileLayer.tscn"
 LocalizationManager="*res://scripts/managers/LocalizationManager.tscn"
 UiNavigationRepeater="*res://scripts/managers/UiNavigationRepeater.tscn"
+UiSoundPlayer="*res://scripts/managers/UiSoundPlayer.tscn"
 
 [display]
 

@@ -1,8 +1,9 @@
-[gd_scene load_steps=8 format=3 uid="uid://rl5na08yw0jq"]
+[gd_scene load_steps=9 format=3 uid="uid://rl5na08yw0jq"]
 
 [ext_resource type="Script" uid="uid://b6y7vwjqumun3" path="res://ui/notice_board/notice_board_bounty.gd" id="1_dtji8"]
 [ext_resource type="FontFile" uid="uid://kiwlymd55nc2" path="res://ui/font/BoldPixels.ttf" id="1_kfug1"]
 [ext_resource type="Texture2D" uid="uid://e7e8sic6acpu" path="res://ui/notice_board/bounty_template.png" id="1_r211r"]
+[ext_resource type="AudioStream" uid="uid://dh8x8xjo8if8x" path="res://ui/notice_board/bounty_paper_tear_trimmed.wav" id="2_tearsnd"]
 
 [sub_resource type="LabelSettings" id="LabelSettings_dtji8"]
 font = ExtResource("1_kfug1")
@@ -32,6 +33,7 @@ custom_minimum_size = Vector2(350, 416)
 offset_right = 350.0
 offset_bottom = 416.0
 mouse_filter = 1
+color = Color(0.933333, 0.764706, 0.603922, 1)
 script = ExtResource("1_dtji8")
 
 [node name="PaperBG" type="TextureRect" parent="."]
@@ -58,7 +60,7 @@ offset_bottom = 351.0
 text = "The lingering shadow"
 label_settings = SubResource("LabelSettings_dtji8")
 horizontal_alignment = 1
-autowrap_mode = 1
+autowrap_mode = 3
 clip_text = true
 
 [node name="ColorRect" type="ColorRect" parent="."]
@@ -79,8 +81,12 @@ text = "Rumored to be last seen at the sunken valley"
 label_settings = SubResource("LabelSettings_r211r")
 horizontal_alignment = 1
 vertical_alignment = 1
-autowrap_mode = 1
+autowrap_mode = 3
 clip_text = true
+
+[node name="TearSound" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("2_tearsnd")
+volume_db = -6.0
 
 [node name="SelectButton" type="Button" parent="."]
 custom_minimum_size = Vector2(325, 400)

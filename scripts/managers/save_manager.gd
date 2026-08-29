@@ -6,6 +6,9 @@ var save_file_name := "save_data.tres"
 
 func _ready():
 	load_game()
+	# Runs after load_game() has had its say (or found no save to load), not inside
+	# InventoryManager's own _ready() - see grant_default_outfit_if_needed()'s comment.
+	InventoryManager.grant_default_outfit_if_needed()
 
 
 # Wipes save_data.tres and restarts the game so every manager re-initializes from scratch through
@@ -20,8 +23,13 @@ func reset_save() -> void:
 	get_tree().quit()
 
 
+func has_save() -> bool:
+	return ResourceLoader.exists(save_path + save_file_name)
+
+
 func save_game():
 	var data := SaveDataResource.new()
+	data.player_name = PlayerManager.player_name
 
 	for slot_data in InventoryManager.item_slots:
 		var item : ItemData = slot_data["item"]
@@ -70,6 +78,8 @@ func save_game():
 	for region in GameStateManager.regions:
 		data.region_states[region.id] = region.unlocked
 
+	data.has_shown_hub_welcome = GameStateManager.has_shown_hub_welcome
+
 	if !DirAccess.dir_exists_absolute(save_path):
 		DirAccess.make_dir_absolute(save_path)
 	ResourceSaver.save(data, save_path + save_file_name)
@@ -82,6 +92,8 @@ func load_game():
 	var data : SaveDataResource = ResourceLoader.load(save_path + save_file_name)
 	if data == null:
 		return
+
+	PlayerManager.player_name = data.player_name
 
 	# Ownership has to be restored before equipped state below, since equip_weapon()/
 	# equip_ammo()/equip_utility()/equip_cosmetic() all reject items InventoryManager doesn't
@@ -143,3 +155,5 @@ func load_game():
 	for region in GameStateManager.regions:
 		if data.region_states.has(region.id):
 			region.unlocked = data.region_states[region.id]
+
+	GameStateManager.has_shown_hub_welcome = data.has_shown_hub_welcome

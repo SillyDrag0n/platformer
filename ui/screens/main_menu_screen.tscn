@@ -2,17 +2,16 @@
 
 [ext_resource type="Script" uid="uid://da3wuvwjv2qc8" path="res://ui/screens/main_menu_screen.gd" id="1_d1gqu"]
 [ext_resource type="Theme" uid="uid://ddr12d5h68dd1" path="res://ui/theme/game_theme.tres" id="2_mgnvx"]
-[ext_resource type="TileSet" path="res://tileset/desert_terrain_tileset.tres" id="10_terrain"]
-[ext_resource type="TileSet" path="res://tileset/desert_owp_tileset.tres" id="11_owp"]
-[ext_resource type="TileSet" path="res://tileset/desert_decorations_tileset.tres" id="12_decorations"]
-[ext_resource type="TileSet" path="res://tileset/desert_foreground_tileset.tres" id="13_foreground"]
-[ext_resource type="FontFile" path="res://ui/font/SuperCursed-E40Vz.ttf" id="20_title_font"]
-[ext_resource type="FontFile" path="res://ui/font/BoldPixels.ttf" id="21_subtitle_font"]
+[ext_resource type="TileSet" uid="uid://dxdum0wlxjwk" path="res://tileset/desert_terrain_tileset.tres" id="10_terrain"]
+[ext_resource type="TileSet" uid="uid://def5ntuv7xeec" path="res://tileset/desert_owp_tileset.tres" id="11_owp"]
+[ext_resource type="TileSet" uid="uid://ddclxatqibdkx" path="res://tileset/desert_decorations_tileset.tres" id="12_decorations"]
+[ext_resource type="TileSet" uid="uid://dknxmyabj3msh" path="res://tileset/desert_foreground_tileset.tres" id="13_foreground"]
+[ext_resource type="FontFile" uid="uid://diskb22n3kpql" path="res://ui/font/SuperCursed-E40Vz.ttf" id="20_title_font"]
+[ext_resource type="FontFile" uid="uid://bn7ed1nmtuvnj" path="res://ui/font/BoldPixels.ttf" id="21_subtitle_font"]
 
 [sub_resource type="LabelSettings" id="LabelSettings_title"]
 font = ExtResource("20_title_font")
-font_size = 72
-font_color = Color(1, 1, 1, 1)
+font_size = 80
 outline_size = 10
 outline_color = Color(0.180392, 0.0823529, 0.0470588, 1)
 shadow_size = 6
@@ -21,7 +20,7 @@ shadow_offset = Vector2(4, 5)
 
 [sub_resource type="LabelSettings" id="LabelSettings_subtitle"]
 font = ExtResource("21_subtitle_font")
-font_size = 16
+font_size = 20
 font_color = Color(0.929412, 0.882353, 0.796078, 1)
 outline_size = 4
 outline_color = Color(0.101961, 0.054902, 0.0313725, 1)
@@ -62,9 +61,18 @@ text = "PLAY"
 layout_mode = 2
 text = "SETTINGS"
 
+[node name="ResetSaveButton" type="Button" parent="MarginContainer/PanelContainer/MarginContainer/VBoxContainer"]
+layout_mode = 2
+text = "RESET SAVE"
+
 [node name="ExitButton" type="Button" parent="MarginContainer/PanelContainer/MarginContainer/VBoxContainer"]
 layout_mode = 2
 text = "EXIT"
+
+[node name="ResetSaveConfirmDialog" type="ConfirmationDialog" parent="."]
+title = "Reset Save?"
+ok_button_text = "Reset"
+dialog_text = "This will permanently erase all inventory, quest, and bounty progress. This cannot be undone."
 
 [node name="TileMap" type="Node" parent="."]
 
@@ -104,17 +112,19 @@ theme_override_constants/separation = 2
 
 [node name="TitleLabel" type="Label" parent="TitleContainer"]
 layout_mode = 2
+text = "Myths & Lead"
 label_settings = SubResource("LabelSettings_title")
-text = "WESTERN BOUNTY HUNTER"
 horizontal_alignment = 1
 autowrap_mode = 2
 
 [node name="SubtitleLabel" type="Label" parent="TitleContainer"]
 layout_mode = 2
+text = "A Game By Schmigul"
 label_settings = SubResource("LabelSettings_subtitle")
-text = "A WEIRD WEST ADVENTURE"
 horizontal_alignment = 1
 
 [connection signal="pressed" from="MarginContainer/PanelContainer/MarginContainer/VBoxContainer/PlayButton" to="." method="_on_play_button_pressed"]
 [connection signal="pressed" from="MarginContainer/PanelContainer/MarginContainer/VBoxContainer/SettingsButton" to="." method="_on_settings_button_pressed"]
+[connection signal="pressed" from="MarginContainer/PanelContainer/MarginContainer/VBoxContainer/ResetSaveButton" to="." method="_on_reset_save_button_pressed"]
 [connection signal="pressed" from="MarginContainer/PanelContainer/MarginContainer/VBoxContainer/ExitButton" to="." method="_on_exit_button_pressed"]
+[connection signal="confirmed" from="ResetSaveConfirmDialog" to="." method="_on_reset_save_confirm_dialog_confirmed"]

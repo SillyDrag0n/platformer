@@ -6,6 +6,9 @@ const BOUNTY_LIST_FONT = preload("res://ui/font/BoldPixels.ttf")
 
 @export var item_grid : GridContainer
 @export var item_slot_scene : PackedScene
+@export var item_name_label : Label
+@export var item_description_label : Label
+@export var item_information_icon : Sprite2D
 
 @export var bounty_list_container : VBoxContainer
 @export var bounty_title_label : Label
@@ -20,7 +23,7 @@ const BOUNTY_LIST_FONT = preload("res://ui/font/BoldPixels.ttf")
 
 @export var slot_primary : LoadoutSlot
 @export var slot_secondary : LoadoutSlot
-@export var slot_utility : LoadoutSlot
+@export var utility_list_container : VBoxContainer
 @export var slot_ammo_primary : LoadoutSlot
 @export var slot_ammo_secondary : LoadoutSlot
 @export var slot_hat : LoadoutSlot
@@ -36,6 +39,17 @@ const BOUNTY_LIST_FONT = preload("res://ui/font/BoldPixels.ttf")
 
 var _picker_on_pick : Callable
 
+# Whichever control had focus right before the picker opened (that's always the LoadoutSlot
+# button the player just pressed/confirmed, since it has to be focused to be the one that fired
+# .selected in the first place) - restored in _close_picker() so closing the picker goes back to
+# the slot the player was actually on, instead of always snapping to the tab's first control.
+var _picker_opener : Control
+
+# Built once by _create_item_slots() - InventoryManager.size (and so item_slots.size()) never
+# changes at runtime, so the grid's node count is stable; update_inventory_ui() just refreshes
+# these in place by index instead of rebuilding.
+var _item_slot_nodes : Array = []
+
 # Whether each quest tab section is expanded, keyed by the section keys used in
 # _add_quest_section() below - persists across refreshes since create_quests_ui() rebuilds the
 # section headers (and their toggle state) from scratch every time.
@@ -50,7 +64,7 @@ var _quest_section_headers : Dictionary = {}
 
 func _ready():
 	InventoryManager.updated_inventory.connect(update_inventory_ui)
-	create_inventory_ui()
+	_create_item_slots()
 	visible = false
 	InventoryManager.is_open = false
 
@@ -65,7 +79,6 @@ func _ready():
 
 	slot_primary.selected.connect(_open_weapon_picker.bind(InventoryManager.WeaponSlot.PRIMARY))
 	slot_secondary.selected.connect(_open_weapon_picker.bind(InventoryManager.WeaponSlot.SECONDARY))
-	slot_utility.selected.connect(_open_utility_picker)
 	slot_ammo_primary.selected.connect(_open_ammo_picker.bind(InventoryManager.WeaponSlot.PRIMARY))
 	slot_ammo_secondary.selected.connect(_open_ammo_picker.bind(InventoryManager.WeaponSlot.SECONDARY))
 	slot_hat.selected.connect(_open_cosmetic_picker.bind(CosmeticItemData.CosmeticSlot.HAT))
@@ -76,7 +89,7 @@ func _ready():
 
 	InventoryManager.equipped_weapon_changed.connect(func(_slot, _weapon): refresh_loadout_ui())
 	InventoryManager.equipped_ammo_changed.connect(func(_slot, _ammo): refresh_loadout_ui())
-	InventoryManager.equipped_utility_changed.connect(func(_utility): refresh_loadout_ui())
+	InventoryManager.equipped_utility_changed.connect(func(_utility): refresh_utility_ui())
 	InventoryManager.equipped_cosmetic_changed.connect(func(_slot, _cosmetic): refresh_loadout_ui())
 	InventoryManager.equipped_weapon_skin_changed.connect(func(_slot, _cosmetic): refresh_loadout_ui())
 	AbilityManager.ability_unlocked.connect(func(_ability): refresh_abilities_ui())
@@ -86,6 +99,7 @@ func _ready():
 	_wire_loadout_focus_neighbors()
 
 	refresh_loadout_ui()
+	refresh_utility_ui()
 	refresh_abilities_ui()
 
 func _process(_delta):
@@ -151,18 +165,102 @@ func _find_first_focusable(node : Node) -> Control:
 	return null
 
 
+# Just refreshes each existing slot's data in place - the grid itself is built once by
+# _create_item_slots() below, since the slot count never changes at runtime. Rebuilding from
+# scratch on every inventory change used to free and reinstantiate every slot's Button, silently
+# dropping controller focus mid-session the moment anything in the inventory changed (picking an
+# item up, equipping something, anything that fires InventoryManager.updated_inventory).
 func update_inventory_ui():
-	create_inventory_ui()
+	for i in range(_item_slot_nodes.size()):
+		var slot_data = InventoryManager.item_slots[i]
+		_item_slot_nodes[i].set_slot_data(slot_data["item"], slot_data["quantity"])
+	# Owned utility quantities (and which utility items exist at all) can change on any inventory
+	# update, not just when the equipped one changes - covered separately by its own
+	# equipped_utility_changed connection in _ready().
+	refresh_utility_ui()
 
 
-func create_inventory_ui():
-	for child in item_grid.get_children():
+# Utility is a list of everything owned rather than a single equipped slot, since the game already
+# lets the player cycle through every owned utility item during play (see cycle_utility() on
+# InventoryManager) - a single-slot picker like the weapon/cosmetic slots would have implied only
+# one could ever be carried at a time. The currently active one (equip_utility()'s target - which
+# item cycling actually lands on) is just highlighted in the list, not a separate concept.
+func refresh_utility_ui():
+	for child in utility_list_container.get_children():
 		child.queue_free()
 
+	var owned_utility_items : Array = InventoryManager.get_owned_items_by_type(UtilityItemData)
+	var equipped : ItemData = InventoryManager.get_equipped_utility()
+
+	if owned_utility_items.is_empty():
+		var empty_label := Label.new()
+		empty_label.text = tr("No utility items owned yet.")
+		empty_label.add_theme_font_override("font", BOUNTY_LIST_FONT)
+		empty_label.add_theme_font_size_override("font_size", 18)
+		empty_label.modulate = Color(0.6, 0.6, 0.6)
+		utility_list_container.add_child(empty_label)
+		return
+
+	for item in owned_utility_items:
+		var row := Label.new()
+		row.text = "%s x%d" % [tr(item.display_name), InventoryManager.get_owned_quantity(item)]
+		row.add_theme_font_override("font", BOUNTY_LIST_FONT)
+		row.add_theme_font_size_override("font_size", 24)
+		if item == equipped:
+			# Same accent used for a focused slot elsewhere in this UI, so "currently active for
+			# use" reads consistently with the rest of the screen.
+			row.modulate = Color(0.960784, 0.615686, 0.156863)
+		utility_list_container.add_child(row)
+
+
+func _create_item_slots() -> void:
 	for slot_data in InventoryManager.item_slots:
 		var slot = item_slot_scene.instantiate()
 		item_grid.add_child(slot)
 		slot.set_slot_data(slot_data["item"], slot_data["quantity"])
+		slot.selected.connect(_on_item_slot_selected)
+		_item_slot_nodes.append(slot)
+
+	_wire_item_grid_focus_neighbors(_item_slot_nodes)
+
+
+# Shows whichever item was just focused/pressed - including null, for an empty slot, which blanks
+# the panel out entirely rather than leaving stale info from whatever was selected before it.
+func _on_item_slot_selected(item : ItemData) -> void:
+	if item == null:
+		item_name_label.text = ""
+		item_description_label.text = ""
+		item_information_icon.texture = null
+		return
+
+	item_name_label.text = tr(item.display_name)
+	item_description_label.text = tr(item.description)
+	item_information_icon.texture = item.icon
+
+
+# Same reasoning as _wire_loadout_focus_neighbors() below - Godot's automatic focus-neighbor
+# search is geometric and unreliable across a wide (10-column) grid, so up/down/left/right gets
+# wired explicitly from each slot's known row/column instead. Only needs to run once, here, since
+# the grid is no longer torn down and rebuilt on every inventory change.
+func _wire_item_grid_focus_neighbors(slots : Array) -> void:
+	var columns : int = item_grid.columns
+	if slots.is_empty() or columns <= 0:
+		return
+
+	var row : Array = []
+	for i in range(slots.size()):
+		row.append(slots[i].get_node("Button"))
+		if (i + 1) % columns == 0 or i == slots.size() - 1:
+			_link_row(row)
+			row = []
+
+	for col in range(columns):
+		var column : Array = []
+		var i := col
+		while i < slots.size():
+			column.append(slots[i].get_node("Button"))
+			i += columns
+		_link_column(column)
 
 
 func _on_bounty_state_changed(_data = null):
@@ -271,7 +369,6 @@ func _add_quest_section(section_key : String, section_title : String, quests : A
 func refresh_loadout_ui():
 	slot_primary.set_item(InventoryManager.get_equipped_weapon(InventoryManager.WeaponSlot.PRIMARY))
 	slot_secondary.set_item(InventoryManager.get_equipped_weapon(InventoryManager.WeaponSlot.SECONDARY))
-	slot_utility.set_item(InventoryManager.get_equipped_utility())
 	slot_ammo_primary.set_item(InventoryManager.get_equipped_ammo(InventoryManager.WeaponSlot.PRIMARY))
 	slot_ammo_secondary.set_item(InventoryManager.get_equipped_ammo(InventoryManager.WeaponSlot.SECONDARY))
 	slot_hat.set_item(InventoryManager.get_equipped_cosmetic(CosmeticItemData.CosmeticSlot.HAT))
@@ -287,7 +384,6 @@ func refresh_loadout_ui():
 func _wire_loadout_focus_neighbors() -> void:
 	var b_primary := slot_primary.button
 	var b_secondary := slot_secondary.button
-	var b_utility := slot_utility.button
 	var b_ammo_primary := slot_ammo_primary.button
 	var b_ammo_secondary := slot_ammo_secondary.button
 	var b_weapon_skin_primary := slot_weapon_skin_primary.button
@@ -296,14 +392,13 @@ func _wire_loadout_focus_neighbors() -> void:
 	var b_outfit := slot_outfit.button
 	var b_accessory := slot_accessory.button
 
-	_link_row([b_primary, b_secondary, b_utility])
+	_link_row([b_primary, b_secondary])
 	_link_row([b_ammo_primary, b_ammo_secondary])
 	_link_row([b_weapon_skin_primary, b_weapon_skin_secondary])
 	_link_row([b_hat, b_outfit, b_accessory])
 
 	_link_column([b_primary, b_ammo_primary, b_weapon_skin_primary, b_hat])
 	_link_column([b_secondary, b_ammo_secondary, b_weapon_skin_secondary, b_outfit])
-	_link_column([b_utility, b_accessory])
 
 
 func _link_row(buttons : Array) -> void:
@@ -357,11 +452,6 @@ func _open_weapon_picker(slot : InventoryManager.WeaponSlot):
 	_open_picker(candidates, InventoryManager.get_equipped_weapon(slot), func(item): InventoryManager.equip_weapon(slot, item), allow_unequip)
 
 
-func _open_utility_picker():
-	var candidates : Array = InventoryManager.get_owned_items_by_type(UtilityItemData)
-	_open_picker(candidates, InventoryManager.get_equipped_utility(), func(item): InventoryManager.equip_utility(item))
-
-
 func _open_ammo_picker(slot : InventoryManager.WeaponSlot):
 	var candidates : Array = InventoryManager.get_owned_items_by_type(AmmoItemData)
 	var allow_unequip := slot != InventoryManager.WeaponSlot.PRIMARY
@@ -395,6 +485,7 @@ func _open_weapon_skin_picker(slot : InventoryManager.WeaponSlot):
 
 func _open_picker(candidates : Array, current_item : ItemData, on_pick : Callable, allow_unequip : bool = true, none_label : String = "None (unequip)") -> void:
 	_picker_on_pick = on_pick
+	_picker_opener = get_viewport().gui_get_focus_owner()
 
 	for child in picker_list_container.get_children():
 		child.queue_free()
@@ -437,4 +528,8 @@ func _on_picker_item_selected(item : ItemData):
 func _close_picker() -> void:
 	item_picker.visible = false
 	item_picker_backdrop.visible = false
-	_grab_default_focus()
+	if _picker_opener and is_instance_valid(_picker_opener):
+		_picker_opener.grab_focus()
+	else:
+		_grab_default_focus()
+	_picker_opener = null

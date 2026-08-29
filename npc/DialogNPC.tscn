@@ -1,18 +1,17 @@
-[gd_scene load_steps=6 format=3]
+[gd_scene load_steps=7 format=3 uid="uid://dgflcmvkylnty"]
 
-[ext_resource type="Script" path="res://npc/dialog_npc.gd" id="1_npc"]
+[ext_resource type="Script" uid="uid://cvjxoodvs18mn" path="res://npc/dialog_npc.gd" id="1_npc"]
 [ext_resource type="PackedScene" uid="uid://s2gswtyrtm5x" path="res://interaction_component/interactable.tscn" id="2_interact"]
 [ext_resource type="PackedScene" path="res://ui/dialogue/DialogueBox.tscn" id="3_dialogue"]
-[ext_resource type="FontFile" uid="uid://kiwlymd55nc2" path="res://ui/font/BoldPixels.ttf" id="4_font"]
-
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_npc"]
-size = Vector2(72, 90)
+[ext_resource type="FontFile" uid="uid://bn7ed1nmtuvnj" path="res://ui/font/BoldPixels.ttf" id="4_font"]
 
 [sub_resource type="LabelSettings" id="LabelSettings_nameplate"]
 font = ExtResource("4_font")
-font_size = 16
 outline_size = 4
 outline_color = Color(0, 0, 0, 1)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_npc"]
+size = Vector2(72, 90)
 
 [node name="DialogNPC" type="Node2D"]
 script = ExtResource("1_npc")

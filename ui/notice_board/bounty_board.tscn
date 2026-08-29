@@ -1,55 +1,94 @@
-[gd_scene load_steps=3 format=3]
+[gd_scene load_steps=6 format=3]
 
 [ext_resource type="Script" path="res://ui/notice_board/bounty_board.gd" id="1_board"]
 [ext_resource type="PackedScene" path="res://ui/notice_board/bounty_inspect_panel.tscn" id="2_board"]
+[ext_resource type="Theme" uid="uid://ddr12d5h68dd1" path="res://ui/theme/game_theme.tres" id="3_theme"]
+[ext_resource type="FontFile" uid="uid://kiwlymd55nc2" path="res://ui/font/BoldPixels.ttf" id="4_font"]
 
-[sub_resource type="LabelSettings" id="LabelSettings_board"]
-font_size = 32
+[sub_resource type="LabelSettings" id="LabelSettings_title"]
+font = ExtResource("4_font")
+font_size = 64
+font_color = Color(0.964706, 0.909804, 0.792157, 1)
+outline_size = 8
+outline_color = Color(0.0705882, 0.0392157, 0.0235294, 1)
+shadow_size = 4
+shadow_color = Color(0, 0, 0, 0.4)
+shadow_offset = Vector2(0, 4)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_board_frame"]
+content_margin_left = 40.0
+content_margin_top = 40.0
+content_margin_right = 40.0
+content_margin_bottom = 40.0
+bg_color = Color(0.266667, 0.184314, 0.121569, 1)
+border_width_left = 6
+border_width_top = 6
+border_width_right = 6
+border_width_bottom = 6
+border_color = Color(0.0705882, 0.0392157, 0.0235294, 1)
+corner_radius_top_left = 8
+corner_radius_top_right = 8
+corner_radius_bottom_right = 8
+corner_radius_bottom_left = 8
+shadow_color = Color(0, 0, 0, 0.5)
+shadow_size = 12
+shadow_offset = Vector2(0, 6)
 
 [node name="BountyBoard" type="Control"]
 custom_minimum_size = Vector2(1920, 1080)
 layout_mode = 3
 anchors_preset = 0
 mouse_filter = 1
+theme = ExtResource("3_theme")
 script = ExtResource("1_board")
 
-[node name="Background" type="TextureRect" parent="."]
+[node name="Background" type="ColorRect" parent="."]
 custom_minimum_size = Vector2(1920, 1080)
 layout_mode = 0
-offset_right = 40.0
-offset_bottom = 40.0
+offset_right = 1920.0
+offset_bottom = 1080.0
+color = Color(0.0784314, 0.0470588, 0.0313725, 1)
 
-[node name="ScrollContainer" type="ScrollContainer" parent="."]
+[node name="TitleLabel" type="Label" parent="."]
 layout_mode = 0
-offset_left = 60.0
-offset_top = 60.0
-offset_right = 1860.0
-offset_bottom = 900.0
+offset_left = 0.0
+offset_top = 36.0
+offset_right = 1920.0
+offset_bottom = 130.0
+text = "BOUNTY BOARD"
+label_settings = SubResource("LabelSettings_title")
+horizontal_alignment = 1
+vertical_alignment = 1
 
-[node name="PosterGrid" type="GridContainer" parent="ScrollContainer"]
+[node name="BoardFrame" type="PanelContainer" parent="."]
+layout_mode = 0
+offset_left = 110.0
+offset_top = 150.0
+offset_right = 1810.0
+offset_bottom = 930.0
+theme_override_styles/panel = SubResource("StyleBoxFlat_board_frame")
+
+[node name="ScrollContainer" type="ScrollContainer" parent="BoardFrame"]
 layout_mode = 2
 size_flags_horizontal = 3
-theme_override_constants/h_separation = 40
-theme_override_constants/v_separation = 40
+size_flags_vertical = 3
+
+[node name="PosterGrid" type="GridContainer" parent="BoardFrame/ScrollContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/h_separation = 50
+theme_override_constants/v_separation = 50
 columns = 4
 
 [node name="ReturnButton" type="Button" parent="."]
+custom_minimum_size = Vector2(201, 106)
 layout_mode = 0
 offset_left = 17.0
 offset_top = 957.0
 offset_right = 218.0
 offset_bottom = 1063.0
-
-[node name="Label" type="Label" parent="ReturnButton"]
-layout_mode = 0
-offset_left = 1.0
-offset_top = 1.0
-offset_right = 199.0
-offset_bottom = 104.0
+theme_override_font_sizes/font_size = 32
 text = "Return"
-label_settings = SubResource("LabelSettings_board")
-horizontal_alignment = 1
-vertical_alignment = 1
 
 [node name="BountyInspectPanel" parent="." instance=ExtResource("2_board")]
 layout_mode = 0

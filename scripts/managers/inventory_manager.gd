@@ -43,6 +43,18 @@ func initialize_inventory():
 		for i in range(start_items[item]):
 			add_item(item)
 
+	# Deliberately NOT granting default_outfit here - SaveManager.load_game() runs after this and
+	# would restore a previously-saved outfit choice, but outfits aren't stackable (max_stack_size
+	# 1), so granting one unconditionally on every boot before that load had a chance to run just
+	# kept adding a fresh duplicate "default outfit" item on every single restart. See
+	# grant_default_outfit_if_needed() below, called once from SaveManager after loading (or not
+	# finding a save) has already had its say on what's equipped.
+
+
+# Called by SaveManager once, after load_game() has restored (or found no) saved equip state -
+# only grants a fresh default outfit if nothing already ended up in that slot, so an existing
+# save's own outfit doesn't get silently replaced, and a fresh save doesn't end up bare.
+func grant_default_outfit_if_needed() -> void:
 	if default_outfit != null and get_equipped_cosmetic(CosmeticItemData.CosmeticSlot.OUTFIT) == null:
 		add_item(default_outfit)
 		equip_cosmetic(default_outfit)
