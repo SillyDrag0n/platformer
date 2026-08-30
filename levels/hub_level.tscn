@@ -1,4 +1,4 @@
-[gd_scene load_steps=23 format=4 uid="uid://0i0lfbqtcd0k"]
+[gd_scene load_steps=24 format=4 uid="uid://0i0lfbqtcd0k"]
 
 [ext_resource type="PackedScene" uid="uid://bfcmjoltsmsed" path="res://player/player.tscn" id="2_oyc5a"]
 [ext_resource type="Script" uid="uid://chd8hkfd628j6" path="res://player/player_camera.gd" id="4_bdvu7"]
@@ -22,6 +22,7 @@
 [ext_resource type="TileSet" uid="uid://bm6iyhti1uwgi" path="res://tileset/desert_breakables_tileset.tres" id="14_breakables"]
 [ext_resource type="PackedScene" path="res://tileset/structures/farm_house/farm_house.tscn" id="15_farmhouse"]
 [ext_resource type="PackedScene" path="res://npc/WelcomeNPC.tscn" id="16_welcome"]
+[ext_resource type="PackedScene" path="res://interaction_component/hint_zone.tscn" id="23_15esb"]
 
 [node name="HubLevel" type="Node2D"]
 script = ExtResource("8_hub")
@@ -112,3 +113,8 @@ rendering_quadrant_size = 32
 z_index = 70
 tile_set = ExtResource("13_foreground")
 rendering_quadrant_size = 32
+
+[node name="HintZoneInteract" parent="." instance=ExtResource("23_15esb")]
+position = Vector2(1199, 192)
+watch_action = &"interact"
+hint_text_format = "Press %s to Interact"

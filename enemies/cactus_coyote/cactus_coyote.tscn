@@ -1,0 +1,118 @@
+[gd_scene load_steps=12 format=3 uid="uid://b1xibr4r15y53"]
+
+[ext_resource type="Script" uid="uid://cj5djqjg6gvk" path="res://enemies/cactus_coyote/cactus_coyote.gd" id="1_coyote"]
+[ext_resource type="Texture2D" uid="uid://bq7pw8bs7370t" path="res://enemies/temp_files/temp-enemy-idle.png" id="2_idle"]
+[ext_resource type="Texture2D" uid="uid://rj8emjvlcufw" path="res://enemies/temp_files/temp-enemy-aggro.png" id="3_aggro"]
+[ext_resource type="Texture2D" uid="uid://sin2yjigwmqi" path="res://enemies/temp_files/temp-enemy-walk.png" id="4_walk"]
+[ext_resource type="Texture2D" uid="uid://hfpvwvjdnxy7" path="res://enemies/temp_files/temp-enemy-shoot.png" id="5_shoot"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_aggro"]
+atlas = ExtResource("3_aggro")
+region = Rect2(0, 0, 32, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_idle"]
+atlas = ExtResource("2_idle")
+region = Rect2(0, 0, 32, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_walk"]
+atlas = ExtResource("4_walk")
+region = Rect2(0, 0, 32, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_shoot"]
+atlas = ExtResource("5_shoot")
+region = Rect2(0, 0, 32, 64)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_coyote"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_aggro")
+}],
+"loop": true,
+"name": &"alert",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_idle")
+}],
+"loop": true,
+"name": &"feed",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_walk")
+}],
+"loop": true,
+"name": &"flee",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_aggro")
+}],
+"loop": true,
+"name": &"pounce",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_idle")
+}],
+"loop": true,
+"name": &"pounce_windup",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_idle")
+}],
+"loop": true,
+"name": &"recover",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_shoot")
+}],
+"loop": true,
+"name": &"spike",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_walk")
+}],
+"loop": true,
+"name": &"stalk",
+"speed": 5.0
+}]
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_coyote"]
+radius = 12.0
+height = 60.0
+
+[node name="CactusCoyote" type="CharacterBody2D" groups=["Enemy"]]
+z_index = 50
+collision_layer = 4
+collision_mask = 387
+script = ExtResource("1_coyote")
+health_amount = 8
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+sprite_frames = SubResource("SpriteFrames_coyote")
+animation = &"feed"
+flip_h = true
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("CapsuleShape2D_coyote")
+
+[node name="Hurtbox" type="Area2D" parent="." groups=["Enemy"]]
+collision_layer = 4
+collision_mask = 32
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Hurtbox"]
+shape = SubResource("CapsuleShape2D_coyote")
+
+[connection signal="area_entered" from="Hurtbox" to="." method="_on_hurtbox_area_entered"]

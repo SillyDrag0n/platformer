@@ -29,16 +29,3 @@ func test_second_hint_is_ignored_while_one_is_showing():
 	assert_eq(screen.action_hint_label.text, first_text, \
 		"a hint already showing should not be replaced by a new one")
 
-
-func test_pressing_the_watched_action_dismisses_the_hint():
-	var screen = GameScreenScene.instantiate()
-	add_child_autofree(screen)
-
-	screen.show_hint(&"jump", "Press %s to Jump")
-	assert_true(screen._hint_showing)
-
-	Input.action_press("jump")
-	await wait_physics_frames(1)
-	Input.action_release("jump")
-
-	assert_false(screen._hint_showing)

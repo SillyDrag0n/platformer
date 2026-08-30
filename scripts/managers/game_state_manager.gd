@@ -18,6 +18,13 @@ var active_bounty: BountyData = null
 # stays suppressed across a full game restart, not just within one session.
 var has_shown_hub_welcome: bool = false
 
+# Gates the tutorial's cactus coyote encounter (see
+# levels/farm_house_backyard/coyote_encounter.gd) - same reasoning as has_shown_hub_welcome above:
+# without this, re-entering the backyard after already running the coyote off would stage the whole
+# fight again. Set on the coyote actually fleeing rather than on the fight starting, since this one
+# can be lost.
+var has_driven_off_coyote: bool = false
+
 
 func _ready():
 	_build_lookups()

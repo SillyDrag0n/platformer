@@ -3,6 +3,7 @@ extends NodeState
 @export var character_body_2d : CharacterBody2D
 @export var grapple_hook : Node2D
 @export var dash_state : Node
+@export var lower_body_controller : Node
 
 @export_category("Run")
 @export var run_speed : int = 350
@@ -79,7 +80,10 @@ func on_physics_process(delta : float):
 
 	# horizontal movement
 	if was_on_floor:
-		var speed_scale : float = crouch_speed_scale if GameInputEvents.crouch_input() else 1.0
+		# Reads lower_body_controller's resolved crouch state rather than raw input, so speed stays
+		# slowed on the frames a low ceiling is holding the player crouched past the button being
+		# released too - see lower_body_controller.gd's _has_room_to_stand().
+		var speed_scale : float = crouch_speed_scale if lower_body_controller.get_is_crouching() else 1.0
 		if direction:
 			character_body_2d.velocity.x += direction * run_speed * speed_scale
 			var max_speed : float = max_horizontal_speed * speed_scale

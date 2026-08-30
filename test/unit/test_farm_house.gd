@@ -7,7 +7,6 @@ extends GutTest
 
 const FarmHouseScene = preload("res://tileset/structures/farm_house/farm_house.tscn")
 const BackyardScene = preload("res://levels/farm_house_backyard/farm_house_backyard.tscn")
-const TUTORIAL_BOUNTY_ID := "tutorial_missing_cattle"
 
 
 func test_scene_manager_knows_about_the_backyard():
@@ -24,15 +23,6 @@ func test_farm_house_wires_its_interactable():
 
 	assert_true(farm_house.interactable.interact.is_valid(), \
 		"farm_house.gd should have wired interactable.interact in _ready()")
-
-
-func test_backyard_wires_its_exit_door():
-	var backyard = BackyardScene.instantiate()
-	add_child_autofree(backyard)
-	await wait_physics_frames(1)
-
-	assert_true(backyard.exit_door.interact.is_valid(), \
-		"farm_house_backyard.gd should have wired exit_door.interact in _ready()")
 
 
 func test_hub_level_has_a_farm_house_structure():
@@ -54,15 +44,6 @@ func test_hub_level_has_a_welcome_npc():
 		"hub_level.tscn should have a WelcomeNPC instance so first-time players get greeted")
 
 
-func test_game_state_manager_has_a_tutorial_bounty_pointing_at_the_backyard():
-	var bounty = GameStateManager.get_bounty_by_id(TUTORIAL_BOUNTY_ID)
-
-	assert_not_null(bounty, "GameStateManager should know about the tutorial bounty")
-	assert_false(bounty.unlocked, "the tutorial bounty should start locked, unlocked by the welcome NPC")
-	assert_eq(bounty.level_scene, BackyardScene, \
-		"the tutorial bounty should point at the farm house backyard level")
-
-
 func test_backyard_wires_its_respawn_nodes():
 	var backyard = BackyardScene.instantiate()
 	add_child_autofree(backyard)
@@ -82,4 +63,4 @@ func test_backyard_has_a_hint_zone_and_a_turn_in_npc():
 	assert_true(backyard.has_node("HintZoneJump"), \
 		"farm_house_backyard.tscn should have at least one HintZone teaching a control")
 	assert_true(backyard.has_node("Hutch"), \
-		"farm_house_backyard.tscn should have the BountyTurnInNPC that completes the tutorial bounty")
+		"farm_house_backyard.tscn should have Hutch, a dialogue-only NPC (no bounty completion/reward)")

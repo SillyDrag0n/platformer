@@ -114,6 +114,27 @@ var _leg_l_bone_rest_scale : Vector2
 var _collision_shape_rest_height : float
 var _collision_shape_rest_position : Vector2
 var _hurtbox_collision_shape_rest_position : Vector2
+# Full-height duplicate of the capsule, kept at rest size even after collision_shape's own copy
+# gets shrunk every frame - used purely as a query shape in _has_room_to_stand(), never assigned
+# to a CollisionShape2D.
+var _stand_test_shape : Shape2D
+
+# Tracks whether crouch collision was actually applied last frame, separate from raw input, so
+# _has_room_to_stand() only has to run the moment crouch is released (not every grounded frame)
+# and so a ceiling can hold the player crouched across frames where they're no longer holding the
+# button. See apply_crouch_collision() below.
+var _is_crouching : bool = false
+# Which physics frame _is_crouching was last resolved on - see get_is_crouching(). Needed because
+# normal_state.gd (StateMachine) and this node are siblings, so whichever one's _physics_process
+# the engine happens to run first each tick would otherwise read the other's stale value from the
+# previous frame instead of this frame's.
+var _crouch_resolved_physics_frame : int = -1
+
+# Duplicated from normal_state.gd's constant of the same name - a one-way platform should never
+# block standing up (you can already stand under one), so it's excluded from the ceiling probe in
+# _has_room_to_stand() regardless of which way character_body_2d.collision_mask's own copy of this
+# bit happens to be toggled that frame (see normal_state.gd's rising/falling toggle).
+const ONE_WAY_PLATFORM_LAYER : int = 8
 
 
 func _ready() -> void:
@@ -146,9 +167,15 @@ func _ready() -> void:
 	_collision_shape_rest_position = collision_shape.position
 	_hurtbox_collision_shape_rest_position = hurtbox_collision_shape.position
 
+	# Captured here, before apply_crouch_collision() ever runs, so this copy is frozen at full
+	# standing height regardless of what collision_shape's own shape gets shrunk to later.
+	_stand_test_shape = collision_shape.shape.duplicate()
+
 
 func _physics_process(delta : float) -> void:
 	update_facing()
+
+	var is_crouching : bool = get_is_crouching()
 
 	var state_name : String = state_machine.current_node_state.name.to_lower()
 	match state_name:
@@ -170,15 +197,12 @@ func _physics_process(delta : float) -> void:
 			play_normal_clip(delta)
 			# Only meaningful for the normal (grounded movement/idle) branch - dash/hurt/grapple/dead
 			# all have their own Hip handling above and were never crouch-able to begin with.
-			apply_crouch_pose()
+			apply_crouch_pose(is_crouching)
 
 	# Runs after every branch above, clip-based or procedural, so Torso tracks whatever Hip ended
 	# up doing this frame without needing its own track/logic per state.
 	body.position = _body_rest_position + (hip.position - _hip_rest_position)
 
-	# Grounded + crouch held, regardless of movement input - deliberately NOT gated on standing
-	# still, so the hitbox actually shrinks while crouch-walking too, not just while stationary.
-	var is_crouching : bool = character_body_2d.is_on_floor() and GameInputEvents.crouch_input()
 	apply_crouch_collision(is_crouching)
 
 
@@ -354,9 +378,31 @@ func _reset_foot_lookats() -> void:
 # every single physics frame before this runs - relying on that ordering is exactly what broke
 # once AnimationPlayer's update and this addition weren't both happening deterministically inside
 # the same function call chain (see the manual-advance comment on play_clip()).
-func apply_crouch_pose() -> void:
-	if character_body_2d.is_on_floor() and GameInputEvents.crouch_input():
+func apply_crouch_pose(is_crouching : bool) -> void:
+	if is_crouching:
 		hip.position.y += crouch_hip_drop
+
+
+# Resolves and caches whether the player is (or remains) crouched, once per physics frame -
+# memoized on the frame number rather than recomputed unconditionally, because normal_state.gd
+# (StateMachine, a sibling node) also calls this for its own crouch-speed scaling, and sibling
+# nodes' _physics_process order isn't something to depend on: whichever of the two runs first in a
+# given tick resolves and caches the value here, so the other reads back that same frame's result
+# instead of the previous frame's.
+#
+# Grounded + crouch held, regardless of movement input, resolves true - deliberately NOT gated on
+# standing still, so the hitbox actually shrinks while crouch-walking too, not just while
+# stationary. Also stays true past crouch being released if _is_crouching was already true and
+# there's no headroom to stand (_has_room_to_stand() only runs in that case, so a low ceiling can
+# never be what forces a stand, only what forces continued crouching).
+func get_is_crouching() -> bool:
+	var current_frame := Engine.get_physics_frames()
+	if current_frame == _crouch_resolved_physics_frame:
+		return _is_crouching
+	_crouch_resolved_physics_frame = current_frame
+	_is_crouching = character_body_2d.is_on_floor() \
+		and (GameInputEvents.crouch_input() or (_is_crouching and not _has_room_to_stand()))
+	return _is_crouching
 
 
 # Shrinks the ground-collision capsule from the top only (bottom edge stays put, feet don't sink
@@ -369,3 +415,23 @@ func apply_crouch_collision(is_crouching : bool) -> void:
 	collision_shape.shape.height = _collision_shape_rest_height - shrink
 	collision_shape.position = _collision_shape_rest_position + Vector2(0.0, shrink * 0.5)
 	hurtbox_collision_shape.position = _hurtbox_collision_shape_rest_position + Vector2(0.0, shrink)
+
+
+# Probes with the full-height capsule at its rest position/size (not collision_shape's own,
+# currently-shrunk copy) to see if standing back up would immediately overlap something solid.
+# Only called while _is_crouching is already true and crouch was just released (see the call site
+# in _physics_process()), so this never runs on every grounded frame - just the one moment a stand
+# attempt needs to be judged.
+func _has_room_to_stand() -> bool:
+	var space_state := character_body_2d.get_world_2d().direct_space_state
+	var query := PhysicsShapeQueryParameters2D.new()
+	query.shape = _stand_test_shape
+	query.transform = Transform2D(0.0, character_body_2d.global_position + _collision_shape_rest_position)
+	# Excludes the one-way-platform bit regardless of its current toggle state (see
+	# ONE_WAY_PLATFORM_LAYER's declaration above) - a one-way platform should never be the thing
+	# keeping the player crouched.
+	query.collision_mask = character_body_2d.collision_mask & ~(1 << (ONE_WAY_PLATFORM_LAYER - 1))
+	query.exclude = [character_body_2d.get_rid()]
+	query.collide_with_areas = false
+	query.collide_with_bodies = true
+	return space_state.intersect_shape(query, 1).is_empty()

@@ -23,11 +23,35 @@ static var controller_active : bool = false
 static var last_aim_direction : Vector2 = Vector2.RIGHT
 
 
+# A scripted beat - the tutorial's coyote encounter, so far - can take the controls off the player
+# and steer them itself: everything below locks the way it does for an open inventory, except that
+# movement_input() keeps returning whatever the beat is steering, so a walked-in cutscene drives
+# the ordinary run and its animation rather than sliding the player around behind the controller's
+# back. Static state on an autoload outlives the scene that set it, so whoever takes control is
+# responsible for handing it back - see CoyoteEncounter._exit_tree().
+static var scripted_control : bool = false
+static var scripted_movement : float = 0.0
+
+
+static func take_scripted_control() -> void:
+	scripted_control = true
+	scripted_movement = 0.0
+
+
+static func set_scripted_movement(direction : float) -> void:
+	scripted_movement = direction
+
+
+static func release_scripted_control() -> void:
+	scripted_control = false
+	scripted_movement = 0.0
+
+
 # Player-action reads all go through here, so gating them in one place freezes movement,
 # shooting, and every other player action while the inventory is open. inventory_input()
 # itself is deliberately NOT gated, otherwise the menu could never be closed again.
 static func is_input_locked() -> bool:
-	return InventoryManager.is_open
+	return InventoryManager.is_open or scripted_control
 
 
 func _input(event : InputEvent) -> void:
@@ -76,7 +100,9 @@ func aim_input(from_global : Vector2) -> Vector2:
 
 static func movement_input() -> float:
 	if is_input_locked():
-		return 0.0
+		# Zero unless a scripted beat is actually steering, so an open inventory still stops the
+		# player dead the way it always did.
+		return scripted_movement
 	var direction : float = Input.get_axis("move_left", "move_right")
 	return direction
 

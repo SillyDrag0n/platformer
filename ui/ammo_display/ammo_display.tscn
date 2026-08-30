@@ -1,0 +1,9 @@
+[gd_scene load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://ui/ammo_display/ammo_display.gd" id="1_ammo"]
+
+[node name="AmmoDisplay" type="HBoxContainer"]
+offset_right = 120.0
+offset_bottom = 40.0
+theme_override_constants/separation = 6
+script = ExtResource("1_ammo")

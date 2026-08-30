@@ -543,7 +543,7 @@ radius = 8.0
 height = 66.0
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_4inro"]
-radius = 11.0
+radius = 8.0
 height = 62.0
 
 [node name="Player" type="CharacterBody2D" groups=["Player"]]
@@ -583,7 +583,7 @@ offset = Vector2(3, -4)
 
 [node name="ShinR" type="Bone2D" parent="Animation/Bones/Skeleton2D/Hip/LegR"]
 position = Vector2(-1.99966, 13.9987)
-rotation = 0.0705775
+rotation = 0.0705774
 scale = Vector2(0.999929, 0.999929)
 rest = Transform2D(0.998328, 0.0561413, -0.0561413, 0.998328, -1.99963, 13.9988)
 
@@ -773,7 +773,6 @@ bone_node = NodePath("../../Bones/Skeleton2D/Hip/LegL/ShinL/FootL")
 target_node = NodePath("../../IKTargets/LegTargets/FootL Target/Foot Lookat")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
-visible = false
 shape = SubResource("CapsuleShape2D_7slp3")
 
 [node name="Gun" type="Node2D" parent="." node_paths=PackedStringArray("arm_r_target")]
@@ -852,7 +851,7 @@ script = ExtResource("26_areticle")
 muzzle = NodePath("../Gun/Muzzle")
 
 [node name="Hurtbox" type="Area2D" parent="."]
-visible = false
+position = Vector2(0, 21.6)
 collision_layer = 0
 collision_mask = 1028
 
@@ -878,11 +877,12 @@ position = Vector2(0, -55)
 script = ExtResource("11_xte76")
 initial_node_state = NodePath("Normal")
 
-[node name="Normal" type="Node" parent="StateMachine" node_paths=PackedStringArray("character_body_2d", "grapple_hook", "dash_state")]
+[node name="Normal" type="Node" parent="StateMachine" node_paths=PackedStringArray("character_body_2d", "grapple_hook", "dash_state", "lower_body_controller")]
 script = ExtResource("30_normal")
 character_body_2d = NodePath("../..")
 grapple_hook = NodePath("../../GrappleHook")
 dash_state = NodePath("../Dash")
+lower_body_controller = NodePath("../../LowerBodyController")
 
 [node name="Dash" type="Node" parent="StateMachine" node_paths=PackedStringArray("character_body_2d", "player")]
 script = ExtResource("28_dstate")

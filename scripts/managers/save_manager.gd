@@ -79,6 +79,7 @@ func save_game():
 		data.region_states[region.id] = region.unlocked
 
 	data.has_shown_hub_welcome = GameStateManager.has_shown_hub_welcome
+	data.has_driven_off_coyote = GameStateManager.has_driven_off_coyote
 
 	if !DirAccess.dir_exists_absolute(save_path):
 		DirAccess.make_dir_absolute(save_path)
@@ -157,3 +158,4 @@ func load_game():
 			region.unlocked = data.region_states[region.id]
 
 	GameStateManager.has_shown_hub_welcome = data.has_shown_hub_welcome
+	GameStateManager.has_driven_off_coyote = data.has_driven_off_coyote

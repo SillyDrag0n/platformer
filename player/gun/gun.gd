@@ -1,6 +1,10 @@
 extends Node2D
 
 signal shot_fired
+# Emitted whenever the round count in the loaded weapon changes - a shot, a finished reload, or a
+# swap to a weapon with a different magazine. The HUD's ammo readout (ui/ammo_display) listens for
+# this instead of polling magazine_current every frame.
+signal magazine_changed(current : int, capacity : int)
 
 var bullet = preload("res://player/gun/bullet/bullet.tscn")
 var muzzle_flash_effect = preload("res://player/gun/muzzle_flash_effect.tscn")
@@ -106,6 +110,13 @@ func equip_weapon(new_weapon : WeaponItemData):
 	weapon = new_weapon
 	shoot_timer.wait_time = weapon.cooldown
 	magazine_current = weapon.magazine_size
+	magazine_changed.emit(magazine_current, weapon.magazine_size)
+
+
+# Capacity of whatever is currently loaded, for anything drawing the magazine (see
+# ui/ammo_display) - 0 rather than a crash in the window before a weapon is equipped.
+func get_magazine_size() -> int:
+	return weapon.magazine_size if weapon != null else 0
 
 func _refresh_active_ammo():
 	var new_ammo = InventoryManager.get_equipped_ammo(active_slot)
@@ -138,6 +149,7 @@ func try_shoot() -> bool:
 	if shoot_timer.is_stopped() and reload_timer.is_stopped():
 		if magazine_current > 0:
 			magazine_current -= 1
+			magazine_changed.emit(magazine_current, get_magazine_size())
 			shoot()
 			shoot_timer.start()
 			if magazine_current == 0:
@@ -184,4 +196,5 @@ func reload():
 
 func _on_reload_timer_timeout() -> void:
 	magazine_current = weapon.magazine_size
+	magazine_changed.emit(magazine_current, weapon.magazine_size)
 	reload_ui.hide()

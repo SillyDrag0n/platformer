@@ -27,3 +27,4 @@ extends Resource
 @export var region_states : Dictionary = {} # region id -> unlocked
 
 @export var has_shown_hub_welcome : bool = false
+@export var has_driven_off_coyote : bool = false

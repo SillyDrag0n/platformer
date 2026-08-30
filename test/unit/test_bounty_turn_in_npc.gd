@@ -1,8 +1,9 @@
 extends GutTest
 
 # Coverage for BountyTurnInNPC (npc/bounty_turn_in_npc.gd) - the reusable "hand in whatever
-# bounty is currently active" NPC archetype (used by the tutorial bounty's Hutch, and any future
-# non-boss bounty). Its _on_dialogue_closed() calls UiManager.open_bounty_completed_screen(),
+# bounty is currently active" NPC archetype (for any non-boss bounty that should grant a reward on
+# turn-in; the tutorial bounty's Hutch is dialogue-only and doesn't use this - see HutchNPC.tscn).
+# Its _on_dialogue_closed() calls UiManager.open_bounty_completed_screen(),
 # which does a real get_tree().change_scene_to_packed() - actually invoking that here would swap
 # out the running GUT test scene mid-suite, the same reason test_farm_house.gd only checks that
 # its interact/exit callbacks are wired rather than calling them. So this checks the wiring and
