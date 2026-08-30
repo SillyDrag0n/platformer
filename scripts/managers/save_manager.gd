@@ -30,6 +30,7 @@ func has_save() -> bool:
 func save_game():
 	var data := SaveDataResource.new()
 	data.player_name = PlayerManager.player_name
+	data.dollars = CollectibleManager.total_award_amount
 
 	for slot_data in InventoryManager.item_slots:
 		var item : ItemData = slot_data["item"]
@@ -69,10 +70,17 @@ func save_game():
 		data.received_quest_paths.append(quest.resource_path)
 
 	for bounty in GameStateManager.bounties:
+		var completed_objectives : Array[String] = []
+		for stage in bounty.stages:
+			for objective in stage.objectives:
+				if objective.completed:
+					completed_objectives.append(objective.id)
+
 		data.bounty_states[bounty.id] = {
 			"unlocked": bounty.unlocked,
 			"completed": bounty.completed,
 			"reward_claimed": bounty.reward_claimed,
+			"completed_objectives": completed_objectives,
 		}
 
 	for region in GameStateManager.regions:
@@ -95,6 +103,7 @@ func load_game():
 		return
 
 	PlayerManager.player_name = data.player_name
+	CollectibleManager.total_award_amount = data.dollars
 
 	# Ownership has to be restored before equipped state below, since equip_weapon()/
 	# equip_ammo()/equip_utility()/equip_cosmetic() all reject items InventoryManager doesn't
@@ -152,6 +161,13 @@ func load_game():
 			bounty.unlocked = state.get("unlocked", bounty.unlocked)
 			bounty.completed = state.get("completed", bounty.completed)
 			bounty.reward_claimed = state.get("reward_claimed", bounty.reward_claimed)
+
+			# Objectives are stored as the ids that are done rather than as flags per line, so a save
+			# made before a stage was rewritten restores what it can and ignores what no longer exists.
+			var completed_objectives : Array = state.get("completed_objectives", [])
+			for stage in bounty.stages:
+				for objective in stage.objectives:
+					objective.completed = completed_objectives.has(objective.id)
 
 	for region in GameStateManager.regions:
 		if data.region_states.has(region.id):

@@ -1,0 +1,46 @@
+[gd_scene load_steps=6 format=3]
+
+[ext_resource type="Script" path="res://npc/dialog_npc.gd" id="1_npc"]
+[ext_resource type="PackedScene" uid="uid://s2gswtyrtm5x" path="res://interaction_component/interactable.tscn" id="2_interact"]
+[ext_resource type="PackedScene" path="res://ui/dialogue/DialogueBox.tscn" id="3_dialogue"]
+[ext_resource type="FontFile" uid="uid://kiwlymd55nc2" path="res://ui/font/BoldPixels.ttf" id="4_font"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_npc"]
+size = Vector2(72, 90)
+
+[sub_resource type="LabelSettings" id="LabelSettings_nameplate"]
+font = ExtResource("4_font")
+font_size = 16
+outline_size = 4
+outline_color = Color(0, 0, 0, 1)
+
+[node name="ShamanNPC" type="Node2D"]
+script = ExtResource("1_npc")
+speaker_name = "Shaman"
+dialogue_lines = Array[String](["You've come a long way with dust in your teeth. Sit. I know what it is you came to ask.", "The thing you saw is no curse and no omen. It has walked this country since long before your people put fences on it.", "Spines like that grow on a creature made to live where nothing else can. It didn't choose that. It was pushed there - rail crews, wells, cattle. Every year the plains get smaller, and it gets hungrier.", "It isn't at your farmer's herd because it's wicked. It's at his herd because you've taken everything else it had.", "It dens where the spines grow thickest, and it moves at dusk. Follow the cactus and you will find it - go ready, because it will not run twice."])
+bounty_id = "missing_cattle"
+completes_objectives = Array[String](["find_shaman", "learn_about_creature", "learn_to_track"])
+
+[node name="Body" type="ColorRect" parent="."]
+offset_left = -16.0
+offset_top = -64.0
+offset_right = 16.0
+color = Color(0.352941, 0.278431, 0.435294, 1)
+
+[node name="NameLabel" type="Label" parent="."]
+offset_left = -60.0
+offset_top = -90.0
+offset_right = 60.0
+offset_bottom = -66.0
+text = "Shaman"
+label_settings = SubResource("LabelSettings_nameplate")
+horizontal_alignment = 1
+
+[node name="Interactable" parent="." instance=ExtResource("2_interact")]
+interact_name = "Talk to the Shaman"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Interactable"]
+position = Vector2(0, -35)
+shape = SubResource("RectangleShape2D_npc")
+
+[node name="DialogueBox" parent="." instance=ExtResource("3_dialogue")]

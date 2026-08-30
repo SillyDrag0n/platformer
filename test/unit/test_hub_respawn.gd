@@ -69,3 +69,27 @@ func test_second_death_and_respawn_cycle_does_not_crash():
 	RespawnManager.respawn()
 
 	assert_true(true, "reached this line without a script error/crash")
+
+
+# A spawn position is a spot in one particular level. Without that tie, a value left behind by
+# something else - the farm house in the backyard used to carry the hub door's script - was applied
+# on arrival in the hub, dropping the player at coordinates with no ground under them: the level
+# looked fine, the camera clamped at its limit, and the player was nowhere on screen.
+func test_the_hub_ignores_a_spawn_position_recorded_in_another_level():
+	SceneManager.set_pending_spawn_position(Vector2(-260, 104), "FarmHouseBackyard")
+
+	assert_false(SceneManager.has_pending_spawn_position_for("Hub"), \
+		"a backyard position is not the hub's to use")
+	assert_true(SceneManager.has_pending_spawn_position_for("FarmHouseBackyard"), \
+		"the level it belongs to would still get it")
+
+	SceneManager.consume_pending_spawn_position()
+
+
+func test_the_hub_still_takes_a_position_recorded_in_the_hub():
+	SceneManager.set_pending_spawn_position(Vector2(200, 195), "Hub")
+
+	assert_true(SceneManager.has_pending_spawn_position_for("Hub"), \
+		"walking out of a door in town still puts the player back at that door on the way home")
+	assert_eq(SceneManager.consume_pending_spawn_position(), Vector2(200, 195))
+	assert_false(SceneManager.has_pending_spawn_position_for("Hub"), "and it is spent once used")

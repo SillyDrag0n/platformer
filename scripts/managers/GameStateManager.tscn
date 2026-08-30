@@ -20,11 +20,14 @@
 [ext_resource type="Resource" path="res://items/cosmetics/bandana.tres" id="17_bandana"]
 [ext_resource type="PackedScene" path="res://levels/farm_house_backyard/farm_house_backyard.tscn" id="18_backyard"]
 [ext_resource type="Resource" path="res://items/ammo/regular_rounds.tres" id="19_regular_rounds"]
+[ext_resource type="Script" path="res://scripts/bounties/bounty_stage_data.gd" id="20_stage"]
+[ext_resource type="Script" path="res://scripts/bounties/bounty_objective_data.gd" id="21_objective"]
+[ext_resource type="PackedScene" path="res://levels/shaman_camp/shaman_camp.tscn" id="22_shaman_camp"]
 
 [sub_resource type="Resource" id="Resource_7qxxb"]
 script = ExtResource("5_ypgds")
-display_name = "Gold"
-description = "Gold"
+display_name = "Dollars"
+description = "Dollars"
 max_stack_size = 999
 icon = ExtResource("6_u16yc")
 metadata/_custom_type_script = "uid://djhxi31kg3jus"
@@ -36,7 +39,7 @@ title = "Sand Spirit"
 region_id = "1"
 description = "A restless spirit has been seen whipping up sandstorms at the edge of the plains, burying travelers' camps overnight. Locals want it put down before the dunes swallow the road entirely."
 icon = ExtResource("7_sspic")
-requires_bounty_id = "tutorial_missing_cattle"
+requires_bounty_id = "missing_cattle"
 unlocked = false
 completed = false
 reward_claimed = false
@@ -68,21 +71,100 @@ name = "Swamp"
 unlocked = false
 metadata/_custom_type_script = "uid://camrqsq3m0sth"
 
-[sub_resource type="Resource" id="Resource_tutcattl"]
+[sub_resource type="Resource" id="Resource_obj_site"]
+script = ExtResource("21_objective")
+id = "reach_attack_site"
+text = "Go to the attack site"
+completed = false
+
+[sub_resource type="Resource" id="Resource_obj_encounter"]
+script = ExtResource("21_objective")
+id = "encounter_creature"
+text = "Encounter the creature"
+completed = false
+
+[sub_resource type="Resource" id="Resource_obj_escape"]
+script = ExtResource("21_objective")
+id = "creature_escapes"
+text = "It escapes"
+completed = false
+
+[sub_resource type="Resource" id="Resource_obj_find"]
+script = ExtResource("21_objective")
+id = "find_shaman"
+text = "Find the shaman"
+completed = false
+
+[sub_resource type="Resource" id="Resource_obj_learn"]
+script = ExtResource("21_objective")
+id = "learn_about_creature"
+text = "Learn what the creature is"
+completed = false
+
+[sub_resource type="Resource" id="Resource_obj_track"]
+script = ExtResource("21_objective")
+id = "learn_to_track"
+text = "Discover how to track it"
+completed = false
+
+[sub_resource type="Resource" id="Resource_obj_den"]
+script = ExtResource("21_objective")
+id = "track_to_den"
+text = "Track it to its den"
+completed = false
+
+[sub_resource type="Resource" id="Resource_obj_defeat"]
+script = ExtResource("21_objective")
+id = "defeat_creature"
+text = "Defeat it"
+completed = false
+
+[sub_resource type="Resource" id="Resource_obj_collect"]
+script = ExtResource("21_objective")
+id = "collect_bounty"
+text = "Collect the bounty"
+completed = false
+
+[sub_resource type="Resource" id="Resource_stage_investigate"]
+script = ExtResource("20_stage")
+id = "investigate"
+title = "Investigate the Missing Cattle"
+description = "Hutch says something has been at his herd. Ride out to his place on the edge of town and see it for yourself."
+objectives = Array[ExtResource("21_objective")]([SubResource("Resource_obj_site"), SubResource("Resource_obj_encounter"), SubResource("Resource_obj_escape")])
+level_scene = ExtResource("18_backyard")
+
+[sub_resource type="Resource" id="Resource_stage_shaman"]
+script = ExtResource("20_stage")
+id = "seek_the_shaman"
+title = "Seek the Shaman"
+description = "There is an old shaman living a hard ride out past the plains, said to know every creature that walks this country by name."
+objectives = Array[ExtResource("21_objective")]([SubResource("Resource_obj_find"), SubResource("Resource_obj_learn"), SubResource("Resource_obj_track")])
+level_scene = ExtResource("22_shaman_camp")
+
+[sub_resource type="Resource" id="Resource_stage_hunt"]
+script = ExtResource("20_stage")
+id = "hunt"
+title = "Hunt the Creature"
+description = "Follow it back to whatever ground it has left and finish the job."
+objectives = Array[ExtResource("21_objective")]([SubResource("Resource_obj_den"), SubResource("Resource_obj_defeat"), SubResource("Resource_obj_collect")])
+
+[sub_resource type="Resource" id="Resource_coyote"]
 script = ExtResource("2_15i0w")
-id = "tutorial_missing_cattle"
+id = "missing_cattle"
 title = "Missing Cattle"
 region_id = "1"
-description = "A rancher on the edge of town says something's been at his herd."
+description = "A rancher on the edge of town is losing cattle in the night. He swears what is taking them is no wolf and no rustler, and he wants it dealt with before the herd is gone."
 unlocked = false
 completed = false
 reward_claimed = false
 map_position = Vector2(300, 500)
-level_scene = ExtResource("18_backyard")
-rewards = Array[ExtResource("5_ypgds")]([SubResource("Resource_7qxxb"), ExtResource("19_regular_rounds")])
+reward_dollars = 250
+stages = Array[ExtResource("20_stage")]([SubResource("Resource_stage_investigate"), SubResource("Resource_stage_shaman"), SubResource("Resource_stage_hunt")])
+rewards = Array[ExtResource("5_ypgds")]([ExtResource("19_regular_rounds")])
 metadata/_custom_type_script = "uid://1a50eu8xiuur"
+
 
 [node name="GameStateManager" type="Node"]
 script = ExtResource("1_xk7k0")
-bounties = Array[ExtResource("2_15i0w")]([SubResource("Resource_15i0w"), SubResource("Resource_tutcattl")])
+bounties = Array[ExtResource("2_15i0w")]([SubResource("Resource_coyote"), SubResource("Resource_15i0w")])
 regions = Array[ExtResource("4_moqx8")]([SubResource("Resource_v6kma"), SubResource("Resource_moqx8"), SubResource("Resource_nl1aw")])

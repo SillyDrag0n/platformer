@@ -47,8 +47,7 @@ func test_blank_name_falls_back_to_a_default():
 	await wait_physics_frames(1)
 
 	screen.name_input.text = "   "
-	assert_eq(screen._resolve_entered_name(), screen.DEFAULT_NAME)
-
+	assert_eq(screen._resolve_entered_name(), PlayerManager.DEFAULT_NAME)
 
 func test_entered_name_is_trimmed():
 	var screen = NameEntryScreenScene.instantiate()

@@ -1,4 +1,4 @@
-[gd_scene load_steps=9 format=3]
+[gd_scene load_steps=12 format=3]
 
 [ext_resource type="Script" path="res://levels/saloon_interior/saloon_interior.gd" id="1_ext01"]
 [ext_resource type="PackedScene" uid="uid://bfcmjoltsmsed" path="res://player/player.tscn" id="2_ext02"]
@@ -7,6 +7,9 @@
 [ext_resource type="PackedScene" uid="uid://dnko61n7gbtwq" path="res://ui/screens/death_screen.tscn" id="5_ext05"]
 [ext_resource type="PackedScene" uid="uid://rx3auanfsgp0" path="res://ui/inventory/InventoryUI.tscn" id="6_ext06"]
 [ext_resource type="PackedScene" uid="uid://s2gswtyrtm5x" path="res://interaction_component/interactable.tscn" id="7_ext07"]
+[ext_resource type="PackedScene" path="res://npc/ShopNPC.tscn" id="8_shopnpc"]
+[ext_resource type="Script" path="res://scripts/items/item_data.gd" id="9_itemdata"]
+[ext_resource type="Resource" path="res://items/utility/spirit.tres" id="10_spirit"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_floor"]
 size = Vector2(900, 40)
@@ -52,6 +55,21 @@ visible = false
 
 [node name="InventoryUi" parent="." instance=ExtResource("6_ext06")]
 visible = false
+
+[node name="Barkeep" parent="." node_paths=PackedStringArray() instance=ExtResource("8_shopnpc")]
+position = Vector2(300, 130)
+speaker_name = "Rosa"
+greeting_line = "Pull up a stool. Somethin' to steady you before you head back out?"
+
+[node name="NameLabel" parent="Barkeep" index="1"]
+text = "Rosa"
+
+[node name="Interactable" parent="Barkeep" index="2"]
+interact_name = "Talk to Rosa"
+
+[node name="ShopUi" parent="Barkeep" index="3"]
+shop_title = "Rosa's Saloon"
+shop_items = Array[ExtResource("9_itemdata")]([ExtResource("10_spirit")])
 
 [node name="ExitDoor" parent="." instance=ExtResource("7_ext07")]
 position = Vector2(-380, 130)

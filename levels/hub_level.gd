@@ -12,7 +12,10 @@ func _ready() -> void:
 	# global_position. Same wiring test_level.gd already does for itself.
 	RespawnManager.set_respawn_nodes(camera, respawn_marker, self)
 
-	if SceneManager.has_pending_spawn_position:
+	# Only a position that was recorded in the hub itself - a door the player walked into on their
+	# way out of town. A leftover from anywhere else is somebody else's coordinates and would put
+	# the player through the floor here.
+	if SceneManager.has_pending_spawn_position_for("Hub"):
 		player.global_position = SceneManager.consume_pending_spawn_position()
 
 

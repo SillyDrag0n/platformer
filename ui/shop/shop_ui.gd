@@ -43,7 +43,7 @@ func _on_currency_changed(_total : int) -> void:
 
 
 func _refresh_currency_label() -> void:
-	currency_label.text = tr("Gold: %d") % CollectibleManager.total_award_amount
+	currency_label.text = tr("Dollars: %d") % CollectibleManager.total_award_amount
 
 
 # Just refreshes each existing entry's data in place - rebuilding from scratch on every refresh
@@ -69,14 +69,17 @@ func _create_shop_entries() -> void:
 
 
 func _on_entry_buy_pressed(item : ItemData) -> void:
-	# Covers both non-stackable items (max_stack_size 1, e.g. weapons) and stackable ones already
-	# at their cap (e.g. dynamite at 3/3) - add_item() would otherwise silently start a second,
-	# invisible slot instead of actually stacking once the first one is full.
-	if InventoryManager.get_owned_quantity(item) >= item.max_stack_size:
+	# Covers both non-stackable items (max_stack_size 1, e.g. weapons) and stackable ones without
+	# room for the whole purchase (dynamite is sold three at a time into a stack that holds three) -
+	# add_item() would otherwise silently start a second, invisible slot once the first is full, and
+	# a bundle would end up half paid for.
+	if InventoryManager.get_owned_quantity(item) + item.purchase_quantity > item.max_stack_size:
 		return
 	if !CollectibleManager.can_afford(item.price):
 		return
 
-	if InventoryManager.add_item(item):
-		CollectibleManager.spend(item.price)
-		refresh_shop_ui()
+	for i in item.purchase_quantity:
+		if not InventoryManager.add_item(item):
+			return
+	CollectibleManager.spend(item.price)
+	refresh_shop_ui()

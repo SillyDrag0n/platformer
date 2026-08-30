@@ -17,13 +17,19 @@ var item : ItemData
 func set_item_data(new_item : ItemData) -> void:
 	item = new_item
 	icon_rect.texture = item.icon if item.icon else empty_texture
-	name_label.text = tr(item.display_name)
+	# A bundle says so on the shelf, so the price reads against what the player actually gets.
+	name_label.text = tr(item.display_name) if item.purchase_quantity <= 1 \
+		else "%d x %s" % [item.purchase_quantity, tr(item.display_name)]
 	description_label.text = tr(item.description)
 	description_label.visible = item.description != ""
 	price_label.text = str(item.price)
 
 	var already_owned : bool = item.max_stack_size <= 1 and InventoryManager.is_owned(item)
-	buy_button.disabled = already_owned or !CollectibleManager.can_afford(item.price)
+	# A bundle is all or nothing: three sticks for eighteen dollars shouldn't hand over one just
+	# because that is all the room left in the stack.
+	var has_room : bool = InventoryManager.get_owned_quantity(item) + item.purchase_quantity \
+		<= item.max_stack_size
+	buy_button.disabled = already_owned or not has_room or !CollectibleManager.can_afford(item.price)
 	buy_button.text = tr("Owned") if already_owned else tr("Buy")
 
 

@@ -3,7 +3,7 @@
 [ext_resource type="Script" uid="uid://5xiefidyn10v" path="res://levels/farm_house_backyard/farm_house_backyard.gd" id="1_ext01"]
 [ext_resource type="PackedScene" uid="uid://bfcmjoltsmsed" path="res://player/player.tscn" id="2_ext02"]
 [ext_resource type="Script" uid="uid://chd8hkfd628j6" path="res://player/player_camera.gd" id="3_ext03"]
-[ext_resource type="PackedScene" path="res://tileset/structures/farm_house/farm_house.tscn" id="3_tdldl"]
+[ext_resource type="Texture2D" uid="uid://bs20qs5iqeam4" path="res://tileset/structures/farm_house/farm_house.png" id="3_tdldl"]
 [ext_resource type="PackedScene" uid="uid://dabxfx3538yx0" path="res://ui/screens/game_screen.tscn" id="4_ext04"]
 [ext_resource type="PackedScene" uid="uid://dnko61n7gbtwq" path="res://ui/screens/death_screen.tscn" id="5_ext05"]
 [ext_resource type="PackedScene" uid="uid://rx3auanfsgp0" path="res://ui/inventory/InventoryUI.tscn" id="6_ext06"]
@@ -21,7 +21,7 @@
 [ext_resource type="PackedScene" uid="uid://c1cg0fctna23d" path="res://levels/checkpoints/checkpoint.tscn" id="18_campfire"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_arena"]
-size = Vector2(130, 200)
+size = Vector2(207, 200)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_arena_wall"]
 size = Vector2(32, 560)
@@ -53,8 +53,13 @@ visible = false
 [node name="Hutch" parent="." instance=ExtResource("9_ext09")]
 position = Vector2(-147, 160)
 
-[node name="FarmHouse" parent="." instance=ExtResource("3_tdldl")]
-position = Vector2(-260, 168)
+[node name="DebriefMark" type="Marker2D" parent="."]
+position = Vector2(-60, 127)
+
+[node name="FarmHouse" type="Sprite2D" parent="."]
+z_index = 20
+position = Vector2(-260, 104)
+texture = ExtResource("3_tdldl")
 
 [node name="HintZoneJump" parent="." instance=ExtResource("8_ext08")]
 position = Vector2(354, 106)
@@ -87,7 +92,7 @@ position = Vector2(2831, 0)
 [node name="Bandit" parent="." instance=ExtResource("11_yx8ks")]
 position = Vector2(1475, 64)
 
-[node name="CoyoteEncounter" type="Area2D" parent="." node_paths=PackedStringArray("coyote", "dialogue_box", "camera")]
+[node name="CoyoteEncounter" type="Area2D" parent="." node_paths=PackedStringArray("coyote", "dialogue_box", "camera", "farmer", "farmer_mark")]
 position = Vector2(2600, -32)
 collision_layer = 0
 collision_mask = 2
@@ -96,9 +101,12 @@ coyote = NodePath("../CactusCoyote")
 dialogue_box = NodePath("DialogueBox")
 dialogue_lines = Array[String](["Spines on a coyote. Hutch wasn't lyin' about somethin' strange out here.", "It's runnin' - but somethin' drove it down out of the hills first.", "Folks in town'll want to hear about this. And I aim to get paid for it."])
 camera = NodePath("../PlayerCamera")
+farmer = NodePath("../Hutch")
+farmer_mark = NodePath("../DebriefMark")
+farmer_lines = Array[String](["Spines? On a coyote? Son, I been runnin' cattle out here thirty years -", "...No. No, I believe you. Whatever put them tracks in my south field weren't no dog.", "Here. Fifteen dollars. Ain't much, but it's what I got, and you earned every cent.", "There's a shaman lives out past the plains - a good ways from anybody. If somethin' walks this country wearin' spines, she'll know its name.", "It's a long ride, though. Go see the town first - talk to folks, get yourself supplied. Then go find her."])
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="CoyoteEncounter"]
-position = Vector2(-510, -20)
+position = Vector2(-548.5, -20)
 shape = SubResource("RectangleShape2D_arena")
 debug_color = Color(0.9, 0.2, 0.2, 0.42)
 

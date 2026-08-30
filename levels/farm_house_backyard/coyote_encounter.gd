@@ -2,8 +2,8 @@ extends Area2D
 
 # Orchestrates the tutorial's closing beat: the player walks in on a cactus coyote eating the
 # remains of one of Hutch's cows, the way back seals behind them, and the fight runs until the
-# coyote is driven off. Then the wall drops, the player says his piece, and the level hands back to
-# the hub.
+# coyote is driven off. Then the wall drops, the player says his piece, the screen fades, and he
+# comes to stood next to Hutch for the debrief that sets up the next job.
 #
 # The approach is staged rather than left to the player: crossing the trigger takes their controls
 # (GameInputEvents.take_scripted_control()) and walks them up to Marker2D, so the read that follows
@@ -15,18 +15,19 @@ extends Area2D
 # reimplemented here rather than reused: BossArena's whole contract is a BossStateController it can
 # call start_boss_fight() on and wait on defeated for, and the coyote is a plain Enemy that flees.
 
-# Waiting and Fight are the resting points - the three between them run off _physics_process and
-# are the only time this holds the player's controls.
-enum Stage { Waiting, Approach, Feeding, Alerting, Fight }
+# Waiting and Fight are the resting points - Approach/Feeding/Alerting run off _physics_process,
+# and those three plus Debrief are the only time this holds the player's controls.
+enum Stage { Waiting, Approach, Feeding, Alerting, Fight, Debrief }
 
 @export var coyote : CactusCoyote
 @export var dialogue_box : DialogueBox
-# Placeholder copy - a role rather than a proper name, since the protagonist has none established
-# in the project yet. Both this and dialogue_lines are meant to be rewritten in the scene.
-@export var speaker_name : String = "Bounty Hunter"
+# The closing line is the player character talking, so it is credited to the name the player
+# entered at the start of the game - DialogueBox swaps the token for it (and would swap one
+# written into a line too). dialogue_lines is placeholder copy, meant to be rewritten in the scene.
+@export var speaker_name : String = DialogueBox.PLAYER_TOKEN
 @export var dialogue_lines : Array[String] = []
-# Where the tutorial hands off once the player has had his say. Keyed into SceneManager.scenes
-# rather than a PackedScene so this stays a level-flow decision made in the scene.
+# Where the tutorial hands off once Hutch has had his say. Keyed into SceneManager.scenes rather
+# than a PackedScene so this stays a level-flow decision made in the scene.
 @export var exit_scene_key : String = "Hub"
 # The level's camera, clamped to the arena wall for the duration of the fight so the framing stops
 # where the player does instead of panning off over ground they can't reach.
@@ -42,6 +43,25 @@ enum Stage { Waiting, Approach, Feeding, Alerting, Fight }
 # Safety net: a walk that can't finish (something in the way, a mark left off the floor) hands the
 # controls back anyway rather than freezing the player mid-cutscene.
 @export var approach_timeout : float = 8.0
+
+@export_category("Farmer Debrief")
+# Hutch, and the spot the player comes to stood next to him. The walk back across the backyard is
+# time the beat has no use for, so the fade covers it and the player wakes up already there.
+@export var farmer : DialogNPC
+@export var farmer_mark : Marker2D
+@export var farmer_lines : Array[String] = []
+# What Hutch presses on him for his trouble. Paid out when the conversation ends rather than
+# mid-sentence, so the number lands after the line that promises it.
+@export var reward_dollars : int = 15
+
+@export_category("Bounty Progress")
+# The contract this whole tutorial belongs to, and the lines it ticks off its checklist as the
+# beat plays out - see scripts/bounties/bounty_stage_data.gd. Ids rather than positions, so the
+# wording on the Bounties tab can be rewritten without touching any of this.
+@export var bounty_id : String = "missing_cattle"
+@export var site_objective_id : String = "reach_attack_site"
+@export var encounter_objective_id : String = "encounter_creature"
+@export var escape_objective_id : String = "creature_escapes"
 
 @onready var mark : Marker2D = get_node_or_null("Marker2D")
 
@@ -89,6 +109,8 @@ func _on_body_entered(body : Node2D) -> void:
 	if _stage != Stage.Waiting or not body.is_in_group("Player"):
 		return
 	set_deferred("monitoring", false)
+	# Reaching the carcass is the first line on the contract, however the fight goes from here.
+	GameStateManager.complete_objective(bounty_id, site_objective_id)
 
 	# Shooting it from outside the zone is a fair opening move, and a fight already under way has
 	# no use for a staged walk-in - seal up and leave the player holding their own controls.
@@ -161,6 +183,7 @@ func _run_feeding(delta : float) -> void:
 		_start_fight()
 		return
 	_stage = Stage.Alerting
+	GameStateManager.complete_objective(bounty_id, encounter_objective_id)
 	coyote.spot_player()
 
 
@@ -202,6 +225,7 @@ func _on_coyote_fled() -> void:
 	# lost, and a player who dies partway through should find it waiting for them, not already
 	# spent.
 	GameStateManager.has_driven_off_coyote = true
+	GameStateManager.complete_objective(bounty_id, escape_objective_id)
 	_start_fight()
 	_seal(false)
 	# DialogueBox extends MenuPopup, which sets InventoryManager.is_open while open - and every
@@ -210,7 +234,80 @@ func _on_coyote_fled() -> void:
 	dialogue_box.show_dialogue(speaker_name, dialogue_lines)
 
 
+# The player has had his say - the beat runs straight on into the debrief rather than handing back
+# to the hub here, so the controls stay off him.
 func _on_dialogue_closed() -> void:
+	if _stage == Stage.Debrief:
+		return
+	_stage = Stage.Debrief
+	GameInputEvents.take_scripted_control()
+	await SceneManager.play_fade_beat(_stand_the_player_with_the_farmer)
+
+	if not is_instance_valid(farmer):
+		_leave_the_backyard()
+		return
+	# One-shot, because this box is Hutch's own and he keeps it for ordinary conversations after
+	# the tutorial is done with him.
+	farmer.dialogue_box.closed.connect(_on_farmer_finished, CONNECT_ONE_SHOT)
+	farmer.speak(farmer_lines)
+
+	# MenuPopup.open() silently refuses while another menu holds InventoryManager.is_open, and
+	# opening the inventory is deliberately never gated - so the player can do exactly that during
+	# the fade. A box that never opened never closes either, and the beat would end with them stood
+	# next to Hutch holding no controls and with nothing to press, so see it out without him.
+	if not farmer.dialogue_box.visible:
+		push_warning("CoyoteEncounter: Hutch's dialogue could not open - ending the debrief without it.")
+		if farmer.dialogue_box.closed.is_connected(_on_farmer_finished):
+			farmer.dialogue_box.closed.disconnect(_on_farmer_finished)
+		_on_farmer_finished()
+
+
+func _stand_the_player_with_the_farmer() -> void:
+	var player = PlayerManager.player
+	if not is_instance_valid(player) or farmer_mark == null:
+		return
+	player.global_position = farmer_mark.global_position
+	player.velocity = Vector2.ZERO
+
+
+func _on_farmer_finished() -> void:
+	CollectibleManager.give_pickup_award(reward_dollars)
+	# Nothing to unlock here any more: driving the coyote off finished the contract's first stage,
+	# so the ride out to the shaman is already the leg the bounty board will send them to. The
+	# money and that progress are both worth keeping if the game closes on the way to town.
+	SaveManager.save_game()
+	_leave_the_backyard()
+
+
+# The leg of the contract this encounter finishes, once it actually is finished - what the summary
+# on the way out reports on. Null while the contract is missing or the leg is still open.
+func completed_stage() -> BountyStageData:
+	var bounty : BountyData = GameStateManager.get_bounty_by_id(bounty_id)
+	if bounty == null:
+		return null
+	var stage : BountyStageData = bounty.find_stage_for_objective(escape_objective_id)
+	if stage == null or not stage.is_complete():
+		return null
+	return stage
+
+
+func _leave_the_backyard() -> void:
+	# Handed back before the transition rather than left to _exit_tree(): if the scene key were ever
+	# wrong, a lock released only on the way out would strand the player with no controls at all.
+	GameInputEvents.release_scripted_control()
+
+	if exit_scene_key == "":
+		# Nowhere to go - a level being run on its own. Don't tear the scene down for a summary
+		# screen that would have nothing to hand back to.
+		return
+
+	var stage := completed_stage()
+	if stage != null:
+		# The summary sees them to town itself once they've read it.
+		UiManager.open_stage_completed_screen(GameStateManager.get_bounty_by_id(bounty_id), stage, \
+			reward_dollars, exit_scene_key)
+		return
+
 	SceneManager.transition_to_scene_faded(exit_scene_key)
 
 

@@ -71,6 +71,8 @@ func _ready():
 	create_bounty_ui()
 	GameStateManager.bounty_unlocked.connect(_on_bounty_state_changed)
 	GameStateManager.bounty_completed.connect(_on_bounty_state_changed)
+	GameStateManager.bounty_objective_completed.connect(_on_bounty_objective_changed)
+	GameStateManager.bounty_stage_completed.connect(_on_bounty_objective_changed)
 	GameStateManager.region_unlocked.connect(_on_bounty_state_changed)
 
 	create_quests_ui()
@@ -267,6 +269,14 @@ func _on_bounty_state_changed(_data = null):
 	create_bounty_ui()
 
 
+# Objective/stage progress keeps whichever bounty is open on screen rather than resetting the
+# panel to "Select a bounty" - the player is most likely reading the page it just changed.
+func _on_bounty_objective_changed(bounty : BountyData, _detail = null):
+	create_bounty_ui()
+	if bounty != null:
+		_on_bounty_entry_selected(bounty)
+
+
 func create_bounty_ui():
 	for child in bounty_list_container.get_children():
 		child.queue_free()
@@ -285,7 +295,14 @@ func create_bounty_ui():
 		header.modulate = Color(1, 1, 1) if region.unlocked else Color(0.6, 0.6, 0.6)
 		bounty_list_container.add_child(header)
 
-		var region_bounties : Array[BountyData] = GameStateManager.get_bounties_for_region(region.id)
+		# Only what has actually been posted to the player. A bounty they haven't been given yet is
+		# left off the page entirely rather than listed greyed-out: a name on the journal is how they
+		# find out a job exists, so showing the ones still to come gives away what's coming.
+		var region_bounties : Array[BountyData] = []
+		for bounty in GameStateManager.get_bounties_for_region(region.id):
+			if bounty.unlocked:
+				region_bounties.append(bounty)
+
 		if region_bounties.is_empty():
 			var empty_label := Label.new()
 			empty_label.text = tr("No bounties posted yet.")
@@ -305,9 +322,62 @@ func create_bounty_ui():
 func _on_bounty_entry_selected(bounty : BountyData):
 	bounty_title_label.text = tr(bounty.title)
 	bounty_status_label.text = tr(bounty.get_status_text())
-	bounty_description_label.text = tr(bounty.description) if bounty.description != "" else tr("No details available yet.")
+	bounty_description_label.text = _build_bounty_details(bounty)
 	bounty_detail_icon.texture = bounty.icon if bounty.icon else default_bounty_icon
 	bounty_detail_icon.self_modulate = Color.WHITE if bounty.completed else Color.BLACK
+
+
+# The reward, then the description, then the stages with their objectives ticked off. Written into
+# the existing description label rather than built out of nodes: it is a checklist of a dozen short
+# lines, and text keeps it wrapping and scrolling the way the panel already handles.
+func _build_bounty_details(bounty : BountyData) -> String:
+	var sections : Array[String] = []
+
+	if bounty.reward_dollars > 0:
+		sections.append(tr("Reward: $%d") % bounty.reward_dollars)
+
+	if bounty.description != "":
+		sections.append(tr(bounty.description))
+
+	var checklist := _build_stage_checklist(bounty)
+	if checklist != "":
+		sections.append(checklist)
+
+	if sections.is_empty():
+		return tr("No details available yet.")
+	return "
+
+".join(sections)
+
+
+func _build_stage_checklist(bounty : BountyData) -> String:
+	if bounty.stages.is_empty():
+		return ""
+
+	var current_stage := bounty.get_current_stage()
+	var lines : Array[String] = []
+	for i in bounty.stages.size():
+		var stage : BountyStageData = bounty.stages[i]
+		# A stage the player hasn't reached yet is named but not itemised - the objectives of a leg
+		# they haven't started would give away beats they should be walking into.
+		var reached : bool = stage.is_complete() or stage == current_stage
+		lines.append("%s %d. %s" % [_marker(stage.is_complete(), stage == current_stage), i + 1, tr(stage.title)])
+		if not reached:
+			continue
+		for objective in stage.objectives:
+			lines.append("     %s %s" % [_marker(objective.completed, false), tr(objective.text)])
+
+	return "
+".join(lines)
+
+
+# Plain text markers rather than icons, since this is one label - done, in hand, not started yet.
+func _marker(is_done : bool, is_current : bool) -> String:
+	if is_done:
+		return "[x]"
+	if is_current:
+		return "[>]"
+	return "[ ]"
 
 
 func _on_quest_state_changed(_data = null):

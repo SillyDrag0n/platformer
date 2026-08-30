@@ -3,7 +3,7 @@ extends NPC
 
 @export var speaker_name : String = "Old Timer"
 @export var dialogue_lines : Array[String] = []
-@export var bounty_to_unlock_id : String = "tutorial_missing_cattle"
+@export var bounty_to_unlock_id : String = "missing_cattle"
 @export var greet_delay_seconds : float = 1.0
 
 @onready var dialogue_box : DialogueBox = $DialogueBox

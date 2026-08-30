@@ -1,11 +1,12 @@
 extends GutTest
 
 # Coverage for WelcomeNPC (npc/welcome_npc.gd) - the hub NPC that auto-greets a first-time player
-# and unlocks the tutorial bounty once its dialogue is closed. GameStateManager's bounty list and
-# InventoryManager.is_open are real singleton state, so before/after_each save and restore them.
+# and puts the game's first bounty on the board once its dialogue is closed. GameStateManager's
+# bounty list and InventoryManager.is_open are real singleton state, so before/after_each save and
+# restore them.
 
 const WelcomeNpcScene = preload("res://npc/WelcomeNPC.tscn")
-const BOUNTY_ID := "tutorial_missing_cattle"
+const BOUNTY_ID := "missing_cattle"
 
 var _original_unlocked : bool
 

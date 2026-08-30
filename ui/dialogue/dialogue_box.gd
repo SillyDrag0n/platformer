@@ -3,6 +3,13 @@ extends MenuPopup
 
 signal line_shown(line_index : int)
 
+# Anything the player character says is credited to the name the player entered at the start of
+# the game (PlayerManager.player_name), not to a hard-coded one - a scene asks for that by using
+# this token as the speaker. Kept as a token rather than having callers read PlayerManager
+# themselves so it can be dropped inside a line as well ("Name's {player}."), and so it survives
+# tr(): substitution runs after translation, so a translated string keeps its own {player} slot.
+const PLAYER_TOKEN := "{player}"
+
 @export var speaker_label : Label
 @export var text_label : Label
 @export var continue_button : Button
@@ -17,6 +24,12 @@ var _on_yes : Callable
 var _on_no : Callable
 
 
+# Translates a piece of dialogue and fills in who the player is. Everything the box puts on screen
+# goes through here rather than tr() directly, so the token works wherever text does.
+func _resolve(text : String) -> String:
+	return tr(text).replace(PLAYER_TOKEN, PlayerManager.get_display_name())
+
+
 func show_dialogue(speaker_name : String, dialogue_lines : Array[String]) -> void:
 	if dialogue_lines.is_empty():
 		return
@@ -24,13 +37,13 @@ func show_dialogue(speaker_name : String, dialogue_lines : Array[String]) -> voi
 	continue_button.show()
 	choice_buttons.hide()
 
-	speaker_label.text = tr(speaker_name)
+	speaker_label.text = _resolve(speaker_name)
 	# map()'s return value is always a plain untyped Array (its callback could return anything),
 	# even when called on an Array[String] - assigning that straight into lines (Array[String])
 	# is what threw "Trying to assign an array of type 'Array' to a variable of type
 	# 'Array[String]'" here. Array.assign() copies elements in while enforcing the receiving
 	# array's own type, which a plain `=` assignment doesn't.
-	lines.assign(dialogue_lines.map(func(line): return tr(line)))
+	lines.assign(dialogue_lines.map(func(line): return _resolve(line)))
 	line_index = 0
 	_refresh_current_line()
 	open()
@@ -47,8 +60,8 @@ func show_choice(speaker_name : String, line : String, yes_text : String, no_tex
 	_on_yes = on_yes
 	_on_no = on_no
 
-	speaker_label.text = tr(speaker_name)
-	text_label.text = tr(line)
+	speaker_label.text = _resolve(speaker_name)
+	text_label.text = _resolve(line)
 	open()
 
 

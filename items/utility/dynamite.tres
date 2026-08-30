@@ -1,6 +1,6 @@
 [gd_resource type="Resource" script_class="ThrowableItemData" load_steps=3 format=3 uid="uid://d3wludyvbhee1"]
 
-[ext_resource type="Texture2D" uid="uid://c3afnfbaafsk1" path="res://items/utility/dynamite.png" id="1_c0hqf"]
+[ext_resource type="Texture2D" uid="uid://jngihnxlog6k" path="res://items/utility/dynamite.png" id="1_c0hqf"]
 [ext_resource type="Script" uid="uid://cns65ici21k7h" path="res://scripts/items/throwable_item_data.gd" id="1_throwable"]
 
 [resource]
@@ -15,4 +15,5 @@ display_name = "Dynamite"
 description = "A lit stick of dynamite. Throw it and take cover - it explodes shortly after the fuse is lit, dealing heavy damage to anything caught in the blast (yourself included) and shattering weak terrain nearby."
 max_stack_size = 3
 icon = ExtResource("1_c0hqf")
-price = 15
+price = 18
+purchase_quantity = 3

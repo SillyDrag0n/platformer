@@ -56,3 +56,20 @@ func test_has_driven_off_coyote_survives_a_save_and_load_round_trip():
 	assert_true(GameStateManager.has_driven_off_coyote, \
 		"loading a save made after the coyote was run off should restore the flag, so the " + \
 		"fight can't be re-staged")
+
+
+# Money used to be picked up off the ground only, so losing it on a restart cost the player
+# nothing they'd notice. Story beats hand it out now - Hutch pays for the coyote job - so it has
+# to survive the trip.
+func test_dollars_survive_a_save_and_load_round_trip():
+	var original_dollars : int = CollectibleManager.total_award_amount
+
+	CollectibleManager.total_award_amount = 15
+	SaveManager.save_game()
+	CollectibleManager.total_award_amount = 0
+	SaveManager.load_game()
+
+	assert_eq(CollectibleManager.total_award_amount, 15, \
+		"what the farmer paid should still be in the player's pocket after a restart")
+
+	CollectibleManager.total_award_amount = original_dollars

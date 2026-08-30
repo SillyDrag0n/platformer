@@ -6,6 +6,7 @@ signal selected(bounty : BountyData)
 const STATUS_COLORS := {
 	"Locked": Color(0.6, 0.6, 0.6),
 	"Available": Color(1, 1, 1),
+	"In Progress": Color(0.96, 0.62, 0.16),
 	"Completed": Color(0.45, 0.85, 0.45),
 }
 
@@ -37,7 +38,12 @@ func set_bounty_data(new_bounty : BountyData):
 	icon_rect.self_modulate = Color.WHITE if bounty.completed else Color.BLACK
 
 	var status_text := bounty.get_status_text()
-	status_label.text = tr(status_text)
+	# A job being worked shows which leg of it is in hand, so the list says how far along the
+	# player is without them having to open the bounty to find out.
+	if status_text == "In Progress" and not bounty.stages.is_empty():
+		status_label.text = "%s (%d/%d)" % [tr(status_text), bounty.get_current_stage_index() + 1, bounty.stages.size()]
+	else:
+		status_label.text = tr(status_text)
 	status_label.modulate = STATUS_COLORS.get(status_text, Color.WHITE)
 
 	modulate.a = 1.0 if bounty.unlocked else 0.5

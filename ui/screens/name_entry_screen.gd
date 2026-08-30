@@ -1,7 +1,5 @@
 extends CanvasLayer
 
-const DEFAULT_NAME := "Stranger"
-
 # Alphabetical rather than QWERTY - a reading-order grid is easier to reason about with
 # directional D-pad input than hunting across a staggered keyboard layout. Symbols are limited to
 # ones that actually show up in names/nicknames (hyphen, apostrophe, period, underscore) rather
@@ -42,8 +40,7 @@ func _input(event : InputEvent) -> void:
 # resolution logic is testable without also triggering that function's scene transition.
 func _resolve_entered_name() -> String:
 	var entered_name := name_input.text.strip_edges()
-	return entered_name if entered_name != "" else DEFAULT_NAME
-
+	return entered_name if entered_name != "" else PlayerManager.DEFAULT_NAME
 
 func _on_confirm_button_pressed():
 	PlayerManager.player_name = _resolve_entered_name()

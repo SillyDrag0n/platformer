@@ -1,4 +1,4 @@
-[gd_scene load_steps=58 format=3 uid="uid://bfcmjoltsmsed"]
+[gd_scene load_steps=55 format=3 uid="uid://bfcmjoltsmsed"]
 
 [ext_resource type="Script" uid="uid://bw7oflms0slfo" path="res://player/player.gd" id="1_wqxfn"]
 [ext_resource type="Texture2D" uid="uid://2gu7psnfksko" path="res://player/sprites/head.png" id="2_knn7v"]
@@ -34,9 +34,6 @@
 [ext_resource type="Script" uid="uid://dpjyffvpuroeb" path="res://player/cosmetics_listener.gd" id="34_cosmetics"]
 [ext_resource type="Script" uid="uid://jda0f8jfrm8m" path="res://player/dynamite/dynamite_thrower.gd" id="40_dynamitethrower"]
 [ext_resource type="Script" uid="uid://cdh7lrs2js7c1" path="res://player/utility/utility_selector.gd" id="41_utilityselector"]
-[ext_resource type="Resource" uid="uid://d3wludyvbhee1" path="res://items/utility/dynamite.tres" id="42_dynamite_item"]
-[ext_resource type="Resource" path="res://items/utility/spirit.tres" id="43_spirit_item"]
-[ext_resource type="Script" uid="uid://dixqogvvhibvo" path="res://scripts/items/utility_item_data.gd" id="44_utilityitemdata"]
 [ext_resource type="AudioStream" uid="uid://b6cxel756b81f" path="res://player/utility/sounds/spirit_drink.wav" id="45_spiritdrinksound"]
 [ext_resource type="Script" uid="uid://bnso0mph1tb11" path="res://addons/soupik/modifications/soup_two_bone_ik.gd" id="46_soupik"]
 [ext_resource type="Script" uid="uid://b4u1tvhlw4d2g" path="res://addons/soupik/modifications/soup_look_at.gd" id="47_soup_look_at"]
@@ -830,7 +827,6 @@ default_color = Color(1, 0.45, 0.15, 0.85)
 
 [node name="UtilitySelector" type="Node" parent="."]
 script = ExtResource("41_utilityselector")
-default_utility_items = Array[ExtResource("44_utilityitemdata")]([ExtResource("42_dynamite_item"), ExtResource("43_spirit_item")])
 
 [node name="SpiritDrink" type="AudioStreamPlayer" parent="UtilitySelector"]
 stream = ExtResource("45_spiritdrinksound")

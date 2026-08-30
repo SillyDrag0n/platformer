@@ -8,6 +8,16 @@ func _ready() -> void:
 	visible = false
 
 
+# InventoryManager.is_open is shared state on an autoload, so a menu that goes away while it is
+# still up - a scene change while a dialogue is open, a level reload - would leave every input
+# getter gated for good: the next scene starts with the player unable to move, and no menu left on
+# screen to close and clear it.
+func _exit_tree() -> void:
+	if visible:
+		visible = false
+		InventoryManager.is_open = false
+
+
 func _process(_delta) -> void:
 	if visible and Input.is_action_just_pressed("ui_cancel"):
 		close()

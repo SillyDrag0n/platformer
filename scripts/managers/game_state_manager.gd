@@ -2,6 +2,10 @@ extends Node
 
 signal bounty_unlocked(bounty: BountyData)
 signal bounty_completed(bounty: BountyData)
+# A single line ticked off the bounty's checklist, and the leg of the job it finished. The
+# inventory's Bounties tab listens to both so the page updates while the player is out working.
+signal bounty_objective_completed(bounty: BountyData, objective: BountyObjectiveData)
+signal bounty_stage_completed(bounty: BountyData, stage: BountyStageData)
 signal region_unlocked(region: RegionData)
 
 @export var bounties: Array[BountyData]
@@ -139,9 +143,44 @@ func set_active_bounty(bounty: BountyData):
 	active_bounty = bounty
 
 
+# Takes the player to the leg of the job they are actually on, so accepting a part-finished bounty
+# picks up where they left off instead of replaying its first level.
 func load_active_bounty_level():
-	if active_bounty and active_bounty.level_scene:
-		SceneManager.transition_to_packed_scene(active_bounty.level_scene)
+	if active_bounty == null:
+		return
+	var scene : PackedScene = active_bounty.get_current_level_scene()
+	if scene != null:
+		SceneManager.transition_to_packed_scene(scene)
+
+
+# Ticks one line off a bounty's checklist. Idempotent, so a level re-entered (or an NPC talked to
+# twice) can call it again without disturbing progress. Finishing the last objective finishes the
+# bounty itself - a staged bounty has no other completion condition.
+func complete_objective(bounty_id: String, objective_id: String) -> void:
+	var bounty := get_bounty_by_id(bounty_id)
+	if bounty == null:
+		return
+	var objective := bounty.find_objective(objective_id)
+	if objective == null or objective.completed:
+		return
+
+	objective.completed = true
+	bounty_objective_completed.emit(bounty, objective)
+
+	var stage := bounty.find_stage_for_objective(objective_id)
+	if stage != null and stage.is_complete():
+		bounty_stage_completed.emit(bounty, stage)
+
+	if bounty.all_objectives_complete() and not bounty.completed:
+		complete_bounty(bounty.id)
+
+
+func is_objective_completed(bounty_id: String, objective_id: String) -> bool:
+	var bounty := get_bounty_by_id(bounty_id)
+	if bounty == null:
+		return false
+	var objective := bounty.find_objective(objective_id)
+	return objective != null and objective.completed
 
 
 func clear_active_bounty():
@@ -159,6 +198,8 @@ func give_bounty_reward():
 		return
 
 	active_bounty.reward_claimed = true
+	if active_bounty.reward_dollars > 0:
+		CollectibleManager.give_pickup_award(active_bounty.reward_dollars)
 	for reward in active_bounty.rewards:
 		InventoryManager.add_item(reward)
 	for ability in active_bounty.ability_rewards:

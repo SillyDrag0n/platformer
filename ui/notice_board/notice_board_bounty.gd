@@ -34,6 +34,11 @@ func grab_focus_button() -> void:
 	$SelectButton.grab_focus()
 
 
+# The poster's own focusable control, for BountyBoard to wire its neighbours by hand.
+func get_focus_button() -> Button:
+	return $SelectButton
+
+
 func set_interactive(enabled: bool) -> void:
 	$SelectButton.disabled = not enabled
 	$SelectButton.mouse_filter = Control.MOUSE_FILTER_STOP if enabled else Control.MOUSE_FILTER_IGNORE

@@ -54,7 +54,7 @@ label_settings = SubResource("LabelSettings_title")
 
 [node name="CurrencyLabel" type="Label" parent="Panel/MarginContainer/VBoxContainer/HeaderRow"]
 layout_mode = 2
-text = "Gold: 0"
+text = "Dollars: 0"
 label_settings = SubResource("LabelSettings_title")
 vertical_alignment = 1
 

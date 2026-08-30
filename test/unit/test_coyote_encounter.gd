@@ -11,21 +11,58 @@ extends GutTest
 const BackyardScene = preload("res://levels/farm_house_backyard/farm_house_backyard.tscn")
 
 var _original_flag : bool
+var _original_dollars : int
+# The Missing Cattle contract is a shared resource GameStateManager ticks off in place, so its
+# checklist is wound back to where each test found it - otherwise the first test to drive the
+# encounter leaves every later one starting mid-job.
+var _original_objectives : Dictionary
+var _original_bounty_completed : bool
+var _real_save_path : String
+var _real_save_file_name : String
 
 
 func before_each():
 	_original_flag = GameStateManager.has_driven_off_coyote
+	_original_dollars = CollectibleManager.total_award_amount
+	_original_objectives = {}
+	var bounty := GameStateManager.get_bounty_by_id("missing_cattle")
+	_original_bounty_completed = bounty.completed
+	bounty.completed = false
+	for stage in bounty.stages:
+		for objective in stage.objectives:
+			_original_objectives[objective.id] = objective.completed
+			objective.completed = false
 	GameStateManager.has_driven_off_coyote = false
 	InventoryManager.is_open = false
 	# The scripted-control lock is static state on an autoload, so a test that leaves it set would
 	# silently freeze the player in every test script that runs after this one.
 	GameInputEvents.release_scripted_control()
 
+	# The debrief saves the game when Hutch is done paying up, and SaveManager points at the
+	# player's real save file - redirected to scratch so a test run can never touch it. Same guard
+	# test_save_manager.gd uses.
+	_real_save_path = SaveManager.save_path
+	_real_save_file_name = SaveManager.save_file_name
+	SaveManager.save_path = "user://test_scratch/"
+	SaveManager.save_file_name = "test_save_data.tres"
+
 
 func after_each():
 	GameStateManager.has_driven_off_coyote = _original_flag
+	CollectibleManager.total_award_amount = _original_dollars
+	var bounty := GameStateManager.get_bounty_by_id("missing_cattle")
+	bounty.completed = _original_bounty_completed
+	for stage in bounty.stages:
+		for objective in stage.objectives:
+			objective.completed = _original_objectives.get(objective.id, false)
 	InventoryManager.is_open = false
 	GameInputEvents.release_scripted_control()
+
+	var scratch_save := SaveManager.save_path + SaveManager.save_file_name
+	if FileAccess.file_exists(scratch_save):
+		DirAccess.remove_absolute(scratch_save)
+	SaveManager.save_path = _real_save_path
+	SaveManager.save_file_name = _real_save_file_name
 
 
 # Asks the physics world, not the wall's `disabled` flag. Assigning that flag from inside a physics
@@ -253,6 +290,9 @@ func test_driving_the_coyote_off_opens_the_arena_and_plays_the_closing_line():
 	assert_false(GameInputEvents.scripted_control, \
 		"and the encounter isn't still steering the player when the fight ends")
 	assert_true(encounter.dialogue_box.visible, "the player says his piece before the level ends")
+	assert_eq(encounter.dialogue_box.speaker_label.text, PlayerManager.get_display_name(), \
+		"and he says it under the name the player entered at the start of the game, since the " + \
+		"closing line is the player character talking")
 	assert_true(GameStateManager.has_driven_off_coyote, \
 		"and the encounter is spent for good once the coyote is actually run off")
 
@@ -392,3 +432,135 @@ func test_dying_hands_the_camera_back_too():
 		"respawning at the campfire shouldn't leave the camera still boxed into an arena the " + \
 		"player is stood well outside of")
 	assert_eq(camera.limit_right, open_right)
+
+
+# The tutorial doesn't end on the player's closing line any more: the screen fades, and he comes to
+# stood next to Hutch for the debrief that hands out the pay and points at the next job.
+func test_the_closing_line_fades_the_player_over_to_the_farmer():
+	var backyard := _make_backyard()
+	await wait_physics_frames(1)
+
+	var encounter = backyard.get_node("CoyoteEncounter")
+	var player : CharacterBody2D = backyard.get_node("Player")
+	var mark : Marker2D = backyard.get_node("DebriefMark")
+
+	encounter._on_body_entered(player)
+	encounter._on_coyote_fled()
+	await wait_frames(2)
+	# The player clicking through the last of his own lines is what starts the debrief.
+	encounter.dialogue_box.close()
+	# Long enough for the fade out, the hold on black and the fade back in.
+	await wait_seconds(1.8)
+
+	assert_almost_eq(player.global_position.x, mark.global_position.x, 8.0, \
+		"he comes to stood next to Hutch - the walk back across the backyard is time this beat " + \
+		"has no use for")
+	assert_true(GameInputEvents.scripted_control, \
+		"and the controls are still off him: there's nothing to do here but talk")
+	assert_true(encounter.farmer.dialogue_box.visible, \
+		"Hutch starts talking on his own rather than waiting to be interacted with")
+	assert_eq(encounter.farmer.dialogue_box.speaker_label.text, "Hutch", \
+		"and it's the farmer talking, through his own dialogue box")
+
+
+func test_the_farmer_pays_up_for_the_trouble():
+	var backyard := _make_backyard()
+	await wait_physics_frames(1)
+
+	var encounter = backyard.get_node("CoyoteEncounter")
+	# Nowhere to go on the way out: a real scene key would swap the whole test scene out from
+	# under the runner when the debrief ends.
+	encounter.exit_scene_key = ""
+	var before_dollars : int = CollectibleManager.total_award_amount
+
+	encounter._on_farmer_finished()
+	await wait_frames(2)
+
+	assert_eq(CollectibleManager.total_award_amount, before_dollars + encounter.reward_dollars, \
+		"Hutch presses fifteen dollars on him for his trouble - separate from what the contract " + \
+		"itself pays when the whole job is done")
+	assert_false(GameInputEvents.scripted_control, \
+		"the player gets his controls back once the conversation is over")
+
+
+# The tutorial is the first leg of the one Missing Cattle contract, so its beats tick that
+# contract's checklist off rather than opening a second bounty.
+func test_the_encounter_ticks_off_the_first_stage_of_the_contract():
+	var backyard := _make_backyard()
+	await wait_physics_frames(1)
+
+	var encounter = backyard.get_node("CoyoteEncounter")
+	var bounty := GameStateManager.get_bounty_by_id("missing_cattle")
+	encounter.feeding_beat = 0.0
+
+	assert_eq(bounty.get_current_stage().id, "investigate", \
+		"the job starts on its first leg")
+
+	await _walk_into_the_zone(backyard)
+	assert_true(GameStateManager.is_objective_completed("missing_cattle", "reach_attack_site"), \
+		"reaching the carcass is the first line on the contract")
+
+	await _stand_on_the_mark(backyard)
+	assert_true(GameStateManager.is_objective_completed("missing_cattle", "encounter_creature"), \
+		"and the coyote turning on them is the second")
+
+	encounter._on_coyote_fled()
+	await wait_frames(2)
+
+	assert_true(GameStateManager.is_objective_completed("missing_cattle", "creature_escapes"), \
+		"the fight ends with it running, which is the third")
+	assert_eq(bounty.get_current_stage().id, "seek_the_shaman", \
+		"so the job moves on to the ride out to the shaman")
+	assert_false(bounty.completed, \
+		"but the contract itself is a long way from done - the coyote is still out there")
+
+
+# The one way this beat could strand the player: MenuPopup.open() silently refuses while another
+# menu holds InventoryManager.is_open, and opening the inventory is deliberately never gated - so
+# the player can open it during the fade. A farmer's box that never opened never closes either,
+# which is what would end the beat.
+func test_the_debrief_finishes_even_if_the_farmer_cannot_get_a_word_in():
+	var backyard := _make_backyard()
+	await wait_physics_frames(1)
+
+	var encounter = backyard.get_node("CoyoteEncounter")
+	encounter.exit_scene_key = ""
+	var before_dollars : int = CollectibleManager.total_award_amount
+
+	encounter._on_body_entered(backyard.get_node("Player"))
+	encounter._on_coyote_fled()
+	await wait_frames(2)
+	encounter.dialogue_box.close()
+
+	# Whatever the player did with the fade covering it, something else holds the menu flag by the
+	# time Hutch tries to speak.
+	InventoryManager.is_open = true
+	await wait_seconds(1.8)
+
+	assert_false(encounter.farmer.dialogue_box.visible, "his box never got to open")
+	assert_eq(CollectibleManager.total_award_amount, before_dollars + encounter.reward_dollars, \
+		"but the beat still pays out")
+	assert_false(GameInputEvents.scripted_control, \
+		"and still hands the controls back, rather than leaving the player stood there with " + \
+		"nothing to press")
+
+
+func test_the_encounter_knows_which_leg_of_the_contract_it_finished():
+	var backyard := _make_backyard()
+	await wait_physics_frames(1)
+
+	var encounter = backyard.get_node("CoyoteEncounter")
+	assert_null(encounter.completed_stage(), \
+		"nothing to summarise while the coyote is still on the carcass")
+
+	encounter._on_body_entered(backyard.get_node("Player"))
+	encounter.feeding_beat = 0.0
+	await _walk_into_the_zone(backyard)
+	await _stand_on_the_mark(backyard)
+	encounter._on_coyote_fled()
+	await wait_frames(2)
+
+	var stage = encounter.completed_stage()
+	assert_not_null(stage, "with the coyote run off, the investigation is done")
+	assert_eq(stage.id, "investigate", \
+		"and that's the leg the summary screen on the way out reports on")

@@ -3,6 +3,11 @@ extends Resource
 
 @export var player_name : String = ""
 
+# Money in hand (CollectibleManager.total_award_amount). Kept in the save because it is now
+# handed out by story beats - Hutch pays for the coyote job - and not only picked up off the
+# ground, so losing it on a restart would take a reward with it.
+@export var dollars : int = 0
+
 # Item ownership/equipment is saved as resource paths rather than the resources themselves -
 # ItemData/WeaponItemData/etc. are shared content templates (authored .tres files), not
 # per-save data, so a save file only needs to remember *which* ones the player has.

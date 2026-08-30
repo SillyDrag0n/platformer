@@ -150,11 +150,12 @@ script = ExtResource("9_axxec")
 character_body_2d = NodePath("../..")
 animated_sprite_2d = NodePath("../../AnimatedSprite2D")
 
-[node name="Reload" type="Node" parent="StateMachine" node_paths=PackedStringArray("character_body_2d", "animated_sprite_2d", "hurtbox_collision_shape")]
+[node name="Reload" type="Node" parent="StateMachine" node_paths=PackedStringArray("character_body_2d", "animated_sprite_2d", "hurtbox_collision_shape", "collision_shape")]
 script = ExtResource("10_reload")
 character_body_2d = NodePath("../..")
 animated_sprite_2d = NodePath("../../AnimatedSprite2D")
 hurtbox_collision_shape = NodePath("../../Hurtbox/CollisionShape2D")
+collision_shape = NodePath("../../CollisionShape2D")
 
 [node name="Chase" type="Node" parent="StateMachine" node_paths=PackedStringArray("character_body_2d", "animated_sprite_2d", "chase_timer")]
 script = ExtResource("11_ct5ms")
