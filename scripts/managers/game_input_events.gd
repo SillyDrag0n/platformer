@@ -9,8 +9,12 @@ const AIM_DEADZONE := 0.2
 # How fast last_aim_direction turns to follow the stick, in radians/second. This is what the
 # "Aim Sensitivity" setting actually controls: low sensitivity turns slowly (aim lags behind a
 # quick flick, feels heavy), high sensitivity turns almost instantly.
-const AIM_TURN_SPEED_MIN := 5.0
-const AIM_TURN_SPEED_MAX := 50.0
+#
+# The floor is deliberately low enough to feel like dragging a heavy gun around. The ceiling only
+# has to be past "instant" - at 60 rad/s a full 180 turn takes about three frames, and anything
+# faster is the same thing to a player.
+const AIM_TURN_SPEED_MIN := 2.0
+const AIM_TURN_SPEED_MAX := 60.0
 
 # 0 = least sensitive, 1 = most sensitive. Set by SettingsManager from the saved settings.
 static var aim_sensitivity : float = 0.5
@@ -73,9 +77,29 @@ func _process(delta : float) -> void:
 	if stick.length() == 0.0:
 		return
 
-	var turn_speed := lerpf(AIM_TURN_SPEED_MIN, AIM_TURN_SPEED_MAX, clampf(aim_sensitivity, 0.0, 1.0))
-	var new_angle := rotate_toward(last_aim_direction.angle(), stick.angle(), turn_speed * delta)
+	var new_angle := rotate_toward(last_aim_direction.angle(), stick.angle(), aim_turn_speed() * delta)
 	last_aim_direction = Vector2.from_angle(new_angle)
+
+
+# Turn rate for the current sensitivity setting, in radians/second.
+#
+# Geometric rather than linear across the slider, because turn *rate* is not what a player feels -
+# they feel how long the flick takes, which is its reciprocal. A straight lerp between the ends put
+# the halfway mark at 31 rad/s: a 180 turn in a tenth of a second, already indistinguishable from
+# instant, so the whole top half of the slider felt identical and the setting read as doing
+# nothing. Geometrically, each quarter of the slider roughly halves the time a turn takes, which
+# spreads "heavy" to "instant" across the entire travel:
+#
+#   0.00 ->  2 rad/s  (a 180 turn takes ~1.6s - dragging a heavy gun around)
+#   0.25 ->  5 rad/s  (~0.7s)
+#   0.50 -> 11 rad/s  (~0.3s)
+#   0.75 -> 26 rad/s  (~0.12s)
+#   1.00 -> 60 rad/s  (~0.05s - instant)
+#
+# Controller only. Mouse aim points at the cursor, so there is no rate to tune - see aim_input().
+static func aim_turn_speed() -> float:
+	var t := clampf(aim_sensitivity, 0.0, 1.0)
+	return AIM_TURN_SPEED_MIN * pow(AIM_TURN_SPEED_MAX / AIM_TURN_SPEED_MIN, t)
 
 
 # Movement (left stick / A-D) and aiming (right stick / mouse) are read independently, so the

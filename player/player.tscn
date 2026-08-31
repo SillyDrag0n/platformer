@@ -1,4 +1,4 @@
-[gd_scene load_steps=55 format=3 uid="uid://bfcmjoltsmsed"]
+[gd_scene load_steps=57 format=3 uid="uid://bfcmjoltsmsed"]
 
 [ext_resource type="Script" uid="uid://bw7oflms0slfo" path="res://player/player.gd" id="1_wqxfn"]
 [ext_resource type="Texture2D" uid="uid://2gu7psnfksko" path="res://player/sprites/head.png" id="2_knn7v"]
@@ -19,6 +19,8 @@
 [ext_resource type="Texture2D" uid="uid://y0dtxxawr2h1" path="res://player/sprites/foot_left.png" id="13_1s1yo"]
 [ext_resource type="AudioStream" uid="uid://bj88b7g0wecun" path="res://player/gun/sounds/gun_reload.ogg" id="13_x7c3f"]
 [ext_resource type="AudioStream" uid="uid://xm3a3n2o77g6" path="res://player/gun/sounds/gun_empty.ogg" id="14_bjvpn"]
+[ext_resource type="AudioStream" uid="uid://bp36mjtbl2ap" path="res://ui/sounds/ui_confirm.wav" id="15_arhit"]
+[ext_resource type="AudioStream" uid="uid://ikhhfkmakmmg" path="res://ui/sounds/ui_cancel.wav" id="16_armiss"]
 [ext_resource type="PackedScene" uid="uid://b5urwtxvwwkpo" path="res://interaction_component/interacting_component.tscn" id="23_s7qer"]
 [ext_resource type="Script" uid="uid://cibnp7clyrl0j" path="res://player/grapple/grapple_hook.gd" id="24_ghook"]
 [ext_resource type="Script" uid="uid://bh1k42yf6mcto" path="res://player/player_states/grapple_state.gd" id="25_gstate"]
@@ -804,19 +806,26 @@ grow_vertical = 1
 wait_time = 1.5
 one_shot = true
 
-[node name="GunShot01" type="AudioStreamPlayer" parent="Gun"]
-bus = &"SFX"
+[node name="GunShot01" type="AudioStreamPlayer" parent="Gun" groups=["SFX"]]
 stream = ExtResource("12_65viv")
 volume_db = -5.0
 
-[node name="GunReload" type="AudioStreamPlayer" parent="Gun"]
-bus = &"SFX"
+[node name="GunReload" type="AudioStreamPlayer" parent="Gun" groups=["SFX"]]
 stream = ExtResource("13_x7c3f")
 volume_db = -5.0
 
-[node name="GunEmpty" type="AudioStreamPlayer" parent="Gun"]
-bus = &"SFX"
+[node name="GunEmpty" type="AudioStreamPlayer" parent="Gun" groups=["SFX"]]
 stream = ExtResource("14_bjvpn")
+
+[node name="ActiveReloadHit" type="AudioStreamPlayer" parent="Gun" groups=["SFX"]]
+stream = ExtResource("15_arhit")
+volume_db = -3.0
+pitch_scale = 1.4
+
+[node name="ActiveReloadMiss" type="AudioStreamPlayer" parent="Gun" groups=["SFX"]]
+stream = ExtResource("16_armiss")
+volume_db = -6.0
+pitch_scale = 0.85
 
 [node name="DynamiteThrower" type="Node2D" parent="."]
 script = ExtResource("40_dynamitethrower")
@@ -831,8 +840,7 @@ default_color = Color(1, 0.45, 0.15, 0.85)
 [node name="UtilitySelector" type="Node" parent="."]
 script = ExtResource("41_utilityselector")
 
-[node name="SpiritDrink" type="AudioStreamPlayer" parent="UtilitySelector"]
-bus = &"SFX"
+[node name="SpiritDrink" type="AudioStreamPlayer" parent="UtilitySelector" groups=["SFX"]]
 stream = ExtResource("45_spiritdrinksound")
 
 [node name="GrappleHook" type="Node2D" parent="."]
@@ -931,8 +939,7 @@ foot_l_sprite = NodePath("../Animation/Bones/Skeleton2D/Hip/LegL/ShinL/FootL/Foo
 footstep_player = NodePath("FootstepPlayer")
 footstep_sounds = Array[AudioStream]([ExtResource("49_footstep1"), ExtResource("50_footstep2"), ExtResource("51_footstep3")])
 
-[node name="FootstepPlayer" type="AudioStreamPlayer2D" parent="LowerBodyController"]
-bus = &"SFX"
+[node name="FootstepPlayer" type="AudioStreamPlayer2D" parent="LowerBodyController" groups=["SFX"]]
 volume_db = -4.0
 
 [node name="UpperBodyController" type="Node" parent="." node_paths=PackedStringArray("character_body_2d", "state_machine", "gun", "head_target", "arm_r_target", "arm_l_target", "body", "head_sprite", "hip")]

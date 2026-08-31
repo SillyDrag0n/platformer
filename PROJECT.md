@@ -84,8 +84,11 @@ bounty-of-the-week structure.
 
 ## Current Stage
 
-**Core mechanics / prototyping.** Foundational systems (movement, combat,
-abilities, quest/dialog/shop NPCs, save/inventory) are being built out before
+**Core mechanics / prototyping.** The foundational systems (movement, combat,
+abilities, quest/dialog/shop NPCs, save slots, inventory, audio) are largely in
+place. The first contract is the current test of whether the bounty structure
+actually holds up: its tutorial leg is playable end to end, the other two legs
+are not (see Known Issues). Worth finishing one whole contract before
 committing to a large content push.
 
 ## Ambition / Scope
@@ -96,42 +99,99 @@ pipeline, save compatibility, localization already in progress).
 
 ## What Exists Today (implementation snapshot)
 
-This section reflects what's in the repo as of 2026-08-22 — treat it as a
+This section reflects what's in the repo as of 2026-08-31 — treat it as a
 snapshot, not a source of truth; re-check the code for current state.
 
 - **Player systems:** upper/lower body controllers, state machine
-  (`normal`, `dash`, `grapple`, `hurt`, `dead`), gun + aim reticle, dynamite,
-  grapple hook, hit-flash shader, death effect, cosmetics.
+  (`normal`, `dash`, `grapple`, `hurt`, `dead`, `snake_attached`), gun + aim
+  reticle, dynamite, grapple hook, hit-flash shader, death effect, cosmetics.
   - Upper body (arms/head) uses CCDIK to continuously aim at the mouse/stick,
     independent of the lower body's keyframed walk cycle. Muzzle position and
     the aim reticle/trajectory line both track the hand's actual IK target
     rather than a separately-tuned fixed point, so they stay visually aligned
     with where shots actually originate.
+  - Legs use the `SoupTwoBoneIK` plugin (`addons/`), not CCDIK.
 - **Abilities (unlockable):** dash, double jump, grapple hook, deadeye.
-- **Enemies:** bandit, skeleton, cactus (unique "only attacks when approached"
-  behavior), boss enemies, shared `_common` enemy base logic.
-- **NPCs:** dialog NPC, quest NPC, shop NPC.
-- **Quests:** early quest content (e.g. "kill 5 bandits").
-- **Items:** ammo, cosmetics, key items, quest items, utility items, weapons.
-- **Levels/hub:** hub level (town) plus interiors — arms dealer, bank, post
-  office, saloon, sheriff's office — and a boss arena, checkpoints, a
-  grapple-anchor system, and a test level for prototyping.
-- **UI:** bounty board (notice board of available contracts, keyboard/gamepad
-  focus + click selection with a visible highlight on the selected posting).
+- **Enemies:** bandit, skeleton, cactus, cactus coyote (the tutorial's target —
+  flees rather than dies), hoop snake, the Sand Spirit boss, and shared
+  `_common` base logic.
+- **NPCs:** `NPC` base plus dialog, quest, shop, welcome ("Old Timer") and
+  bounty turn-in archetypes. A `DialogNPC` can tick bounty objectives off its
+  own conversation, so a story beat needs no bespoke script.
+- **Bounties (the main progression track):** `BountyData` → `BountyStageData` →
+  `BountyObjectiveData`, plus `RegionData`. A bounty is one contract played
+  across several levels ("legs"), each with its own checklist; accepting a
+  part-finished bounty resumes at the leg the player is actually on. Presented
+  by the notice board, its dossier panel, the journal's Bounties tab, and the
+  stage-completed / bounty-completed screens.
+- **Quests:** optional side content, separate from bounties (e.g. "kill 5
+  bandits").
+- **Items:** ammo, cosmetics, key items, quest items, utility items, weapons,
+  and weapon upgrades (`WeaponUpgradeItemData`) - bought once at a shop and
+  fitted for good rather than filling an equip slot, each naming the weapon it
+  works on. The revolver's speed loader is the first: it marks a randomly
+  placed notch in the bottom of the reload dial, and a reload pressed while the
+  meter crosses it finishes the reload on the spot (one attempt per reload).
+- **Levels/hub:** the hub (town) and six interiors — arms dealer, bank, post
+  office, saloon, sheriff's office, farm house — plus the tutorial's farm house
+  backyard, the shaman's camp, the (empty) coyote den, a boss arena,
+  checkpoints, grapple anchors and a prototyping test level.
+- **Shared scene scaffolding** (added 2026-08-31, replacing per-scene copies):
+  - `Level` (`levels/_common/level.gd`) — what every playable level extends:
+    player/camera/respawn wiring, a `music` slot, and an `_on_level_ready()`
+    hook so a level can't forget to claim `RespawnManager`.
+  - `InteriorLevel` — the five hub-building interiors, which were five
+    byte-identical scripts.
+  - `HubStructure` (`tileset/structures/`) — every building in town; they
+    differ only by an exported `destination_scene_key`. A structure with no key
+    is scenery that can't be entered yet (church, railway station).
+  - `FocusGrid` (`ui/_common/`) — keyboard/gamepad focus wiring for grids.
+    Godot's geometric focus search is unreliable across wide grids, scrolled
+    containers and the bobbing bounty posters, so four screens were each
+    hand-rolling the same neighbour wiring.
+- **Save system:** three save slots, picked on the slot screen before anything
+  loads. Each slot is a whole playthrough: `SaveManager.load_slot()` winds every
+  manager back via `reset_progress()` first, because managers hold progress in
+  memory for the whole session and a load only overwrites what the file
+  mentions. One-off story beats live in a `story_flags` dictionary rather than a
+  bool per beat. A pre-slots `save_data.tres` migrates into slot 1.
+- **Audio:** `Master` / `Music` / `SFX` / `UI` buses (`default_bus_layout.tres`),
+  a volume slider per bus, and `MusicManager` — an autoload holding two players
+  so tracks crossfade, and so walking between town's six scenes doesn't restart
+  the theme. **No music tracks are assigned yet** (see TODO).
+- **UI:** main menu, save slots, name entry, settings (video/audio/input plus
+  keyboard *and* controller rebinding), pause, death, the inventory journal
+  (Items / Bounties / Quests / Loadout), shop, dialogue box, hint zones, ammo
+  display, notice board.
+  - **DEBUG MODE** panel behind the pause menu (`ui/screens/debug_menu_screen.gd`)
+    - money, ability unlocks, item grants, bounty/region unlocks, heal, save.
+    Its buttons go through the ordinary manager API so a debug grant fires the
+    same signals a real one does; the pause menu hides the button that opens it
+    unless `OS.is_debug_build()`, so it never reaches a release export.
 - **Managers (autoloads):** Collectible, Game, GameInputEvents, Health, Player,
-  Respawn, Scene, Settings, UI, Inventory, GameState, Ability, Quest, Save.
-- **Localization:** in progress (`localization/` folder, translations added).
-- **Testing:** GUT unit test framework (`addons/gut/`, CLI-only, see
-  `test/unit/`) covering the pure-logic autoload managers (Inventory, Health,
-  Quest). Run via
+  Respawn, Scene, Settings, Ui, Inventory, GameState, Ability, Quest, Save,
+  ProjectileLayer, Localization, UiNavigationRepeater, UiSoundPlayer, Music.
+- **Localization:** in progress (`localization/translations.csv`, en + de).
+- **Testing:** GUT (`addons/gut/`, CLI-only, see `test/unit/`) — 284 tests
+  covering the pure-logic managers, the bounty/save/audio systems, level
+  scaffolding and several UI focus regressions. Run via
   `"D:\Godot\Godot_v4.4.1-stable_win64.exe" --headless -s addons/gut/gut_cmdln.gd -gexit`.
   Run this after any bigger change, not just when someone asks.
+  - **Adding a `class_name` needs a `--import` pass** before headless tests see
+    it, or every scene using it loads with no script attached and fails in
+    confusing ways.
 
 ## Known Issues / TODO
 
 Gaps found while working in the code — not exhaustive, just what's been
 noticed so far. Remove items once actually fixed instead of leaving them
 stale.
+
+### Animation and rig
+
+Mostly a completed record at this point - kept because several of these were
+expensive dead ends and the reasoning is worth not repeating. Only the last
+two bullets are still open.
 
 - **Player animations are largely placeholder/incomplete:**
   - ~~Knee bends to the anatomically wrong side partway through the walk
@@ -427,6 +487,64 @@ stale.
     need further visual tuning.
 - **Bandit enemy has no dedicated crouch/reload animation** — reuses a
   squashed, darkened idle pose (`enemies/bandit/state_machine/reload_state.gd`).
+
+### Blocking the main storyline
+
+The Missing Cattle contract is authored as three legs. Only the first is
+playable end to end.
+
+- **Leg 2 (the shaman's camp) has no way out.** `levels/shaman_camp/` has no
+  `Goal` node and never calls `UiManager.open_stage_completed_screen()`. Talking
+  to the shaman ticks her objectives off and saves, and then the player is stood
+  in the desert with only "Main Menu" to press. Smallest high-value fix on this
+  list — `levels/farm_house_backyard/coyote_encounter.gd`'s
+  `_leave_the_backyard()` already does exactly this for leg 1.
+- **Leg 3 (the coyote den) is an empty shell.** `levels/coyote_den/` has a
+  spawn and the tileset layers wired, but no terrain painted, no coyote and no
+  turn-in. Its objectives (`track_to_den`, `defeat_creature`, `collect_bounty`)
+  are referenced nowhere but their own definitions.
+- **The Sand Spirit bounty points at `test_level.tscn`** — the prototyping
+  sandbox — as its real level.
+
+### Content gaps
+
+- **No music tracks.** The system is built (`MusicManager`, a `Music` bus, a
+  `music` slot on every `Level`); the hub's and the backyard's slots are empty.
+  Drop an `.ogg` in and assign it in the inspector — looping is forced in code,
+  so the import flag doesn't matter.
+- **The farm house interior is an empty room.** Every other interior has
+  someone in it.
+- **Eight UI strings are missing from `localization/translations.csv`:** the
+  four volume labels, "Exit Farm House", and the save slot screen's
+  "SELECT SAVE" / "Delete" / "BACK". Everything else is translated, so this is
+  drift, not a policy.
+
+### Engine traps, and how they are handled
+
+Two Godot behaviours cost real time before being understood. Both are now
+defused in code rather than only written down here — this section explains
+*why* the code looks the way it does.
+
+- **`AudioStreamPlayer.get_bus()` lies about buses the `AudioServer` doesn't
+  know.** It returns `"Master"` for any unregistered bus name, so an editor
+  session started before `default_bus_layout.tres` gained a bus reads every
+  player on it back as `"Master"` and writes that to disk on the next scene
+  save. `player.tscn` silently lost its SFX tags three times in one session.
+  **Handled by** declaring the bus as a *group* on the player instead
+  (`groups=["SFX"]`), which is never validated against anything and so cannot be
+  reset, and routing from that in `scripts/managers/audio_buses.gd`. A
+  consequence worth knowing: the inspector shows these players on Master,
+  because the bus is applied when the node enters the tree.
+- **`CanvasLayer.visible` only reaches the layer's *direct* `CanvasItem`
+  children.** Anything nested under a bare `Node` in between is never told and
+  keeps drawing — and it reads as fine from outside, since the layer reports
+  `visible == false` and the orphaned items report `is_visible_in_tree() == true`
+  (a `CanvasItem`'s visibility chain stops at a `CanvasLayer`). The main menu's
+  backdrop was `TileMapLayer`s under a bare `Node` called "TileMap", so hiding
+  the menu left the scenery over the loading screen. **Handled by** making such
+  grouping nodes `Node2D` rather than bare `Node`, with
+  `test/unit/test_canvas_layer_visibility.gd` sweeping every `CanvasLayer` scene
+  for the shape so the next one fails a test instead of shipping.
 
 ## Design Pillars (draft — refine as needed)
 

@@ -8,17 +8,14 @@
 [node name="UiSoundPlayer" type="Node"]
 script = ExtResource("1_script")
 
-[node name="MovePlayer" type="AudioStreamPlayer" parent="."]
-bus = &"UI"
+[node name="MovePlayer" type="AudioStreamPlayer" parent="." groups=["UI"]]
 stream = ExtResource("2_move")
 volume_db = -10.0
 
-[node name="ConfirmPlayer" type="AudioStreamPlayer" parent="."]
-bus = &"UI"
+[node name="ConfirmPlayer" type="AudioStreamPlayer" parent="." groups=["UI"]]
 stream = ExtResource("3_confirm")
 volume_db = -6.0
 
-[node name="CancelPlayer" type="AudioStreamPlayer" parent="."]
-bus = &"UI"
+[node name="CancelPlayer" type="AudioStreamPlayer" parent="." groups=["UI"]]
 stream = ExtResource("4_cancel")
 volume_db = -6.0

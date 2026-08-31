@@ -44,6 +44,9 @@ func _resolve_entered_name() -> String:
 
 func _on_confirm_button_pressed():
 	PlayerManager.player_name = _resolve_entered_name()
+	# Writes the slot out straight away rather than waiting for the first autosave, so a brand new
+	# playthrough shows up on the slot screen even if the game is closed on the way to town.
+	SaveManager.save_game()
 	queue_free()
 	SceneManager.transition_to_scene("Hub")
 

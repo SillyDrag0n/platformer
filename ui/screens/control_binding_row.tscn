@@ -1,6 +1,6 @@
-[gd_scene load_steps=2 format=3]
+[gd_scene load_steps=2 format=3 uid="uid://dgada6rvgdj3q"]
 
-[ext_resource type="Script" path="res://ui/screens/control_binding_row.gd" id="1_row"]
+[ext_resource type="Script" uid="uid://rdshaqnvnpuc" path="res://ui/screens/control_binding_row.gd" id="1_row"]
 
 [node name="ControlBindingRow" type="HBoxContainer"]
 size_flags_horizontal = 3
@@ -11,21 +11,21 @@ script = ExtResource("1_row")
 custom_minimum_size = Vector2(220, 0)
 layout_mode = 2
 size_flags_horizontal = 3
+text = "Action"
 vertical_alignment = 1
 clip_text = true
 text_overrun_behavior = 3
-text = "Action"
 
 [node name="BindButton" type="Button" parent="."]
 custom_minimum_size = Vector2(280, 0)
 layout_mode = 2
 size_flags_horizontal = 0
-clip_text = true
 text = "Key"
+clip_text = true
 
 [node name="JoypadBindButton" type="Button" parent="."]
 custom_minimum_size = Vector2(280, 0)
 layout_mode = 2
 size_flags_horizontal = 0
-clip_text = true
 text = "Button"
+clip_text = true

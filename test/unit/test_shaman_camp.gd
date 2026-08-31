@@ -12,7 +12,7 @@ const STAGE_OBJECTIVES := ["find_shaman", "learn_about_creature", "learn_to_trac
 var _original_objectives : Dictionary
 var _original_completed : bool
 var _real_save_path : String
-var _real_save_file_name : String
+var _real_slot : int
 
 
 func before_each():
@@ -28,9 +28,9 @@ func before_each():
 
 	# The shaman saves once she's had her say - redirected off the player's real save file.
 	_real_save_path = SaveManager.save_path
-	_real_save_file_name = SaveManager.save_file_name
+	_real_slot = SaveManager.active_slot
 	SaveManager.save_path = "user://test_scratch/"
-	SaveManager.save_file_name = "test_save_data.tres"
+	SaveManager.active_slot = 1
 
 
 func after_each():
@@ -41,11 +41,11 @@ func after_each():
 			objective.completed = _original_objectives.get(objective.id, false)
 	InventoryManager.is_open = false
 
-	var scratch_save := SaveManager.save_path + SaveManager.save_file_name
+	var scratch_save := SaveManager.slot_path(1)
 	if FileAccess.file_exists(scratch_save):
 		DirAccess.remove_absolute(scratch_save)
 	SaveManager.save_path = _real_save_path
-	SaveManager.save_file_name = _real_save_file_name
+	SaveManager.active_slot = _real_slot
 
 
 func _make_camp() -> Node2D:

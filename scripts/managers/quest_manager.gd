@@ -90,3 +90,11 @@ func mark_completed(id : String) -> void:
 		return
 	completed_quest_ids.append(id)
 	quest_completed.emit(id)
+
+
+# Back to a brand-new game: no quests taken, none finished, no kills counted. Called by SaveManager
+# when a slot is started or loaded.
+func reset_progress() -> void:
+	received_quests.clear()
+	completed_quest_ids.clear()
+	enemy_kill_counts.clear()

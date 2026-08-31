@@ -1,34 +1,120 @@
 extends Node
 
+# Three save files, picked from the main menu (see ui/screens/save_slot_screen.gd) before anything
+# is loaded. Nothing is read at boot any more: which slot to load isn't known until the player
+# says so, and loading one at startup is what made a second slot impossible.
+
+const SLOT_COUNT := 3
+# 1..SLOT_COUNT are the real slots; NO_SLOT is "the player hasn't picked one yet", which is the
+# state the main menu sits in.
+const NO_SLOT := 0
+
+# The single-file save this game had before slots existed. Moved into slot 1 the first time a
+# build with slots runs, so an existing playthrough isn't stranded.
+const LEGACY_SAVE_FILE := "save_data.tres"
+
 var save_path := "user://game_data/"
-var save_file_name := "save_data.tres"
+
+# Where save_game() writes. Guarded rather than defaulted to slot 1: an autosave firing before the
+# player has chosen (quitting straight from the main menu, say) must not invent a file, and must
+# certainly not write one playthrough's state into another's slot.
+var active_slot : int = NO_SLOT
 
 
-func _ready():
-	load_game()
-	# Runs after load_game() has had its say (or found no save to load), not inside
-	# InventoryManager's own _ready() - see grant_default_outfit_if_needed()'s comment.
+func _ready() -> void:
+	_migrate_legacy_save_file()
+
+
+func slot_path(slot : int) -> String:
+	return "%ssave_slot_%d.tres" % [save_path, slot]
+
+
+func has_save(slot : int) -> bool:
+	return ResourceLoader.exists(slot_path(slot))
+
+
+# Starts a fresh playthrough in a slot. No file is written yet - that happens on the first real
+# save - so backing out of the name screen doesn't leave a half-made save behind.
+func start_new_game(slot : int) -> void:
+	active_slot = slot
+	_reset_game_state()
 	InventoryManager.grant_default_outfit_if_needed()
 
 
-# Wipes save_data.tres and restarts the game so every manager re-initializes from scratch through
-# its own _ready(), instead of hand-resetting every piece of scattered runtime state (equipped
-# items, quest progress, the shared BountyData/RegionData resources GameStateManager mutates in
-# place, etc.) one by one and risking missing something.
-func reset_save() -> void:
-	var full_path := save_path + save_file_name
-	if FileAccess.file_exists(full_path):
-		DirAccess.remove_absolute(full_path)
-	OS.create_instance([])
-	get_tree().quit()
+func load_slot(slot : int) -> void:
+	active_slot = slot
+	_reset_game_state()
+	load_game()
+	# Runs after load_game() has had its say, not inside InventoryManager's own _ready() - see
+	# grant_default_outfit_if_needed()'s comment.
+	InventoryManager.grant_default_outfit_if_needed()
 
 
-func has_save() -> bool:
-	return ResourceLoader.exists(save_path + save_file_name)
+func delete_slot(slot : int) -> void:
+	if has_save(slot):
+		DirAccess.remove_absolute(slot_path(slot))
+	# A player who deletes the slot they are playing keeps playing, but their progress now has
+	# nowhere to go - so the slot is let go of rather than silently re-created on the next save.
+	if active_slot == slot:
+		active_slot = NO_SLOT
+
+
+# What the slot screen puts on a button, read straight off the file without loading any of it into
+# the running game. Returns an empty dictionary for a slot with nothing in it.
+func read_slot_summary(slot : int) -> Dictionary:
+	if not has_save(slot):
+		return {}
+	var data : SaveDataResource = ResourceLoader.load(slot_path(slot))
+	if data == null:
+		return {}
+	return {
+		"player_name": data.player_name if data.player_name != "" else PlayerManager.DEFAULT_NAME,
+		"dollars": data.dollars,
+		"bounties_completed": _count_completed_bounties(data),
+		"saved_at_unix": data.saved_at_unix,
+	}
+
+
+func _count_completed_bounties(data : SaveDataResource) -> int:
+	var count := 0
+	for bounty_id in data.bounty_states:
+		if data.bounty_states[bounty_id].get("completed", false):
+			count += 1
+	return count
+
+
+# Everything a playthrough owns, wound back to a brand-new game. Managers keep their progress in
+# memory for the whole session and load_game() only overwrites what the file happens to mention -
+# so without this, loading slot 2 after playing slot 1 would leave slot 1's items, kills and
+# ticked-off objectives sitting underneath it.
+func _reset_game_state() -> void:
+	PlayerManager.player_name = ""
+	CollectibleManager.reset_progress()
+	InventoryManager.reset_progress()
+	AbilityManager.reset_progress()
+	QuestManager.reset_progress()
+	GameStateManager.reset_progress()
+
+
+# A save from before slots becomes slot 1. Only ever runs once - it moves the file rather than
+# copying it, so there is nothing left to migrate on the next boot.
+func _migrate_legacy_save_file() -> void:
+	var legacy_path := save_path + LEGACY_SAVE_FILE
+	if not FileAccess.file_exists(legacy_path) or has_save(1):
+		return
+	if DirAccess.rename_absolute(legacy_path, slot_path(1)) != OK:
+		push_warning("SaveManager: could not move the pre-slots save into slot 1.")
 
 
 func save_game():
+	# Nothing to write into. Autosaves fire from a lot of places (a level's exit, closing the
+	# inventory, quitting the game) and some of them can be reached from the menus, before a slot
+	# has been picked.
+	if active_slot == NO_SLOT:
+		return
+
 	var data := SaveDataResource.new()
+	data.saved_at_unix = int(Time.get_unix_time_from_system())
 	data.player_name = PlayerManager.player_name
 	data.dollars = CollectibleManager.total_award_amount
 
@@ -91,14 +177,17 @@ func save_game():
 
 	if !DirAccess.dir_exists_absolute(save_path):
 		DirAccess.make_dir_absolute(save_path)
-	ResourceSaver.save(data, save_path + save_file_name)
+	ResourceSaver.save(data, slot_path(active_slot))
 
 
+# Applies the active slot's file on top of freshly-reset state. Always reached through load_slot(),
+# which is what does the resetting - calling this on its own would layer a save over whatever the
+# previous playthrough left in memory.
 func load_game():
-	if !ResourceLoader.exists(save_path + save_file_name):
+	if active_slot == NO_SLOT or not has_save(active_slot):
 		return
 
-	var data : SaveDataResource = ResourceLoader.load(save_path + save_file_name)
+	var data : SaveDataResource = ResourceLoader.load(slot_path(active_slot))
 	if data == null:
 		return
 

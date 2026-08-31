@@ -3,6 +3,7 @@
 [ext_resource type="Script" path="res://ui/screen_transition/fade_transition_screen.gd" id="1_fade"]
 
 [node name="FadeTransitionScreen" type="CanvasLayer"]
+layer = 100
 script = ExtResource("1_fade")
 
 [node name="ColorRect" type="ColorRect" parent="."]

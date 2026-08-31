@@ -54,6 +54,10 @@ func test_every_category_bus_feeds_master():
 
 
 # The point of the tags. A sound left on Master answers to nothing but the master slider.
+#
+# The bus is declared by group membership and applied by AudioBuses when the node enters the tree,
+# so this exercises the whole route: the group is on the node in the scene, and something acts on
+# it. See scripts/managers/audio_buses.gd for why it is not simply set on the node.
 func test_every_sound_in_the_game_is_tagged_onto_a_category_bus():
 	for scene_path in TAGGED_SCENES:
 		var scene = load(scene_path).instantiate()
@@ -63,8 +67,31 @@ func test_every_sound_in_the_game_is_tagged_onto_a_category_bus():
 		var players := _players_in(scene)
 		assert_gt(players.size(), 0, "%s should still own the sounds this expects" % scene_path)
 		for player in players:
+			assert_true(player.is_in_group(TAGGED_SCENES[scene_path]), \
+				"%s in %s has lost its bus group" % [player.name, scene_path])
 			assert_eq(String(player.bus), TAGGED_SCENES[scene_path], \
 				"%s in %s is untagged - it would ignore its category's slider" % [player.name, scene_path])
+
+
+# A player built in code, never authored in a scene, still gets routed - which is the case the
+# dynamite explosion effect and anything else spawned mid-level rely on.
+func test_a_sound_spawned_at_runtime_is_routed_too():
+	var player := AudioStreamPlayer.new()
+	player.add_to_group(&"SFX")
+	add_child_autofree(player)
+	await wait_frames(1)
+
+	assert_eq(String(player.bus), "SFX", \
+		"AudioBuses listens for nodes entering the tree, not just what was there at startup")
+
+
+# Nothing else should be quietly moved off Master.
+func test_an_untagged_sound_is_left_alone():
+	var player := AudioStreamPlayer.new()
+	add_child_autofree(player)
+	await wait_frames(1)
+
+	assert_eq(String(player.bus), "Master", "a sound with no bus group keeps Godot's default")
 
 
 func test_setting_a_bus_volume_moves_that_bus_and_is_remembered():

@@ -113,7 +113,7 @@ func _ready():
 
 func _process(_delta):
 	@warning_ignore("static_called_on_instance")
-	if GameInputEvents.inventory_input():
+	if GameInputEvents.inventory_input() and _can_toggle():
 		_set_open(!visible)
 	elif visible and Input.is_action_just_pressed("ui_cancel"):
 		# A cancel press backs out one level at a time: close the picker first if it's open,
@@ -126,6 +126,22 @@ func _process(_delta):
 		_cycle_tab(-1)
 	elif visible and Input.is_action_just_pressed("tab_right"):
 		_cycle_tab(1)
+
+
+# The inventory key only answers when the inventory itself is what would open or close.
+#
+# InventoryManager.is_open is one shared "a menu is up" flag that every MenuPopup sets too (see
+# ui/menu_popup.gd), and MenuPopup.open() already refuses to stack on top of it - but the
+# inventory's own toggle was deliberately left ungated so it could always be closed, which meant it
+# was the one menu that *could* stack. Opening it over a dialogue then cleared the shared flag on
+# the way out, leaving the dialogue on screen with the player free to walk away from it.
+#
+# Closing is always allowed. An inventory that can't be shut would be a worse trap than anything
+# this prevents.
+func _can_toggle() -> bool:
+	if visible:
+		return true
+	return not GameInputEvents.is_input_locked()
 
 
 # TabContainer's built-in tab bar only takes keyboard/gamepad focus if the player navigates to

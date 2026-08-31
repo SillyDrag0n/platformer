@@ -246,3 +246,16 @@ func get_empty_slot_index() -> int:
 		if item_slots[i]["item"] == null:
 			return i
 	return -1
+
+# Back to a brand-new game: empty bag, nothing equipped. initialize_inventory() rebuilds the slots
+# the same way boot does; the equipped dictionaries have to be cleared separately since they point
+# at items the bag no longer holds. Called by SaveManager when a slot is started or loaded, which
+# then calls grant_default_outfit_if_needed() to put the starting outfit back on.
+func reset_progress() -> void:
+	equipped_weapons.clear()
+	equipped_ammo.clear()
+	equipped_cosmetics.clear()
+	equipped_weapon_skins.clear()
+	equipped_utility = null
+	initialize_inventory()
+	updated_inventory.emit()

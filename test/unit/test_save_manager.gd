@@ -10,30 +10,30 @@ extends GutTest
 # -trips - a beat added later comes along for free.
 
 var _real_save_path : String
-var _real_save_file_name : String
+var _real_slot : int
 var _original_has_shown_hub_welcome : bool
 var _original_has_driven_off_coyote : bool
 
 
 func before_each():
-	# SaveManager.save_path/save_file_name point at the player's real save file - redirected to a
+	# SaveManager.save_path points at the player's real save directory - redirected to a
 	# scratch location so this can never touch or delete it.
 	_real_save_path = SaveManager.save_path
-	_real_save_file_name = SaveManager.save_file_name
+	_real_slot = SaveManager.active_slot
 	SaveManager.save_path = "user://test_scratch/"
-	SaveManager.save_file_name = "test_save_data.tres"
+	SaveManager.active_slot = 1
 
 	_original_has_shown_hub_welcome = GameStateManager.has_story_flag(GameStateManager.FLAG_HUB_WELCOME_SHOWN)
 	_original_has_driven_off_coyote = GameStateManager.has_story_flag(GameStateManager.FLAG_COYOTE_DRIVEN_OFF)
 
 
 func after_each():
-	var scratch_full_path := SaveManager.save_path + SaveManager.save_file_name
+	var scratch_full_path := SaveManager.slot_path(1)
 	if FileAccess.file_exists(scratch_full_path):
 		DirAccess.remove_absolute(scratch_full_path)
 
 	SaveManager.save_path = _real_save_path
-	SaveManager.save_file_name = _real_save_file_name
+	SaveManager.active_slot = _real_slot
 	GameStateManager.set_story_flag(GameStateManager.FLAG_HUB_WELCOME_SHOWN, _original_has_shown_hub_welcome)
 	GameStateManager.set_story_flag(GameStateManager.FLAG_COYOTE_DRIVEN_OFF, _original_has_driven_off_coyote)
 
@@ -98,7 +98,7 @@ func test_a_save_from_before_the_flags_were_pooled_still_restores_them():
 	var legacy := SaveDataResource.new()
 	legacy.has_shown_hub_welcome = true
 	legacy.has_driven_off_coyote = true
-	ResourceSaver.save(legacy, SaveManager.save_path + SaveManager.save_file_name)
+	ResourceSaver.save(legacy, SaveManager.slot_path(1))
 
 	GameStateManager.story_flags.clear()
 	SaveManager.load_game()

@@ -7,38 +7,38 @@ extends GutTest
 const NameEntryScreenScene = preload("res://ui/screens/name_entry_screen.tscn")
 
 var _real_save_path : String
-var _real_save_file_name : String
+var _real_slot : int
 
 
 func before_each():
-	# SaveManager.save_path/save_file_name point at the player's real save file - redirected to a
-	# scratch location for the has_save() tests below so they can never touch or delete it.
+	# SaveManager.save_path points at the player.s real save directory - redirected to a scratch
+	# location for the has_save() tests below so they can never touch or delete it.
 	_real_save_path = SaveManager.save_path
-	_real_save_file_name = SaveManager.save_file_name
+	_real_slot = SaveManager.active_slot
 	SaveManager.save_path = "user://test_scratch/"
-	SaveManager.save_file_name = "test_save_data.tres"
+	SaveManager.active_slot = 1
 
 
 func after_each():
-	var scratch_full_path := SaveManager.save_path + SaveManager.save_file_name
+	var scratch_full_path := SaveManager.slot_path(1)
 	if FileAccess.file_exists(scratch_full_path):
 		DirAccess.remove_absolute(scratch_full_path)
 
 	SaveManager.save_path = _real_save_path
-	SaveManager.save_file_name = _real_save_file_name
+	SaveManager.active_slot = _real_slot
 
 
 func test_has_save_is_false_when_no_save_file_exists():
-	assert_false(SaveManager.has_save())
+	assert_false(SaveManager.has_save(1))
 
 
 func test_has_save_is_true_once_a_save_file_exists():
 	var data := SaveDataResource.new()
 	if !DirAccess.dir_exists_absolute(SaveManager.save_path):
 		DirAccess.make_dir_absolute(SaveManager.save_path)
-	ResourceSaver.save(data, SaveManager.save_path + SaveManager.save_file_name)
+	ResourceSaver.save(data, SaveManager.slot_path(1))
 
-	assert_true(SaveManager.has_save())
+	assert_true(SaveManager.has_save(1))
 
 
 func test_blank_name_falls_back_to_a_default():

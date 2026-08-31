@@ -37,6 +37,7 @@ LocalizationManager="*res://scripts/managers/LocalizationManager.tscn"
 UiNavigationRepeater="*res://scripts/managers/UiNavigationRepeater.tscn"
 UiSoundPlayer="*res://scripts/managers/UiSoundPlayer.tscn"
 MusicManager="*res://scripts/managers/MusicManager.tscn"
+AudioBuses="*res://scripts/managers/AudioBuses.tscn"
 
 [display]
 

@@ -1,6 +1,6 @@
 [gd_scene load_steps=4 format=3 uid="uid://gvt4clppnsy3"]
 
-[ext_resource type="FontFile" uid="uid://kiwlymd55nc2" path="res://ui/font/BoldPixels.ttf" id="1_8mo8s"]
+[ext_resource type="FontFile" uid="uid://bn7ed1nmtuvnj" path="res://ui/font/BoldPixels.ttf" id="1_8mo8s"]
 [ext_resource type="Script" uid="uid://chb4bqrsc5sr7" path="res://ui/screens/bounty_reward.gd" id="1_b01al"]
 
 [sub_resource type="LabelSettings" id="LabelSettings_b01al"]

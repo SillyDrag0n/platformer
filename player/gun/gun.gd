@@ -24,10 +24,26 @@ var muzzle_flash_effect = preload("res://player/gun/muzzle_flash_effect.tscn")
 # this is its fixed position relative to Gun's own (non-rotating) origin.
 @export var reload_ui_offset : Vector2 = Vector2(-25.0, -75.0)
 
+# --- Active reload (see WeaponUpgradeItemData, sold as the revolver's speed loader) ---
+# Where the sweet spot is allowed to sit, as the same 1.0 -> 0.0 progress value the reload dial
+# drains through. The dial fills clockwise from 12 o'clock, so 0.33 is 4 o'clock and 0.67 is 8
+# o'clock: the bottom third of the ring, which the draining edge sweeps backwards through partway
+# into every reload.
+const ACTIVE_RELOAD_ZONE_START := 0.33
+const ACTIVE_RELOAD_ZONE_END := 0.67
+
 var active_slot : InventoryManager.WeaponSlot = InventoryManager.WeaponSlot.PRIMARY
 var weapon : WeaponItemData
 var ammo : AmmoItemData
 var magazine_current : int
+
+# This reload's sweet spot, covering progress values [start, start + width]. A width of 0 means
+# none is armed - no upgrade fitted for the weapon in hand, or the window has already been used.
+var _active_reload_window_start : float = 0.0
+var _active_reload_window_width : float = 0.0
+# One attempt per reload. Without this, mashing the reload key would walk into the window every
+# single time and there would be no timing left to get right.
+var _active_reload_spent : bool = false
 
 @onready var muzzle = $Muzzle
 @onready var weapon_sprite : Sprite2D = $Weapon
@@ -37,6 +53,10 @@ var magazine_current : int
 @onready var gun_shot_sound = $GunShot01
 @onready var gun_reload_sound = $GunReload
 @onready var gun_empty_sound = $GunEmpty
+# The verdict on an active-reload attempt. Here with the rest of the gun's audio rather than in
+# the reload dial, which stays purely visual - see player/gun/ui/gun_reload_ui.gd.
+@onready var active_reload_hit_sound = $ActiveReloadHit
+@onready var active_reload_miss_sound = $ActiveReloadMiss
 
 @onready var player = get_parent()
 
@@ -70,7 +90,12 @@ func _process(_delta):
 	reload_ui.global_position = global_position + reload_ui_offset
 
 	if GameInputEvents.reload_input():
-		reload()
+		# With an active-reload window armed, a press during a running reload is the timing
+		# attempt rather than a request to start over; without one this stays what it always was.
+		if has_active_reload() and !reload_timer.is_stopped():
+			_try_active_reload()
+		else:
+			reload()
 	if GameInputEvents.swap_weapon_input():
 		swap_weapon()
 	if !reload_timer.is_stopped():
@@ -190,11 +215,65 @@ func _fire_bullet(direction : Vector2):
 
 func reload():
 	reload_timer.start()
-	reload_ui.show()
+	_arm_active_reload()
+	reload_ui.begin(_active_reload_window_start, _active_reload_window_width)
 	if !gun_reload_sound.playing:
 		gun_reload_sound.play()
 
 func _on_reload_timer_timeout() -> void:
+	_finish_reload(false)
+
+func _finish_reload(via_active_reload : bool) -> void:
+	reload_timer.stop()
+	_active_reload_window_width = 0.0
 	magazine_current = weapon.magazine_size
 	magazine_changed.emit(magazine_current, weapon.magazine_size)
-	reload_ui.hide()
+	if via_active_reload:
+		reload_ui.flash_window_hit()
+		active_reload_hit_sound.play()
+	else:
+		reload_ui.finish()
+
+
+# --- Active reload ---
+# How wide a sweet spot the weapon in hand gets, as a fraction of its reload. Upgrades are simply
+# owned items rather than something filling an equip slot (see WeaponUpgradeItemData), and each
+# one names the weapon it was made for, so the revolver's speed loader does nothing while the
+# shotgun is out.
+func get_active_reload_window() -> float:
+	if weapon == null:
+		return 0.0
+	for upgrade in InventoryManager.get_owned_items_by_type(WeaponUpgradeItemData):
+		if upgrade.target_weapon == weapon:
+			return upgrade.active_reload_window
+	return 0.0
+
+# Rolls a fresh position for the window on every reload, so the timing has to be read off the dial
+# each time rather than memorised once. Clamped to the zone so a wide window can't spill out of
+# the bottom of the ring into the part of the sweep the player never gets a look at.
+func _arm_active_reload() -> void:
+	_active_reload_spent = false
+	_active_reload_window_width = clampf(get_active_reload_window(), 0.0, \
+		ACTIVE_RELOAD_ZONE_END - ACTIVE_RELOAD_ZONE_START)
+	_active_reload_window_start = randf_range(ACTIVE_RELOAD_ZONE_START, \
+		ACTIVE_RELOAD_ZONE_END - _active_reload_window_width)
+
+func has_active_reload() -> bool:
+	return _active_reload_window_width > 0.0
+
+func is_inside_active_reload_window(progress : float) -> bool:
+	return has_active_reload() and progress >= _active_reload_window_start \
+		and progress <= _active_reload_window_start + _active_reload_window_width
+
+# Hitting the window finishes the reload on the spot. Missing it only costs the attempt - the
+# reload still runs out its clock exactly as it would have, rather than being restarted or
+# lengthened as a punishment.
+func _try_active_reload() -> void:
+	if _active_reload_spent:
+		return
+	_active_reload_spent = true
+	if is_inside_active_reload_window(reload_timer.time_left / reload_timer.wait_time):
+		_finish_reload(true)
+	else:
+		reload_ui.mark_window_missed()
+		active_reload_miss_sound.play()

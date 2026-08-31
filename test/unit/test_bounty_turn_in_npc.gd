@@ -12,7 +12,7 @@ extends GutTest
 const BountyTurnInNpcScene = preload("res://npc/BountyTurnInNPC.tscn")
 
 var _real_save_path : String
-var _real_save_file_name : String
+var _real_slot : int
 
 
 func _make_test_bounty() -> BountyData:
@@ -28,20 +28,20 @@ func before_each():
 	# real save file - which means this test used to write the whole suite's in-flight bounty state
 	# over it. Redirected to scratch, same guard test_save_manager.gd uses.
 	_real_save_path = SaveManager.save_path
-	_real_save_file_name = SaveManager.save_file_name
+	_real_slot = SaveManager.active_slot
 	SaveManager.save_path = "user://test_scratch/"
-	SaveManager.save_file_name = "test_save_data.tres"
+	SaveManager.active_slot = 1
 
 
 func after_each():
 	GameStateManager.clear_active_bounty()
 	InventoryManager.is_open = false
 
-	var scratch_save := SaveManager.save_path + SaveManager.save_file_name
+	var scratch_save := SaveManager.slot_path(1)
 	if FileAccess.file_exists(scratch_save):
 		DirAccess.remove_absolute(scratch_save)
 	SaveManager.save_path = _real_save_path
-	SaveManager.save_file_name = _real_save_file_name
+	SaveManager.active_slot = _real_slot
 
 
 func test_dialogue_closed_is_wired_to_the_npcs_handler():

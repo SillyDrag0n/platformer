@@ -1,4 +1,4 @@
-[gd_scene load_steps=14 format=3]
+[gd_scene load_steps=15 format=3]
 
 [ext_resource type="Script" path="res://npc/shop_npc.gd" id="1_dealer"]
 [ext_resource type="PackedScene" uid="uid://s2gswtyrtm5x" path="res://interaction_component/interactable.tscn" id="2_interact"]
@@ -10,6 +10,7 @@
 [ext_resource type="Resource" path="res://items/ammo/rapid_rounds.tres" id="8_rapid_rounds"]
 [ext_resource type="Resource" path="res://items/cosmetics/engraved_grip.tres" id="9_engraved_grip"]
 [ext_resource type="Resource" path="res://items/utility/dynamite.tres" id="12_dynamite"]
+[ext_resource type="Resource" path="res://items/weapons/attachements/speed_loader.tres" id="13_speed_loader"]
 [ext_resource type="PackedScene" path="res://ui/dialogue/DialogueBox.tscn" id="10_dialogue"]
 [ext_resource type="Texture2D" path="res://tileset/structures/arms_dealer/arms_dealer_portrait.svg" id="11_portrait"]
 
@@ -52,7 +53,7 @@ shape = SubResource("RectangleShape2D_dealer")
 
 [node name="ShopUi" parent="." instance=ExtResource("3_shop")]
 shop_title = "Arms Dealer"
-shop_items = Array[ExtResource("5_itemdata")]([ExtResource("6_shotgun"), ExtResource("7_heavy_rounds"), ExtResource("8_rapid_rounds"), ExtResource("9_engraved_grip"), ExtResource("12_dynamite")])
+shop_items = Array[ExtResource("5_itemdata")]([ExtResource("6_shotgun"), ExtResource("7_heavy_rounds"), ExtResource("8_rapid_rounds"), ExtResource("13_speed_loader"), ExtResource("9_engraved_grip"), ExtResource("12_dynamite")])
 portrait = ExtResource("11_portrait")
 
 [node name="DialogueBox" parent="." instance=ExtResource("10_dialogue")]

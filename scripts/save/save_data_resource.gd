@@ -31,6 +31,11 @@ extends Resource
 @export var bounty_states : Dictionary = {} # bounty id -> {unlocked, completed, reward_claimed}
 @export var region_states : Dictionary = {} # region id -> unlocked
 
+# When this save was last written, for the "last played" line on the slot screen. Unix seconds
+# rather than a formatted string so the slot screen can present it however it likes; 0 means a save
+# written before slots existed, which the screen just leaves the date off.
+@export var saved_at_unix : int = 0
+
 # One-off story beats that have already played, keyed by GameStateManager's FLAG_* ids. A
 # dictionary rather than a field per beat, so a new beat is saved without touching this file - see
 # GameStateManager.story_flags.

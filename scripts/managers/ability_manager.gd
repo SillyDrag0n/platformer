@@ -36,3 +36,9 @@ func get_ability_by_id(id : String) -> AbilityData:
 
 func get_unlocked_ids() -> Array:
 	return _unlocked_ids.keys()
+
+
+# Back to a brand-new game: nothing unlocked. The ability lookup itself is authored content and
+# stays. Called by SaveManager when a slot is started or loaded.
+func reset_progress() -> void:
+	_unlocked_ids.clear()

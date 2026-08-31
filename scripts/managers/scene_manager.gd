@@ -76,15 +76,48 @@ func transition_to_packed_scene(scene: PackedScene) -> void:
 	await _play_loading_transition(scene)
 
 
+# The ride-out screen (ui/screen_transition/scene_transition_screen.gd): the rider crosses the
+# trail as the level loads. Where there is a real load to measure - a scene named by path - it is
+# streamed on a background thread and the bar reports what the engine actually says. A PackedScene
+# handed in directly (a bounty's level_scene) is already in memory, so there is nothing to measure
+# and the ride just plays out over its minimum.
 func _play_loading_transition(scene) -> void:
-	var scene_transition_screen_instance = scene_transition_screen.instantiate()
-	get_tree().get_root().add_child(scene_transition_screen_instance)
-	await get_tree().create_timer(2.5).timeout
+	var screen = scene_transition_screen.instantiate()
+	get_tree().get_root().add_child(screen)
+
 	if scene is PackedScene:
+		await screen.ride(func(): return 1.0)
 		get_tree().change_scene_to_packed(scene)
+		screen.queue_free()
+		return
+
+	var loaded : PackedScene = await _ride_while_loading(screen, scene)
+	if loaded != null:
+		get_tree().change_scene_to_packed(loaded)
 	else:
+		# Threaded loading refused the path outright. Fall back to the blocking load rather than
+		# leaving the player on a loading screen for a level that was never going to arrive.
 		get_tree().change_scene_to_file(scene)
-	scene_transition_screen_instance.queue_free()
+	screen.queue_free()
+
+
+func _ride_while_loading(screen, scene_path : String) -> PackedScene:
+	if ResourceLoader.load_threaded_request(scene_path, "PackedScene") != OK:
+		push_warning("SceneManager: could not stream '%s' - falling back to a blocking load." % scene_path)
+		await screen.ride(func(): return 1.0)
+		return null
+
+	# load_threaded_get_status() writes a single 0..1 float into the array it is handed.
+	var progress : Array = [0.0]
+	await screen.ride(func():
+		var status := ResourceLoader.load_threaded_get_status(scene_path, progress)
+		if status == ResourceLoader.THREAD_LOAD_FAILED or status == ResourceLoader.THREAD_LOAD_INVALID_RESOURCE:
+			return 1.0
+		if status == ResourceLoader.THREAD_LOAD_LOADED:
+			return 1.0
+		return float(progress[0])
+	)
+	return ResourceLoader.load_threaded_get(scene_path) as PackedScene
 
 
 # Fade to black, do something, fade back in - all within the scene the player is already in. The

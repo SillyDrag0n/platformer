@@ -40,8 +40,18 @@ const FLAG_HUB_WELCOME_SHOWN := &"hub_welcome_shown"
 const FLAG_COYOTE_DRIVEN_OFF := &"coyote_driven_off"
 
 
+# The unlocked/completed/objective state the bounties and regions were authored with, copied aside
+# at boot. BountyData/RegionData are shared resources this manager ticks off in place, so once a
+# playthrough has touched them the designer's values are gone from memory and there is nothing to
+# put back - which is exactly what reset_progress() needs when a save slot is started or swapped.
+# Same trick CactusCoyote uses to hand its arena back after a lost fight.
+var _authored_bounty_state : Dictionary = {}
+var _authored_region_state : Dictionary = {}
+
+
 func _ready():
 	_build_lookups()
+	_snapshot_authored_state()
 
 
 func _build_lookups():
@@ -53,6 +63,45 @@ func _build_lookups():
 
 	for region in regions:
 		_region_lookup[region.id] = region
+
+
+func _snapshot_authored_state() -> void:
+	for bounty in bounties:
+		var objectives : Dictionary = {}
+		for stage in bounty.stages:
+			for objective in stage.objectives:
+				objectives[objective.id] = objective.completed
+		_authored_bounty_state[bounty.id] = {
+			"unlocked": bounty.unlocked,
+			"completed": bounty.completed,
+			"reward_claimed": bounty.reward_claimed,
+			"objectives": objectives,
+		}
+
+	for region in regions:
+		_authored_region_state[region.id] = region.unlocked
+
+
+# Back to a brand-new game: every bounty and region as the designer authored it, no story beats
+# played, no contract in hand. Called by SaveManager when a slot is started or loaded - without it,
+# progress made in one slot would still be sitting on these shared resources when the next is
+# opened.
+func reset_progress() -> void:
+	for bounty in bounties:
+		var state : Dictionary = _authored_bounty_state.get(bounty.id, {})
+		bounty.unlocked = state.get("unlocked", false)
+		bounty.completed = state.get("completed", false)
+		bounty.reward_claimed = state.get("reward_claimed", false)
+		var objectives : Dictionary = state.get("objectives", {})
+		for stage in bounty.stages:
+			for objective in stage.objectives:
+				objective.completed = objectives.get(objective.id, false)
+
+	for region in regions:
+		region.unlocked = _authored_region_state.get(region.id, false)
+
+	story_flags.clear()
+	active_bounty = null
 
 
 # Records that a story beat has happened. Idempotent by nature - a beat that plays twice sets the

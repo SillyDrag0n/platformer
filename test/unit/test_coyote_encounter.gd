@@ -18,7 +18,7 @@ var _original_dollars : int
 var _original_objectives : Dictionary
 var _original_bounty_completed : bool
 var _real_save_path : String
-var _real_save_file_name : String
+var _real_slot : int
 
 
 func before_each():
@@ -42,9 +42,9 @@ func before_each():
 	# player's real save file - redirected to scratch so a test run can never touch it. Same guard
 	# test_save_manager.gd uses.
 	_real_save_path = SaveManager.save_path
-	_real_save_file_name = SaveManager.save_file_name
+	_real_slot = SaveManager.active_slot
 	SaveManager.save_path = "user://test_scratch/"
-	SaveManager.save_file_name = "test_save_data.tres"
+	SaveManager.active_slot = 1
 
 
 func after_each():
@@ -58,11 +58,11 @@ func after_each():
 	InventoryManager.is_open = false
 	GameInputEvents.release_scripted_control()
 
-	var scratch_save := SaveManager.save_path + SaveManager.save_file_name
+	var scratch_save := SaveManager.slot_path(1)
 	if FileAccess.file_exists(scratch_save):
 		DirAccess.remove_absolute(scratch_save)
 	SaveManager.save_path = _real_save_path
-	SaveManager.save_file_name = _real_save_file_name
+	SaveManager.active_slot = _real_slot
 
 
 # Asks the physics world, not the wall's `disabled` flag. Assigning that flag from inside a physics

@@ -1,7 +1,14 @@
-[gd_scene load_steps=3 format=3 uid="uid://1nt6653rbtnu"]
+[gd_scene load_steps=5 format=3 uid="uid://1nt6653rbtnu"]
 
 [ext_resource type="Script" uid="uid://cyvfma543jhlx" path="res://player/gun/ui/gun_reload_ui.gd" id="1_q0txs"]
 [ext_resource type="Texture2D" uid="uid://b4qkhioa01v58" path="res://player/gun/ui/progress-bar-circle.png" id="2_au8wg"]
+[ext_resource type="FontFile" path="res://ui/font/BoldPixels.ttf" id="3_font"]
+
+[sub_resource type="LabelSettings" id="LabelSettings_verdict"]
+font = ExtResource("3_font")
+font_size = 48
+outline_size = 10
+outline_color = Color(0, 0, 0, 1)
 
 [node name="GunReloadUi" type="Control"]
 layout_mode = 3
@@ -20,9 +27,38 @@ offset_top = -64.0
 offset_right = 65.0
 offset_bottom = 64.0
 max_value = 1.0
-step = 0.05
+step = 0.01
+value = 1.0
 fill_mode = 4
 texture_under = ExtResource("2_au8wg")
 texture_progress = ExtResource("2_au8wg")
 tint_under = Color(0, 0, 0, 0.290196)
 tint_progress = Color(0.486553, 0.97912, 0.268787, 0.796078)
+
+[node name="Highlight" type="TextureProgressBar" parent="."]
+visible = false
+layout_mode = 0
+offset_left = -63.0
+offset_top = -64.0
+offset_right = 65.0
+offset_bottom = 64.0
+max_value = 1.0
+step = 0.01
+value = 1.0
+fill_mode = 4
+radial_initial_angle = 144.0
+radial_fill_degrees = 43.2
+texture_progress = ExtResource("2_au8wg")
+tint_progress = Color(1, 0.717647, 0.101961, 1)
+
+[node name="MessageLabel" type="Label" parent="."]
+visible = false
+layout_mode = 0
+offset_left = -120.0
+offset_top = -134.0
+offset_right = 122.0
+offset_bottom = -74.0
+text = "PERFECT!"
+label_settings = SubResource("LabelSettings_verdict")
+horizontal_alignment = 1
+vertical_alignment = 1
