@@ -4,6 +4,7 @@
 [ext_resource type="PackedScene" uid="uid://s2gswtyrtm5x" path="res://interaction_component/interactable.tscn" id="2_interact"]
 [ext_resource type="PackedScene" path="res://ui/dialogue/DialogueBox.tscn" id="3_dialogue"]
 [ext_resource type="FontFile" uid="uid://kiwlymd55nc2" path="res://ui/font/BoldPixels.ttf" id="4_font"]
+[ext_resource type="Texture2D" path="res://npc/shaman_npc.svg" id="5_texture"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_npc"]
 size = Vector2(72, 90)
@@ -21,11 +22,9 @@ dialogue_lines = Array[String](["You've come a long way with dust in your teeth.
 bounty_id = "missing_cattle"
 completes_objectives = Array[String](["find_shaman", "learn_about_creature", "learn_to_track"])
 
-[node name="Body" type="ColorRect" parent="."]
-offset_left = -16.0
-offset_top = -64.0
-offset_right = 16.0
-color = Color(0.352941, 0.278431, 0.435294, 1)
+[node name="Sprite2D" type="Sprite2D" parent="."]
+position = Vector2(0, -32)
+texture = ExtResource("5_texture")
 
 [node name="NameLabel" type="Label" parent="."]
 offset_left = -60.0

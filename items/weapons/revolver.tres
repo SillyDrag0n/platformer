@@ -1,12 +1,14 @@
-[gd_resource type="Resource" script_class="WeaponItemData" load_steps=4 format=3 uid="uid://cl3tcwj4g2d0j"]
+[gd_resource type="Resource" script_class="WeaponItemData" load_steps=5 format=3 uid="uid://cl3tcwj4g2d0j"]
 
 [ext_resource type="Script" uid="uid://cm0d1agj388pl" path="res://scripts/items/ammo_item_data.gd" id="1_eavvg"]
 [ext_resource type="Script" uid="uid://bhl4f68w0eu4p" path="res://scripts/items/weapon_item_data.gd" id="1_weapon"]
 [ext_resource type="Texture2D" uid="uid://thqsq64jcd56" path="res://player/gun/revolver.png" id="2_texture"]
+[ext_resource type="Texture2D" path="res://items/weapons/revolver_icon.svg" id="3_icon"]
 
 [resource]
 script = ExtResource("1_weapon")
 world_texture = ExtResource("2_texture")
+icon = ExtResource("3_icon")
 bullet_speed = 500.0
 bullet_damage = 1
 cooldown = 0.75

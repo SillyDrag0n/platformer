@@ -1,11 +1,13 @@
-[gd_resource type="Resource" script_class="WeaponUpgradeItemData" load_steps=3 format=3]
+[gd_resource type="Resource" script_class="WeaponUpgradeItemData" load_steps=4 format=3]
 
 [ext_resource type="Script" path="res://scripts/items/weapon_upgrade_item_data.gd" id="1_upgrade"]
 [ext_resource type="Resource" path="res://items/weapons/revolver.tres" id="2_revolver"]
+[ext_resource type="Texture2D" path="res://items/weapons/attachements/speed_loader.svg" id="3_icon"]
 
 [resource]
 script = ExtResource("1_upgrade")
 target_weapon = ExtResource("2_revolver")
+icon = ExtResource("3_icon")
 active_reload_window = 0.12
 display_name = "Speed Loader"
 description = "Fits the revolver. The cylinder charges itself the moment the last round is spent, and a reload pressed while the dial crosses the marked notch slams it home instantly."

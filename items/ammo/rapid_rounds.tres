@@ -1,11 +1,13 @@
-[gd_resource type="Resource" script_class="AmmoItemData" load_steps=2 format=3 uid="uid://c455twmkuilql"]
+[gd_resource type="Resource" script_class="AmmoItemData" load_steps=3 format=3 uid="uid://c455twmkuilql"]
 
 [ext_resource type="Script" uid="uid://cm0d1agj388pl" path="res://scripts/items/ammo_item_data.gd" id="1_ammo"]
+[ext_resource type="Texture2D" path="res://items/ammo/rapid_rounds.svg" id="2_icon"]
 
 [resource]
 script = ExtResource("1_ammo")
 damage_modifier = 0.7
 speed_modifier = 1.4
+icon = ExtResource("2_icon")
 display_name = "Rapid Rounds"
 description = "Lighter, faster, hits softer."
 max_stack_size = 1

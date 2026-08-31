@@ -41,7 +41,7 @@ func set_bounty_data(new_bounty : BountyData):
 	# A job being worked shows which leg of it is in hand, so the list says how far along the
 	# player is without them having to open the bounty to find out.
 	if status_text == "In Progress" and not bounty.stages.is_empty():
-		status_label.text = "%s (%d/%d)" % [tr(status_text), bounty.get_current_stage_index() + 1, bounty.stages.size()]
+		status_label.text = "%s (%d/?)" % [tr(status_text), bounty.get_current_stage_index() + 1]
 	else:
 		status_label.text = tr(status_text)
 	status_label.modulate = STATUS_COLORS.get(status_text, Color.WHITE)

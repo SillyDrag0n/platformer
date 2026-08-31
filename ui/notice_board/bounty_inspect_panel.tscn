@@ -166,6 +166,19 @@ theme_override_font_sizes/font_size = 26
 text = "Description"
 autowrap_mode = 3
 
+[node name="StagesSection" type="VBoxContainer" parent="CenterContainer/VBoxContainer/Card/MarginVBox/BodyRow/RightColumn"]
+layout_mode = 2
+theme_override_constants/separation = 6
+
+[node name="StagesLabel" type="Label" parent="CenterContainer/VBoxContainer/Card/MarginVBox/BodyRow/RightColumn/StagesSection"]
+layout_mode = 2
+text = "Stages"
+label_settings = SubResource("LabelSettings_small")
+
+[node name="StagesList" type="VBoxContainer" parent="CenterContainer/VBoxContainer/Card/MarginVBox/BodyRow/RightColumn/StagesSection"]
+layout_mode = 2
+theme_override_constants/separation = 4
+
 [node name="RewardsSection" type="VBoxContainer" parent="CenterContainer/VBoxContainer/Card/MarginVBox/BodyRow/RightColumn"]
 layout_mode = 2
 theme_override_constants/separation = 8

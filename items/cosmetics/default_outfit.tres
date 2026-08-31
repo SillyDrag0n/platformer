@@ -1,11 +1,13 @@
-[gd_resource type="Resource" script_class="CosmeticItemData" load_steps=2 format=3]
+[gd_resource type="Resource" script_class="CosmeticItemData" load_steps=3 format=3]
 
 [ext_resource type="Script" path="res://scripts/items/cosmetic_item_data.gd" id="1_cosmetic"]
+[ext_resource type="Texture2D" path="res://items/cosmetics/default_outfit.svg" id="2_icon"]
 
 [resource]
 script = ExtResource("1_cosmetic")
 display_name = "Traveling Clothes"
 description = "Plain, well-worn clothes fit for the trail."
 max_stack_size = 1
+icon = ExtResource("2_icon")
 slot = 1
 metadata/_custom_type_script = "res://scripts/items/cosmetic_item_data.gd"

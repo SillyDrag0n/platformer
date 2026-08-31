@@ -3,6 +3,7 @@
 [ext_resource type="Script" path="res://tileset/structures/hub_structure.gd" id="1_shop"]
 [ext_resource type="PackedScene" uid="uid://s2gswtyrtm5x" path="res://interaction_component/interactable.tscn" id="2_interact"]
 [ext_resource type="FontFile" uid="uid://kiwlymd55nc2" path="res://ui/font/BoldPixels.ttf" id="3_font"]
+[ext_resource type="Texture2D" path="res://tileset/structures/arms_dealer_shop/arms_dealer_shop.svg" id="4_texture"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_shop"]
 size = Vector2(90, 70)
@@ -18,11 +19,9 @@ z_index = 20
 script = ExtResource("1_shop")
 destination_scene_key = "ArmsDealer"
 
-[node name="Body" type="ColorRect" parent="."]
-offset_left = -48.0
-offset_top = -140.0
-offset_right = 48.0
-color = Color(0.34902, 0.34902, 0.4, 1)
+[node name="Sprite2D" type="Sprite2D" parent="."]
+position = Vector2(0, -70)
+texture = ExtResource("4_texture")
 
 [node name="NameLabel" type="Label" parent="."]
 offset_left = -70.0

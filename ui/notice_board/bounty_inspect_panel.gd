@@ -5,6 +5,9 @@ signal accepted(bounty_data: BountyData)
 
 const REWARD_ICON_SIZE := Vector2(64, 64)
 
+const STAGE_COLOR_CURRENT := Color(0.0705882, 0.0392157, 0.0235294, 1)
+const STAGE_COLOR_COMPLETE := Color(0.0705882, 0.0392157, 0.0235294, 0.55)
+
 @onready var status_label: Label = $CenterContainer/VBoxContainer/Card/MarginVBox/HeaderRow/StatusLabel
 @onready var title_label: Label = $CenterContainer/VBoxContainer/Card/MarginVBox/BodyRow/RightColumn/TitleLabel
 @onready var description_label: Label = $CenterContainer/VBoxContainer/Card/MarginVBox/BodyRow/RightColumn/DescriptionScroll/DescriptionLabel
@@ -12,6 +15,8 @@ const REWARD_ICON_SIZE := Vector2(64, 64)
 @onready var region_label: Label = $CenterContainer/VBoxContainer/Card/MarginVBox/BodyRow/LeftColumn/RegionLabel
 @onready var status_detail_label: Label = $CenterContainer/VBoxContainer/Card/MarginVBox/BodyRow/LeftColumn/StatusDetailLabel
 @onready var rewards_row: HBoxContainer = $CenterContainer/VBoxContainer/Card/MarginVBox/BodyRow/RightColumn/RewardsSection/RewardsRow
+@onready var stages_section: VBoxContainer = $CenterContainer/VBoxContainer/Card/MarginVBox/BodyRow/RightColumn/StagesSection
+@onready var stages_list: VBoxContainer = $CenterContainer/VBoxContainer/Card/MarginVBox/BodyRow/RightColumn/StagesSection/StagesList
 @onready var accept_button: Button = $CenterContainer/VBoxContainer/ButtonRow/AcceptButton
 @onready var decline_button: Button = $CenterContainer/VBoxContainer/ButtonRow/DeclineButton
 
@@ -33,12 +38,45 @@ func open(bounty: BountyData) -> void:
 
 	icon_rect.texture = bounty.icon
 
+	_populate_stages(bounty)
 	_populate_rewards(bounty)
 
 	visible = true
 	accept_button.disabled = false
 	decline_button.disabled = false
 	accept_button.grab_focus()
+
+
+func _populate_stages(bounty: BountyData) -> void:
+	for child in stages_list.get_children():
+		child.queue_free()
+
+	stages_section.visible = not bounty.stages.is_empty()
+	if bounty.stages.is_empty():
+		return
+
+	var current_index := bounty.get_current_stage_index()
+	# Only show stages the player has actually reached - the current one and everything before it.
+	var visible_count := mini(current_index + 1, bounty.stages.size())
+	for i in visible_count:
+		var stage: BountyStageData = bounty.stages[i]
+		var line := "%d. %s" % [i + 1, tr(stage.title)]
+		var color := STAGE_COLOR_CURRENT
+		if stage.is_complete():
+			line += " (%s)" % tr("Complete")
+			color = STAGE_COLOR_COMPLETE
+		else:
+			line += " (%s)" % tr("In Progress")
+		stages_list.add_child(_make_stage_label(line, color))
+
+
+func _make_stage_label(text: String, color: Color) -> Label:
+	var label := Label.new()
+	label.text = text
+	label.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+	label.add_theme_color_override("font_color", color)
+	label.add_theme_font_size_override("font_size", 22)
+	return label
 
 
 func _populate_rewards(bounty: BountyData) -> void:

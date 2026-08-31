@@ -1,10 +1,10 @@
 [gd_scene load_steps=15 format=3 uid="uid://b1xibr4r15y53"]
 
 [ext_resource type="Script" uid="uid://cj5djqjg6gvk" path="res://enemies/cactus_coyote/cactus_coyote.gd" id="1_coyote"]
-[ext_resource type="Texture2D" uid="uid://bq7pw8bs7370t" path="res://enemies/temp_files/temp-enemy-idle.png" id="2_idle"]
-[ext_resource type="Texture2D" uid="uid://rj8emjvlcufw" path="res://enemies/temp_files/temp-enemy-aggro.png" id="3_aggro"]
-[ext_resource type="Texture2D" uid="uid://sin2yjigwmqi" path="res://enemies/temp_files/temp-enemy-walk.png" id="4_walk"]
-[ext_resource type="Texture2D" uid="uid://hfpvwvjdnxy7" path="res://enemies/temp_files/temp-enemy-shoot.png" id="5_shoot"]
+[ext_resource type="Texture2D" path="res://enemies/cactus_coyote/coyote_idle.svg" id="2_idle"]
+[ext_resource type="Texture2D" path="res://enemies/cactus_coyote/coyote_aggro.svg" id="3_aggro"]
+[ext_resource type="Texture2D" path="res://enemies/cactus_coyote/coyote_walk.svg" id="4_walk"]
+[ext_resource type="Texture2D" path="res://enemies/cactus_coyote/coyote_attack.svg" id="5_shoot"]
 [ext_resource type="Script" path="res://enemies/_common/contact_hitbox.gd" id="6_hitbox"]
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_pbw38"]

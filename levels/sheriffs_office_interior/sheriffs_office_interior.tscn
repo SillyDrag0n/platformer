@@ -1,13 +1,13 @@
 [gd_scene load_steps=13 format=3 uid="uid://c1w1rj7bdri48"]
 
-[ext_resource type="Script" path="res://levels/_common/interior_level.gd" id="1_ext01"]
+[ext_resource type="Script" uid="uid://bkhc53qdhj0g0" path="res://levels/_common/interior_level.gd" id="1_ext01"]
 [ext_resource type="PackedScene" uid="uid://bfcmjoltsmsed" path="res://player/player.tscn" id="2_ext02"]
 [ext_resource type="Script" uid="uid://chd8hkfd628j6" path="res://player/player_camera.gd" id="3_ext03"]
 [ext_resource type="PackedScene" uid="uid://dabxfx3538yx0" path="res://ui/screens/game_screen.tscn" id="4_ext04"]
 [ext_resource type="PackedScene" uid="uid://dnko61n7gbtwq" path="res://ui/screens/death_screen.tscn" id="5_ext05"]
 [ext_resource type="PackedScene" uid="uid://rx3auanfsgp0" path="res://ui/inventory/InventoryUI.tscn" id="6_ext06"]
 [ext_resource type="PackedScene" uid="uid://s2gswtyrtm5x" path="res://interaction_component/interactable.tscn" id="7_ext07"]
-[ext_resource type="PackedScene" path="res://npc/DialogNPC.tscn" id="8_npc"]
+[ext_resource type="PackedScene" uid="uid://dgflcmvkylnty" path="res://npc/DialogNPC.tscn" id="8_npc"]
 [ext_resource type="PackedScene" path="res://npc/QuestNPC.tscn" id="9_questnpc"]
 [ext_resource type="Resource" path="res://quests/kill_5_bandits.tres" id="10_bandit_quest"]
 
