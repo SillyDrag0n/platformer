@@ -27,13 +27,10 @@
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_8hjdj"]
 size = Vector2(944, 50)
 
-[node name="TestLevel" type="Node2D" node_paths=PackedStringArray("camera", "respawn_marker", "boss_spawn_marker", "boss_arena", "player")]
+[node name="TestLevel" type="Node2D" node_paths=PackedStringArray("boss_spawn_marker", "boss_arena")]
 script = ExtResource("1_ur00s")
-camera = NodePath("PlayerCamera")
-respawn_marker = NodePath("RespawnPosition")
 boss_spawn_marker = NodePath("BossSpawnPosition")
 boss_arena = NodePath("BossArena")
-player = NodePath("Player")
 
 [node name="Player" parent="." instance=ExtResource("4_wndkh")]
 position = Vector2(67, 179)

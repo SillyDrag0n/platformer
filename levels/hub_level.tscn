@@ -24,8 +24,9 @@
 [ext_resource type="PackedScene" path="res://npc/WelcomeNPC.tscn" id="16_welcome"]
 [ext_resource type="PackedScene" path="res://interaction_component/hint_zone.tscn" id="23_15esb"]
 
-[node name="HubLevel" type="Node2D"]
+[node name="HubLevel" type="Node2D" node_paths=PackedStringArray("tutorial_only_nodes")]
 script = ExtResource("8_hub")
+tutorial_only_nodes = [NodePath("WelcomeNPC"), NodePath("HintZoneInteract")]
 
 [node name="Player" parent="." instance=ExtResource("2_oyc5a")]
 position = Vector2(1300, 190)

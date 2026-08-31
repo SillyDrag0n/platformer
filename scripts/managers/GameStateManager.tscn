@@ -23,6 +23,7 @@
 [ext_resource type="Script" path="res://scripts/bounties/bounty_stage_data.gd" id="20_stage"]
 [ext_resource type="Script" path="res://scripts/bounties/bounty_objective_data.gd" id="21_objective"]
 [ext_resource type="PackedScene" path="res://levels/shaman_camp/shaman_camp.tscn" id="22_shaman_camp"]
+[ext_resource type="PackedScene" path="res://levels/coyote_den/coyote_den.tscn" id="23_coyote_den"]
 
 [sub_resource type="Resource" id="Resource_7qxxb"]
 script = ExtResource("5_ypgds")
@@ -147,6 +148,7 @@ id = "hunt"
 title = "Hunt the Creature"
 description = "Follow it back to whatever ground it has left and finish the job."
 objectives = Array[ExtResource("21_objective")]([SubResource("Resource_obj_den"), SubResource("Resource_obj_defeat"), SubResource("Resource_obj_collect")])
+level_scene = ExtResource("23_coyote_den")
 
 [sub_resource type="Resource" id="Resource_coyote"]
 script = ExtResource("2_15i0w")

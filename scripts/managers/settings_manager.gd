@@ -8,6 +8,12 @@ var save_file_name = "settings_data.tres"
 
 var available_languages : Array[String] = ["en", "de"]
 
+# The mixer's tracks, in the order they appear on the settings screen, and the tags every sound in
+# the game is routed through (see default_bus_layout.tres). Master scales the lot; the rest let a
+# player turn the music down without losing the gunshots, or mute menu blips without muting the
+# game. Adding a category means adding a bus to the layout and a name here - nothing else.
+const VOLUME_BUSES : Array[StringName] = [&"Master", &"Music", &"SFX", &"UI"]
+
 # Keyboard/mouse actions exposed for rebinding in the settings screen. Controller bindings (and
 # the joypad-axis-only aim_* actions) are left alone - this only ever touches the InputEventKey /
 # InputEventMouseButton slot of each of these actions.
@@ -44,7 +50,8 @@ func load_settings():
 		set_resolution(settings_data.resolution, settings_data.resolution_index)
 		set_max_fps(settings_data.max_fps, settings_data.max_fps_index)
 		set_vsync_enabled(settings_data.vsync_enabled)
-		set_master_volume(settings_data.master_volume)
+		_migrate_legacy_master_volume()
+		_apply_bus_volumes()
 		set_aim_sensitivity(settings_data.aim_sensitivity)
 		set_ui_scale(settings_data.ui_scale)
 		set_language(settings_data.language_code, settings_data.language_index)
@@ -83,10 +90,37 @@ func set_vsync_enabled(vsync_enabled : bool):
 	settings_data.vsync_enabled = vsync_enabled
 
 
-func set_master_volume(master_volume : float):
-	var master_bus_index := AudioServer.get_bus_index("Master")
-	AudioServer.set_bus_volume_db(master_bus_index, linear_to_db(master_volume))
-	settings_data.master_volume = master_volume
+# Sets one mixer track's volume, 0..1. Unknown bus names are a warning rather than a crash: the
+# names live in two places (VOLUME_BUSES and default_bus_layout.tres) and a layout that has lost a
+# bus should cost the player that one slider, not the whole settings screen.
+func set_bus_volume(bus_name : StringName, linear_volume : float) -> void:
+	var volume : float = clampf(linear_volume, 0.0, 1.0)
+	settings_data.bus_volumes[String(bus_name)] = volume
+
+	var bus_index := AudioServer.get_bus_index(bus_name)
+	if bus_index == -1:
+		push_warning("SettingsManager: no '%s' audio bus - check default_bus_layout.tres." % bus_name)
+		return
+	# linear_to_db(0.0) is -inf, which the audio server won't take; the bottom of the slider has to
+	# mean silence rather than an error.
+	AudioServer.set_bus_volume_db(bus_index, linear_to_db(volume) if volume > 0.0 else -80.0)
+
+
+func get_bus_volume(bus_name : StringName) -> float:
+	return settings_data.bus_volumes.get(String(bus_name), 1.0)
+
+
+func _apply_bus_volumes() -> void:
+	for bus_name in VOLUME_BUSES:
+		set_bus_volume(bus_name, get_bus_volume(bus_name))
+
+
+# A settings file written before the game had a mixer only knows about master_volume. Moved into
+# the Master entry once, so a player who had turned the game down doesn't get it back at full
+# volume the first time they launch a build with the mixer in it.
+func _migrate_legacy_master_volume() -> void:
+	if not settings_data.bus_volumes.has("Master"):
+		settings_data.bus_volumes["Master"] = settings_data.master_volume
 
 
 func set_aim_sensitivity(aim_sensitivity : float):

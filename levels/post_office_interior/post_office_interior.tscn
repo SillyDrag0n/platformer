@@ -1,6 +1,6 @@
 [gd_scene load_steps=10 format=3]
 
-[ext_resource type="Script" path="res://levels/post_office_interior/post_office_interior.gd" id="1_ext01"]
+[ext_resource type="Script" path="res://levels/_common/interior_level.gd" id="1_ext01"]
 [ext_resource type="PackedScene" uid="uid://bfcmjoltsmsed" path="res://player/player.tscn" id="2_ext02"]
 [ext_resource type="Script" uid="uid://chd8hkfd628j6" path="res://player/player_camera.gd" id="3_ext03"]
 [ext_resource type="PackedScene" uid="uid://dabxfx3538yx0" path="res://ui/screens/game_screen.tscn" id="4_ext04"]

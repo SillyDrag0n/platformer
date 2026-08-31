@@ -16,7 +16,7 @@ func _ready() -> void:
 	super._ready()
 	dialogue_box.closed.connect(_on_dialogue_closed)
 	var already_unlocked := GameStateManager.is_bounty_unlocked(bounty_to_unlock_id)
-	if not already_unlocked and not GameStateManager.has_shown_hub_welcome:
+	if not already_unlocked and not GameStateManager.has_story_flag(GameStateManager.FLAG_HUB_WELCOME_SHOWN):
 		greet_timer.start(greet_delay_seconds)
 
 
@@ -25,7 +25,7 @@ func _ready() -> void:
 # before it fires leaked a dangling SceneTreeTimer instead of being cancelled.
 func _on_greet_timer_timeout() -> void:
 	if not _has_greeted:
-		GameStateManager.has_shown_hub_welcome = true
+		GameStateManager.set_story_flag(GameStateManager.FLAG_HUB_WELCOME_SHOWN)
 		_greet()
 
 

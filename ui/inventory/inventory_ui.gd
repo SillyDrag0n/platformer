@@ -1,6 +1,13 @@
 extends CanvasLayer
 
-const BOUNTY_LIST_FONT = preload("res://ui/font/BoldPixels.ttf")
+# Every list on this screen - bounties, quests, utility items, abilities - is built out of plain
+# Labels at runtime rather than authored scenes, so they share one font and one small palette.
+const LIST_FONT = preload("res://ui/font/BoldPixels.ttf")
+
+const MUTED := Color(0.6, 0.6, 0.6)
+# The same accent a focused slot uses, so "currently active" reads consistently across the screen.
+const ACCENT := Color(0.960784, 0.615686, 0.156863)
+const UNLOCKED := Color(0.45, 0.85, 0.45)
 
 @export var tab_container : TabContainer
 
@@ -195,24 +202,14 @@ func refresh_utility_ui():
 	var equipped : ItemData = InventoryManager.get_equipped_utility()
 
 	if owned_utility_items.is_empty():
-		var empty_label := Label.new()
-		empty_label.text = tr("No utility items owned yet.")
-		empty_label.add_theme_font_override("font", BOUNTY_LIST_FONT)
-		empty_label.add_theme_font_size_override("font_size", 18)
-		empty_label.modulate = Color(0.6, 0.6, 0.6)
-		utility_list_container.add_child(empty_label)
+		utility_list_container.add_child(_make_list_label(tr("No utility items owned yet."), 18, MUTED))
 		return
 
 	for item in owned_utility_items:
-		var row := Label.new()
-		row.text = "%s x%d" % [tr(item.display_name), InventoryManager.get_owned_quantity(item)]
-		row.add_theme_font_override("font", BOUNTY_LIST_FONT)
-		row.add_theme_font_size_override("font_size", 24)
-		if item == equipped:
-			# Same accent used for a focused slot elsewhere in this UI, so "currently active for
-			# use" reads consistently with the rest of the screen.
-			row.modulate = Color(0.960784, 0.615686, 0.156863)
-		utility_list_container.add_child(row)
+		var text := "%s x%d" % [tr(item.display_name), InventoryManager.get_owned_quantity(item)]
+		# The one cycling currently lands on is accented rather than listed separately.
+		var color : Color = ACCENT if item == equipped else Color.WHITE
+		utility_list_container.add_child(_make_list_label(text, 24, color))
 
 
 func _create_item_slots() -> void:
@@ -240,29 +237,25 @@ func _on_item_slot_selected(item : ItemData) -> void:
 	item_information_icon.texture = item.icon
 
 
-# Same reasoning as _wire_loadout_focus_neighbors() below - Godot's automatic focus-neighbor
-# search is geometric and unreliable across a wide (10-column) grid, so up/down/left/right gets
-# wired explicitly from each slot's known row/column instead. Only needs to run once, here, since
-# the grid is no longer torn down and rebuilt on every inventory change.
+# Every list on this screen is built out of the same font and a handful of colours - this is that
+# one Label, so a new list doesn't come with four more lines of theme overrides.
+func _make_list_label(text : String, font_size : int, color : Color = Color.WHITE) -> Label:
+	var label := Label.new()
+	label.text = text
+	label.add_theme_font_override("font", LIST_FONT)
+	label.add_theme_font_size_override("font_size", font_size)
+	label.modulate = color
+	return label
+
+
+# Wired explicitly rather than left to Godot's geometric focus search, which is unreliable across
+# a 10-column grid - see FocusGrid. Only needs to run once, here, since the grid is no longer torn
+# down and rebuilt on every inventory change.
 func _wire_item_grid_focus_neighbors(slots : Array) -> void:
-	var columns : int = item_grid.columns
-	if slots.is_empty() or columns <= 0:
-		return
-
-	var row : Array = []
-	for i in range(slots.size()):
-		row.append(slots[i].get_node("Button"))
-		if (i + 1) % columns == 0 or i == slots.size() - 1:
-			_link_row(row)
-			row = []
-
-	for col in range(columns):
-		var column : Array = []
-		var i := col
-		while i < slots.size():
-			column.append(slots[i].get_node("Button"))
-			i += columns
-		_link_column(column)
+	var buttons : Array = []
+	for slot in slots:
+		buttons.append(slot.get_node("Button"))
+	FocusGrid.wire_grid(buttons, item_grid.columns)
 
 
 func _on_bounty_state_changed(_data = null):
@@ -288,12 +281,8 @@ func create_bounty_ui():
 	bounty_detail_icon.self_modulate = Color.WHITE
 
 	for region in GameStateManager.regions:
-		var header := Label.new()
-		header.text = tr(region.name) if region.unlocked else (tr(region.name) + " (" + tr("Locked") + ")")
-		header.add_theme_font_override("font", BOUNTY_LIST_FONT)
-		header.add_theme_font_size_override("font_size", 28)
-		header.modulate = Color(1, 1, 1) if region.unlocked else Color(0.6, 0.6, 0.6)
-		bounty_list_container.add_child(header)
+		var header_text : String = tr(region.name) if region.unlocked else "%s (%s)" % [tr(region.name), tr("Locked")]
+		bounty_list_container.add_child(_make_list_label(header_text, 28, Color.WHITE if region.unlocked else MUTED))
 
 		# Only what has actually been posted to the player. A bounty they haven't been given yet is
 		# left off the page entirely rather than listed greyed-out: a name on the journal is how they
@@ -304,12 +293,7 @@ func create_bounty_ui():
 				region_bounties.append(bounty)
 
 		if region_bounties.is_empty():
-			var empty_label := Label.new()
-			empty_label.text = tr("No bounties posted yet.")
-			empty_label.add_theme_font_override("font", BOUNTY_LIST_FONT)
-			empty_label.add_theme_font_size_override("font_size", 20)
-			empty_label.modulate = Color(0.6, 0.6, 0.6)
-			bounty_list_container.add_child(empty_label)
+			bounty_list_container.add_child(_make_list_label(tr("No bounties posted yet."), 20, MUTED))
 			continue
 
 		for bounty in region_bounties:
@@ -406,7 +390,7 @@ func _add_quest_section(section_key : String, section_title : String, quests : A
 
 	var header := Button.new()
 	header.text = ("▼  " if expanded else "▶  ") + section_title + " (%d)" % quests.size()
-	header.add_theme_font_override("font", BOUNTY_LIST_FONT)
+	header.add_theme_font_override("font", LIST_FONT)
 	header.add_theme_font_size_override("font_size", 24)
 	header.alignment = HORIZONTAL_ALIGNMENT_LEFT
 	header.flat = true
@@ -422,12 +406,7 @@ func _add_quest_section(section_key : String, section_title : String, quests : A
 		return
 
 	if quests.is_empty():
-		var empty_label := Label.new()
-		empty_label.text = tr("None yet.")
-		empty_label.add_theme_font_override("font", BOUNTY_LIST_FONT)
-		empty_label.add_theme_font_size_override("font_size", 18)
-		empty_label.modulate = Color(0.6, 0.6, 0.6)
-		quest_list_container.add_child(empty_label)
+		quest_list_container.add_child(_make_list_label(tr("None yet."), 18, MUTED))
 		return
 
 	for quest in quests:
@@ -462,29 +441,15 @@ func _wire_loadout_focus_neighbors() -> void:
 	var b_outfit := slot_outfit.button
 	var b_accessory := slot_accessory.button
 
-	_link_row([b_primary, b_secondary])
-	_link_row([b_ammo_primary, b_ammo_secondary])
-	_link_row([b_weapon_skin_primary, b_weapon_skin_secondary])
-	_link_row([b_hat, b_outfit, b_accessory])
+	# Not a plain grid - the cosmetics row is three wide where the rest are two - so the rows and
+	# columns are named out rather than derived from a column count.
+	FocusGrid.link_row([b_primary, b_secondary])
+	FocusGrid.link_row([b_ammo_primary, b_ammo_secondary])
+	FocusGrid.link_row([b_weapon_skin_primary, b_weapon_skin_secondary])
+	FocusGrid.link_row([b_hat, b_outfit, b_accessory])
 
-	_link_column([b_primary, b_ammo_primary, b_weapon_skin_primary, b_hat])
-	_link_column([b_secondary, b_ammo_secondary, b_weapon_skin_secondary, b_outfit])
-
-
-func _link_row(buttons : Array) -> void:
-	for i in range(buttons.size()):
-		if i > 0:
-			buttons[i].focus_neighbor_left = buttons[i].get_path_to(buttons[i - 1])
-		if i < buttons.size() - 1:
-			buttons[i].focus_neighbor_right = buttons[i].get_path_to(buttons[i + 1])
-
-
-func _link_column(buttons : Array) -> void:
-	for i in range(buttons.size()):
-		if i > 0:
-			buttons[i].focus_neighbor_top = buttons[i].get_path_to(buttons[i - 1])
-		if i < buttons.size() - 1:
-			buttons[i].focus_neighbor_bottom = buttons[i].get_path_to(buttons[i + 1])
+	FocusGrid.link_column([b_primary, b_ammo_primary, b_weapon_skin_primary, b_hat])
+	FocusGrid.link_column([b_secondary, b_ammo_secondary, b_weapon_skin_secondary, b_outfit])
 
 
 func refresh_abilities_ui():
@@ -497,21 +462,11 @@ func refresh_abilities_ui():
 			unlocked_abilities.append(ability)
 
 	if unlocked_abilities.is_empty():
-		var empty_label := Label.new()
-		empty_label.text = tr("No abilities unlocked yet.")
-		empty_label.add_theme_font_override("font", BOUNTY_LIST_FONT)
-		empty_label.add_theme_font_size_override("font_size", 18)
-		empty_label.modulate = Color(0.6, 0.6, 0.6)
-		abilities_list_container.add_child(empty_label)
+		abilities_list_container.add_child(_make_list_label(tr("No abilities unlocked yet."), 18, MUTED))
 		return
 
 	for ability in unlocked_abilities:
-		var row := Label.new()
-		row.text = ability.display_name
-		row.add_theme_font_override("font", BOUNTY_LIST_FONT)
-		row.add_theme_font_size_override("font_size", 24)
-		row.modulate = Color(0.45, 0.85, 0.45)
-		abilities_list_container.add_child(row)
+		abilities_list_container.add_child(_make_list_label(ability.display_name, 24, UNLOCKED))
 
 
 func _open_weapon_picker(slot : InventoryManager.WeaponSlot):

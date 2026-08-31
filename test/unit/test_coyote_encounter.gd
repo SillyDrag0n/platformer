@@ -22,7 +22,7 @@ var _real_save_file_name : String
 
 
 func before_each():
-	_original_flag = GameStateManager.has_driven_off_coyote
+	_original_flag = GameStateManager.has_story_flag(GameStateManager.FLAG_COYOTE_DRIVEN_OFF)
 	_original_dollars = CollectibleManager.total_award_amount
 	_original_objectives = {}
 	var bounty := GameStateManager.get_bounty_by_id("missing_cattle")
@@ -32,7 +32,7 @@ func before_each():
 		for objective in stage.objectives:
 			_original_objectives[objective.id] = objective.completed
 			objective.completed = false
-	GameStateManager.has_driven_off_coyote = false
+	GameStateManager.set_story_flag(GameStateManager.FLAG_COYOTE_DRIVEN_OFF, false)
 	InventoryManager.is_open = false
 	# The scripted-control lock is static state on an autoload, so a test that leaves it set would
 	# silently freeze the player in every test script that runs after this one.
@@ -48,7 +48,7 @@ func before_each():
 
 
 func after_each():
-	GameStateManager.has_driven_off_coyote = _original_flag
+	GameStateManager.set_story_flag(GameStateManager.FLAG_COYOTE_DRIVEN_OFF, _original_flag)
 	CollectibleManager.total_award_amount = _original_dollars
 	var bounty := GameStateManager.get_bounty_by_id("missing_cattle")
 	bounty.completed = _original_bounty_completed
@@ -202,7 +202,7 @@ func test_reaching_the_mark_seals_the_way_back_and_holds_on_the_coyote_feeding()
 		"eating rather than turning on them the instant they arrive")
 	assert_true(GameInputEvents.is_input_locked(), "and the controls stay off through it")
 	assert_eq(GameInputEvents.movement_input(), 0.0, "with the walk stopped on the mark")
-	assert_false(GameStateManager.has_driven_off_coyote, \
+	assert_false(GameStateManager.has_story_flag(GameStateManager.FLAG_COYOTE_DRIVEN_OFF), \
 		"nothing is spent yet - this fight can be lost, and a player who dies partway through " + \
 		"should find it waiting for them rather than already over")
 
@@ -293,12 +293,12 @@ func test_driving_the_coyote_off_opens_the_arena_and_plays_the_closing_line():
 	assert_eq(encounter.dialogue_box.speaker_label.text, PlayerManager.get_display_name(), \
 		"and he says it under the name the player entered at the start of the game, since the " + \
 		"closing line is the player character talking")
-	assert_true(GameStateManager.has_driven_off_coyote, \
+	assert_true(GameStateManager.has_story_flag(GameStateManager.FLAG_COYOTE_DRIVEN_OFF), \
 		"and the encounter is spent for good once the coyote is actually run off")
 
 
 func test_the_encounter_is_not_staged_again_on_a_later_visit():
-	GameStateManager.has_driven_off_coyote = true
+	GameStateManager.set_story_flag(GameStateManager.FLAG_COYOTE_DRIVEN_OFF, true)
 	var backyard := _make_backyard()
 	await wait_physics_frames(1)
 
@@ -461,6 +461,37 @@ func test_the_closing_line_fades_the_player_over_to_the_farmer():
 		"Hutch starts talking on his own rather than waiting to be interacted with")
 	assert_eq(encounter.farmer.dialogue_box.speaker_label.text, "Hutch", \
 		"and it's the farmer talking, through his own dialogue box")
+
+
+# The gap the recalled spike volley closes from the other end (see test_cactus_coyote.gd). The
+# debrief holds scripted control for the whole fade-and-talk, and GameInputEvents.scripted_control
+# is a static that outlives the scene - so a death in that window used to strand the player with no
+# controls whether they respawned here or went back to town. _on_player_died() returns early once
+# the coyote is logged as driven off, so the release has to come before that return, not after.
+func test_dying_after_the_coyote_is_already_gone_still_hands_the_controls_back():
+	var backyard := _make_backyard()
+	await wait_physics_frames(1)
+
+	var encounter = backyard.get_node("CoyoteEncounter")
+	var player : CharacterBody2D = backyard.get_node("Player")
+
+	encounter._on_body_entered(player)
+	encounter._on_coyote_fled()
+	await wait_frames(2)
+	encounter.dialogue_box.close()
+	await wait_seconds(1.8)
+
+	assert_true(GameInputEvents.scripted_control, \
+		"the debrief has the controls off him at this point - that is the whole danger window")
+	assert_true(GameStateManager.has_story_flag(GameStateManager.FLAG_COYOTE_DRIVEN_OFF), \
+		"and the encounter already counts itself won, so its death handler stands down")
+
+	encounter._on_player_died()
+	await wait_frames(2)
+
+	assert_false(GameInputEvents.scripted_control, \
+		"dying here must not leave him unable to move - Respawn is the default button on the " + \
+		"death screen, and it puts him straight back in this level")
 
 
 func test_the_farmer_pays_up_for_the_trouble():

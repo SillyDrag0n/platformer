@@ -1,7 +1,7 @@
 [gd_scene load_steps=5 format=3 uid="uid://wq5uffyprpgx"]
 
 [ext_resource type="Texture2D" uid="uid://d3yvwlauosvtf" path="res://tileset/structures/saloon/rosa's saloon.png" id="1_plv7j"]
-[ext_resource type="Script" uid="uid://6cs5vdoluqal" path="res://tileset/structures/saloon/rosas_saloon.gd" id="1_yw7xr"]
+[ext_resource type="Script" path="res://tileset/structures/hub_structure.gd" id="1_yw7xr"]
 [ext_resource type="PackedScene" uid="uid://s2gswtyrtm5x" path="res://interaction_component/interactable.tscn" id="2_ymhjx"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_ymhjx"]
@@ -10,6 +10,7 @@ size = Vector2(70, 70)
 [node name="RosasSaloon" type="Node2D"]
 z_index = 20
 script = ExtResource("1_yw7xr")
+destination_scene_key = "Saloon"
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
 position = Vector2(0, -112)

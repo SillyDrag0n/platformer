@@ -83,11 +83,10 @@ func _ready() -> void:
 	_seal(false)
 	set_physics_process(false)
 
-	# Gated on the same persisted flag pattern as WelcomeNPC's greeting (see
-	# GameStateManager.has_driven_off_coyote) so coming back to the backyard after the coyote has
-	# already been run off doesn't stage the whole encounter again. The coyote goes with it rather
-	# than being left standing over a carcass with nothing to set it off.
-	if GameStateManager.has_driven_off_coyote:
+	# Gated on a story flag, the same way WelcomeNPC's greeting is, so coming back to the backyard
+	# after the coyote has already been run off doesn't stage the whole encounter again. The coyote
+	# goes with it rather than being left standing over a carcass with nothing to set it off.
+	if GameStateManager.has_story_flag(GameStateManager.FLAG_COYOTE_DRIVEN_OFF):
 		if coyote != null:
 			coyote.queue_free()
 		queue_free()
@@ -206,10 +205,17 @@ func _start_fight() -> void:
 # the player shut out of an arena they can no longer open - the coyote sealed in, half-dead, with
 # nothing left to set it on them.
 func _on_player_died() -> void:
-	if GameStateManager.has_driven_off_coyote:
+	# Whatever else is true of the encounter, a player who died in it must not come back with their
+	# controls still taken off them - and this has to happen before the "already driven off" case
+	# returns below, not after. The debrief holds scripted control for the whole fade-and-talk, and
+	# GameInputEvents.scripted_control is a static that outlives the scene: a death in that window
+	# used to leave the player unable to move, whether they respawned here or went back to town.
+	GameInputEvents.release_scripted_control()
+
+	if GameStateManager.has_story_flag(GameStateManager.FLAG_COYOTE_DRIVEN_OFF):
 		return
-	# Whatever else is true of the encounter, a player who died mid-approach must not respawn with
-	# their controls still taken off them.
+	# Puts the encounter into its resting Fight stage as well, so what follows can hand the arena
+	# back rather than restage the approach.
 	_start_fight()
 	if not is_instance_valid(coyote) or coyote.current_state == CactusCoyote.State.Flee:
 		return
@@ -224,7 +230,7 @@ func _on_coyote_fled() -> void:
 	# Burned on the coyote actually being run off, not on the fight starting - this one can be
 	# lost, and a player who dies partway through should find it waiting for them, not already
 	# spent.
-	GameStateManager.has_driven_off_coyote = true
+	GameStateManager.set_story_flag(GameStateManager.FLAG_COYOTE_DRIVEN_OFF)
 	GameStateManager.complete_objective(bounty_id, escape_objective_id)
 	_start_fight()
 	_seal(false)

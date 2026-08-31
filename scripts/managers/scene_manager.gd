@@ -10,6 +10,10 @@ var scenes : Dictionary = { "Level1": "res://levels/test_level.tscn",
 							"SheriffsOffice": "res://levels/sheriffs_office_interior/sheriffs_office_interior.tscn",
 							"Bank": "res://levels/bank_interior/bank_interior.tscn",
 							"PostOffice": "res://levels/post_office_interior/post_office_interior.tscn",
+							"FarmHouseInterior": "res://levels/farm_house_interior/farm_house_interior.tscn",
+							# The tutorial level out behind the farm house. Reached by taking the
+							# Missing Cattle contract off the board, not by walking into the house
+							# in town - that leads to FarmHouseInterior above.
 							"FarmHouseBackyard": "res://levels/farm_house_backyard/farm_house_backyard.tscn" }
 
 # Lets a scene the player is about to leave (e.g. walking into a building) tell whichever scene

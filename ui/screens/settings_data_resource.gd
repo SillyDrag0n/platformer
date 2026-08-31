@@ -8,7 +8,18 @@ class_name SettingsDataResource
 @export var max_fps : int = 0
 @export var max_fps_index : int = 0
 @export var vsync_enabled : bool = true
+
+# Bus name (String) -> linear volume 0..1, one entry per mixer track (see
+# SettingsManager.VOLUME_BUSES). A dictionary rather than a field per bus so adding a category to
+# the mixer doesn't mean touching this file, SettingsManager and the settings screen's save
+# round-trip all at once. Missing entries read as full volume.
+@export var bus_volumes : Dictionary = {}
+
+# Superseded by bus_volumes above. Kept exported so a settings file written before the game had a
+# mixer still parses, and migrated into the Master entry once on load - see
+# SettingsManager._migrate_legacy_master_volume().
 @export var master_volume : float = 1.0
+
 @export var aim_sensitivity : float = 0.5
 @export var ui_scale : float = 1.0
 @export var language_code : String = "en"

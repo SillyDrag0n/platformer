@@ -31,5 +31,12 @@ extends Resource
 @export var bounty_states : Dictionary = {} # bounty id -> {unlocked, completed, reward_claimed}
 @export var region_states : Dictionary = {} # region id -> unlocked
 
+# One-off story beats that have already played, keyed by GameStateManager's FLAG_* ids. A
+# dictionary rather than a field per beat, so a new beat is saved without touching this file - see
+# GameStateManager.story_flags.
+@export var story_flags : Dictionary = {}
+
+# Superseded by story_flags above. Kept exported so a save written before the flags were pooled
+# still parses, and migrated across once on load - see SaveManager._migrate_legacy_story_flags().
 @export var has_shown_hub_welcome : bool = false
 @export var has_driven_off_coyote : bool = false

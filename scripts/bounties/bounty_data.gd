@@ -1,6 +1,13 @@
 extends Resource
 class_name BountyData
 
+# A contract off the notice board. The job the player takes; its stages are the levels they play
+# to see it through (see BountyStageData), and its objectives are the lines on the checklist those
+# levels tick off.
+#
+# unlocked/completed/reward_claimed is runtime progress kept on the shared authored resource, same
+# as BountyObjectiveData.completed, and persisted by SaveManager alongside it.
+
 @export var id: String
 @export var title: String
 @export var region_id: String
@@ -40,20 +47,19 @@ func get_status_text() -> String:
 	return "Available"
 
 
-# The leg the player is on: the first stage with anything left to do. Null once every objective is
-# ticked off, and for a bounty that has no stages at all.
-func get_current_stage() -> BountyStageData:
-	for stage in stages:
-		if not stage.is_complete():
-			return stage
-	return null
-
-
+# The leg the player is on: the first stage with anything left to do. stages.size() once every
+# objective is ticked off, and 0 for a bounty that has no stages at all.
 func get_current_stage_index() -> int:
 	for i in stages.size():
 		if not stages[i].is_complete():
 			return i
 	return stages.size()
+
+
+# The stage at that index, or null once the contract has nothing left in hand.
+func get_current_stage() -> BountyStageData:
+	var index := get_current_stage_index()
+	return stages[index] if index < stages.size() else null
 
 
 # Where accepting this bounty takes the player: the level for the leg they are actually on, or the
@@ -65,14 +71,6 @@ func get_current_level_scene() -> PackedScene:
 	return level_scene
 
 
-func find_objective(objective_id : String) -> BountyObjectiveData:
-	for stage in stages:
-		var objective := stage.find_objective(objective_id)
-		if objective != null:
-			return objective
-	return null
-
-
 func find_stage_for_objective(objective_id : String) -> BountyStageData:
 	for stage in stages:
 		if stage.find_objective(objective_id) != null:
@@ -80,11 +78,9 @@ func find_stage_for_objective(objective_id : String) -> BountyStageData:
 	return null
 
 
-func objective_count() -> int:
-	var count := 0
-	for stage in stages:
-		count += stage.objectives.size()
-	return count
+func find_objective(objective_id : String) -> BountyObjectiveData:
+	var stage := find_stage_for_objective(objective_id)
+	return stage.find_objective(objective_id) if stage != null else null
 
 
 func completed_objective_count() -> int:
@@ -97,9 +93,4 @@ func completed_objective_count() -> int:
 # True only for a staged bounty whose every objective is done - a bounty with no stages is never
 # finished this way, since nothing would ever tick it off.
 func all_objectives_complete() -> bool:
-	if stages.is_empty():
-		return false
-	for stage in stages:
-		if not stage.is_complete():
-			return false
-	return true
+	return not stages.is_empty() and get_current_stage() == null

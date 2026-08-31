@@ -46,14 +46,17 @@ color_ramp = SubResource("GradientTexture1D_smoke")
 script = ExtResource("1_effect")
 
 [node name="ExplosionSound" type="AudioStreamPlayer2D" parent="."]
+bus = &"SFX"
 stream = ExtResource("2_sound")
 volume_db = -2.0
 
 [node name="ExplosionDeep" type="AudioStreamPlayer2D" parent="."]
+bus = &"SFX"
 stream = ExtResource("2_sound")
 volume_db = -8.0
 
 [node name="ExplosionCrack" type="AudioStreamPlayer2D" parent="."]
+bus = &"SFX"
 stream = ExtResource("2_sound")
 volume_db = -11.0
 

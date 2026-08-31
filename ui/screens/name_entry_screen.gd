@@ -66,51 +66,9 @@ func _build_keyboard() -> void:
 		keyboard_grid.add_child(button)
 		key_buttons.append(button)
 
-	_wire_keyboard_focus_neighbors(key_buttons)
-
 	# The keyboard sits between the text field above it and Confirm below it - wired explicitly
-	# since Godot's automatic focus search doesn't reliably reach into/out of a wide grid (see
-	# also inventory_ui.gd's _wire_item_grid_focus_neighbors() for the same class of issue).
-	name_input.focus_neighbor_bottom = name_input.get_path_to(key_buttons[0])
-	key_buttons[0].focus_neighbor_top = key_buttons[0].get_path_to(name_input)
-
-	var last_row_start := KEYBOARD_KEYS.size() - KEYBOARD_COLUMNS
-	for i in range(last_row_start, KEYBOARD_KEYS.size()):
-		key_buttons[i].focus_neighbor_bottom = key_buttons[i].get_path_to(confirm_button)
-	confirm_button.focus_neighbor_top = confirm_button.get_path_to(key_buttons[last_row_start])
-
-
-func _wire_keyboard_focus_neighbors(buttons : Array) -> void:
-	var row : Array = []
-	for i in range(buttons.size()):
-		row.append(buttons[i])
-		if (i + 1) % KEYBOARD_COLUMNS == 0 or i == buttons.size() - 1:
-			_link_row(row)
-			row = []
-
-	for col in range(KEYBOARD_COLUMNS):
-		var column : Array = []
-		var i := col
-		while i < buttons.size():
-			column.append(buttons[i])
-			i += KEYBOARD_COLUMNS
-		_link_column(column)
-
-
-func _link_row(buttons : Array) -> void:
-	for i in range(buttons.size()):
-		if i > 0:
-			buttons[i].focus_neighbor_left = buttons[i].get_path_to(buttons[i - 1])
-		if i < buttons.size() - 1:
-			buttons[i].focus_neighbor_right = buttons[i].get_path_to(buttons[i + 1])
-
-
-func _link_column(buttons : Array) -> void:
-	for i in range(buttons.size()):
-		if i > 0:
-			buttons[i].focus_neighbor_top = buttons[i].get_path_to(buttons[i - 1])
-		if i < buttons.size() - 1:
-			buttons[i].focus_neighbor_bottom = buttons[i].get_path_to(buttons[i + 1])
+	# since Godot's automatic focus search doesn't reliably reach into or out of a wide grid.
+	FocusGrid.wire_grid(key_buttons, KEYBOARD_COLUMNS, confirm_button, name_input)
 
 
 func _on_key_pressed(key : String) -> void:

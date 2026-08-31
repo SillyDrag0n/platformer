@@ -1,0 +1,62 @@
+[gd_scene load_steps=12 format=4]
+
+[ext_resource type="Script" path="res://levels/coyote_den/coyote_den.gd" id="1_den"]
+[ext_resource type="PackedScene" uid="uid://bfcmjoltsmsed" path="res://player/player.tscn" id="2_player"]
+[ext_resource type="Script" uid="uid://chd8hkfd628j6" path="res://player/player_camera.gd" id="3_camera"]
+[ext_resource type="PackedScene" uid="uid://dabxfx3538yx0" path="res://ui/screens/game_screen.tscn" id="4_game_screen"]
+[ext_resource type="PackedScene" uid="uid://dnko61n7gbtwq" path="res://ui/screens/death_screen.tscn" id="5_death_screen"]
+[ext_resource type="PackedScene" uid="uid://rx3auanfsgp0" path="res://ui/inventory/InventoryUI.tscn" id="6_inventory"]
+[ext_resource type="TileSet" uid="uid://dxdum0wlxjwk" path="res://tileset/desert_terrain_tileset.tres" id="7_terrain"]
+[ext_resource type="TileSet" uid="uid://def5ntuv7xeec" path="res://tileset/desert_owp_tileset.tres" id="8_owp"]
+[ext_resource type="TileSet" uid="uid://ddclxatqibdkx" path="res://tileset/desert_decorations_tileset.tres" id="9_decorations"]
+[ext_resource type="TileSet" uid="uid://bm6iyhti1uwgi" path="res://tileset/desert_breakables_tileset.tres" id="10_breakables"]
+[ext_resource type="TileSet" uid="uid://dknxmyabj3msh" path="res://tileset/desert_foreground_tileset.tres" id="11_foreground"]
+
+[node name="CoyoteDen" type="Node2D"]
+script = ExtResource("1_den")
+
+[node name="Player" parent="." instance=ExtResource("2_player")]
+position = Vector2(0, 0)
+
+[node name="PlayerCamera" type="Camera2D" parent="." node_paths=PackedStringArray("player")]
+position = Vector2(0, -40)
+zoom = Vector2(2, 2)
+script = ExtResource("3_camera")
+player = NodePath("../Player")
+
+[node name="RespawnPosition" type="Marker2D" parent="."]
+position = Vector2(0, 0)
+
+[node name="GameScreen" parent="." instance=ExtResource("4_game_screen")]
+
+[node name="DeathScreen" parent="." instance=ExtResource("5_death_screen")]
+visible = false
+
+[node name="InventoryUi" parent="." instance=ExtResource("6_inventory")]
+visible = false
+
+[node name="TileMap" type="Node" parent="."]
+
+[node name="TileMapTerrain" type="TileMapLayer" parent="TileMap"]
+tile_set = ExtResource("7_terrain")
+rendering_quadrant_size = 32
+
+[node name="TileMapOWP" type="TileMapLayer" parent="TileMap"]
+z_index = 10
+tile_set = ExtResource("8_owp")
+rendering_quadrant_size = 32
+
+[node name="TileMapDecorations" type="TileMapLayer" parent="TileMap"]
+z_index = 30
+tile_set = ExtResource("9_decorations")
+rendering_quadrant_size = 32
+
+[node name="TileMapBreakables" type="TileMapLayer" parent="TileMap" groups=["BreakableTerrain"]]
+z_index = 40
+tile_set = ExtResource("10_breakables")
+rendering_quadrant_size = 32
+
+[node name="TileMapForeground" type="TileMapLayer" parent="TileMap"]
+z_index = 70
+tile_set = ExtResource("11_foreground")
+rendering_quadrant_size = 32

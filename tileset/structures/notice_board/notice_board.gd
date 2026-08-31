@@ -1,11 +1,12 @@
-extends Node2D
+extends HubStructure
 
-@onready var interactable: Area2D = $Interactable
+# The board of posted contracts outside the sheriff's office. The only structure in town that
+# opens a screen instead of loading a level, so it is the only one that still needs its own script.
 
-func _ready() -> void:
-	interactable.interact = _on_interact
 
-func _on_interact():
-	interactable.is_interactable = false
-	SceneManager.set_pending_spawn_position(PlayerManager.player.global_position)
+func can_enter() -> bool:
+	return true
+
+
+func enter() -> void:
 	UiManager.open_bounty_board()

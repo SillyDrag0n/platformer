@@ -1,6 +1,6 @@
 [gd_scene load_steps=5 format=3]
 
-[ext_resource type="Script" path="res://tileset/structures/bank/bank.gd" id="1_bank"]
+[ext_resource type="Script" path="res://tileset/structures/hub_structure.gd" id="1_bank"]
 [ext_resource type="Texture2D" path="res://tileset/structures/bank/bank.svg" id="2_texture"]
 [ext_resource type="PackedScene" uid="uid://s2gswtyrtm5x" path="res://interaction_component/interactable.tscn" id="3_interact"]
 [ext_resource type="FontFile" uid="uid://kiwlymd55nc2" path="res://ui/font/BoldPixels.ttf" id="4_font"]
@@ -17,6 +17,7 @@ outline_color = Color(0, 0, 0, 1)
 [node name="Bank" type="Node2D"]
 z_index = 20
 script = ExtResource("1_bank")
+destination_scene_key = "Bank"
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
 position = Vector2(0, -75)

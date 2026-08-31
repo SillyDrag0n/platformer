@@ -110,6 +110,60 @@ func test_a_volley_fans_several_spikes_out_at_once():
 		spike.free()
 
 
+# A volley outlives the coyote that fired it - spines are parented to ProjectileLayer - so without
+# this the player could win the fight and then be killed by a spine still in the air. In the
+# tutorial that lands mid-debrief, with the encounter already logged as won.
+func test_turning_tail_takes_the_volley_already_in_the_air_with_it():
+	var coyote := _make_coyote()
+	var before : int = ProjectileLayer.get_child_count()
+
+	coyote.fire_spikes()
+	var spikes : Array = ProjectileLayer.get_children().slice(before)
+	assert_eq(spikes.size(), coyote.spike_count, "a volley is up before it is driven off")
+
+	coyote.take_damage(coyote.health_amount)
+	# queue_free() lands at the end of the frame.
+	await wait_frames(2)
+
+	for spike in spikes:
+		assert_false(is_instance_valid(spike), \
+			"a spine still travelling after the fight is won can kill a player who already won it")
+	assert_eq(ProjectileLayer.get_child_count(), before, \
+		"and nothing of the volley is left on the projectile layer")
+
+
+func test_spines_fired_before_the_flee_do_not_outlive_a_second_volley():
+	var coyote := _make_coyote()
+	var before : int = ProjectileLayer.get_child_count()
+
+	# Two volleys, so the recall has to cover everything it ever fired rather than just the last.
+	coyote.fire_spikes()
+	coyote.fire_spikes()
+	var spikes : Array = ProjectileLayer.get_children().slice(before)
+
+	coyote.take_damage(coyote.health_amount)
+	await wait_frames(2)
+
+	for spike in spikes:
+		assert_false(is_instance_valid(spike), "every spine it ever put up comes back down with it")
+
+
+# The spines free themselves on impact and on their own timer, so the coyote's list of them goes
+# stale by design - the recall has to tolerate that rather than touch a freed node.
+func test_recalling_a_volley_that_has_already_expired_is_a_safe_no_op():
+	var coyote := _make_coyote()
+	var before : int = ProjectileLayer.get_child_count()
+
+	coyote.fire_spikes()
+	for spike in ProjectileLayer.get_children().slice(before):
+		spike.free()
+
+	coyote.take_damage(coyote.health_amount)
+
+	assert_eq(coyote.current_state, CactusCoyote.State.Flee, \
+		"reached the flee state without a script error on the already-freed spines")
+
+
 func test_running_out_of_health_makes_it_flee_instead_of_die():
 	var coyote := _make_coyote()
 	watch_signals(coyote)

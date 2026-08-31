@@ -14,13 +14,13 @@ var _original_unlocked : bool
 func before_each():
 	_original_unlocked = GameStateManager.get_bounty_by_id(BOUNTY_ID).unlocked
 	GameStateManager.get_bounty_by_id(BOUNTY_ID).unlocked = false
-	GameStateManager.has_shown_hub_welcome = false
+	GameStateManager.set_story_flag(GameStateManager.FLAG_HUB_WELCOME_SHOWN, false)
 	InventoryManager.is_open = false
 
 
 func after_each():
 	GameStateManager.get_bounty_by_id(BOUNTY_ID).unlocked = _original_unlocked
-	GameStateManager.has_shown_hub_welcome = false
+	GameStateManager.set_story_flag(GameStateManager.FLAG_HUB_WELCOME_SHOWN, false)
 	InventoryManager.is_open = false
 
 

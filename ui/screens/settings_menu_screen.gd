@@ -7,6 +7,9 @@ const ControlBindingRowScene = preload("res://ui/screens/control_binding_row.tsc
 @onready var max_fps_option_button = $MarginContainer/PanelContainer/MarginContainer/VBoxContainer/TabContainer/General/MaxFpsOptionButton
 @onready var vsync_check_button = $MarginContainer/PanelContainer/MarginContainer/VBoxContainer/TabContainer/General/VSyncCheckButton
 @onready var master_volume_slider = $MarginContainer/PanelContainer/MarginContainer/VBoxContainer/TabContainer/General/MasterVolumeSlider
+@onready var music_volume_slider = $MarginContainer/PanelContainer/MarginContainer/VBoxContainer/TabContainer/General/MusicVolumeSlider
+@onready var sfx_volume_slider = $MarginContainer/PanelContainer/MarginContainer/VBoxContainer/TabContainer/General/SFXVolumeSlider
+@onready var ui_volume_slider = $MarginContainer/PanelContainer/MarginContainer/VBoxContainer/TabContainer/General/UIVolumeSlider
 @onready var aim_sensitivity_slider = $MarginContainer/PanelContainer/MarginContainer/VBoxContainer/TabContainer/General/AimSensitivitySlider
 @onready var ui_scale_slider = $MarginContainer/PanelContainer/MarginContainer/VBoxContainer/TabContainer/General/UiScaleSlider
 @onready var language_option_button = $MarginContainer/PanelContainer/MarginContainer/VBoxContainer/TabContainer/General/LanguageOptionButton
@@ -119,7 +122,11 @@ func initialise_controls():
 	resolution_option_button.selected = settings_data.resolution_index
 	max_fps_option_button.selected = settings_data.max_fps_index
 	vsync_check_button.button_pressed = settings_data.vsync_enabled
-	master_volume_slider.value = settings_data.master_volume * 100.0
+	# One slider per mixer track (see SettingsManager.VOLUME_BUSES), all read back the same way.
+	master_volume_slider.value = SettingsManager.get_bus_volume(&"Master") * 100.0
+	music_volume_slider.value = SettingsManager.get_bus_volume(&"Music") * 100.0
+	sfx_volume_slider.value = SettingsManager.get_bus_volume(&"SFX") * 100.0
+	ui_volume_slider.value = SettingsManager.get_bus_volume(&"UI") * 100.0
 	aim_sensitivity_slider.value = settings_data.aim_sensitivity * 100.0
 	ui_scale_slider.value = settings_data.ui_scale * 100.0
 	language_option_button.selected = settings_data.language_index
@@ -205,7 +212,19 @@ func _on_v_sync_check_button_toggled(toggled_on):
 
 
 func _on_master_volume_slider_value_changed(value):
-	SettingsManager.set_master_volume(value / 100.0)
+	SettingsManager.set_bus_volume(&"Master", value / 100.0)
+
+
+func _on_music_volume_slider_value_changed(value):
+	SettingsManager.set_bus_volume(&"Music", value / 100.0)
+
+
+func _on_sfx_volume_slider_value_changed(value):
+	SettingsManager.set_bus_volume(&"SFX", value / 100.0)
+
+
+func _on_ui_volume_slider_value_changed(value):
+	SettingsManager.set_bus_volume(&"UI", value / 100.0)
 
 
 func _on_aim_sensitivity_slider_value_changed(value):

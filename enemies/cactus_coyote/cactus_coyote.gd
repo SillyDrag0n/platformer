@@ -66,6 +66,12 @@ var _spikes_next : bool = true
 var _pounce_left_ground : bool = false
 var _volley_fired : bool = false
 
+# The spines this one has put in the air. They are parented to ProjectileLayer rather than to the
+# coyote, so they outlive it and have to be recalled by hand when it turns tail - see
+# _recall_spikes(). Entries free themselves on impact or on their own timer, so this list goes
+# stale on its own and is only ever read back through is_instance_valid().
+var _spikes_in_flight : Array[Node2D] = []
+
 # Captured at _ready() so a lost fight can be handed back exactly as the player first found it -
 # see reset_to_feeding(). die() zeroes both collision fields, so their resting values have to be
 # remembered rather than re-read.
@@ -284,6 +290,7 @@ func fire_spikes() -> void:
 		spike.global_position = origin
 		spike.direction = aim.rotated(offset * spread)
 		ProjectileLayer.spawn(spike)
+		_spikes_in_flight.append(spike)
 
 
 # Running it off is the win condition, so Enemy.die()'s kill credit / loot drop / death effect are
@@ -300,6 +307,7 @@ func die() -> void:
 	collision_mask = 0
 	hurtbox.set_deferred("monitoring", false)
 	hurtbox.set_deferred("monitorable", false)
+	_recall_spikes()
 
 	# Away from the player, so the exit reads as bolting rather than through them.
 	var player = PlayerManager.player
@@ -311,6 +319,22 @@ func die() -> void:
 
 	velocity = Vector2(facing * flee_speed, -flee_lift)
 	animated_sprite.play("flee")
+
+
+# The last volley outlives the creature that fired it: spines live on ProjectileLayer and keep
+# travelling for as long as their own timer allows. Clearing its own collision (above) stopped the
+# coyote clipping the player on the way out but left those in the air, so a fight the player had
+# already won could still kill them a second or two later.
+#
+# In the tutorial that lands squarely in the worst place for it - the encounter has already logged
+# the coyote as driven off and stood its own death handler down, and the debrief is holding the
+# player's controls - so the volley is called back with the creature rather than patched around
+# further downstream. See levels/farm_house_backyard/coyote_encounter.gd.
+func _recall_spikes() -> void:
+	for spike in _spikes_in_flight:
+		if is_instance_valid(spike):
+			spike.queue_free()
+	_spikes_in_flight.clear()
 
 
 func _run_flee(delta : float) -> void:

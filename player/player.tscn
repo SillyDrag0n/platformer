@@ -805,14 +805,17 @@ wait_time = 1.5
 one_shot = true
 
 [node name="GunShot01" type="AudioStreamPlayer" parent="Gun"]
+bus = &"SFX"
 stream = ExtResource("12_65viv")
 volume_db = -5.0
 
 [node name="GunReload" type="AudioStreamPlayer" parent="Gun"]
+bus = &"SFX"
 stream = ExtResource("13_x7c3f")
 volume_db = -5.0
 
 [node name="GunEmpty" type="AudioStreamPlayer" parent="Gun"]
+bus = &"SFX"
 stream = ExtResource("14_bjvpn")
 
 [node name="DynamiteThrower" type="Node2D" parent="."]
@@ -829,6 +832,7 @@ default_color = Color(1, 0.45, 0.15, 0.85)
 script = ExtResource("41_utilityselector")
 
 [node name="SpiritDrink" type="AudioStreamPlayer" parent="UtilitySelector"]
+bus = &"SFX"
 stream = ExtResource("45_spiritdrinksound")
 
 [node name="GrappleHook" type="Node2D" parent="."]
@@ -928,6 +932,7 @@ footstep_player = NodePath("FootstepPlayer")
 footstep_sounds = Array[AudioStream]([ExtResource("49_footstep1"), ExtResource("50_footstep2"), ExtResource("51_footstep3")])
 
 [node name="FootstepPlayer" type="AudioStreamPlayer2D" parent="LowerBodyController"]
+bus = &"SFX"
 volume_db = -4.0
 
 [node name="UpperBodyController" type="Node" parent="." node_paths=PackedStringArray("character_body_2d", "state_machine", "gun", "head_target", "arm_r_target", "arm_l_target", "body", "head_sprite", "hip")]

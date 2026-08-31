@@ -1,11 +1,5 @@
-extends Node2D
+extends Level
 
-@onready var player : CharacterBody2D = $Player
-@onready var camera : Camera2D = $PlayerCamera
-@onready var respawn_marker : Marker2D = $RespawnPosition
-
-func _ready() -> void:
-	RespawnManager.set_respawn_nodes(camera, respawn_marker, self)
-
-func set_player_instance(player_instance : CharacterBody2D) -> void:
-	player = player_instance
+# Hutch's place on the edge of town - PROJECT.md's "Level 1 - Investigation", and the tutorial.
+# The beats it is built around (the hint zones, the coyote encounter, the debrief) are staged by
+# levels/farm_house_backyard/coyote_encounter.gd rather than from here.

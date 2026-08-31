@@ -85,6 +85,7 @@ autowrap_mode = 3
 clip_text = true
 
 [node name="TearSound" type="AudioStreamPlayer" parent="."]
+bus = &"UI"
 stream = ExtResource("2_tearsnd")
 volume_db = -6.0
 

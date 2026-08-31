@@ -1,43 +1,29 @@
-[gd_scene load_steps=27 format=4]
+[gd_scene load_steps=14 format=4]
 
 [ext_resource type="Script" path="res://levels/shaman_camp/shaman_camp.gd" id="1_wmgqs"]
 [ext_resource type="PackedScene" path="res://player/player.tscn" id="2_4r0lc"]
-[ext_resource type="Script" path="res://player/player.gd" id="3_wmtk4"]
 [ext_resource type="Script" path="res://player/player_camera.gd" id="4_ihyoe"]
 [ext_resource type="PackedScene" path="res://ui/screens/game_screen.tscn" id="5_apd1y"]
-[ext_resource type="Script" path="res://ui/screens/game_screen.gd" id="6_whm2n"]
 [ext_resource type="PackedScene" path="res://ui/screens/death_screen.tscn" id="7_vhfer"]
-[ext_resource type="Script" path="res://ui/screens/death_screen.gd" id="8_kfims"]
 [ext_resource type="PackedScene" path="res://ui/inventory/InventoryUI.tscn" id="9_6wwkn"]
-[ext_resource type="Script" path="res://ui/inventory/inventory_ui.gd" id="10_o5si3"]
-[ext_resource type="PackedScene" path="res://ui/inventory/ItemSlot.tscn" id="11_vkuu3"]
-[ext_resource type="PackedScene" path="res://ui/inventory/BountyEntry.tscn" id="12_q0xaa"]
-[ext_resource type="Texture2D" path="res://icon.svg" id="13_7vo7c"]
-[ext_resource type="PackedScene" path="res://ui/inventory/QuestEntry.tscn" id="14_hujww"]
-[ext_resource type="PackedScene" path="res://ui/inventory/ItemPickerEntry.tscn" id="15_uufw0"]
 [ext_resource type="TileSet" path="res://tileset/desert_terrain_tileset.tres" id="16_12mdi"]
 [ext_resource type="TileSet" path="res://tileset/desert_owp_tileset.tres" id="17_4pgfi"]
 [ext_resource type="PackedScene" path="res://enemies/bandit/bandit.tscn" id="18_mcnwe"]
-[ext_resource type="Script" path="res://enemies/bandit/bandit.gd" id="19_5flvb"]
 [ext_resource type="PackedScene" path="res://enemies/cactus/enemy_cactus.tscn" id="20_ffglu"]
-[ext_resource type="Script" path="res://enemies/cactus/enemy_cactus.gd" id="21_b23ne"]
 [ext_resource type="PackedScene" path="res://levels/checkpoints/checkpoint.tscn" id="22_2kc72"]
-[ext_resource type="Script" path="res://levels/checkpoints/checkpoint.gd" id="23_v3b0e"]
 [ext_resource type="PackedScene" path="res://npc/ShamanNPC.tscn" id="24_43km5"]
-[ext_resource type="Script" path="res://npc/dialog_npc.gd" id="25_wmgqs"]
 
 [sub_resource type="FastNoiseLite" id="FastNoiseLite_wmgqs"]
 
 [node name="ShamanCamp" type="Node2D"]
 script = ExtResource("1_wmgqs")
 
-[node name="Player" type="CharacterBody2D" parent="." groups=["Player"] instance=ExtResource("2_4r0lc")]
+[node name="Player" parent="." groups=["Player"] instance=ExtResource("2_4r0lc")]
 z_index = 60
 position = Vector2(96, 120)
 collision_layer = 2
 collision_mask = 133
 safe_margin = 0.5
-script = ExtResource("3_wmtk4")
 
 [node name="PlayerCamera" type="Camera2D" parent="." node_paths=PackedStringArray("player")]
 position = Vector2(96, 60)
@@ -52,47 +38,14 @@ noise = SubResource("FastNoiseLite_wmgqs")
 [node name="RespawnPosition" type="Marker2D" parent="."]
 position = Vector2(96, 120)
 
-[node name="GameScreen" type="CanvasLayer" parent="." groups=["hud"] instance=ExtResource("5_apd1y")]
-script = ExtResource("6_whm2n")
+[node name="GameScreen" parent="." groups=["hud"] instance=ExtResource("5_apd1y")]
 
-[node name="DeathScreen" type="CanvasLayer" parent="." instance=ExtResource("7_vhfer")]
+[node name="DeathScreen" parent="." instance=ExtResource("7_vhfer")]
 process_mode = 3
 visible = false
-script = ExtResource("8_kfims")
 
-[node name="InventoryUi" type="CanvasLayer" parent="." node_paths=PackedStringArray("tab_container", "item_grid", "item_name_label", "item_description_label", "item_information_icon", "bounty_list_container", "bounty_title_label", "bounty_status_label", "bounty_description_label", "bounty_detail_icon", "quest_list_container", "slot_primary", "slot_secondary", "utility_list_container", "slot_ammo_primary", "slot_ammo_secondary", "slot_hat", "slot_outfit", "slot_weapon_skin_primary", "slot_weapon_skin_secondary", "slot_accessory", "abilities_list_container", "item_picker", "item_picker_backdrop", "picker_list_container") instance=ExtResource("9_6wwkn")]
+[node name="InventoryUi" parent="." instance=ExtResource("9_6wwkn")]
 visible = false
-script = ExtResource("10_o5si3")
-tab_container = NodePath("Panel/MarginContainer/TabContainer")
-item_grid = NodePath("Panel/MarginContainer/TabContainer/Items/ItemSlots/ItemsGridContainer")
-item_slot_scene = ExtResource("11_vkuu3")
-item_name_label = NodePath("Panel/MarginContainer/TabContainer/Items/Item Information/HBoxContainer/VBoxContainer/PanelContainer/ItemNameLabel")
-item_description_label = NodePath("Panel/MarginContainer/TabContainer/Items/Item Information/HBoxContainer/VBoxContainer/PanelContainer2/ItemDescriptionLabel")
-item_information_icon = NodePath("Panel/MarginContainer/TabContainer/Items/Item Information/HBoxContainer/ItemInformationIcon/Sprite2D")
-bounty_list_container = NodePath("Panel/MarginContainer/TabContainer/Bounties/BountyList/ScrollContainer/BountyListContainer")
-bounty_title_label = NodePath("Panel/MarginContainer/TabContainer/Bounties/Bounty Information/HBoxContainer/VBoxContainer/PanelContainer/BountyTitleLabel")
-bounty_status_label = NodePath("Panel/MarginContainer/TabContainer/Bounties/Bounty Information/HBoxContainer/VBoxContainer/BountyStatusLabel")
-bounty_description_label = NodePath("Panel/MarginContainer/TabContainer/Bounties/Bounty Information/HBoxContainer/VBoxContainer/PanelContainer2/BountyDescriptionLabel")
-bounty_detail_icon = NodePath("Panel/MarginContainer/TabContainer/Bounties/Bounty Information/HBoxContainer/BountyInformationIcon/BountyIconTextureRect")
-bounty_entry_scene = ExtResource("12_q0xaa")
-default_bounty_icon = ExtResource("13_7vo7c")
-quest_list_container = NodePath("Panel/MarginContainer/TabContainer/Quests/MarginContainer/ScrollContainer/QuestListContainer")
-quest_entry_scene = ExtResource("14_hujww")
-slot_primary = NodePath("Panel/MarginContainer/TabContainer/Loadout/ScrollContainer/VBoxContainer/EquipmentRow/PrimaryColumn/PrimarySlot")
-slot_secondary = NodePath("Panel/MarginContainer/TabContainer/Loadout/ScrollContainer/VBoxContainer/EquipmentRow/SecondaryColumn/SecondarySlot")
-utility_list_container = NodePath("Panel/MarginContainer/TabContainer/Loadout/ScrollContainer/VBoxContainer/UtilityListContainer")
-slot_ammo_primary = NodePath("Panel/MarginContainer/TabContainer/Loadout/ScrollContainer/VBoxContainer/EquipmentRow/PrimaryColumn/AmmoSlotPrimary")
-slot_ammo_secondary = NodePath("Panel/MarginContainer/TabContainer/Loadout/ScrollContainer/VBoxContainer/EquipmentRow/SecondaryColumn/AmmoSlotSecondary")
-slot_hat = NodePath("Panel/MarginContainer/TabContainer/Loadout/ScrollContainer/VBoxContainer/CosmeticsRow/HatSlot")
-slot_outfit = NodePath("Panel/MarginContainer/TabContainer/Loadout/ScrollContainer/VBoxContainer/CosmeticsRow/OutfitSlot")
-slot_weapon_skin_primary = NodePath("Panel/MarginContainer/TabContainer/Loadout/ScrollContainer/VBoxContainer/EquipmentRow/PrimaryColumn/WeaponSkinSlotPrimary")
-slot_weapon_skin_secondary = NodePath("Panel/MarginContainer/TabContainer/Loadout/ScrollContainer/VBoxContainer/EquipmentRow/SecondaryColumn/WeaponSkinSlotSecondary")
-slot_accessory = NodePath("Panel/MarginContainer/TabContainer/Loadout/ScrollContainer/VBoxContainer/CosmeticsRow/AccessorySlot")
-abilities_list_container = NodePath("Panel/MarginContainer/TabContainer/Loadout/ScrollContainer/VBoxContainer/AbilitiesListContainer")
-item_picker = NodePath("Panel/MarginContainer/TabContainer/Loadout/ItemPicker")
-item_picker_backdrop = NodePath("Panel/MarginContainer/TabContainer/Loadout/ItemPickerBackdrop")
-picker_list_container = NodePath("Panel/MarginContainer/TabContainer/Loadout/ItemPicker/MarginContainer/ScrollContainer/PickerListContainer")
-picker_entry_scene = ExtResource("15_uufw0")
 
 [node name="TileMap" type="Node" parent="."]
 
@@ -104,42 +57,38 @@ tile_set = ExtResource("16_12mdi")
 tile_map_data = PackedByteArray("AABMAAkAAQAMAAkAAABMAAoAAQAMAAoAAABNAAkAAQANAAkAAABNAAoAAQANAAoAAABQAAgAAQAMAAkAAABQAAkAAQAMAAoAAABRAAgAAQANAAkAAABRAAkAAQANAAoAAABUAAkAAQAMAAkAAABUAAoAAQAMAAoAAABVAAkAAQANAAkAAABVAAoAAQANAAoAAAA=")
 tile_set = ExtResource("17_4pgfi")
 
-[node name="Bandit" type="CharacterBody2D" parent="." node_paths=PackedStringArray("gun_muzzle") instance=ExtResource("18_mcnwe")]
+[node name="Bandit" parent="." node_paths=PackedStringArray("gun_muzzle") instance=ExtResource("18_mcnwe")]
 z_index = 50
 position = Vector2(888, 120)
 collision_layer = 4
 collision_mask = 387
-script = ExtResource("19_5flvb")
 gun_muzzle = NodePath("Muzzle")
 enemy_id = "bandit"
 dynamite_drop_chance = 0.35
 
-[node name="Cactus" type="CharacterBody2D" parent="." node_paths=PackedStringArray("attack_spawns_left_01", "attack_spawns_left_02", "attack_spawns_right_01", "attack_spawns_right_02") groups=["Enemy"] instance=ExtResource("20_ffglu")]
+[node name="Cactus" parent="." node_paths=PackedStringArray("attack_spawns_left_01", "attack_spawns_left_02", "attack_spawns_right_01", "attack_spawns_right_02") groups=["Enemy"] instance=ExtResource("20_ffglu")]
 z_index = 50
 position = Vector2(1800, 136)
 collision_layer = 4
 collision_mask = 387
-script = ExtResource("21_b23ne")
 attack_spawns_left_01 = NodePath("AttackSpawnLeft01")
 attack_spawns_left_02 = NodePath("AttackSpawnLeft02")
 attack_spawns_right_01 = NodePath("AttackSpawnRight01")
 attack_spawns_right_02 = NodePath("AttackSpawnRight02")
 
-[node name="MesaBandit" type="CharacterBody2D" parent="." node_paths=PackedStringArray("gun_muzzle") instance=ExtResource("18_mcnwe")]
+[node name="MesaBandit" parent="." node_paths=PackedStringArray("gun_muzzle") instance=ExtResource("18_mcnwe")]
 z_index = 50
 position = Vector2(2568, 56)
 collision_layer = 4
 collision_mask = 387
-script = ExtResource("19_5flvb")
 gun_muzzle = NodePath("Muzzle")
 enemy_id = "bandit"
 dynamite_drop_chance = 0.35
 
-[node name="Campfire" type="Node2D" parent="." node_paths=PackedStringArray("respawn_marker", "animated_sprite_2d") instance=ExtResource("22_2kc72")]
+[node name="Campfire" parent="." node_paths=PackedStringArray("respawn_marker", "animated_sprite_2d") instance=ExtResource("22_2kc72")]
 position = Vector2(1608, 144)
-script = ExtResource("23_v3b0e")
 respawn_marker = NodePath("../RespawnPosition")
 animated_sprite_2d = NodePath("AnimatedSprite2D")
 
-[node name="Shaman" type="Node2D" parent="." instance=ExtResource("24_43km5")]
+[node name="Shaman" parent="." instance=ExtResource("24_43km5")]
 position = Vector2(3896, 160)

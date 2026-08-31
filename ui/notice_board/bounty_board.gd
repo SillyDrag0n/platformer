@@ -34,35 +34,12 @@ func spawn_bounties() -> void:
 # Godot's directional focus search works off geometry, and these posters give it a hard time: they
 # sit inside a ScrollContainer, tilt at a random angle and bob a few pixels every frame. Wiring the
 # grid by hand instead means the way out is always one press down from the bottom row, whatever the
-# board is holding and wherever it is scrolled to - the same fix inventory_ui.gd applies to the
-# item grid and name_entry_screen.gd to its keyboard.
+# board is holding and wherever it is scrolled to.
 func _wire_focus_neighbours(posters : Array[Node]) -> void:
-	if posters.is_empty():
-		return
-
-	var columns : int = maxi(poster_grid.columns, 1)
-	var buttons : Array[Button] = []
+	var buttons : Array = []
 	for poster in posters:
 		buttons.append(poster.get_focus_button())
-
-	for i in buttons.size():
-		var button : Button = buttons[i]
-		if i % columns > 0:
-			button.focus_neighbor_left = button.get_path_to(buttons[i - 1])
-		if i % columns < columns - 1 and i + 1 < buttons.size():
-			button.focus_neighbor_right = button.get_path_to(buttons[i + 1])
-		if i >= columns:
-			button.focus_neighbor_top = button.get_path_to(buttons[i - columns])
-
-		# Anything on the bottom row drops to Return rather than nowhere.
-		if i + columns < buttons.size():
-			button.focus_neighbor_bottom = button.get_path_to(buttons[i + columns])
-		else:
-			button.focus_neighbor_bottom = button.get_path_to(return_button)
-
-	# And back up onto the board from the way out.
-	var last_row_start : int = buttons.size() - 1 - (buttons.size() - 1) % columns
-	return_button.focus_neighbor_top = return_button.get_path_to(buttons[last_row_start])
+	FocusGrid.wire_grid(buttons, maxi(poster_grid.columns, 1), return_button)
 
 
 func spawn_poster(bounty) -> Node:

@@ -86,8 +86,8 @@ func save_game():
 	for region in GameStateManager.regions:
 		data.region_states[region.id] = region.unlocked
 
-	data.has_shown_hub_welcome = GameStateManager.has_shown_hub_welcome
-	data.has_driven_off_coyote = GameStateManager.has_driven_off_coyote
+	# Every story beat in one go, so a beat added later needs no change here.
+	data.story_flags = GameStateManager.story_flags.duplicate()
 
 	if !DirAccess.dir_exists_absolute(save_path):
 		DirAccess.make_dir_absolute(save_path)
@@ -173,5 +173,18 @@ func load_game():
 		if data.region_states.has(region.id):
 			region.unlocked = data.region_states[region.id]
 
-	GameStateManager.has_shown_hub_welcome = data.has_shown_hub_welcome
-	GameStateManager.has_driven_off_coyote = data.has_driven_off_coyote
+	GameStateManager.story_flags = data.story_flags.duplicate()
+	_migrate_legacy_story_flags(data)
+
+
+# A save written before the story beats were pooled into one dictionary carries a bool field per
+# beat instead. Copied across once, so a player mid-tutorial doesn't find the coyote back at the
+# carcass and the Old Timer back in town the first time they launch a build with this in it.
+func _migrate_legacy_story_flags(data : SaveDataResource) -> void:
+	var legacy := {
+		GameStateManager.FLAG_HUB_WELCOME_SHOWN: data.has_shown_hub_welcome,
+		GameStateManager.FLAG_COYOTE_DRIVEN_OFF: data.has_driven_off_coyote,
+	}
+	for flag in legacy:
+		if legacy[flag] and not GameStateManager.has_story_flag(flag):
+			GameStateManager.set_story_flag(flag)
