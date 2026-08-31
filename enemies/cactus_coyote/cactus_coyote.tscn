@@ -90,8 +90,8 @@ animations = [{
 }]
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_coyote"]
-radius = 12.0
-height = 60.0
+radius = 16.0
+height = 65.0
 
 [node name="CactusCoyote" type="CharacterBody2D" groups=["Enemy"]]
 z_index = 50
