@@ -18,6 +18,7 @@ const KEYBOARD_COLUMNS := 7
 @onready var name_input : LineEdit = $MarginContainer/PanelContainer/MarginContainer/VBoxContainer/NameInput
 @onready var confirm_button : Button = $MarginContainer/PanelContainer/MarginContainer/VBoxContainer/ConfirmButton
 @onready var keyboard_grid : GridContainer = $MarginContainer/PanelContainer/MarginContainer/VBoxContainer/KeyboardGrid
+@onready var back_button : Button = $MarginContainer/PanelContainer/MarginContainer/VBoxContainer/BackButton
 
 
 func _ready():
@@ -38,6 +39,9 @@ func _ready():
 func _input(event : InputEvent) -> void:
 	if event.is_action_pressed("ui_cancel"):
 		_delete_last_character()
+		# Swallowing the event above also takes it from UiSoundPlayer, which would otherwise have
+		# blipped for this press itself - so the same sound is asked for here by hand.
+		UiSoundPlayer.play_cancel()
 		get_viewport().set_input_as_handled()
 
 
@@ -61,6 +65,16 @@ func _on_name_input_text_submitted(_new_text : String) -> void:
 	_on_confirm_button_pressed()
 
 
+# Back to the slot picker, for a player who opened the wrong slot. SaveManager.start_new_game()
+# deliberately writes no file (see save_manager.gd), so the only trace of the abandoned
+# playthrough is the slot it claimed - let go of that too, or the next autosave to come along
+# (quitting from the main menu, say) would drop a nameless save into it.
+func _on_back_button_pressed() -> void:
+	SaveManager.active_slot = SaveManager.NO_SLOT
+	queue_free()
+	GameManager.start_game()
+
+
 # On-screen keyboard so a controller (no physical keys to type with) can still build a name -
 # built here rather than hand-authored in the .tscn since 28 buttons with correct signal
 # connections would be tedious and error-prone to write by hand.
@@ -72,12 +86,19 @@ func _build_keyboard() -> void:
 		button.custom_minimum_size = Vector2(44, 40)
 		button.add_theme_font_size_override("font_size", 16)
 		button.pressed.connect(_on_key_pressed.bind(key))
+		# DEL removes a letter rather than entering one, so it answers with the same back/cancel
+		# blip that Back does instead of the confirm blip every other key gets.
+		if key == "DEL":
+			button.add_to_group(UiSoundPlayer.CANCEL_SOUND_GROUP)
 		keyboard_grid.add_child(button)
 		key_buttons.append(button)
 
 	# The keyboard sits between the text field above it and Confirm below it - wired explicitly
 	# since Godot's automatic focus search doesn't reliably reach into or out of a wide grid.
 	FocusGrid.wire_grid(key_buttons, KEYBOARD_COLUMNS, confirm_button, name_input)
+	# ...and on down to the way out. Back is a button rather than the usual B press because B is
+	# backspace on this screen (see _input()), so it has to be reachable by navigating to it.
+	FocusGrid.link_column([confirm_button, back_button])
 
 
 func _on_key_pressed(key : String) -> void:

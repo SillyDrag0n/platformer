@@ -1,10 +1,15 @@
-[gd_scene load_steps=12 format=3 uid="uid://b1xibr4r15y53"]
+[gd_scene load_steps=15 format=3 uid="uid://b1xibr4r15y53"]
 
 [ext_resource type="Script" uid="uid://cj5djqjg6gvk" path="res://enemies/cactus_coyote/cactus_coyote.gd" id="1_coyote"]
 [ext_resource type="Texture2D" uid="uid://bq7pw8bs7370t" path="res://enemies/temp_files/temp-enemy-idle.png" id="2_idle"]
 [ext_resource type="Texture2D" uid="uid://rj8emjvlcufw" path="res://enemies/temp_files/temp-enemy-aggro.png" id="3_aggro"]
 [ext_resource type="Texture2D" uid="uid://sin2yjigwmqi" path="res://enemies/temp_files/temp-enemy-walk.png" id="4_walk"]
 [ext_resource type="Texture2D" uid="uid://hfpvwvjdnxy7" path="res://enemies/temp_files/temp-enemy-shoot.png" id="5_shoot"]
+[ext_resource type="Script" path="res://enemies/_common/contact_hitbox.gd" id="6_hitbox"]
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_pbw38"]
+radius = 18.0
+height = 68.0
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_aggro"]
 atlas = ExtResource("3_aggro")
@@ -90,8 +95,12 @@ animations = [{
 }]
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_coyote"]
-radius = 16.0
-height = 65.0
+radius = 14.0
+height = 62.0
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_hitbox"]
+radius = 22.0
+height = 66.0
 
 [node name="CactusCoyote" type="CharacterBody2D" groups=["Enemy"]]
 z_index = 50
@@ -100,6 +109,14 @@ collision_mask = 387
 script = ExtResource("1_coyote")
 health_amount = 8
 
+[node name="Hurtbox" type="Area2D" parent="." groups=["Enemy"]]
+collision_layer = 4
+collision_mask = 32
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Hurtbox"]
+shape = SubResource("CapsuleShape2D_pbw38")
+debug_color = Color(0.937589, 0.921167, 0, 0.419608)
+
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
 sprite_frames = SubResource("SpriteFrames_coyote")
 animation = &"feed"
@@ -107,12 +124,19 @@ flip_h = true
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 shape = SubResource("CapsuleShape2D_coyote")
+debug_color = Color(0.617134, 0.356483, 1, 0.42)
 
-[node name="Hurtbox" type="Area2D" parent="." groups=["Enemy"]]
-collision_layer = 4
-collision_mask = 32
+[node name="Hitbox" type="Node2D" parent="."]
+script = ExtResource("6_hitbox")
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Hurtbox"]
-shape = SubResource("CapsuleShape2D_coyote")
+[node name="Area2D" type="Area2D" parent="Hitbox"]
+monitoring = false
+monitorable = false
+collision_layer = 1024
+collision_mask = 2
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Hitbox/Area2D"]
+shape = SubResource("CapsuleShape2D_hitbox")
+debug_color = Color(1, 0.31, 0.24, 0.34)
 
 [connection signal="area_entered" from="Hurtbox" to="." method="_on_hurtbox_area_entered"]

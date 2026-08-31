@@ -233,3 +233,82 @@ func test_a_reset_makes_a_coyote_that_already_fled_whole_again():
 	assert_ne(coyote.collision_layer, 0, \
 		"fleeing strips its collision on the way out, so a reset has to hand it back")
 	assert_true(coyote.hurtbox.monitoring, "hurtbox included, or the retry couldn't be won")
+
+
+# --- Walking into it ---
+#
+# Body-to-body contact never registered: the player's collision capsule and the coyote's stop them
+# at very nearly the exact distance where the player's Hurtbox would begin to overlap the coyote's
+# body, so the push-apart always won the race and standing in the creature cost nothing. Damage
+# comes off a dedicated, slightly wider box instead - see enemies/_common/contact_hitbox.gd.
+
+const PlayerScene = preload("res://player/player.tscn")
+
+
+func _make_player_touching(coyote : CactusCoyote) -> Node2D:
+	var player = PlayerScene.instantiate()
+	add_child_autofree(player)
+	player.global_position = coyote.global_position
+	player.is_invulnerable = false
+	HealthManager.current_health = HealthManager.max_health
+	return player
+
+
+func test_the_hitbox_reaches_past_the_body_that_stops_the_player():
+	var coyote := _make_coyote()
+
+	var body_radius : float = (coyote.get_node("CollisionShape2D").shape as CapsuleShape2D).radius
+	var hitbox_radius : float = \
+		(coyote.get_node("Hitbox/Area2D/CollisionShape2D").shape as CapsuleShape2D).radius
+
+	assert_gt(hitbox_radius, body_radius, \
+		"a hitbox no wider than the body is one the player can never reach")
+
+
+func test_it_is_safe_to_stand_next_to_while_it_is_still_feeding():
+	var coyote := _make_coyote()
+	_make_player_touching(coyote)
+
+	await wait_physics_frames(6)
+
+	assert_eq(HealthManager.current_health, HealthManager.max_health, \
+		"the player is walked up behind it on purpose - that approach must not cost them health")
+
+
+func test_touching_it_once_the_fight_is_on_hurts():
+	var coyote := _make_coyote()
+	_make_player_touching(coyote)
+	coyote.spot_player()
+
+	await wait_physics_frames(6)
+
+	assert_lt(HealthManager.current_health, HealthManager.max_health, \
+		"walking into the creature should cost the player health")
+
+
+func test_it_stops_hurting_the_player_once_it_turns_tail():
+	var coyote := _make_coyote()
+	coyote.spot_player()
+	await wait_physics_frames(2)
+	coyote.take_damage(coyote.health_amount)
+	await wait_physics_frames(2)
+
+	_make_player_touching(coyote)
+	await wait_physics_frames(6)
+
+	assert_eq(HealthManager.current_health, HealthManager.max_health, \
+		"the fight is over the moment it bolts - it must not clip the player on its way out")
+
+
+func test_a_retry_hands_back_a_coyote_that_is_safe_to_approach_again():
+	var coyote := _make_coyote()
+	coyote.spot_player()
+	await wait_physics_frames(2)
+
+	coyote.reset_to_feeding()
+	await wait_physics_frames(2)
+	_make_player_touching(coyote)
+	await wait_physics_frames(6)
+
+	assert_eq(HealthManager.current_health, HealthManager.max_health, \
+		"a retry opens on the same walk-in the first attempt did")

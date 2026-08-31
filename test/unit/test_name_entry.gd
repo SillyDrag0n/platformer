@@ -234,3 +234,89 @@ func test_editing_leaves_the_caret_at_the_end_of_the_name():
 	await _press_back()
 
 	assert_eq(screen.name_input.caret_column, 1, "and so does deleting")
+
+
+# Both ways of deleting a character answer with the back/cancel blip rather than the confirm blip
+# every other key gets - see UiSoundPlayer.CANCEL_SOUND_GROUP.
+func test_the_delete_key_sounds_like_going_back():
+	var screen = NameEntryScreenScene.instantiate()
+	add_child_autofree(screen)
+	await wait_physics_frames(1)
+
+	var delete_button : Button = null
+	for child in screen.keyboard_grid.get_children():
+		if child.text == "DEL":
+			delete_button = child
+	assert_not_null(delete_button, "sanity: the on-screen keyboard has a DEL key")
+	assert_true(delete_button.is_in_group(UiSoundPlayer.CANCEL_SOUND_GROUP))
+
+	UiSoundPlayer.confirm_player.stop()
+	UiSoundPlayer.cancel_player.stop()
+	delete_button.pressed.emit()
+
+	assert_true(UiSoundPlayer.cancel_player.playing)
+	assert_false(UiSoundPlayer.confirm_player.playing, "and not the blip a letter key gives")
+
+
+func test_pressing_back_sounds_the_same_as_the_delete_key():
+	var screen = NameEntryScreenScene.instantiate()
+	add_child_autofree(screen)
+	await wait_physics_frames(1)
+	screen.name_input.grab_focus()
+	screen.name_input.text = "ANNIE"
+	UiSoundPlayer.cancel_player.stop()
+
+	await _press_back()
+
+	assert_true(UiSoundPlayer.cancel_player.playing, \
+		"the screen swallows the event, so it has to ask for the blip itself")
+
+
+# A way out, for a player who opened the wrong slot. It has to be a button: B is backspace on this
+# screen, so the usual back gesture is spoken for.
+func test_the_screen_offers_a_way_back_to_the_slot_picker():
+	var screen = NameEntryScreenScene.instantiate()
+	add_child_autofree(screen)
+	await wait_physics_frames(1)
+
+	assert_eq(screen.back_button.text, "BACK")
+	assert_eq(screen.confirm_button.focus_neighbor_bottom, \
+		screen.confirm_button.get_path_to(screen.back_button), \
+		"and it is reachable by navigating down off START, not only by mouse")
+
+
+func test_backing_out_lets_go_of_the_slot_it_claimed():
+	var screen = NameEntryScreenScene.instantiate()
+	add_child_autofree(screen)
+	await wait_physics_frames(1)
+	SaveManager.active_slot = 1
+
+	screen._on_back_button_pressed()
+	await wait_physics_frames(1)
+
+	assert_eq(SaveManager.active_slot, SaveManager.NO_SLOT, \
+		"an abandoned playthrough must not still own a slot for the next autosave to write into")
+
+	# start_game() puts the slot picker back on screen - clean it up rather than leave it in root.
+	for child in get_tree().get_root().get_children():
+		if child.get_script() == preload("res://ui/screens/save_slot_screen.gd"):
+			child.queue_free()
+	await wait_physics_frames(1)
+
+
+func test_backing_out_leaves_no_save_behind():
+	var screen = NameEntryScreenScene.instantiate()
+	add_child_autofree(screen)
+	await wait_physics_frames(1)
+	SaveManager.start_new_game(1)
+
+	screen._on_back_button_pressed()
+	await wait_physics_frames(1)
+
+	assert_false(SaveManager.has_save(1), \
+		"the slot the player opened and backed out of should still read as empty")
+
+	for child in get_tree().get_root().get_children():
+		if child.get_script() == preload("res://ui/screens/save_slot_screen.gd"):
+			child.queue_free()
+	await wait_physics_frames(1)

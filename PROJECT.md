@@ -172,7 +172,7 @@ snapshot, not a source of truth; re-check the code for current state.
   Respawn, Scene, Settings, Ui, Inventory, GameState, Ability, Quest, Save,
   ProjectileLayer, Localization, UiNavigationRepeater, UiSoundPlayer, Music.
 - **Localization:** in progress (`localization/translations.csv`, en + de).
-- **Testing:** GUT (`addons/gut/`, CLI-only, see `test/unit/`) — 289 tests
+- **Testing:** GUT (`addons/gut/`, CLI-only, see `test/unit/`) — 302 tests
   covering the pure-logic managers, the bounty/save/audio systems, level
   scaffolding and several UI focus regressions. Run via
   `"D:\Godot\Godot_v4.4.1-stable_win64.exe" --headless -s addons/gut/gut_cmdln.gd -gexit`.

@@ -52,6 +52,9 @@ const GRAVITY : int = 1000
 @export var flee_duration : float = 1.4
 
 @onready var hurtbox : Area2D = $Hurtbox
+# Walking into it hurts, once the fight is on. Body-to-body contact never registers on its own -
+# see enemies/_common/contact_hitbox.gd for why this is a separate node rather than the Hurtbox.
+@onready var hitbox : ContactHitbox = $Hitbox
 
 var current_state : State = State.Feeding
 # Starts facing away from the player's approach (they come in from the left), so the first read is
@@ -106,6 +109,9 @@ func reset_to_feeding() -> void:
 	collision_mask = _rest_collision_mask
 	hurtbox.set_deferred("monitoring", true)
 	hurtbox.set_deferred("monitorable", true)
+	# Back to being safe to stand next to - the retry opens on the player walking in on it eating,
+	# and that approach must not cost them health before the fight has even started.
+	hitbox.set_active(false)
 	_update_sprite_facing()
 	animated_sprite.play("feed")
 
@@ -150,6 +156,9 @@ func spot_player() -> void:
 		return
 	current_state = State.Alerted
 	_state_timer = alert_duration
+	# It is only dangerous to touch once it has turned on them. Before that the player is being
+	# walked up behind it on purpose (see levels/farm_house_backyard/coyote_encounter.gd).
+	hitbox.set_active(true)
 	_face_player()
 	animated_sprite.play("alert")
 
@@ -307,6 +316,7 @@ func die() -> void:
 	collision_mask = 0
 	hurtbox.set_deferred("monitoring", false)
 	hurtbox.set_deferred("monitorable", false)
+	hitbox.set_active(false)
 	_recall_spikes()
 
 	# Away from the player, so the exit reads as bolting rather than through them.

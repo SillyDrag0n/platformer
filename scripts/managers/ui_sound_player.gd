@@ -7,6 +7,11 @@ extends Node
 @onready var confirm_player : AudioStreamPlayer = $ConfirmPlayer
 @onready var cancel_player : AudioStreamPlayer = $CancelPlayer
 
+# Buttons that take something away rather than commit to it - the name screen's DEL key so far.
+# They speak with the cancel blip instead of the confirm one, so undoing sounds like undoing
+# wherever it happens, without each screen having to carry its own AudioStreamPlayer.
+const CANCEL_SOUND_GROUP := &"UiCancelSound"
+
 
 func _ready() -> void:
 	process_mode = Node.PROCESS_MODE_ALWAYS
@@ -34,8 +39,17 @@ func _on_gui_focus_changed(_control : Control) -> void:
 # pickers...) - there's no single built-in "any button was pressed" signal to hang this off of.
 func _on_node_added(node : Node) -> void:
 	if node is BaseButton:
-		node.pressed.connect(_on_button_pressed)
+		node.pressed.connect(_on_button_pressed.bind(node))
 
 
-func _on_button_pressed() -> void:
-	confirm_player.play()
+func _on_button_pressed(button : BaseButton) -> void:
+	if button.is_in_group(CANCEL_SOUND_GROUP):
+		cancel_player.play()
+	else:
+		confirm_player.play()
+
+
+# For a press that undoes something without being a Button at all - the name screen's Back-as-
+# backspace, which is swallowed in _input() long before either of the hooks above could see it.
+func play_cancel() -> void:
+	cancel_player.play()
