@@ -26,12 +26,18 @@ func _ready():
 	name_input.grab_focus()
 
 
-# LineEdit has built-in behavior where ui_cancel (Escape / controller B) makes it drop focus
-# ("exit edit mode") - confirmed against Godot's own issue tracker (godotengine/godot#114865) and
-# reproduced here. There's nothing to cancel back to on this screen, so it's swallowed in _input()
-# - which runs before GUI dispatch - rather than left to reach LineEdit's own handling at all.
+# Back (Escape / controller B) is backspace here. There is nothing on this screen to cancel back
+# to - the save slot has already been chosen - so the button is worth more as the one edit a
+# controller otherwise has to travel to the DEL key for.
+#
+# Handled in _input(), which runs before GUI dispatch, rather than _unhandled_input(): LineEdit
+# has built-in behavior where ui_cancel makes it drop focus entirely ("exit edit mode" - see
+# godotengine/godot#114865), so the event has to be taken before it ever reaches the field, or
+# pressing B would silently kick the player out of it. Taken whatever has focus, so the keyboard
+# grid and START answer to it too.
 func _input(event : InputEvent) -> void:
-	if event.is_action_pressed("ui_cancel") and name_input.has_focus():
+	if event.is_action_pressed("ui_cancel"):
+		_delete_last_character()
 		get_viewport().set_input_as_handled()
 
 
@@ -79,13 +85,25 @@ func _on_key_pressed(key : String) -> void:
 		"SP":
 			_insert_text(" ")
 		"DEL":
-			if name_input.text.length() > 0:
-				name_input.text = name_input.text.substr(0, name_input.text.length() - 1)
+			_delete_last_character()
 		_:
 			_insert_text(key)
+
+
+func _delete_last_character() -> void:
+	if name_input.text.length() > 0:
+		_set_name_text(name_input.text.substr(0, name_input.text.length() - 1))
 
 
 func _insert_text(text : String) -> void:
 	if name_input.text.length() >= name_input.max_length:
 		return
-	name_input.text += text
+	_set_name_text(name_input.text + text)
+
+
+# LineEdit.text = ... parks the caret back at column 0, so a player who edits with the on-screen
+# keyboard (or Back) and then types on a physical keyboard would find their next letter landing
+# at the front of the name. Everything on this screen appends, so the caret follows to the end.
+func _set_name_text(new_text : String) -> void:
+	name_input.text = new_text
+	name_input.caret_column = new_text.length()

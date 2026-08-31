@@ -155,3 +155,82 @@ func test_pressing_cancel_does_not_defocus_the_name_field():
 
 	assert_true(screen.name_input.has_focus(), \
 		"pressing B while typing a name should not defocus the field")
+
+
+# Back (controller B / Escape) is backspace on this screen - there is nothing to cancel back to,
+# and a controller otherwise has to travel across the grid to DEL for every correction.
+func _press_back() -> void:
+	for pressed in [true, false]:
+		var event := InputEventJoypadButton.new()
+		event.device = 0
+		event.button_index = JOY_BUTTON_B
+		event.pressed = pressed
+		Input.parse_input_event(event)
+		await wait_physics_frames(1)
+
+
+func test_pressing_back_deletes_the_last_character():
+	var screen = NameEntryScreenScene.instantiate()
+	add_child_autofree(screen)
+	await wait_physics_frames(1)
+	screen.name_input.grab_focus()
+	screen.name_input.text = "ANNIE"
+
+	await _press_back()
+
+	assert_eq(screen.name_input.text, "ANNI")
+
+
+func test_holding_back_down_deletes_one_character_per_press():
+	var screen = NameEntryScreenScene.instantiate()
+	add_child_autofree(screen)
+	await wait_physics_frames(1)
+	screen.name_input.grab_focus()
+	screen.name_input.text = "ANNIE"
+
+	await _press_back()
+	await _press_back()
+
+	assert_eq(screen.name_input.text, "ANN", "two presses, two characters")
+
+
+func test_pressing_back_on_an_empty_name_is_a_safe_no_op():
+	var screen = NameEntryScreenScene.instantiate()
+	add_child_autofree(screen)
+	await wait_physics_frames(1)
+	screen.name_input.grab_focus()
+
+	await _press_back()
+
+	assert_eq(screen.name_input.text, "")
+
+
+func test_back_deletes_from_anywhere_on_the_screen():
+	var screen = NameEntryScreenScene.instantiate()
+	add_child_autofree(screen)
+	await wait_physics_frames(1)
+	screen.name_input.text = "ANNIE"
+	screen.confirm_button.grab_focus()
+	await wait_physics_frames(1)
+
+	await _press_back()
+
+	assert_eq(screen.name_input.text, "ANNI", \
+		"the name field doesn't have to be the focused control for Back to mean backspace")
+
+
+# LineEdit.text = ... parks the caret at column 0, so without this an on-screen edit followed by
+# a physical keystroke would drop the next letter at the front of the name.
+func test_editing_leaves_the_caret_at_the_end_of_the_name():
+	var screen = NameEntryScreenScene.instantiate()
+	add_child_autofree(screen)
+	await wait_physics_frames(1)
+	screen.name_input.grab_focus()
+
+	screen._on_key_pressed("A")
+	screen._on_key_pressed("B")
+	assert_eq(screen.name_input.caret_column, 2, "typing leaves the caret after what was typed")
+
+	await _press_back()
+
+	assert_eq(screen.name_input.caret_column, 1, "and so does deleting")
