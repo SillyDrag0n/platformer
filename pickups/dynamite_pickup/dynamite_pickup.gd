@@ -9,6 +9,7 @@ const DYNAMITE_ITEM : ItemData = preload("res://items/utility/dynamite.tres")
 
 func _ready() -> void:
 	sprite.texture = DYNAMITE_ITEM.icon
+	PickupDrop.fall_to_ground(self)
 
 
 func _on_area_2d_body_entered(body : Node2D) -> void:

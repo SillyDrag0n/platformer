@@ -86,7 +86,6 @@ collision_mask = 387
 script = ExtResource("1_dhyvq")
 gun_muzzle = NodePath("Muzzle")
 enemy_id = "bandit"
-dynamite_drop_chance = 0.35
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
 sprite_frames = SubResource("SpriteFrames_hoo18")
