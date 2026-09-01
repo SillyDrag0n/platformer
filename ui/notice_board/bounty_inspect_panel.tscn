@@ -1,49 +1,94 @@
-[gd_scene load_steps=8 format=3 uid="uid://cpjw38aq50ven"]
+[gd_scene load_steps=13 format=3 uid="uid://cpjw38aq50ven"]
 
 [ext_resource type="Script" uid="uid://cgccbx6vnbu4x" path="res://ui/notice_board/bounty_inspect_panel.gd" id="1_insp"]
 [ext_resource type="FontFile" uid="uid://bn7ed1nmtuvnj" path="res://ui/font/BoldPixels.ttf" id="2_font"]
+[ext_resource type="Texture2D" uid="uid://e7e8sic6acpu" path="res://ui/notice_board/bounty_template.png" id="3_poster"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_card"]
 content_margin_left = 48.0
 content_margin_top = 40.0
 content_margin_right = 48.0
 content_margin_bottom = 40.0
-bg_color = Color(0.933333, 0.764706, 0.603922, 1)
-border_width_left = 8
-border_width_top = 8
-border_width_right = 8
-border_width_bottom = 8
+bg_color = Color(0.266667, 0.184314, 0.121569, 1)
+border_width_left = 6
+border_width_top = 6
+border_width_right = 6
+border_width_bottom = 6
 border_color = Color(0.0705882, 0.0392157, 0.0235294, 1)
-corner_radius_top_left = 6
-corner_radius_top_right = 6
-corner_radius_bottom_right = 6
-corner_radius_bottom_left = 6
+corner_radius_top_left = 8
+corner_radius_top_right = 8
+corner_radius_bottom_right = 8
+corner_radius_bottom_left = 8
 shadow_color = Color(0, 0, 0, 0.5)
-shadow_size = 14
+shadow_size = 12
 shadow_offset = Vector2(0, 6)
 
-[sub_resource type="LabelSettings" id="LabelSettings_wanted"]
-font = ExtResource("2_font")
-font_size = 56
-font_color = Color(0.0705882, 0.0392157, 0.0235294, 1)
-
-[sub_resource type="LabelSettings" id="LabelSettings_small"]
-font = ExtResource("2_font")
-font_size = 22
-font_color = Color(0.0705882, 0.0392157, 0.0235294, 1)
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_icon_frame"]
-bg_color = Color(0.898039, 0.835294, 0.835294, 1)
-border_width_left = 3
-border_width_top = 3
-border_width_right = 3
-border_width_bottom = 3
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_info"]
+content_margin_left = 28.0
+content_margin_top = 24.0
+content_margin_right = 28.0
+content_margin_bottom = 24.0
+bg_color = Color(0.94902, 0.929412, 0.870588, 1)
+border_width_left = 4
+border_width_top = 4
+border_width_right = 4
+border_width_bottom = 4
 border_color = Color(0.0705882, 0.0392157, 0.0235294, 1)
+corner_radius_top_left = 4
+corner_radius_top_right = 4
+corner_radius_bottom_right = 4
+corner_radius_bottom_left = 4
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_poster_shadow"]
+bg_color = Color(1, 1, 1, 0)
+corner_radius_top_left = 2
+corner_radius_top_right = 2
+corner_radius_bottom_right = 2
+corner_radius_bottom_left = 2
+shadow_color = Color(0, 0, 0, 0.45)
+shadow_size = 16
+shadow_offset = Vector2(0, 8)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_pin"]
+bg_color = Color(0.14902, 0.14902, 0.152941, 1)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(0.376471, 0.376471, 0.4, 1)
+corner_radius_top_left = 11
+corner_radius_top_right = 11
+corner_radius_bottom_right = 11
+corner_radius_bottom_left = 11
+shadow_color = Color(0, 0, 0, 0.35)
+shadow_size = 4
+shadow_offset = Vector2(0, 3)
 
 [sub_resource type="LabelSettings" id="LabelSettings_bounty_title"]
 font = ExtResource("2_font")
 font_size = 40
 font_color = Color(0.0705882, 0.0392157, 0.0235294, 1)
+
+[sub_resource type="LabelSettings" id="LabelSettings_poster_title"]
+font = ExtResource("2_font")
+font_size = 36
+font_color = Color(0.0705882, 0.0392157, 0.0235294, 1)
+
+[sub_resource type="LabelSettings" id="LabelSettings_body"]
+font = ExtResource("2_font")
+font_size = 24
+font_color = Color(0.0705882, 0.0392157, 0.0235294, 1)
+line_spacing = 8
+
+[sub_resource type="LabelSettings" id="LabelSettings_meta"]
+font = ExtResource("2_font")
+font_size = 20
+font_color = Color(0.0705882, 0.0392157, 0.0235294, 1)
+
+[sub_resource type="LabelSettings" id="LabelSettings_section"]
+font = ExtResource("2_font")
+font_size = 20
+font_color = Color(0.0705882, 0.0392157, 0.0235294, 0.6)
 
 [node name="BountyInspectPanel" type="Control"]
 visible = false
@@ -79,116 +124,145 @@ theme_override_constants/separation = 24
 alignment = 1
 
 [node name="Card" type="PanelContainer" parent="CenterContainer/VBoxContainer"]
-custom_minimum_size = Vector2(1400, 820)
+custom_minimum_size = Vector2(1400, 0)
 layout_mode = 2
 theme_override_styles/panel = SubResource("StyleBoxFlat_card")
 
-[node name="MarginVBox" type="VBoxContainer" parent="CenterContainer/VBoxContainer/Card"]
+[node name="BodyRow" type="HBoxContainer" parent="CenterContainer/VBoxContainer/Card"]
 layout_mode = 2
-theme_override_constants/separation = 18
-
-[node name="HeaderRow" type="HBoxContainer" parent="CenterContainer/VBoxContainer/Card/MarginVBox"]
-layout_mode = 2
-
-[node name="WantedLabel" type="Label" parent="CenterContainer/VBoxContainer/Card/MarginVBox/HeaderRow"]
-layout_mode = 2
-size_flags_horizontal = 3
-text = "WANTED"
-label_settings = SubResource("LabelSettings_wanted")
-
-[node name="StatusLabel" type="Label" parent="CenterContainer/VBoxContainer/Card/MarginVBox/HeaderRow"]
-layout_mode = 2
-text = "Available"
-label_settings = SubResource("LabelSettings_small")
-vertical_alignment = 2
-
-[node name="Divider" type="ColorRect" parent="CenterContainer/VBoxContainer/Card/MarginVBox"]
-custom_minimum_size = Vector2(0, 3)
-layout_mode = 2
-color = Color(0.0705882, 0.0392157, 0.0235294, 1)
-
-[node name="BodyRow" type="HBoxContainer" parent="CenterContainer/VBoxContainer/Card/MarginVBox"]
-layout_mode = 2
-size_flags_vertical = 3
 theme_override_constants/separation = 40
 
-[node name="LeftColumn" type="VBoxContainer" parent="CenterContainer/VBoxContainer/Card/MarginVBox/BodyRow"]
-custom_minimum_size = Vector2(380, 0)
+[node name="LeftColumn" type="Control" parent="CenterContainer/VBoxContainer/Card/BodyRow"]
+custom_minimum_size = Vector2(460, 547)
 layout_mode = 2
-theme_override_constants/separation = 14
+size_flags_vertical = 4
+rotation_degrees = -3.0
+pivot_offset = Vector2(230, 273.5)
 
-[node name="IconFrame" type="PanelContainer" parent="CenterContainer/VBoxContainer/Card/MarginVBox/BodyRow/LeftColumn"]
-custom_minimum_size = Vector2(380, 380)
-layout_mode = 2
-theme_override_styles/panel = SubResource("StyleBoxFlat_icon_frame")
+[node name="PosterShadow" type="Panel" parent="CenterContainer/VBoxContainer/Card/BodyRow/LeftColumn"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+theme_override_styles/panel = SubResource("StyleBoxFlat_poster_shadow")
 
-[node name="IconRect" type="TextureRect" parent="CenterContainer/VBoxContainer/Card/MarginVBox/BodyRow/LeftColumn/IconFrame"]
-layout_mode = 2
+[node name="PosterBG" type="TextureRect" parent="CenterContainer/VBoxContainer/Card/BodyRow/LeftColumn"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+texture = ExtResource("3_poster")
+stretch_mode = 0
+
+[node name="Picture" type="TextureRect" parent="CenterContainer/VBoxContainer/Card/BodyRow/LeftColumn"]
+layout_mode = 1
+anchor_left = 0.12
+anchor_top = 0.286
+anchor_right = 0.88
+anchor_bottom = 0.748
 expand_mode = 1
 stretch_mode = 5
 
-[node name="RegionLabel" type="Label" parent="CenterContainer/VBoxContainer/Card/MarginVBox/BodyRow/LeftColumn"]
-layout_mode = 2
-text = "Region: Plains"
-label_settings = SubResource("LabelSettings_small")
+[node name="PosterTitleLabel" type="Label" parent="CenterContainer/VBoxContainer/Card/BodyRow/LeftColumn"]
+layout_mode = 1
+anchor_left = 0.08
+anchor_top = 0.765
+anchor_right = 0.92
+anchor_bottom = 0.95
+text = "Bounty Title"
+label_settings = SubResource("LabelSettings_poster_title")
+horizontal_alignment = 1
+vertical_alignment = 1
 autowrap_mode = 3
+clip_text = true
 
-[node name="StatusDetailLabel" type="Label" parent="CenterContainer/VBoxContainer/Card/MarginVBox/BodyRow/LeftColumn"]
-layout_mode = 2
-text = "Status: Available"
-label_settings = SubResource("LabelSettings_small")
-autowrap_mode = 3
+[node name="Pin" type="Panel" parent="CenterContainer/VBoxContainer/Card/BodyRow/LeftColumn"]
+layout_mode = 1
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -11.0
+offset_top = -3.0
+offset_right = 11.0
+offset_bottom = 19.0
+theme_override_styles/panel = SubResource("StyleBoxFlat_pin")
 
-[node name="RightColumn" type="VBoxContainer" parent="CenterContainer/VBoxContainer/Card/MarginVBox/BodyRow"]
+[node name="InfoPanel" type="PanelContainer" parent="CenterContainer/VBoxContainer/Card/BodyRow"]
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
+theme_override_styles/panel = SubResource("StyleBoxFlat_info")
+
+[node name="RightColumn" type="VBoxContainer" parent="CenterContainer/VBoxContainer/Card/BodyRow/InfoPanel"]
+layout_mode = 2
 theme_override_constants/separation = 14
 
-[node name="TitleLabel" type="Label" parent="CenterContainer/VBoxContainer/Card/MarginVBox/BodyRow/RightColumn"]
+[node name="TitleLabel" type="Label" parent="CenterContainer/VBoxContainer/Card/BodyRow/InfoPanel/RightColumn"]
 layout_mode = 2
 text = "Bounty Title"
 label_settings = SubResource("LabelSettings_bounty_title")
 autowrap_mode = 3
 
-[node name="DescriptionScroll" type="ScrollContainer" parent="CenterContainer/VBoxContainer/Card/MarginVBox/BodyRow/RightColumn"]
+[node name="InfoRow" type="HBoxContainer" parent="CenterContainer/VBoxContainer/Card/BodyRow/InfoPanel/RightColumn"]
+layout_mode = 2
+theme_override_constants/separation = 32
+
+[node name="StatusDetailLabel" type="Label" parent="CenterContainer/VBoxContainer/Card/BodyRow/InfoPanel/RightColumn/InfoRow"]
+layout_mode = 2
+text = "Status: Available"
+label_settings = SubResource("LabelSettings_meta")
+
+[node name="RegionLabel" type="Label" parent="CenterContainer/VBoxContainer/Card/BodyRow/InfoPanel/RightColumn/InfoRow"]
+layout_mode = 2
+text = "Region: Plains"
+label_settings = SubResource("LabelSettings_meta")
+
+[node name="Divider" type="ColorRect" parent="CenterContainer/VBoxContainer/Card/BodyRow/InfoPanel/RightColumn"]
+custom_minimum_size = Vector2(0, 3)
+layout_mode = 2
+color = Color(0.0705882, 0.0392157, 0.0235294, 1)
+
+[node name="ContentScroll" type="ScrollContainer" parent="CenterContainer/VBoxContainer/Card/BodyRow/InfoPanel/RightColumn"]
 layout_mode = 2
 size_flags_vertical = 3
 horizontal_scroll_mode = 0
 
-[node name="DescriptionLabel" type="Label" parent="CenterContainer/VBoxContainer/Card/MarginVBox/BodyRow/RightColumn/DescriptionScroll"]
+[node name="ContentColumn" type="VBoxContainer" parent="CenterContainer/VBoxContainer/Card/BodyRow/InfoPanel/RightColumn/ContentScroll"]
 layout_mode = 2
 size_flags_horizontal = 3
-theme_override_colors/font_color = Color(0.0705882, 0.0392157, 0.0235294, 1)
-theme_override_constants/line_spacing = 8
-theme_override_constants/outline_size = 0
-theme_override_font_sizes/font_size = 26
+theme_override_constants/separation = 22
+
+[node name="DescriptionLabel" type="Label" parent="CenterContainer/VBoxContainer/Card/BodyRow/InfoPanel/RightColumn/ContentScroll/ContentColumn"]
+layout_mode = 2
+size_flags_horizontal = 3
 text = "Description"
+label_settings = SubResource("LabelSettings_body")
 autowrap_mode = 3
 
-[node name="StagesSection" type="VBoxContainer" parent="CenterContainer/VBoxContainer/Card/MarginVBox/BodyRow/RightColumn"]
+[node name="StagesSection" type="VBoxContainer" parent="CenterContainer/VBoxContainer/Card/BodyRow/InfoPanel/RightColumn/ContentScroll/ContentColumn"]
 layout_mode = 2
+size_flags_horizontal = 3
 theme_override_constants/separation = 6
 
-[node name="StagesLabel" type="Label" parent="CenterContainer/VBoxContainer/Card/MarginVBox/BodyRow/RightColumn/StagesSection"]
+[node name="StagesLabel" type="Label" parent="CenterContainer/VBoxContainer/Card/BodyRow/InfoPanel/RightColumn/ContentScroll/ContentColumn/StagesSection"]
 layout_mode = 2
 text = "Stages"
-label_settings = SubResource("LabelSettings_small")
+label_settings = SubResource("LabelSettings_section")
 
-[node name="StagesList" type="VBoxContainer" parent="CenterContainer/VBoxContainer/Card/MarginVBox/BodyRow/RightColumn/StagesSection"]
+[node name="StagesList" type="VBoxContainer" parent="CenterContainer/VBoxContainer/Card/BodyRow/InfoPanel/RightColumn/ContentScroll/ContentColumn/StagesSection"]
 layout_mode = 2
 theme_override_constants/separation = 4
 
-[node name="RewardsSection" type="VBoxContainer" parent="CenterContainer/VBoxContainer/Card/MarginVBox/BodyRow/RightColumn"]
+[node name="RewardsSection" type="VBoxContainer" parent="CenterContainer/VBoxContainer/Card/BodyRow/InfoPanel/RightColumn/ContentScroll/ContentColumn"]
+visible = false
 layout_mode = 2
 theme_override_constants/separation = 8
 
-[node name="RewardsLabel" type="Label" parent="CenterContainer/VBoxContainer/Card/MarginVBox/BodyRow/RightColumn/RewardsSection"]
+[node name="RewardsLabel" type="Label" parent="CenterContainer/VBoxContainer/Card/BodyRow/InfoPanel/RightColumn/ContentScroll/ContentColumn/RewardsSection"]
 layout_mode = 2
 text = "Rewards"
-label_settings = SubResource("LabelSettings_small")
+label_settings = SubResource("LabelSettings_section")
 
-[node name="RewardsRow" type="HBoxContainer" parent="CenterContainer/VBoxContainer/Card/MarginVBox/BodyRow/RightColumn/RewardsSection"]
+[node name="RewardsRow" type="HBoxContainer" parent="CenterContainer/VBoxContainer/Card/BodyRow/InfoPanel/RightColumn/ContentScroll/ContentColumn/RewardsSection"]
 custom_minimum_size = Vector2(0, 64)
 layout_mode = 2
 theme_override_constants/separation = 10
@@ -203,14 +277,14 @@ custom_minimum_size = Vector2(150, 60)
 layout_mode = 2
 focus_neighbor_left = NodePath(".")
 focus_neighbor_top = NodePath(".")
-focus_neighbor_right = NodePath("../DeclineButton")
+focus_neighbor_right = NodePath("../ReturnButton")
 focus_neighbor_bottom = NodePath(".")
-focus_next = NodePath("../DeclineButton")
-focus_previous = NodePath("../DeclineButton")
+focus_next = NodePath("../ReturnButton")
+focus_previous = NodePath("../ReturnButton")
 theme_override_font_sizes/font_size = 32
 text = "Accept"
 
-[node name="DeclineButton" type="Button" parent="CenterContainer/VBoxContainer/ButtonRow"]
+[node name="ReturnButton" type="Button" parent="CenterContainer/VBoxContainer/ButtonRow"]
 custom_minimum_size = Vector2(150, 60)
 layout_mode = 2
 focus_neighbor_left = NodePath("../AcceptButton")
@@ -220,8 +294,8 @@ focus_neighbor_bottom = NodePath(".")
 focus_next = NodePath("../AcceptButton")
 focus_previous = NodePath("../AcceptButton")
 theme_override_font_sizes/font_size = 32
-text = "Decline"
+text = "Return"
 
-[connection signal="pressed" from="Backdrop" to="." method="_on_decline_pressed"]
+[connection signal="pressed" from="Backdrop" to="." method="_on_return_pressed"]
 [connection signal="pressed" from="CenterContainer/VBoxContainer/ButtonRow/AcceptButton" to="." method="_on_accept_pressed"]
-[connection signal="pressed" from="CenterContainer/VBoxContainer/ButtonRow/DeclineButton" to="." method="_on_decline_pressed"]
+[connection signal="pressed" from="CenterContainer/VBoxContainer/ButtonRow/ReturnButton" to="." method="_on_return_pressed"]

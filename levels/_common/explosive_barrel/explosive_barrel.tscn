@@ -1,0 +1,29 @@
+[gd_scene load_steps=4 format=3]
+
+[ext_resource type="Script" path="res://levels/_common/explosive_barrel/explosive_barrel.gd" id="1_barrel"]
+[ext_resource type="Texture2D" path="res://levels/_common/explosive_barrel/explosive_barrel.png" id="2_sprite"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_barrel"]
+size = Vector2(26, 33)
+
+[node name="ExplosiveBarrel" type="StaticBody2D" groups=["Explosive"]]
+collision_layer = 1
+collision_mask = 0
+script = ExtResource("1_barrel")
+
+[node name="Sprite" type="Sprite2D" parent="."]
+texture = ExtResource("2_sprite")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(0, 2.5)
+shape = SubResource("RectangleShape2D_barrel")
+
+[node name="Hurtbox" type="Area2D" parent="."]
+collision_layer = 0
+collision_mask = 32
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Hurtbox"]
+position = Vector2(0, 2.5)
+shape = SubResource("RectangleShape2D_barrel")
+
+[connection signal="area_entered" from="Hurtbox" to="." method="_on_hurtbox_area_entered"]

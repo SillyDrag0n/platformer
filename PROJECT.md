@@ -126,6 +126,21 @@ snapshot, not a source of truth; re-check the code for current state.
   stage-completed / bounty-completed screens.
 - **Quests:** optional side content, separate from bounties (e.g. "kill 5
   bandits").
+- **Explosions:** one shared blast (`scripts/explosion.gd`, static methods on a
+  preloaded script rather than a `class_name`, so headless tests need no
+  `--import` pass) used by both the player's thrown dynamite and the explosive
+  barrel (`levels/_common/explosive_barrel/`). It hurts enemies in radius, hurts
+  the player if they're too close, opens `BreakableTerrain` tiles, and damages
+  anything else in the `Explosive` group — which is what chains barrels. Barrels
+  are solid `StaticBody2D` scenery on the Ground layer (stand on them, hide
+  behind them) that light a short fuse when shot or caught in a blast, so a row
+  of them goes off as a visible staggered chain; health/damage/radius/fuse are
+  all `@export`. Two are placed in `test_level.tscn` to try.
+  - Extracting this surfaced a real bug: the blast used to require its target to
+    be in the `"Enemy"` **group**, but that group is `player.gd`'s
+    contact-damage check, so only the cactus and cactus coyote are in it — which
+    meant dynamite did nothing whatsoever to bandits or skeletons. It now keys
+    off the Enemy *physics layer* the query already masks for.
 - **Items:** ammo, cosmetics, key items, quest items, utility items, weapons,
   and weapon upgrades (`WeaponUpgradeItemData`) - bought once at a shop and
   fitted for good rather than filling an equip slot, each naming the weapon it
@@ -172,7 +187,7 @@ snapshot, not a source of truth; re-check the code for current state.
   Respawn, Scene, Settings, Ui, Inventory, GameState, Ability, Quest, Save,
   ProjectileLayer, Localization, UiNavigationRepeater, UiSoundPlayer, Music.
 - **Localization:** in progress (`localization/translations.csv`, en + de).
-- **Testing:** GUT (`addons/gut/`, CLI-only, see `test/unit/`) — 302 tests
+- **Testing:** GUT (`addons/gut/`, CLI-only, see `test/unit/`) — 309 tests
   covering the pure-logic managers, the bounty/save/audio systems, level
   scaffolding and several UI focus regressions. Run via
   `"D:\Godot\Godot_v4.4.1-stable_win64.exe" --headless -s addons/gut/gut_cmdln.gd -gexit`.

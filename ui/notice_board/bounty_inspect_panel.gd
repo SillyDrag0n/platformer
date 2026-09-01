@@ -5,20 +5,23 @@ signal accepted(bounty_data: BountyData)
 
 const REWARD_ICON_SIZE := Vector2(64, 64)
 
+const PANEL_FONT := preload("res://ui/font/BoldPixels.ttf")
+const META_FONT_SIZE := 20
+
 const STAGE_COLOR_CURRENT := Color(0.0705882, 0.0392157, 0.0235294, 1)
 const STAGE_COLOR_COMPLETE := Color(0.0705882, 0.0392157, 0.0235294, 0.55)
 
-@onready var status_label: Label = $CenterContainer/VBoxContainer/Card/MarginVBox/HeaderRow/StatusLabel
-@onready var title_label: Label = $CenterContainer/VBoxContainer/Card/MarginVBox/BodyRow/RightColumn/TitleLabel
-@onready var description_label: Label = $CenterContainer/VBoxContainer/Card/MarginVBox/BodyRow/RightColumn/DescriptionScroll/DescriptionLabel
-@onready var icon_rect: TextureRect = $CenterContainer/VBoxContainer/Card/MarginVBox/BodyRow/LeftColumn/IconFrame/IconRect
-@onready var region_label: Label = $CenterContainer/VBoxContainer/Card/MarginVBox/BodyRow/LeftColumn/RegionLabel
-@onready var status_detail_label: Label = $CenterContainer/VBoxContainer/Card/MarginVBox/BodyRow/LeftColumn/StatusDetailLabel
-@onready var rewards_row: HBoxContainer = $CenterContainer/VBoxContainer/Card/MarginVBox/BodyRow/RightColumn/RewardsSection/RewardsRow
-@onready var stages_section: VBoxContainer = $CenterContainer/VBoxContainer/Card/MarginVBox/BodyRow/RightColumn/StagesSection
-@onready var stages_list: VBoxContainer = $CenterContainer/VBoxContainer/Card/MarginVBox/BodyRow/RightColumn/StagesSection/StagesList
+@onready var icon_rect: TextureRect = $CenterContainer/VBoxContainer/Card/BodyRow/LeftColumn/Picture
+@onready var poster_title_label: Label = $CenterContainer/VBoxContainer/Card/BodyRow/LeftColumn/PosterTitleLabel
+@onready var title_label: Label = $CenterContainer/VBoxContainer/Card/BodyRow/InfoPanel/RightColumn/TitleLabel
+@onready var status_detail_label: Label = $CenterContainer/VBoxContainer/Card/BodyRow/InfoPanel/RightColumn/InfoRow/StatusDetailLabel
+@onready var region_label: Label = $CenterContainer/VBoxContainer/Card/BodyRow/InfoPanel/RightColumn/InfoRow/RegionLabel
+@onready var description_label: Label = $CenterContainer/VBoxContainer/Card/BodyRow/InfoPanel/RightColumn/ContentScroll/ContentColumn/DescriptionLabel
+@onready var stages_section: VBoxContainer = $CenterContainer/VBoxContainer/Card/BodyRow/InfoPanel/RightColumn/ContentScroll/ContentColumn/StagesSection
+@onready var stages_list: VBoxContainer = $CenterContainer/VBoxContainer/Card/BodyRow/InfoPanel/RightColumn/ContentScroll/ContentColumn/StagesSection/StagesList
+@onready var rewards_row: HBoxContainer = $CenterContainer/VBoxContainer/Card/BodyRow/InfoPanel/RightColumn/ContentScroll/ContentColumn/RewardsSection/RewardsRow
 @onready var accept_button: Button = $CenterContainer/VBoxContainer/ButtonRow/AcceptButton
-@onready var decline_button: Button = $CenterContainer/VBoxContainer/ButtonRow/DeclineButton
+@onready var return_button: Button = $CenterContainer/VBoxContainer/ButtonRow/ReturnButton
 
 var bounty_data: BountyData
 
@@ -27,10 +30,10 @@ func open(bounty: BountyData) -> void:
 	bounty_data = bounty
 
 	title_label.text = tr(bounty.title)
+	poster_title_label.text = tr(bounty.title).to_upper()
 	description_label.text = tr(bounty.description) if bounty.description != "" else tr("No word yet on this one.")
 
 	var status_text := bounty.get_status_text()
-	status_label.text = status_text
 	status_detail_label.text = "Status: %s" % status_text
 
 	var region: RegionData = GameStateManager.get_region_by_id(bounty.region_id)
@@ -43,7 +46,7 @@ func open(bounty: BountyData) -> void:
 
 	visible = true
 	accept_button.disabled = false
-	decline_button.disabled = false
+	return_button.disabled = false
 	accept_button.grab_focus()
 
 
@@ -63,7 +66,7 @@ func _populate_stages(bounty: BountyData) -> void:
 		var line := "%d. %s" % [i + 1, tr(stage.title)]
 		var color := STAGE_COLOR_CURRENT
 		if stage.is_complete():
-			line += " (%s)" % tr("Complete")
+			line += " (%s)" % tr("Completed")
 			color = STAGE_COLOR_COMPLETE
 		else:
 			line += " (%s)" % tr("In Progress")
@@ -75,7 +78,9 @@ func _make_stage_label(text: String, color: Color) -> Label:
 	label.text = text
 	label.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 	label.add_theme_color_override("font_color", color)
-	label.add_theme_font_size_override("font_size", 22)
+	label.add_theme_font_override("font", PANEL_FONT)
+	label.add_theme_font_size_override("font_size", META_FONT_SIZE)
+	label.add_theme_constant_override("outline_size", 0)
 	return label
 
 
@@ -110,14 +115,14 @@ func _unhandled_input(event: InputEvent) -> void:
 
 func _on_accept_pressed() -> void:
 	accept_button.disabled = true
-	decline_button.disabled = true
+	return_button.disabled = true
 	# Hide the dossier first so the board (and the poster about to tear off it) is visible again
 	# before BountyBoard starts that animation - see BountyBoard._on_bounty_accepted().
 	visible = false
 	accepted.emit(bounty_data)
 
 
-func _on_decline_pressed() -> void:
+func _on_return_pressed() -> void:
 	_close()
 
 

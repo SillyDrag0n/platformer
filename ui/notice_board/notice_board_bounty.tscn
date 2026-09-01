@@ -33,7 +33,7 @@ custom_minimum_size = Vector2(350, 416)
 offset_right = 350.0
 offset_bottom = 416.0
 mouse_filter = 1
-color = Color(0.933333, 0.764706, 0.603922, 1)
+color = Color(0.933333, 0.764706, 0.603922, 0)
 script = ExtResource("1_dtji8")
 
 [node name="PaperBG" type="TextureRect" parent="."]

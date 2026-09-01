@@ -1,4 +1,4 @@
-[gd_scene load_steps=25 format=4 uid="uid://gkr4g0dg7pla"]
+[gd_scene load_steps=26 format=4 uid="uid://gkr4g0dg7pla"]
 
 [ext_resource type="Script" uid="uid://uphv34nfh2ba" path="res://levels/test_level.gd" id="1_ur00s"]
 [ext_resource type="PackedScene" uid="uid://bfcmjoltsmsed" path="res://player/player.tscn" id="4_wndkh"]
@@ -23,6 +23,7 @@
 [ext_resource type="PackedScene" uid="uid://c6n8jr2h5x4qa" path="res://enemies/bandit/bandit.tscn" id="16_bandit"]
 [ext_resource type="PackedScene" path="res://pickups/dynamite_crate/dynamite_crate.tscn" id="18_dynamite_crate"]
 [ext_resource type="PackedScene" uid="uid://csgm32q30dv5t" path="res://enemies/hoop_snake/hoop_snake.tscn" id="19_hoop_snake"]
+[ext_resource type="PackedScene" path="res://levels/_common/explosive_barrel/explosive_barrel.tscn" id="20_barrel"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_8hjdj"]
 size = Vector2(944, 50)
@@ -160,6 +161,14 @@ position = Vector2(3174, -225)
 
 [node name="DynamiteCrate" parent="Pickups" instance=ExtResource("18_dynamite_crate")]
 position = Vector2(1700, 143)
+
+[node name="Barrels" type="Node" parent="."]
+
+[node name="ExplosiveBarrel" parent="Barrels" instance=ExtResource("20_barrel")]
+position = Vector2(1668, 138)
+
+[node name="ExplosiveBarrel2" parent="Barrels" instance=ExtResource("20_barrel")]
+position = Vector2(1732, 138)
 
 [node name="Checkpoints" type="Node" parent="."]
 
