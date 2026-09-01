@@ -155,7 +155,7 @@ snapshot, not a source of truth; re-check the code for current state.
   - `Level` (`levels/_common/level.gd`) — what every playable level extends:
     player/camera/respawn wiring, a `music` slot, and an `_on_level_ready()`
     hook so a level can't forget to claim `RespawnManager`.
-  - `InteriorLevel` — the five hub-building interiors, which were five
+  - `InteriorLevel` — the six hub-building interiors, which were
     byte-identical scripts.
   - `HubStructure` (`tileset/structures/`) — every building in town; they
     differ only by an exported `destination_scene_key`. A structure with no key
