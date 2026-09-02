@@ -2,6 +2,11 @@ class_name ShopEntry
 extends ColorRect
 
 signal buy_pressed(item : ItemData)
+# The row the player is looking at, for the counter display at the bottom of the shop (see
+# ui/shop/shop_ui.gd). Raised by focus and by hover both: a controller only ever moves focus, and
+# a mouse user would otherwise have to press Buy - the one thing that spends their money - just to
+# read what they were buying.
+signal highlighted(item : ItemData)
 
 var item : ItemData
 
@@ -12,6 +17,27 @@ var item : ItemData
 @onready var description_label : Label = $HBoxContainer/NameColumn/DescriptionLabel
 @onready var price_label : Label = $HBoxContainer/PriceLabel
 @onready var buy_button : Button = $HBoxContainer/BuyButton
+
+
+# The shelf rows were the one list in the game that never marked the row you were on - the only
+# thing showing your place was the focus ring on the Buy button at the far right of it. They pick
+# up the same accent a focused loadout slot or picker entry uses.
+const NORMAL_COLOR := Color(0.945098, 0.882353, 0.760784, 0.12)
+const FOCUSED_COLOR := Color(0.960784, 0.615686, 0.156863, 0.32)
+
+
+func _ready() -> void:
+	color = NORMAL_COLOR
+	buy_button.focus_entered.connect(_raise_highlight)
+	buy_button.mouse_entered.connect(_raise_highlight)
+	mouse_entered.connect(_raise_highlight)
+	buy_button.focus_entered.connect(func(): color = FOCUSED_COLOR)
+	buy_button.focus_exited.connect(func(): color = NORMAL_COLOR)
+
+
+func _raise_highlight() -> void:
+	if item != null:
+		highlighted.emit(item)
 
 
 func set_item_data(new_item : ItemData) -> void:

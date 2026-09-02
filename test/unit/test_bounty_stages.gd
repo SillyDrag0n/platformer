@@ -57,6 +57,13 @@ func _complete_stage(stage : BountyStageData) -> void:
 		GameStateManager.complete_objective(BOUNTY_ID, objective.id)
 
 
+func test_the_contract_has_a_poster_picture():
+	var bounty := _bounty()
+	assert_not_null(bounty.icon, \
+		"the notice board draws this straight into the poster's picture box - see " + \
+		"ui/notice_board/notice_board_bounty.gd, which leaves the frame empty without one")
+
+
 func test_the_plains_story_is_one_contract_with_three_legs():
 	var bounty := _bounty()
 	assert_not_null(bounty, "Missing Cattle is the contract the whole Plains arc hangs off")

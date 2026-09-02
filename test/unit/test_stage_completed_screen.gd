@@ -63,8 +63,8 @@ func test_it_reports_the_leg_that_was_just_finished():
 
 	assert_eq(screen.stage_title_label.text, "Investigate the Missing Cattle", \
 		"the leg they just saw through")
-	assert_string_contains(screen.done_label.text, "[x] Go to the attack site")
-	assert_string_contains(screen.done_label.text, "[x] It escapes", \
+	assert_string_contains(screen.done_label.text, "%s Go to the attack site" % screen.DONE_MARK)
+	assert_string_contains(screen.done_label.text, "%s It escapes" % screen.DONE_MARK, \
 		"with every line of it ticked off")
 
 

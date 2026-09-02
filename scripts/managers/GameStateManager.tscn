@@ -1,4 +1,4 @@
-[gd_scene load_steps=27 format=3 uid="uid://b2vp1eh6ugpb1"]
+[gd_scene load_steps=28 format=3 uid="uid://b2vp1eh6ugpb1"]
 
 [ext_resource type="Script" uid="uid://r6e2p1myj1t2" path="res://scripts/managers/game_state_manager.gd" id="1_xk7k0"]
 [ext_resource type="Script" uid="uid://1a50eu8xiuur" path="res://scripts/bounties/bounty_data.gd" id="2_15i0w"]
@@ -24,6 +24,7 @@
 [ext_resource type="Script" path="res://scripts/bounties/bounty_objective_data.gd" id="21_objective"]
 [ext_resource type="PackedScene" path="res://levels/shaman_camp/shaman_camp.tscn" id="22_shaman_camp"]
 [ext_resource type="PackedScene" path="res://levels/coyote_den/coyote_den.tscn" id="23_coyote_den"]
+[ext_resource type="Texture2D" path="res://ui/notice_board/bounty_missing_cattle.svg" id="24_cattle"]
 
 [sub_resource type="Resource" id="Resource_7qxxb"]
 script = ExtResource("5_ypgds")
@@ -156,6 +157,7 @@ id = "missing_cattle"
 title = "Missing Cattle"
 region_id = "1"
 description = "A rancher on the edge of town is losing cattle in the night. He swears what is taking them is no wolf and no rustler, and he wants it dealt with before the herd is gone."
+icon = ExtResource("24_cattle")
 unlocked = false
 completed = false
 reward_claimed = false

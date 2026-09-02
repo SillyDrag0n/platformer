@@ -1,17 +1,14 @@
-[gd_scene load_steps=6 format=3 uid="uid://dyfjbtwxvg3pm"]
+[gd_scene load_steps=5 format=3 uid="uid://dyfjbtwxvg3pm"]
 
-[ext_resource type="Texture2D" uid="uid://bsw7mi44wv5r7" path="res://player/gun/bullet/ui/shot.png" id="1_shot"]
+[ext_resource type="Texture2D" path="res://enemies/_common/bullet/cactus_spike.svg" id="1_shot"]
 [ext_resource type="Script" uid="uid://dgwo2g180dju4" path="res://enemies/cactus_coyote/coyote_spike.gd" id="2_spike"]
 
-[sub_resource type="AtlasTexture" id="AtlasTexture_spike"]
-atlas = ExtResource("1_shot")
-region = Rect2(96, 0, 12, 7)
 
 [sub_resource type="SpriteFrames" id="SpriteFrames_spike"]
 animations = [{
 "frames": [{
 "duration": 1.0,
-"texture": SubResource("AtlasTexture_spike")
+"texture": ExtResource("1_shot")
 }],
 "loop": true,
 "name": &"spike",

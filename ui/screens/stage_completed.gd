@@ -8,11 +8,21 @@ extends CanvasLayer
 # Built fresh by change_scene_to_packed(), so there is nothing to hand it directly - it reads what
 # to show off UiManager, which the caller sets on the way in.
 
-@onready var stage_title_label : Label = $PanelContainer/VBoxContainer/StageTitleLabel
-@onready var done_label : Label = $PanelContainer/VBoxContainer/DoneLabel
-@onready var payment_label : Label = $PanelContainer/VBoxContainer/PaymentLabel
-@onready var next_label : Label = $PanelContainer/VBoxContainer/NextLabel
-@onready var continue_button : Button = $PanelContainer/VBoxContainer/ContinueButton
+# BoldPixels carries U+2611 but not U+2713, so the ticked box is the check the font can actually
+# draw - see the glyph coverage note in the scene's checklist panel. The two lists are deliberately
+# marked differently: the finished leg is ticked off in ink on paper, the one ahead is only listed.
+const DONE_MARK := "☑"
+const NEXT_MARK := "·"
+
+@onready var stage_title_label : Label = $CenterContainer/Card/Margin/Body/StageTitleLabel
+@onready var done_label : Label = \
+	$CenterContainer/Card/Margin/Body/Columns/DoneSection/DonePaper/DoneMargin/DoneLabel
+@onready var payment_label : Label = $CenterContainer/Card/Margin/Body/PaymentLabel
+@onready var next_label : Label = $CenterContainer/Card/Margin/Body/Columns/NextSection/NextLabel
+# The whole right-hand column, heading included. Hiding only the label would leave a "NEXT UP"
+# heading standing over nothing on the last leg of a contract.
+@onready var next_section : VBoxContainer = $CenterContainer/Card/Margin/Body/Columns/NextSection
+@onready var continue_button : Button = $CenterContainer/Card/Margin/Body/ContinueButton
 
 
 func _ready() -> void:
@@ -34,7 +44,7 @@ func _ready() -> void:
 func _completed_lines(stage : BountyStageData) -> String:
 	var lines : Array[String] = []
 	for objective in stage.objectives:
-		lines.append("[x] %s" % tr(objective.text))
+		lines.append("%s %s" % [DONE_MARK, tr(objective.text)])
 	return "\n".join(lines)
 
 
@@ -50,13 +60,15 @@ func _show_next_stage() -> void:
 	var next_stage : BountyStageData = bounty.get_current_stage() if bounty != null else null
 	if next_stage == null:
 		# The last leg of the contract is finished by the bounty's own reward screen, so there is
-		# nothing left to point at here.
+		# nothing left to point at here. With the column gone the finished checklist takes the
+		# full width of the card rather than sitting in half of it beside a gap.
 		next_label.visible = false
+		next_section.visible = false
 		return
 
-	var lines : Array[String] = [tr("Next: %s") % tr(next_stage.title)]
+	var lines : Array[String] = [tr(next_stage.title)]
 	for objective in next_stage.objectives:
-		lines.append("     %s" % tr(objective.text))
+		lines.append("%s %s" % [NEXT_MARK, tr(objective.text)])
 	next_label.text = "\n".join(lines)
 
 

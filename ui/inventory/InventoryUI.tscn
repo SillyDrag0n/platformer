@@ -1,4 +1,4 @@
-[gd_scene load_steps=14 format=3 uid="uid://rx3auanfsgp0"]
+[gd_scene load_steps=20 format=3 uid="uid://rx3auanfsgp0"]
 
 [ext_resource type="Theme" uid="uid://ddr12d5h68dd1" path="res://ui/theme/game_theme.tres" id="0_theme"]
 [ext_resource type="Script" uid="uid://badieadd4juu0" path="res://ui/inventory/inventory_ui.gd" id="1_73x1u"]
@@ -26,19 +26,64 @@ font_size = 48
 font = ExtResource("3_gvwsh")
 font_size = 32
 
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_detail"]
+bg_color = Color(0.266667, 0.184314, 0.121569, 1)
+border_width_left = 4
+border_width_top = 4
+border_width_right = 4
+border_width_bottom = 4
+border_color = Color(0.0705882, 0.0392157, 0.0235294, 1)
+corner_radius_top_left = 8
+corner_radius_top_right = 8
+corner_radius_bottom_right = 8
+corner_radius_bottom_left = 8
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_iconframe"]
+bg_color = Color(0.164706, 0.0980392, 0.0627451, 1)
+border_width_left = 3
+border_width_top = 3
+border_width_right = 3
+border_width_bottom = 3
+border_color = Color(0.0705882, 0.0392157, 0.0235294, 1)
+corner_radius_top_left = 6
+corner_radius_top_right = 6
+corner_radius_bottom_right = 6
+corner_radius_bottom_left = 6
+
+[sub_resource type="LabelSettings" id="LabelSettings_section"]
+font = ExtResource("3_gvwsh")
+font_size = 24
+font_color = Color(0.768627, 0.658824, 0.509804, 1)
+
+[sub_resource type="LabelSettings" id="LabelSettings_detailname"]
+font = ExtResource("3_gvwsh")
+font_size = 32
+font_color = Color(0.964706, 0.909804, 0.792157, 1)
+
+[sub_resource type="LabelSettings" id="LabelSettings_detailbody"]
+font = ExtResource("3_gvwsh")
+font_size = 20
+font_color = Color(0.909804, 0.862745, 0.772549, 1)
+line_spacing = 6.0
+
+[sub_resource type="LabelSettings" id="LabelSettings_detailstats"]
+font = ExtResource("3_gvwsh")
+font_size = 20
+font_color = Color(1, 0.85098, 0.352941, 1)
+
 [node name="InventoryUi" type="CanvasLayer" node_paths=PackedStringArray("tab_container", "item_grid", "item_name_label", "item_description_label", "item_information_icon", "bounty_list_container", "bounty_title_label", "bounty_status_label", "bounty_description_label", "bounty_detail_icon", "quest_list_container", "slot_primary", "slot_secondary", "utility_list_container", "slot_ammo_primary", "slot_ammo_secondary", "slot_hat", "slot_outfit", "slot_weapon_skin_primary", "slot_weapon_skin_secondary", "slot_accessory", "abilities_list_container", "item_picker", "item_picker_backdrop", "picker_list_container")]
 script = ExtResource("1_73x1u")
 tab_container = NodePath("Panel/MarginContainer/TabContainer")
 item_grid = NodePath("Panel/MarginContainer/TabContainer/Items/ItemSlots/ItemsGridContainer")
 item_slot_scene = ExtResource("2_73x1u")
-item_name_label = NodePath("Panel/MarginContainer/TabContainer/Items/Item Information/HBoxContainer/VBoxContainer/PanelContainer/ItemNameLabel")
-item_description_label = NodePath("Panel/MarginContainer/TabContainer/Items/Item Information/HBoxContainer/VBoxContainer/PanelContainer2/ItemDescriptionLabel")
-item_information_icon = NodePath("Panel/MarginContainer/TabContainer/Items/Item Information/HBoxContainer/ItemInformationIcon/Sprite2D")
+item_name_label = NodePath("Panel/MarginContainer/TabContainer/Items/ItemDetail/DetailMargin/DetailRow/TextColumn/ItemNameLabel")
+item_description_label = NodePath("Panel/MarginContainer/TabContainer/Items/ItemDetail/DetailMargin/DetailRow/TextColumn/ItemDescriptionLabel")
+item_information_icon = NodePath("Panel/MarginContainer/TabContainer/Items/ItemDetail/DetailMargin/DetailRow/ItemInformationIcon/ItemIcon")
 bounty_list_container = NodePath("Panel/MarginContainer/TabContainer/Bounties/BountyList/ScrollContainer/BountyListContainer")
-bounty_title_label = NodePath("Panel/MarginContainer/TabContainer/Bounties/Bounty Information/HBoxContainer/VBoxContainer/PanelContainer/BountyTitleLabel")
-bounty_status_label = NodePath("Panel/MarginContainer/TabContainer/Bounties/Bounty Information/HBoxContainer/VBoxContainer/BountyStatusLabel")
-bounty_description_label = NodePath("Panel/MarginContainer/TabContainer/Bounties/Bounty Information/HBoxContainer/VBoxContainer/PanelContainer2/BountyDescriptionLabel")
-bounty_detail_icon = NodePath("Panel/MarginContainer/TabContainer/Bounties/Bounty Information/HBoxContainer/BountyInformationIcon/BountyIconTextureRect")
+bounty_title_label = NodePath("Panel/MarginContainer/TabContainer/Bounties/BountyDetail/DetailMargin/DetailRow/TextColumn/BountyTitleLabel")
+bounty_status_label = NodePath("Panel/MarginContainer/TabContainer/Bounties/BountyDetail/DetailMargin/DetailRow/TextColumn/BountyStatusLabel")
+bounty_description_label = NodePath("Panel/MarginContainer/TabContainer/Bounties/BountyDetail/DetailMargin/DetailRow/TextColumn/BountyDescriptionLabel")
+bounty_detail_icon = NodePath("Panel/MarginContainer/TabContainer/Bounties/BountyDetail/DetailMargin/DetailRow/BountyInformationIcon/BountyIconTextureRect")
 bounty_entry_scene = ExtResource("5_bnty1")
 default_bounty_icon = ExtResource("2_h7hxg")
 quest_list_container = NodePath("Panel/MarginContainer/TabContainer/Quests/MarginContainer/ScrollContainer/QuestListContainer")
@@ -82,10 +127,17 @@ layout_mode = 2
 metadata/_tab_index = 0
 
 [node name="ScrollContainer" type="ScrollContainer" parent="Panel/MarginContainer/TabContainer/Loadout"]
-layout_mode = 0
-offset_left = 16.0
-offset_right = 1424.0
-offset_bottom = 840.0
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 24.0
+offset_top = 24.0
+offset_right = -24.0
+offset_bottom = -24.0
+grow_horizontal = 2
+grow_vertical = 2
+horizontal_scroll_mode = 0
 
 [node name="VBoxContainer" type="VBoxContainer" parent="Panel/MarginContainer/TabContainer/Loadout/ScrollContainer"]
 layout_mode = 2
@@ -94,8 +146,13 @@ theme_override_constants/separation = 20
 
 [node name="EquipmentHeader" type="Label" parent="Panel/MarginContainer/TabContainer/Loadout/ScrollContainer/VBoxContainer"]
 layout_mode = 2
-text = "Equipment"
-label_settings = SubResource("LabelSettings_73x1u")
+text = "EQUIPMENT"
+label_settings = SubResource("LabelSettings_section")
+
+[node name="EquipmentHeaderRule" type="ColorRect" parent="Panel/MarginContainer/TabContainer/Loadout/ScrollContainer/VBoxContainer"]
+custom_minimum_size = Vector2(0, 2)
+layout_mode = 2
+color = Color(0.419608, 0.290196, 0.180392, 1)
 
 [node name="EquipmentRow" type="HBoxContainer" parent="Panel/MarginContainer/TabContainer/Loadout/ScrollContainer/VBoxContainer"]
 layout_mode = 2
@@ -133,8 +190,13 @@ empty_label = "Default"
 
 [node name="UtilityHeader" type="Label" parent="Panel/MarginContainer/TabContainer/Loadout/ScrollContainer/VBoxContainer"]
 layout_mode = 2
-text = "Utility"
-label_settings = SubResource("LabelSettings_73x1u")
+text = "UTILITY"
+label_settings = SubResource("LabelSettings_section")
+
+[node name="UtilityHeaderRule" type="ColorRect" parent="Panel/MarginContainer/TabContainer/Loadout/ScrollContainer/VBoxContainer"]
+custom_minimum_size = Vector2(0, 2)
+layout_mode = 2
+color = Color(0.419608, 0.290196, 0.180392, 1)
 
 [node name="UtilityListContainer" type="VBoxContainer" parent="Panel/MarginContainer/TabContainer/Loadout/ScrollContainer/VBoxContainer"]
 layout_mode = 2
@@ -142,8 +204,13 @@ theme_override_constants/separation = 4
 
 [node name="AbilitiesHeader" type="Label" parent="Panel/MarginContainer/TabContainer/Loadout/ScrollContainer/VBoxContainer"]
 layout_mode = 2
-text = "Abilities"
-label_settings = SubResource("LabelSettings_73x1u")
+text = "ABILITIES"
+label_settings = SubResource("LabelSettings_section")
+
+[node name="AbilitiesHeaderRule" type="ColorRect" parent="Panel/MarginContainer/TabContainer/Loadout/ScrollContainer/VBoxContainer"]
+custom_minimum_size = Vector2(0, 2)
+layout_mode = 2
+color = Color(0.419608, 0.290196, 0.180392, 1)
 
 [node name="AbilitiesListContainer" type="VBoxContainer" parent="Panel/MarginContainer/TabContainer/Loadout/ScrollContainer/VBoxContainer"]
 layout_mode = 2
@@ -151,8 +218,13 @@ theme_override_constants/separation = 4
 
 [node name="CosmeticsHeader" type="Label" parent="Panel/MarginContainer/TabContainer/Loadout/ScrollContainer/VBoxContainer"]
 layout_mode = 2
-text = "Cosmetics"
-label_settings = SubResource("LabelSettings_73x1u")
+text = "COSMETICS"
+label_settings = SubResource("LabelSettings_section")
+
+[node name="CosmeticsHeaderRule" type="ColorRect" parent="Panel/MarginContainer/TabContainer/Loadout/ScrollContainer/VBoxContainer"]
+custom_minimum_size = Vector2(0, 2)
+layout_mode = 2
+color = Color(0.419608, 0.290196, 0.180392, 1)
 
 [node name="CosmeticsRow" type="HBoxContainer" parent="Panel/MarginContainer/TabContainer/Loadout/ScrollContainer/VBoxContainer"]
 layout_mode = 2
@@ -170,10 +242,13 @@ slot_name = "Accessory"
 
 [node name="ItemPickerBackdrop" type="Button" parent="Panel/MarginContainer/TabContainer/Loadout"]
 visible = false
-self_modulate = Color(0, 0, 0, 0.5)
-layout_mode = 0
-offset_right = 1440.0
-offset_bottom = 840.0
+self_modulate = Color(0, 0, 0, 0.6)
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
 focus_mode = 0
 flat = true
 
@@ -206,15 +281,15 @@ layout_mode = 2
 size_flags_horizontal = 3
 theme_override_constants/separation = 6
 
-[node name="Items" type="Control" parent="Panel/MarginContainer/TabContainer"]
+[node name="Items" type="VBoxContainer" parent="Panel/MarginContainer/TabContainer"]
 visible = false
 layout_mode = 2
+theme_override_constants/separation = 20
 metadata/_tab_index = 1
 
 [node name="ItemSlots" type="MarginContainer" parent="Panel/MarginContainer/TabContainer/Items"]
-layout_mode = 0
-offset_right = 1440.0
-offset_bottom = 591.0
+layout_mode = 2
+size_flags_vertical = 3
 theme_override_constants/margin_left = 16
 theme_override_constants/margin_top = 16
 theme_override_constants/margin_right = 16
@@ -223,68 +298,61 @@ theme_override_constants/margin_bottom = 16
 [node name="ItemsGridContainer" type="GridContainer" parent="Panel/MarginContainer/TabContainer/Items/ItemSlots"]
 layout_direction = 2
 layout_mode = 2
-theme_override_constants/h_separation = 5
-theme_override_constants/v_separation = 5
+theme_override_constants/h_separation = 10
+theme_override_constants/v_separation = 10
 columns = 10
 
-[node name="Item Information" type="MarginContainer" parent="Panel/MarginContainer/TabContainer/Items"]
-layout_mode = 0
-offset_top = 591.0
-offset_right = 1440.0
-offset_bottom = 840.0
-theme_override_constants/margin_left = 16
-theme_override_constants/margin_top = 16
-theme_override_constants/margin_right = 16
-theme_override_constants/margin_bottom = 16
-
-[node name="HBoxContainer" type="HBoxContainer" parent="Panel/MarginContainer/TabContainer/Items/Item Information"]
+[node name="ItemDetail" type="PanelContainer" parent="Panel/MarginContainer/TabContainer/Items"]
+custom_minimum_size = Vector2(0, 240)
 layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_detail")
 
-[node name="ItemInformationIcon" type="PanelContainer" parent="Panel/MarginContainer/TabContainer/Items/Item Information/HBoxContainer"]
-custom_minimum_size = Vector2(218, 0)
+[node name="DetailMargin" type="MarginContainer" parent="Panel/MarginContainer/TabContainer/Items/ItemDetail"]
 layout_mode = 2
+theme_override_constants/margin_left = 24
+theme_override_constants/margin_top = 20
+theme_override_constants/margin_right = 24
+theme_override_constants/margin_bottom = 20
 
-[node name="Sprite2D" type="Sprite2D" parent="Panel/MarginContainer/TabContainer/Items/Item Information/HBoxContainer/ItemInformationIcon"]
-position = Vector2(108.5, 108.5)
-scale = Vector2(1.5, 1.5)
+[node name="DetailRow" type="HBoxContainer" parent="Panel/MarginContainer/TabContainer/Items/ItemDetail/DetailMargin"]
+layout_mode = 2
+theme_override_constants/separation = 28
 
-[node name="VBoxContainer" type="VBoxContainer" parent="Panel/MarginContainer/TabContainer/Items/Item Information/HBoxContainer"]
-clip_contents = true
+[node name="ItemInformationIcon" type="PanelContainer" parent="Panel/MarginContainer/TabContainer/Items/ItemDetail/DetailMargin/DetailRow"]
+custom_minimum_size = Vector2(180, 180)
+layout_mode = 2
+size_flags_vertical = 4
+theme_override_styles/panel = SubResource("StyleBoxFlat_iconframe")
+
+[node name="ItemIcon" type="TextureRect" parent="Panel/MarginContainer/TabContainer/Items/ItemDetail/DetailMargin/DetailRow/ItemInformationIcon"]
+layout_mode = 2
+expand_mode = 1
+stretch_mode = 5
+
+[node name="TextColumn" type="VBoxContainer" parent="Panel/MarginContainer/TabContainer/Items/ItemDetail/DetailMargin/DetailRow"]
 layout_mode = 2
 size_flags_horizontal = 3
+theme_override_constants/separation = 12
 
-[node name="PanelContainer" type="PanelContainer" parent="Panel/MarginContainer/TabContainer/Items/Item Information/HBoxContainer/VBoxContainer"]
-layout_direction = 2
+[node name="ItemNameLabel" type="Label" parent="Panel/MarginContainer/TabContainer/Items/ItemDetail/DetailMargin/DetailRow/TextColumn"]
 layout_mode = 2
-size_flags_vertical = 0
-theme_override_styles/panel = SubResource("StyleBoxEmpty_plain")
-
-[node name="ItemNameLabel" type="Label" parent="Panel/MarginContainer/TabContainer/Items/Item Information/HBoxContainer/VBoxContainer/PanelContainer"]
-layout_mode = 2
-label_settings = SubResource("LabelSettings_73x1u")
-
-[node name="PanelContainer2" type="PanelContainer" parent="Panel/MarginContainer/TabContainer/Items/Item Information/HBoxContainer/VBoxContainer"]
-clip_contents = true
-layout_mode = 2
-size_flags_vertical = 0
-theme_override_styles/panel = SubResource("StyleBoxEmpty_plain")
-
-[node name="ItemDescriptionLabel" type="Label" parent="Panel/MarginContainer/TabContainer/Items/Item Information/HBoxContainer/VBoxContainer/PanelContainer2"]
-custom_minimum_size = Vector2(0, 165)
-layout_mode = 2
-label_settings = SubResource("LabelSettings_hu5s4")
+label_settings = SubResource("LabelSettings_detailname")
 autowrap_mode = 3
-text_overrun_behavior = 1
 
-[node name="Bounties" type="Control" parent="Panel/MarginContainer/TabContainer"]
+[node name="ItemDescriptionLabel" type="Label" parent="Panel/MarginContainer/TabContainer/Items/ItemDetail/DetailMargin/DetailRow/TextColumn"]
+layout_mode = 2
+size_flags_vertical = 3
+label_settings = SubResource("LabelSettings_detailbody")
+autowrap_mode = 3
+[node name="Bounties" type="VBoxContainer" parent="Panel/MarginContainer/TabContainer"]
 visible = false
 layout_mode = 2
+theme_override_constants/separation = 20
 metadata/_tab_index = 2
 
 [node name="BountyList" type="MarginContainer" parent="Panel/MarginContainer/TabContainer/Bounties"]
-layout_mode = 0
-offset_right = 1440.0
-offset_bottom = 591.0
+layout_mode = 2
+size_flags_vertical = 3
 theme_override_constants/margin_left = 16
 theme_override_constants/margin_top = 16
 theme_override_constants/margin_right = 16
@@ -299,75 +367,69 @@ layout_mode = 2
 size_flags_horizontal = 3
 theme_override_constants/separation = 6
 
-[node name="Bounty Information" type="MarginContainer" parent="Panel/MarginContainer/TabContainer/Bounties"]
-layout_mode = 0
-offset_top = 591.0
-offset_right = 1440.0
-offset_bottom = 840.0
-theme_override_constants/margin_left = 16
-theme_override_constants/margin_top = 16
-theme_override_constants/margin_right = 16
-theme_override_constants/margin_bottom = 16
-
-[node name="HBoxContainer" type="HBoxContainer" parent="Panel/MarginContainer/TabContainer/Bounties/Bounty Information"]
+[node name="BountyDetail" type="PanelContainer" parent="Panel/MarginContainer/TabContainer/Bounties"]
+custom_minimum_size = Vector2(0, 260)
 layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_detail")
 
-[node name="BountyInformationIcon" type="PanelContainer" parent="Panel/MarginContainer/TabContainer/Bounties/Bounty Information/HBoxContainer"]
-custom_minimum_size = Vector2(218, 0)
+[node name="DetailMargin" type="MarginContainer" parent="Panel/MarginContainer/TabContainer/Bounties/BountyDetail"]
 layout_mode = 2
+theme_override_constants/margin_left = 24
+theme_override_constants/margin_top = 20
+theme_override_constants/margin_right = 24
+theme_override_constants/margin_bottom = 20
 
-[node name="BountyIconTextureRect" type="TextureRect" parent="Panel/MarginContainer/TabContainer/Bounties/Bounty Information/HBoxContainer/BountyInformationIcon"]
-custom_minimum_size = Vector2(190, 190)
+[node name="DetailRow" type="HBoxContainer" parent="Panel/MarginContainer/TabContainer/Bounties/BountyDetail/DetailMargin"]
 layout_mode = 2
-size_flags_horizontal = 4
+theme_override_constants/separation = 28
+
+[node name="BountyInformationIcon" type="PanelContainer" parent="Panel/MarginContainer/TabContainer/Bounties/BountyDetail/DetailMargin/DetailRow"]
+custom_minimum_size = Vector2(200, 200)
+layout_mode = 2
 size_flags_vertical = 4
+theme_override_styles/panel = SubResource("StyleBoxFlat_iconframe")
+
+[node name="BountyIconTextureRect" type="TextureRect" parent="Panel/MarginContainer/TabContainer/Bounties/BountyDetail/DetailMargin/DetailRow/BountyInformationIcon"]
+layout_mode = 2
 expand_mode = 1
 stretch_mode = 5
 
-[node name="VBoxContainer" type="VBoxContainer" parent="Panel/MarginContainer/TabContainer/Bounties/Bounty Information/HBoxContainer"]
-clip_contents = true
+[node name="TextColumn" type="VBoxContainer" parent="Panel/MarginContainer/TabContainer/Bounties/BountyDetail/DetailMargin/DetailRow"]
 layout_mode = 2
 size_flags_horizontal = 3
+theme_override_constants/separation = 10
 
-[node name="PanelContainer" type="PanelContainer" parent="Panel/MarginContainer/TabContainer/Bounties/Bounty Information/HBoxContainer/VBoxContainer"]
-layout_mode = 2
-size_flags_vertical = 0
-theme_override_styles/panel = SubResource("StyleBoxEmpty_plain")
-
-[node name="BountyTitleLabel" type="Label" parent="Panel/MarginContainer/TabContainer/Bounties/Bounty Information/HBoxContainer/VBoxContainer/PanelContainer"]
+[node name="BountyTitleLabel" type="Label" parent="Panel/MarginContainer/TabContainer/Bounties/BountyDetail/DetailMargin/DetailRow/TextColumn"]
 layout_mode = 2
 text = "Select a bounty"
-label_settings = SubResource("LabelSettings_73x1u")
+label_settings = SubResource("LabelSettings_detailname")
+autowrap_mode = 3
 
-[node name="BountyStatusLabel" type="Label" parent="Panel/MarginContainer/TabContainer/Bounties/Bounty Information/HBoxContainer/VBoxContainer"]
+[node name="BountyStatusLabel" type="Label" parent="Panel/MarginContainer/TabContainer/Bounties/BountyDetail/DetailMargin/DetailRow/TextColumn"]
 layout_mode = 2
-label_settings = SubResource("LabelSettings_hu5s4")
+label_settings = SubResource("LabelSettings_detailstats")
 
-[node name="PanelContainer2" type="PanelContainer" parent="Panel/MarginContainer/TabContainer/Bounties/Bounty Information/HBoxContainer/VBoxContainer"]
-clip_contents = true
+[node name="BountyDescriptionLabel" type="Label" parent="Panel/MarginContainer/TabContainer/Bounties/BountyDetail/DetailMargin/DetailRow/TextColumn"]
 layout_mode = 2
 size_flags_vertical = 3
-theme_override_styles/panel = SubResource("StyleBoxEmpty_plain")
-
-[node name="BountyDescriptionLabel" type="Label" parent="Panel/MarginContainer/TabContainer/Bounties/Bounty Information/HBoxContainer/VBoxContainer/PanelContainer2"]
-layout_mode = 2
-label_settings = SubResource("LabelSettings_hu5s4")
+label_settings = SubResource("LabelSettings_detailbody")
 autowrap_mode = 3
-text_overrun_behavior = 1
-
 [node name="Quests" type="Control" parent="Panel/MarginContainer/TabContainer"]
 visible = false
 layout_mode = 2
 metadata/_tab_index = 3
 
 [node name="MarginContainer" type="MarginContainer" parent="Panel/MarginContainer/TabContainer/Quests"]
-layout_mode = 0
-offset_right = 1440.0
-offset_bottom = 840.0
-theme_override_constants/margin_left = 16
-theme_override_constants/margin_top = 16
-theme_override_constants/margin_right = 16
-theme_override_constants/margin_bottom = 16
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 24
+theme_override_constants/margin_top = 24
+theme_override_constants/margin_right = 24
+theme_override_constants/margin_bottom = 24
 
 [node name="ScrollContainer" type="ScrollContainer" parent="Panel/MarginContainer/TabContainer/Quests/MarginContainer"]
 layout_mode = 2
@@ -384,13 +446,16 @@ layout_mode = 2
 metadata/_tab_index = 4
 
 [node name="MarginContainer" type="MarginContainer" parent="Panel/MarginContainer/TabContainer/Map"]
-layout_mode = 0
-offset_right = 1440.0
-offset_bottom = 840.0
-theme_override_constants/margin_left = 16
-theme_override_constants/margin_top = 16
-theme_override_constants/margin_right = 16
-theme_override_constants/margin_bottom = 16
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 24
+theme_override_constants/margin_top = 24
+theme_override_constants/margin_right = 24
+theme_override_constants/margin_bottom = 24
 
 [node name="TextureRect" type="TextureRect" parent="Panel/MarginContainer/TabContainer/Map/MarginContainer"]
 layout_mode = 2

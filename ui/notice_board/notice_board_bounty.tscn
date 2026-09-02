@@ -12,8 +12,9 @@ font_color = Color(0, 0, 0, 1)
 
 [sub_resource type="LabelSettings" id="LabelSettings_r211r"]
 font = ExtResource("1_kfug1")
-font_size = 24
+font_size = 18
 font_color = Color(0, 0, 0, 1)
+line_spacing = 0.0
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_selectbtn"]
 
@@ -23,7 +24,7 @@ border_width_left = 4
 border_width_top = 4
 border_width_right = 4
 border_width_bottom = 4
-border_color = Color(0.960784, 0.615686, 0.156863, 1)
+border_color = Color(0.619608, 0.168627, 0.117647, 1)
 corner_radius_top_left = 3
 corner_radius_top_right = 3
 corner_radius_bottom_right = 3
@@ -67,22 +68,25 @@ clip_text = true
 layout_mode = 0
 offset_left = 17.0
 offset_top = 352.0
-offset_right = 334.0
+offset_right = 332.0
 offset_bottom = 354.0
 mouse_filter = 2
 color = Color(0, 0, 0, 1)
 
 [node name="RumorText" type="Label" parent="."]
 layout_mode = 0
+offset_left = 26.0
 offset_top = 356.0
-offset_right = 350.0
-offset_bottom = 416.0
+offset_right = 323.0
+offset_bottom = 397.0
 text = "Rumored to be last seen at the sunken valley"
 label_settings = SubResource("LabelSettings_r211r")
 horizontal_alignment = 1
 vertical_alignment = 1
 autowrap_mode = 3
 clip_text = true
+text_overrun_behavior = 4
+max_lines_visible = 2
 
 [node name="TearSound" type="AudioStreamPlayer" parent="." groups=["UI"]]
 stream = ExtResource("2_tearsnd")

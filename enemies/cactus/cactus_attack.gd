@@ -7,6 +7,13 @@ var bullet_impact_effect = preload("res://enemies/_common/bullet/bullet_impact_e
 var direction : int
 
 
+func _ready() -> void:
+	# The spine is drawn pointing right, and this one slides along a flat axis rather than rotating
+	# to a heading the way the coyote's volley does (see coyote_spike.gd) - so a leftward shot has
+	# to be mirrored, or it travels point-first back at the cactus that threw it.
+	flip_h = direction < 0
+
+
 func _physics_process(delta):
 	move_local_x(direction * speed * delta)
 

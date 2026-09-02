@@ -2,21 +2,38 @@ extends CanvasLayer
 
 const ControlBindingRowScene = preload("res://ui/screens/control_binding_row.tscn")
 
-@onready var window_mode_option_button = $MarginContainer/PanelContainer/MarginContainer/VBoxContainer/TabContainer/General/WindowModeOptionButton
-@onready var resolution_option_button = $MarginContainer/PanelContainer/MarginContainer/VBoxContainer/TabContainer/General/ResolutionOptionButton
-@onready var max_fps_option_button = $MarginContainer/PanelContainer/MarginContainer/VBoxContainer/TabContainer/General/MaxFpsOptionButton
-@onready var vsync_check_button = $MarginContainer/PanelContainer/MarginContainer/VBoxContainer/TabContainer/General/VSyncCheckButton
-@onready var master_volume_slider = $MarginContainer/PanelContainer/MarginContainer/VBoxContainer/TabContainer/General/MasterVolumeSlider
-@onready var music_volume_slider = $MarginContainer/PanelContainer/MarginContainer/VBoxContainer/TabContainer/General/MusicVolumeSlider
-@onready var sfx_volume_slider = $MarginContainer/PanelContainer/MarginContainer/VBoxContainer/TabContainer/General/SFXVolumeSlider
-@onready var ui_volume_slider = $MarginContainer/PanelContainer/MarginContainer/VBoxContainer/TabContainer/General/UIVolumeSlider
-@onready var aim_sensitivity_slider = $MarginContainer/PanelContainer/MarginContainer/VBoxContainer/TabContainer/General/AimSensitivitySlider
-@onready var ui_scale_slider = $MarginContainer/PanelContainer/MarginContainer/VBoxContainer/TabContainer/General/UiScaleSlider
-@onready var language_option_button = $MarginContainer/PanelContainer/MarginContainer/VBoxContainer/TabContainer/General/LanguageOptionButton
-@onready var tab_container : TabContainer = $MarginContainer/PanelContainer/MarginContainer/VBoxContainer/TabContainer
-@onready var controls_scroll_container = $MarginContainer/PanelContainer/MarginContainer/VBoxContainer/TabContainer/Controls
-@onready var controls_list = $MarginContainer/PanelContainer/MarginContainer/VBoxContainer/TabContainer/Controls/VBoxContainer
-@onready var reset_controls_button = $MarginContainer/PanelContainer/MarginContainer/VBoxContainer/TabContainer/Controls/VBoxContainer/ResetControlsButton
+# The General tab is a list of labelled rows - "Window Mode" on the left, the control that sets it
+# on the right - grouped under section headings. The three option buttons at the top of it used to
+# carry no label at all, so a player was reading "Windowed", "1920x1080" and "60" stacked in a
+# column with nothing to say which was which.
+const GENERAL := "MarginContainer/PanelContainer/CardMargin/Body/TabContainer/General/GeneralList/"
+
+@onready var window_mode_option_button = get_node(GENERAL + "WindowModeRow/WindowModeOptionButton")
+@onready var resolution_option_button = get_node(GENERAL + "ResolutionRow/ResolutionOptionButton")
+@onready var max_fps_option_button = get_node(GENERAL + "MaxFpsRow/MaxFpsOptionButton")
+@onready var vsync_check_button = get_node(GENERAL + "VSyncRow/VSyncCheckButton")
+@onready var master_volume_slider = get_node(GENERAL + "MasterVolumeRow/MasterVolumeSlider")
+@onready var music_volume_slider = get_node(GENERAL + "MusicVolumeRow/MusicVolumeSlider")
+@onready var sfx_volume_slider = get_node(GENERAL + "SFXVolumeRow/SFXVolumeSlider")
+@onready var ui_volume_slider = get_node(GENERAL + "UIVolumeRow/UIVolumeSlider")
+@onready var aim_sensitivity_slider = get_node(GENERAL + "AimSensitivityRow/AimSensitivitySlider")
+@onready var ui_scale_slider = get_node(GENERAL + "UiScaleRow/UiScaleSlider")
+@onready var language_option_button = get_node(GENERAL + "LanguageRow/LanguageOptionButton")
+
+# A slider with no number beside it only says "somewhere around here" - each one gets its own
+# readout, kept in step by _refresh_slider_readouts().
+@onready var master_volume_value : Label = get_node(GENERAL + "MasterVolumeRow/MasterVolumeValue")
+@onready var music_volume_value : Label = get_node(GENERAL + "MusicVolumeRow/MusicVolumeValue")
+@onready var sfx_volume_value : Label = get_node(GENERAL + "SFXVolumeRow/SFXVolumeValue")
+@onready var ui_volume_value : Label = get_node(GENERAL + "UIVolumeRow/UIVolumeValue")
+@onready var aim_sensitivity_value : Label = get_node(GENERAL + "AimSensitivityRow/AimSensitivityValue")
+@onready var ui_scale_value : Label = get_node(GENERAL + "UiScaleRow/UiScaleValue")
+
+@onready var tab_container : TabContainer = $MarginContainer/PanelContainer/CardMargin/Body/TabContainer
+@onready var general_scroll : ScrollContainer = $MarginContainer/PanelContainer/CardMargin/Body/TabContainer/General
+@onready var controls_scroll_container = $MarginContainer/PanelContainer/CardMargin/Body/TabContainer/Controls
+@onready var controls_list = $MarginContainer/PanelContainer/CardMargin/Body/TabContainer/Controls/VBoxContainer
+@onready var reset_controls_button = $MarginContainer/PanelContainer/CardMargin/Body/TabContainer/Controls/VBoxContainer/ResetControlsButton
 
 var window_modes : Dictionary = {"Fullscreen" : DisplayServer.WINDOW_MODE_EXCLUSIVE_FULLSCREEN,
 								 "Window" : DisplayServer.WINDOW_MODE_WINDOWED,
@@ -58,9 +75,18 @@ func _ready():
 
 	initialise_controls()
 	_populate_control_bindings()
-	_connect_scroll_follow(reset_controls_button)
+	_connect_scroll_follow(reset_controls_button, controls_scroll_container)
+	# Every row in the General tab too, so moving down it with a pad scrolls the list the same way
+	# the Controls tab already did.
+	for control in _focusable_descendants(general_scroll):
+		_connect_scroll_follow(control, general_scroll)
+	_refresh_slider_readouts()
 	SettingsManager.apply_ui_scale(self)
-	_grab_default_focus()
+	# Deferred so the containers have been laid out first. Grabbing focus straight away raises
+	# focus_entered while every rect is still zero-sized, and the scroll-follow above answers it by
+	# scrolling the list to a position computed against nothing - which opened the General tab a
+	# little way down, with its first section heading cut off the top.
+	_grab_default_focus.call_deferred()
 
 
 func _process(_delta):
@@ -140,16 +166,17 @@ func _populate_control_bindings() -> void:
 		controls_list.move_child(row, reset_controls_button.get_index())
 		row.set_action(action_name, action_name.capitalize())
 		row.rebind_requested.connect(_on_control_rebind_requested)
-		_connect_scroll_follow(row.bind_button)
-		_connect_scroll_follow(row.joypad_bind_button)
+		_connect_scroll_follow(row.bind_button, controls_scroll_container)
+		_connect_scroll_follow(row.joypad_bind_button, controls_scroll_container)
 		rows.append(row)
 	_wire_control_row_focus_neighbors(rows)
 
 
 # ScrollContainer does not scroll to a focused child on its own, so each focusable control below
-# the fold has to ask it to explicitly once it is focused.
-func _connect_scroll_follow(control : Control) -> void:
-	control.focus_entered.connect(controls_scroll_container.ensure_control_visible.bind(control))
+# the fold has to ask it to explicitly once it is focused. Both tabs are lists that outrun their
+# own height now, so this takes the container the control actually lives in.
+func _connect_scroll_follow(control : Control, scroll : ScrollContainer) -> void:
+	control.focus_entered.connect(scroll.ensure_control_visible.bind(control))
 
 
 # The rows live in a ScrollContainer, so Godot's automatic (spatial) focus search can jump
@@ -213,27 +240,33 @@ func _on_v_sync_check_button_toggled(toggled_on):
 
 func _on_master_volume_slider_value_changed(value):
 	SettingsManager.set_bus_volume(&"Master", value / 100.0)
+	master_volume_value.text = _percent(value)
 
 
 func _on_music_volume_slider_value_changed(value):
 	SettingsManager.set_bus_volume(&"Music", value / 100.0)
+	music_volume_value.text = _percent(value)
 
 
 func _on_sfx_volume_slider_value_changed(value):
 	SettingsManager.set_bus_volume(&"SFX", value / 100.0)
+	sfx_volume_value.text = _percent(value)
 
 
 func _on_ui_volume_slider_value_changed(value):
 	SettingsManager.set_bus_volume(&"UI", value / 100.0)
+	ui_volume_value.text = _percent(value)
 
 
 func _on_aim_sensitivity_slider_value_changed(value):
 	SettingsManager.set_aim_sensitivity(value / 100.0)
+	aim_sensitivity_value.text = _percent(value)
 
 
 func _on_ui_scale_slider_value_changed(value):
 	SettingsManager.set_ui_scale(value / 100.0)
 	SettingsManager.apply_ui_scale(self)
+	ui_scale_value.text = _percent(value)
 
 
 func _on_language_option_button_item_selected(index):
@@ -244,3 +277,32 @@ func _on_language_option_button_item_selected(index):
 func _on_main_menu_button_pressed():
 	SettingsManager.save_settings()
 	queue_free()
+
+
+# --- Slider readouts ---
+
+# Every focusable control under a node, in the order they are laid out - used to hand each row of
+# the General tab to its scroll container.
+func _focusable_descendants(node : Node) -> Array[Control]:
+	var found : Array[Control] = []
+	for child in node.get_children():
+		if child is Control and child.focus_mode != Control.FOCUS_NONE:
+			found.append(child)
+		found.append_array(_focusable_descendants(child))
+	return found
+
+
+# Called once on open, after initialise_controls() has put the saved values into the sliders. The
+# value_changed handlers keep each readout in step from then on, but setting a slider to the value
+# it already holds raises nothing, so the opening pass cannot rely on them.
+func _refresh_slider_readouts() -> void:
+	master_volume_value.text = _percent(master_volume_slider.value)
+	music_volume_value.text = _percent(music_volume_slider.value)
+	sfx_volume_value.text = _percent(sfx_volume_slider.value)
+	ui_volume_value.text = _percent(ui_volume_slider.value)
+	aim_sensitivity_value.text = _percent(aim_sensitivity_slider.value)
+	ui_scale_value.text = _percent(ui_scale_slider.value)
+
+
+func _percent(value : float) -> String:
+	return "%d%%" % roundi(value)

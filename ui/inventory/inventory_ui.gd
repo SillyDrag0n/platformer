@@ -15,7 +15,7 @@ const UNLOCKED := Color(0.45, 0.85, 0.45)
 @export var item_slot_scene : PackedScene
 @export var item_name_label : Label
 @export var item_description_label : Label
-@export var item_information_icon : Sprite2D
+@export var item_information_icon : TextureRect
 
 @export var bounty_list_container : VBoxContainer
 @export var bounty_title_label : Label
@@ -485,18 +485,48 @@ func refresh_abilities_ui():
 		abilities_list_container.add_child(_make_list_label(ability.display_name, 24, UNLOCKED))
 
 
+# The other half of a loadout pair. The weapon slots and the ammo slots are both keyed by
+# WeaponSlot, so one helper answers for either.
+func _other_weapon_slot(slot : InventoryManager.WeaponSlot) -> InventoryManager.WeaponSlot:
+	return InventoryManager.WeaponSlot.SECONDARY \
+		if slot == InventoryManager.WeaponSlot.PRIMARY else InventoryManager.WeaponSlot.PRIMARY
+
+
+# Opens a picker for one half of a paired slot, under the two rules both pairs follow.
+#
+# First: whatever the other half is holding is left out of this one's list, so the same item can't
+# be equipped in both at once. The exception is an item this slot is somehow holding as well - a
+# loadout saved before these rules existed can have the same thing in both halves, and hiding it
+# would leave the player looking at a slot whose contents are missing from the very list they were
+# given to change it with.
+#
+# Second: clearing this half is only offered while the other one still holds something. What that
+# saves the player from differs between the pairs - with both weapon slots empty Gun.gd quietly
+# arms its own default, a gun in neither slot, and the loadout screen would then be describing a
+# weapon the player is not carrying - but the two pairs behave the same way under the hand, which
+# is what makes the screen learnable.
+func _open_paired_picker(owned : Array, current : ItemData, other : ItemData, \
+		on_pick : Callable) -> void:
+	var candidates : Array = owned.filter(func(item): return item != other or item == current)
+	_open_picker(candidates, current, on_pick, other != null)
+
+
 func _open_weapon_picker(slot : InventoryManager.WeaponSlot):
-	var candidates : Array = InventoryManager.get_owned_items_by_type(WeaponItemData)
-	# The primary weapon always has to be something - Gun.gd guarantees a default is equipped,
-	# so going without one isn't a state the player can choose here.
-	var allow_unequip := slot != InventoryManager.WeaponSlot.PRIMARY
-	_open_picker(candidates, InventoryManager.get_equipped_weapon(slot), func(item): InventoryManager.equip_weapon(slot, item), allow_unequip)
+	var other_slot := _other_weapon_slot(slot)
+	_open_paired_picker(
+		InventoryManager.get_owned_items_by_type(WeaponItemData),
+		InventoryManager.get_equipped_weapon(slot),
+		InventoryManager.get_equipped_weapon(other_slot),
+		func(item): InventoryManager.equip_weapon(slot, item))
 
 
 func _open_ammo_picker(slot : InventoryManager.WeaponSlot):
-	var candidates : Array = InventoryManager.get_owned_items_by_type(AmmoItemData)
-	var allow_unequip := slot != InventoryManager.WeaponSlot.PRIMARY
-	_open_picker(candidates, InventoryManager.get_equipped_ammo(slot), func(item): InventoryManager.equip_ammo(slot, item), allow_unequip)
+	var other_slot := _other_weapon_slot(slot)
+	_open_paired_picker(
+		InventoryManager.get_owned_items_by_type(AmmoItemData),
+		InventoryManager.get_equipped_ammo(slot),
+		InventoryManager.get_equipped_ammo(other_slot),
+		func(item): InventoryManager.equip_ammo(slot, item))
 
 
 func _open_cosmetic_picker(slot : CosmeticItemData.CosmeticSlot):

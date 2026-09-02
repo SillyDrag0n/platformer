@@ -1,4 +1,4 @@
-[gd_scene load_steps=6 format=3]
+[gd_scene load_steps=13 format=3]
 
 [ext_resource type="Theme" uid="uid://ddr12d5h68dd1" path="res://ui/theme/game_theme.tres" id="0_theme"]
 [ext_resource type="Script" path="res://ui/shop/shop_ui.gd" id="1_shop"]
@@ -15,7 +15,58 @@ content_margin_bottom = 140.0
 font = ExtResource("2_font")
 font_size = 40
 
-[node name="ShopUi" type="CanvasLayer" node_paths=PackedStringArray("title_label", "currency_label", "portrait_rect", "entry_list_container", "entry_list_scroll", "close_button")]
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_detail"]
+bg_color = Color(0.266667, 0.184314, 0.121569, 1)
+border_width_left = 4
+border_width_top = 4
+border_width_right = 4
+border_width_bottom = 4
+border_color = Color(0.0705882, 0.0392157, 0.0235294, 1)
+corner_radius_top_left = 8
+corner_radius_top_right = 8
+corner_radius_bottom_right = 8
+corner_radius_bottom_left = 8
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_iconframe"]
+bg_color = Color(0.164706, 0.0980392, 0.0627451, 1)
+border_width_left = 3
+border_width_top = 3
+border_width_right = 3
+border_width_bottom = 3
+border_color = Color(0.0705882, 0.0392157, 0.0235294, 1)
+corner_radius_top_left = 6
+corner_radius_top_right = 6
+corner_radius_bottom_right = 6
+corner_radius_bottom_left = 6
+
+[sub_resource type="LabelSettings" id="LabelSettings_detailname"]
+font = ExtResource("2_font")
+font_size = 32
+font_color = Color(0.964706, 0.909804, 0.792157, 1)
+
+[sub_resource type="LabelSettings" id="LabelSettings_detailbody"]
+font = ExtResource("2_font")
+font_size = 20
+font_color = Color(0.909804, 0.862745, 0.772549, 1)
+line_spacing = 6.0
+
+[sub_resource type="LabelSettings" id="LabelSettings_detailstats"]
+font = ExtResource("2_font")
+font_size = 20
+font_color = Color(0.768627, 0.658824, 0.509804, 1)
+line_spacing = 6.0
+
+[sub_resource type="LabelSettings" id="LabelSettings_detailprice"]
+font = ExtResource("2_font")
+font_size = 36
+font_color = Color(1, 0.85098, 0.352941, 1)
+
+[sub_resource type="LabelSettings" id="LabelSettings_detailstock"]
+font = ExtResource("2_font")
+font_size = 18
+font_color = Color(0.768627, 0.658824, 0.509804, 1)
+
+[node name="ShopUi" type="CanvasLayer" node_paths=PackedStringArray("title_label", "currency_label", "portrait_rect", "entry_list_container", "entry_list_scroll", "close_button", "detail_panel", "detail_icon", "detail_name_label", "detail_description_label", "detail_stats_label", "detail_price_label", "detail_stock_label")]
 script = ExtResource("1_shop")
 entry_scene = ExtResource("3_entry")
 title_label = NodePath("Panel/MarginContainer/VBoxContainer/HeaderRow/TitleLabel")
@@ -24,6 +75,13 @@ portrait_rect = NodePath("Panel/MarginContainer/VBoxContainer/CounterRow/Portrai
 entry_list_container = NodePath("Panel/MarginContainer/VBoxContainer/CounterRow/ScrollContainer/EntryListContainer")
 entry_list_scroll = NodePath("Panel/MarginContainer/VBoxContainer/CounterRow/ScrollContainer")
 close_button = NodePath("Panel/MarginContainer/VBoxContainer/CloseButton")
+detail_panel = NodePath("Panel/MarginContainer/VBoxContainer/DetailPanel")
+detail_icon = NodePath("Panel/MarginContainer/VBoxContainer/DetailPanel/DetailMargin/DetailRow/DetailIconFrame/DetailIcon")
+detail_name_label = NodePath("Panel/MarginContainer/VBoxContainer/DetailPanel/DetailMargin/DetailRow/DetailTextColumn/DetailNameLabel")
+detail_description_label = NodePath("Panel/MarginContainer/VBoxContainer/DetailPanel/DetailMargin/DetailRow/DetailTextColumn/DetailDescriptionLabel")
+detail_stats_label = NodePath("Panel/MarginContainer/VBoxContainer/DetailPanel/DetailMargin/DetailRow/DetailTextColumn/DetailStatsLabel")
+detail_price_label = NodePath("Panel/MarginContainer/VBoxContainer/DetailPanel/DetailMargin/DetailRow/DetailPriceColumn/DetailPriceLabel")
+detail_stock_label = NodePath("Panel/MarginContainer/VBoxContainer/DetailPanel/DetailMargin/DetailRow/DetailPriceColumn/DetailStockLabel")
 
 [node name="Panel" type="Panel" parent="."]
 anchors_preset = 15
@@ -84,6 +142,75 @@ horizontal_scroll_mode = 0
 layout_mode = 2
 size_flags_horizontal = 3
 theme_override_constants/separation = 6
+
+[node name="DetailPanel" type="PanelContainer" parent="Panel/MarginContainer/VBoxContainer"]
+custom_minimum_size = Vector2(0, 208)
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_detail")
+
+[node name="DetailMargin" type="MarginContainer" parent="Panel/MarginContainer/VBoxContainer/DetailPanel"]
+layout_mode = 2
+theme_override_constants/margin_left = 24
+theme_override_constants/margin_top = 20
+theme_override_constants/margin_right = 24
+theme_override_constants/margin_bottom = 20
+
+[node name="DetailRow" type="HBoxContainer" parent="Panel/MarginContainer/VBoxContainer/DetailPanel/DetailMargin"]
+layout_mode = 2
+theme_override_constants/separation = 28
+
+[node name="DetailIconFrame" type="PanelContainer" parent="Panel/MarginContainer/VBoxContainer/DetailPanel/DetailMargin/DetailRow"]
+custom_minimum_size = Vector2(160, 160)
+layout_mode = 2
+size_flags_vertical = 4
+theme_override_styles/panel = SubResource("StyleBoxFlat_iconframe")
+
+[node name="DetailIcon" type="TextureRect" parent="Panel/MarginContainer/VBoxContainer/DetailPanel/DetailMargin/DetailRow/DetailIconFrame"]
+layout_mode = 2
+expand_mode = 1
+stretch_mode = 5
+
+[node name="DetailTextColumn" type="VBoxContainer" parent="Panel/MarginContainer/VBoxContainer/DetailPanel/DetailMargin/DetailRow"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/separation = 10
+
+[node name="DetailNameLabel" type="Label" parent="Panel/MarginContainer/VBoxContainer/DetailPanel/DetailMargin/DetailRow/DetailTextColumn"]
+layout_mode = 2
+text = "Item Name"
+label_settings = SubResource("LabelSettings_detailname")
+autowrap_mode = 3
+
+[node name="DetailDescriptionLabel" type="Label" parent="Panel/MarginContainer/VBoxContainer/DetailPanel/DetailMargin/DetailRow/DetailTextColumn"]
+layout_mode = 2
+size_flags_vertical = 3
+text = "Item description"
+label_settings = SubResource("LabelSettings_detailbody")
+autowrap_mode = 3
+
+[node name="DetailStatsLabel" type="Label" parent="Panel/MarginContainer/VBoxContainer/DetailPanel/DetailMargin/DetailRow/DetailTextColumn"]
+layout_mode = 2
+text = "Damage 2"
+label_settings = SubResource("LabelSettings_detailstats")
+autowrap_mode = 3
+
+[node name="DetailPriceColumn" type="VBoxContainer" parent="Panel/MarginContainer/VBoxContainer/DetailPanel/DetailMargin/DetailRow"]
+custom_minimum_size = Vector2(220, 0)
+layout_mode = 2
+size_flags_vertical = 4
+theme_override_constants/separation = 6
+
+[node name="DetailPriceLabel" type="Label" parent="Panel/MarginContainer/VBoxContainer/DetailPanel/DetailMargin/DetailRow/DetailPriceColumn"]
+layout_mode = 2
+text = "$0"
+label_settings = SubResource("LabelSettings_detailprice")
+horizontal_alignment = 2
+
+[node name="DetailStockLabel" type="Label" parent="Panel/MarginContainer/VBoxContainer/DetailPanel/DetailMargin/DetailRow/DetailPriceColumn"]
+layout_mode = 2
+text = "Owned"
+label_settings = SubResource("LabelSettings_detailstock")
+horizontal_alignment = 2
 
 [node name="CloseButton" type="Button" parent="Panel/MarginContainer/VBoxContainer"]
 layout_mode = 2

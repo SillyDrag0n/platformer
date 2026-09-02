@@ -1,16 +1,43 @@
-[gd_scene load_steps=6 format=3 uid="uid://w2veq7ymk6wd"]
+[gd_scene load_steps=8 format=3 uid="uid://w2veq7ymk6wd"]
 
 [ext_resource type="FontFile" uid="uid://bn7ed1nmtuvnj" path="res://ui/font/BoldPixels.ttf" id="1_8q7fw"]
 [ext_resource type="Script" uid="uid://c8d6i1bvpojbm" path="res://ui/screens/bounty_completed.gd" id="1_ucj71"]
 [ext_resource type="Theme" uid="uid://ddr12d5h68dd1" path="res://ui/theme/game_theme.tres" id="2_theme"]
 
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_card"]
+bg_color = Color(0.266667, 0.184314, 0.121569, 1)
+border_width_left = 6
+border_width_top = 6
+border_width_right = 6
+border_width_bottom = 6
+border_color = Color(0.0705882, 0.0392157, 0.0235294, 1)
+corner_radius_top_left = 8
+corner_radius_top_right = 8
+corner_radius_bottom_right = 8
+corner_radius_bottom_left = 8
+shadow_color = Color(0, 0, 0, 0.5)
+shadow_size = 14
+shadow_offset = Vector2(0, 6)
+
 [sub_resource type="LabelSettings" id="LabelSettings_ucj71"]
 font = ExtResource("1_8q7fw")
-font_size = 128
+font_size = 64
+font_color = Color(0.964706, 0.909804, 0.792157, 1)
+outline_size = 8
+outline_color = Color(0.0705882, 0.0392157, 0.0235294, 1)
+shadow_size = 4
+shadow_color = Color(0, 0, 0, 0.35)
+shadow_offset = Vector2(0, 4)
+
+[sub_resource type="LabelSettings" id="LabelSettings_bounty"]
+font = ExtResource("1_8q7fw")
+font_size = 36
+font_color = Color(1, 0.85098, 0.352941, 1)
 
 [sub_resource type="LabelSettings" id="LabelSettings_8q7fw"]
 font = ExtResource("1_8q7fw")
-font_size = 64
+font_size = 20
+font_color = Color(0.768627, 0.658824, 0.509804, 1)
 
 [node name="BountyCompleted" type="CanvasLayer"]
 script = ExtResource("1_ucj71")
@@ -21,61 +48,74 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-color = Color(0.122252, 0.122252, 0.122252, 0.537255)
+color = Color(0.0470588, 0.0313726, 0.0235294, 0.827451)
 
-[node name="PanelContainer" type="PanelContainer" parent="."]
-clip_contents = true
-anchors_preset = 8
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-offset_left = -375.0
-offset_top = -250.0
-offset_right = 375.0
-offset_bottom = 250.0
+[node name="CenterContainer" type="CenterContainer" parent="."]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-size_flags_horizontal = 4
-size_flags_vertical = 4
 theme = ExtResource("2_theme")
 
-[node name="VBoxContainer" type="VBoxContainer" parent="PanelContainer"]
-clip_contents = true
-custom_minimum_size = Vector2(1728, 972)
+[node name="Card" type="PanelContainer" parent="CenterContainer"]
+custom_minimum_size = Vector2(1080, 0)
 layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_card")
 
-[node name="BountyCompletedLbl" type="Label" parent="PanelContainer/VBoxContainer"]
+[node name="Margin" type="MarginContainer" parent="CenterContainer/Card"]
+layout_mode = 2
+theme_override_constants/margin_left = 72
+theme_override_constants/margin_top = 48
+theme_override_constants/margin_right = 72
+theme_override_constants/margin_bottom = 48
+
+[node name="Body" type="VBoxContainer" parent="CenterContainer/Card/Margin"]
+layout_mode = 2
+theme_override_constants/separation = 20
+
+[node name="BountyCompletedLbl" type="Label" parent="CenterContainer/Card/Margin/Body"]
 layout_mode = 2
 text = "BOUNTY COMPLETED"
 label_settings = SubResource("LabelSettings_ucj71")
 horizontal_alignment = 1
-vertical_alignment = 1
 
-[node name="BountyContainer" type="PanelContainer" parent="PanelContainer/VBoxContainer"]
-self_modulate = Color(1, 1, 1, 0)
-custom_minimum_size = Vector2(350, 416)
+[node name="BountyIcon" type="TextureRect" parent="CenterContainer/Card/Margin/Body"]
+custom_minimum_size = Vector2(0, 128)
 layout_mode = 2
+expand_mode = 1
+stretch_mode = 6
 
-[node name="RewardsLbl" type="Label" parent="PanelContainer/VBoxContainer"]
+[node name="BountyTitleLbl" type="Label" parent="CenterContainer/Card/Margin/Body"]
 layout_mode = 2
-text = "REWARDS:"
+text = "Missing Cattle"
+label_settings = SubResource("LabelSettings_bounty")
+horizontal_alignment = 1
+autowrap_mode = 3
+
+[node name="Rule" type="ColorRect" parent="CenterContainer/Card/Margin/Body"]
+custom_minimum_size = Vector2(0, 2)
+layout_mode = 2
+color = Color(0.419608, 0.290196, 0.180392, 1)
+
+[node name="RewardsLbl" type="Label" parent="CenterContainer/Card/Margin/Body"]
+layout_mode = 2
+text = "REWARDS"
 label_settings = SubResource("LabelSettings_8q7fw")
 horizontal_alignment = 1
-vertical_alignment = 1
 
-[node name="RewardsContainer" type="HBoxContainer" parent="PanelContainer/VBoxContainer"]
-clip_contents = true
-custom_minimum_size = Vector2(312, 256)
+[node name="RewardsContainer" type="GridContainer" parent="CenterContainer/Card/Margin/Body"]
 layout_mode = 2
 size_flags_horizontal = 4
-alignment = 1
+theme_override_constants/h_separation = 20
+theme_override_constants/v_separation = 20
+columns = 5
 
-[node name="Button" type="Button" parent="PanelContainer/VBoxContainer"]
-custom_minimum_size = Vector2(512, 64)
+[node name="Button" type="Button" parent="CenterContainer/Card/Margin/Body"]
+custom_minimum_size = Vector2(420, 68)
 layout_mode = 2
 size_flags_horizontal = 4
-theme_override_font_sizes/font_size = 64
+theme_override_font_sizes/font_size = 32
 text = "Return to Hub"
 
-[connection signal="pressed" from="PanelContainer/VBoxContainer/Button" to="." method="_on_button_pressed"]
+[connection signal="pressed" from="CenterContainer/Card/Margin/Body/Button" to="." method="_on_button_pressed"]

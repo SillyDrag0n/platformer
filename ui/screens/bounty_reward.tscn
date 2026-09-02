@@ -1,38 +1,56 @@
-[gd_scene load_steps=4 format=3 uid="uid://gvt4clppnsy3"]
+[gd_scene load_steps=5 format=3 uid="uid://gvt4clppnsy3"]
 
 [ext_resource type="FontFile" uid="uid://bn7ed1nmtuvnj" path="res://ui/font/BoldPixels.ttf" id="1_8mo8s"]
 [ext_resource type="Script" uid="uid://chb4bqrsc5sr7" path="res://ui/screens/bounty_reward.gd" id="1_b01al"]
 
-[sub_resource type="LabelSettings" id="LabelSettings_b01al"]
-font = ExtResource("1_8mo8s")
-font_size = 48
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_slot"]
+bg_color = Color(0.164706, 0.0980392, 0.0627451, 1)
+border_width_left = 3
+border_width_top = 3
+border_width_right = 3
+border_width_bottom = 3
+border_color = Color(0.0705882, 0.0392157, 0.0235294, 1)
+corner_radius_top_left = 6
+corner_radius_top_right = 6
+corner_radius_bottom_right = 6
+corner_radius_bottom_left = 6
 
-[node name="BountyReward" type="Control"]
-custom_minimum_size = Vector2(312, 256)
-layout_mode = 3
-anchors_preset = 0
+[sub_resource type="LabelSettings" id="LabelSettings_b01al"]
+line_spacing = 4.0
+font = ExtResource("1_8mo8s")
+font_size = 20
+font_color = Color(0.909804, 0.862745, 0.772549, 1)
+
+[node name="BountyReward" type="PanelContainer"]
+custom_minimum_size = Vector2(158, 0)
+offset_right = 158.0
+size_flags_horizontal = 4
+size_flags_vertical = 4
+theme_override_styles/panel = SubResource("StyleBoxFlat_slot")
 script = ExtResource("1_b01al")
 
 [node name="MarginContainer" type="MarginContainer" parent="."]
-custom_minimum_size = Vector2(312, 0)
-layout_mode = 0
+layout_mode = 2
+theme_override_constants/margin_left = 14
+theme_override_constants/margin_top = 14
+theme_override_constants/margin_right = 14
+theme_override_constants/margin_bottom = 14
 
 [node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer"]
-custom_minimum_size = Vector2(256, 256)
 layout_mode = 2
-alignment = 1
+theme_override_constants/separation = 10
 
 [node name="RewardTexture" type="TextureRect" parent="MarginContainer/VBoxContainer"]
-custom_minimum_size = Vector2(128, 128)
+custom_minimum_size = Vector2(0, 72)
 layout_mode = 2
-size_flags_horizontal = 4
-size_flags_vertical = 4
+size_flags_horizontal = 3
+expand_mode = 1
+stretch_mode = 6
 
 [node name="RewardLabel" type="Label" parent="MarginContainer/VBoxContainer"]
 layout_mode = 2
-size_flags_vertical = 1
 text = "+ 850 Dollars"
 label_settings = SubResource("LabelSettings_b01al")
 horizontal_alignment = 1
 vertical_alignment = 1
-clip_text = true
+autowrap_mode = 3

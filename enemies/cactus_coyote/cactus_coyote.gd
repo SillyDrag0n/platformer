@@ -45,7 +45,7 @@ const GRAVITY : int = 1000
 @export var volley_recover : float = 0.55
 @export var spike_count : int = 3
 @export var spike_spread_degrees : float = 22.0
-@export var spike_muzzle_offset : Vector2 = Vector2(14.0, -18.0)
+@export var spike_muzzle_offset : Vector2 = Vector2(28.0, 10.0) # its snout - low down, it fires these on all fours
 
 @export var flee_speed : float = 300.0
 @export var flee_lift : float = 520.0
@@ -392,7 +392,9 @@ func _direction_to_player() -> float:
 
 
 func _is_ground_ahead(direction_x : float) -> bool:
-	var probe_origin : Vector2 = global_position + Vector2(signf(direction_x) * 20.0, 30.0)
+	# Cast from past the nose rather than from under the ribs: the body is a quadruped's, 56 wide,
+	# so anything shorter than its half-length only ever finds the ground it is already stood on.
+	var probe_origin : Vector2 = global_position + Vector2(signf(direction_x) * 34.0, 30.0)
 	var probe_end : Vector2 = probe_origin + Vector2(0.0, 32.0)
 
 	var space_state := get_world_2d().direct_space_state

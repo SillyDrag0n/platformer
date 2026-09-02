@@ -61,10 +61,49 @@ func test_firing_the_last_round_starts_a_reload_on_its_own():
 	assert_true(gun.reload_ui.visible, "and the dial comes up to show it")
 
 
+# --- Asking for a reload ---
+#
+# Both of these come off the same key press in Gun._process. Pressing it again mid-reload used to
+# start the whole thing over: the timer went back to the top and the dial was rebuilt with it, so
+# a player leaning on the key never reached the end of a reload, and with the speed loader fitted
+# every press rolled a fresh sweet spot instead of the single attempt the upgrade is sold as.
+
+func test_mashing_reload_cannot_restart_one_already_running():
+	var gun := _make_gun()
+	InventoryManager.add_item(SPEED_LOADER)
+	gun.magazine_current = 0
+	gun.reload()
+	# Drained halfway by hand rather than waited out: what matters here is what a second press does
+	# to a reload already in progress, not how long one takes to run.
+	gun.reload_ui.set_value(0.5)
+	var window_start : float = gun._active_reload_window_start
+
+	gun.reload()
+
+	assert_false(gun.can_reload(), "a reload already running is not one to start over")
+	assert_eq(gun.reload_ui.bar.value, 0.5, \
+		"a second press must not rebuild the dial from the top")
+	assert_eq(gun._active_reload_window_start, window_start, \
+		"nor roll it a fresh sweet spot to aim for")
+
+
+func test_a_full_cylinder_refuses_to_reload():
+	var gun := _make_gun()
+
+	assert_eq(gun.magazine_current, REVOLVER.magazine_size, "the gun starts loaded")
+	assert_false(gun.can_reload(), "and a full cylinder has nothing to put in it")
+
+	gun.reload()
+
+	assert_true(gun.reload_timer.is_stopped(), "so asking for one does nothing")
+	assert_false(gun.reload_ui.visible, "and the dial never comes up")
+
+
 # --- Which weapon the upgrade applies to ---
 
 func test_no_window_is_armed_without_the_upgrade():
 	var gun := _make_gun()
+	gun.magazine_current = 0
 
 	gun.reload()
 
@@ -93,8 +132,12 @@ func test_the_window_lands_somewhere_in_the_bottom_of_the_dial():
 	var gun := _make_gun()
 	InventoryManager.add_item(SPEED_LOADER)
 
-	# Rolled fresh on every reload, so a handful of reloads is what pins the range down.
+	# Rolled fresh on every reload, so a handful of reloads is what pins the range down. Each pass
+	# has to put the gun back somewhere a reload is allowed from - it now refuses one it is already
+	# doing, and one it does not need (see Gun.can_reload).
 	for i in 25:
+		gun.reload_timer.stop()
+		gun.magazine_current = 0
 		gun.reload()
 		assert_true(gun.has_active_reload(), "the upgrade arms a window on every reload")
 		assert_almost_eq(gun._active_reload_window_width, SPEED_LOADER.active_reload_window, 0.0001)
@@ -109,6 +152,8 @@ func test_the_window_moves_between_reloads():
 
 	var seen : Array = []
 	for i in 25:
+		gun.reload_timer.stop()
+		gun.magazine_current = 0
 		gun.reload()
 		seen.append(gun._active_reload_window_start)
 
@@ -240,11 +285,16 @@ func test_a_miss_is_called_out_too():
 func test_the_next_reload_clears_the_last_verdict():
 	var gun := _make_gun()
 	InventoryManager.add_item(SPEED_LOADER)
+	gun.magazine_current = 0
 	gun.reload()
 	gun._active_reload_window_start = 0.4
 	gun._active_reload_window_width = 0.1
 	gun._try_active_reload()
 
+	# The missed reload runs its clock out the way it would in play before the next one is asked
+	# for - a second reload can no longer be started over the top of the first.
+	gun._on_reload_timer_timeout()
+	gun.magazine_current = 0
 	gun.reload()
 
 	assert_false(gun.reload_ui.message_label.visible, \

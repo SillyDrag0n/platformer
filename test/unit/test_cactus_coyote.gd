@@ -247,8 +247,19 @@ const PlayerScene = preload("res://player/player.tscn")
 
 func _make_player_touching(coyote : CactusCoyote) -> Node2D:
 	var player = PlayerScene.instantiate()
+
+	# Against its flank rather than on its exact position: the creature is far wider than it is
+	# tall, so no offset at all buries the player in the middle of it, and the push-apart fires
+	# them straight back out - which is not the walked-into-it contact these tests are about. The
+	# few pixels of clearance are the point of the setup: their two bodies never touch, so anything
+	# that lands has to have come off the hitbox, which is why that box exists at all.
+	var body := coyote.get_node("CollisionShape2D").shape as CapsuleShape2D
+	# Set before it enters the tree. A body moved after the fact still spends its first physics
+	# frame at the spot it was instantiated at - here, inside the coyote, which both shoves the
+	# creature across the room and lands a touch none of these tests asked for.
+	player.position = coyote.global_position + Vector2(body.height / 2.0 + 12.0, 0.0)
+
 	add_child_autofree(player)
-	player.global_position = coyote.global_position
 	player.is_invulnerable = false
 	HealthManager.current_health = HealthManager.max_health
 	return player
@@ -257,12 +268,17 @@ func _make_player_touching(coyote : CactusCoyote) -> Node2D:
 func test_the_hitbox_reaches_past_the_body_that_stops_the_player():
 	var coyote := _make_coyote()
 
-	var body_radius : float = (coyote.get_node("CollisionShape2D").shape as CapsuleShape2D).radius
-	var hitbox_radius : float = \
-		(coyote.get_node("Hitbox/Area2D/CollisionShape2D").shape as CapsuleShape2D).radius
+	# Both capsules lie on their side - the creature is far wider than it is tall - so it is height
+	# that measures its nose-to-tail reach and radius that measures how far up its back the box
+	# goes. The player is stopped by the body from the side, which makes the first of those the one
+	# that decides whether walking into it ever registers at all.
+	var body := coyote.get_node("CollisionShape2D").shape as CapsuleShape2D
+	var hitbox := coyote.get_node("Hitbox/Area2D/CollisionShape2D").shape as CapsuleShape2D
 
-	assert_gt(hitbox_radius, body_radius, \
-		"a hitbox no wider than the body is one the player can never reach")
+	assert_gt(hitbox.height, body.height, \
+		"a hitbox no longer than the body is one the player can never reach walking into it")
+	assert_gt(hitbox.radius, body.radius, \
+		"nor one no taller than the body, for a player coming down onto its back")
 
 
 func test_it_is_safe_to_stand_next_to_while_it_is_still_feeding():

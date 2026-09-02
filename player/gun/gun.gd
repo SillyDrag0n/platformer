@@ -114,17 +114,28 @@ func swap_weapon():
 	active_slot = InventoryManager.WeaponSlot.SECONDARY if active_slot == InventoryManager.WeaponSlot.PRIMARY else InventoryManager.WeaponSlot.PRIMARY
 	_refresh_active_weapon()
 
-# Resolves whichever weapon should currently be applied for active_slot, falling back to
-# Primary (and from there to default_weapon) so the gun is never left without one - e.g. after
-# swapping to or unequipping an empty Secondary. Ammo is refreshed alongside it since ammo is
-# tracked per weapon slot and active_slot may change here (the Secondary fallback above).
+# Resolves whichever weapon should currently be applied for active_slot, falling back to whichever
+# slot still holds one (and from there to default_weapon) so the gun is never left without one -
+# e.g. after swapping to an empty Secondary, or clearing a slot from the loadout screen. Ammo is
+# refreshed alongside it since ammo is tracked per weapon slot and active_slot may change here.
 func _refresh_active_weapon():
 	var new_weapon = InventoryManager.get_equipped_weapon(active_slot)
 	if new_weapon == null:
+		# Falls through to whichever slot does hold something before default_weapon is reached
+		# for. Either weapon slot can be cleared from the loadout screen now (as long as the other
+		# is filled - see inventory_ui.gd's _open_weapon_picker), and jumping straight to the
+		# default would arm a gun sitting in neither slot while the screen showed the one the
+		# player actually left themselves.
+		for fallback_slot in [InventoryManager.WeaponSlot.PRIMARY, InventoryManager.WeaponSlot.SECONDARY]:
+			var slot_weapon = InventoryManager.get_equipped_weapon(fallback_slot)
+			if slot_weapon != null:
+				active_slot = fallback_slot
+				new_weapon = slot_weapon
+				break
+	if new_weapon == null:
+		# Nothing equipped anywhere - only reachable from a save that predates the rule above.
 		active_slot = InventoryManager.WeaponSlot.PRIMARY
-		new_weapon = InventoryManager.get_equipped_weapon(active_slot)
-		if new_weapon == null:
-			new_weapon = default_weapon
+		new_weapon = default_weapon
 	equip_weapon(new_weapon)
 	_refresh_active_ammo()
 	_refresh_weapon_skin()
@@ -213,7 +224,25 @@ func _fire_bullet(direction : Vector2):
 	bullet_instance.speed = int(round(weapon.bullet_speed * (ammo.speed_modifier if ammo else 1.0)))
 	bullet_instance.damage_amount = int(round(weapon.bullet_damage * (ammo.damage_modifier if ammo else 1.0)))
 
+# Whether asking for a reload right now would do anything. Two ways it would not.
+#
+# A cylinder that is already full has nothing to put in it, and running the whole animation and
+# dial to load six rounds into a gun holding six is just a way to waste the time.
+#
+# And a reload already under way must not be started over. reload() restarts the timer and builds
+# the dial again from the top, so holding the reload key down kept the meter pinned near full and
+# the empty click never came; with the speed loader fitted it also rerolled the sweet spot on
+# every press, which turned a window the player had missed into one they could simply ask for
+# again. try_shoot()'s own auto-reload on the last round is unaffected: the cylinder is empty and
+# nothing is running by the time it gets here.
+func can_reload() -> bool:
+	return weapon != null and reload_timer.is_stopped() \
+		and magazine_current < weapon.magazine_size
+
+
 func reload():
+	if not can_reload():
+		return
 	reload_timer.start()
 	_arm_active_reload()
 	reload_ui.begin(_active_reload_window_start, _active_reload_window_width)

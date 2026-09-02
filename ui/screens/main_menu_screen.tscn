@@ -1,4 +1,4 @@
-[gd_scene load_steps=11 format=4 uid="uid://cqm71wt701u0"]
+[gd_scene load_steps=12 format=4 uid="uid://cqm71wt701u0"]
 
 [ext_resource type="Script" uid="uid://da3wuvwjv2qc8" path="res://ui/screens/main_menu_screen.gd" id="1_d1gqu"]
 [ext_resource type="Theme" uid="uid://ddr12d5h68dd1" path="res://ui/theme/game_theme.tres" id="2_mgnvx"]
@@ -8,6 +8,21 @@
 [ext_resource type="TileSet" uid="uid://dknxmyabj3msh" path="res://tileset/desert_foreground_tileset.tres" id="13_foreground"]
 [ext_resource type="FontFile" uid="uid://diskb22n3kpql" path="res://ui/font/SuperCursed-E40Vz.ttf" id="20_title_font"]
 [ext_resource type="FontFile" uid="uid://bn7ed1nmtuvnj" path="res://ui/font/BoldPixels.ttf" id="21_subtitle_font"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_menucard"]
+bg_color = Color(0.266667, 0.184314, 0.121569, 1)
+border_width_left = 6
+border_width_top = 6
+border_width_right = 6
+border_width_bottom = 6
+border_color = Color(0.0705882, 0.0392157, 0.0235294, 1)
+corner_radius_top_left = 8
+corner_radius_top_right = 8
+corner_radius_bottom_right = 8
+corner_radius_bottom_left = 8
+shadow_color = Color(0, 0, 0, 0.5)
+shadow_size = 16
+shadow_offset = Vector2(0, 6)
 
 [sub_resource type="LabelSettings" id="LabelSettings_title"]
 font = ExtResource("20_title_font")
@@ -42,27 +57,35 @@ theme = ExtResource("2_mgnvx")
 layout_mode = 2
 size_flags_horizontal = 4
 size_flags_vertical = 4
+theme_override_styles/panel = SubResource("StyleBoxFlat_menucard")
 
 [node name="MarginContainer" type="MarginContainer" parent="MarginContainer/PanelContainer"]
 layout_mode = 2
-theme_override_constants/margin_left = 15
-theme_override_constants/margin_top = 10
-theme_override_constants/margin_right = 15
-theme_override_constants/margin_bottom = 10
+theme_override_constants/margin_left = 56
+theme_override_constants/margin_top = 44
+theme_override_constants/margin_right = 56
+theme_override_constants/margin_bottom = 44
 
 [node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/PanelContainer/MarginContainer"]
 layout_mode = 2
+theme_override_constants/separation = 18
 
 [node name="PlayButton" type="Button" parent="MarginContainer/PanelContainer/MarginContainer/VBoxContainer"]
+custom_minimum_size = Vector2(420, 72)
 layout_mode = 2
+theme_override_font_sizes/font_size = 32
 text = "PLAY"
 
 [node name="SettingsButton" type="Button" parent="MarginContainer/PanelContainer/MarginContainer/VBoxContainer"]
+custom_minimum_size = Vector2(420, 72)
 layout_mode = 2
+theme_override_font_sizes/font_size = 32
 text = "SETTINGS"
 
 [node name="ExitButton" type="Button" parent="MarginContainer/PanelContainer/MarginContainer/VBoxContainer"]
+custom_minimum_size = Vector2(420, 72)
 layout_mode = 2
+theme_override_font_sizes/font_size = 32
 text = "EXIT"
 
 [node name="TileMap" type="Node2D" parent="."]

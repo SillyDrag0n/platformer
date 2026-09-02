@@ -1,31 +1,31 @@
 [gd_scene load_steps=15 format=3 uid="uid://b1xibr4r15y53"]
 
 [ext_resource type="Script" uid="uid://cj5djqjg6gvk" path="res://enemies/cactus_coyote/cactus_coyote.gd" id="1_coyote"]
-[ext_resource type="Texture2D" path="res://enemies/cactus_coyote/coyote_idle.svg" id="2_idle"]
-[ext_resource type="Texture2D" path="res://enemies/cactus_coyote/coyote_aggro.svg" id="3_aggro"]
-[ext_resource type="Texture2D" path="res://enemies/cactus_coyote/coyote_walk.svg" id="4_walk"]
-[ext_resource type="Texture2D" path="res://enemies/cactus_coyote/coyote_attack.svg" id="5_shoot"]
-[ext_resource type="Script" path="res://enemies/_common/contact_hitbox.gd" id="6_hitbox"]
+[ext_resource type="Texture2D" uid="uid://oyxi5b31lhfa" path="res://enemies/cactus_coyote/coyote_idle.svg" id="2_idle"]
+[ext_resource type="Texture2D" uid="uid://ctof41uvsg5n6" path="res://enemies/cactus_coyote/coyote_aggro.svg" id="3_aggro"]
+[ext_resource type="Texture2D" uid="uid://d2cf201s41nlf" path="res://enemies/cactus_coyote/coyote_walk.svg" id="4_walk"]
+[ext_resource type="Texture2D" uid="uid://bkn5vf23jpkus" path="res://enemies/cactus_coyote/coyote_attack.svg" id="5_shoot"]
+[ext_resource type="Script" uid="uid://dhyaljhm24qt7" path="res://enemies/_common/contact_hitbox.gd" id="6_hitbox"]
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_pbw38"]
-radius = 18.0
-height = 68.0
+radius = 20.0
+height = 70.0
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_aggro"]
 atlas = ExtResource("3_aggro")
-region = Rect2(0, 0, 32, 64)
+region = Rect2(0, 0, 64, 40)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_idle"]
 atlas = ExtResource("2_idle")
-region = Rect2(0, 0, 32, 64)
+region = Rect2(0, 0, 64, 40)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_walk"]
 atlas = ExtResource("4_walk")
-region = Rect2(0, 0, 32, 64)
+region = Rect2(0, 0, 64, 40)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_shoot"]
 atlas = ExtResource("5_shoot")
-region = Rect2(0, 0, 32, 64)
+region = Rect2(0, 0, 64, 40)
 
 [sub_resource type="SpriteFrames" id="SpriteFrames_coyote"]
 animations = [{
@@ -95,12 +95,12 @@ animations = [{
 }]
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_coyote"]
-radius = 14.0
-height = 62.0
+radius = 17.0
+height = 56.0
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_hitbox"]
-radius = 22.0
-height = 66.0
+radius = 18.0
+height = 65.0
 
 [node name="CactusCoyote" type="CharacterBody2D" groups=["Enemy"]]
 z_index = 50
@@ -114,15 +114,20 @@ collision_layer = 4
 collision_mask = 32
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Hurtbox"]
+position = Vector2(0, 14)
+rotation = 1.5708
 shape = SubResource("CapsuleShape2D_pbw38")
 debug_color = Color(0.937589, 0.921167, 0, 0.419608)
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
 sprite_frames = SubResource("SpriteFrames_coyote")
 animation = &"feed"
+offset = Vector2(0, 14)
 flip_h = true
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(0, 14)
+rotation = 1.5708
 shape = SubResource("CapsuleShape2D_coyote")
 debug_color = Color(0.617134, 0.356483, 1, 0.42)
 
@@ -130,12 +135,14 @@ debug_color = Color(0.617134, 0.356483, 1, 0.42)
 script = ExtResource("6_hitbox")
 
 [node name="Area2D" type="Area2D" parent="Hitbox"]
-monitoring = false
-monitorable = false
 collision_layer = 1024
 collision_mask = 2
+monitoring = false
+monitorable = false
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Hitbox/Area2D"]
+position = Vector2(0, 14)
+rotation = 1.5708
 shape = SubResource("CapsuleShape2D_hitbox")
 debug_color = Color(1, 0.31, 0.24, 0.34)
 
