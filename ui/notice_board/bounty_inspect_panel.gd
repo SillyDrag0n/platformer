@@ -34,10 +34,10 @@ func open(bounty: BountyData) -> void:
 	description_label.text = tr(bounty.description) if bounty.description != "" else tr("No word yet on this one.")
 
 	var status_text := bounty.get_status_text()
-	status_detail_label.text = "Status: %s" % status_text
+	status_detail_label.text = tr("Status: %s") % tr(status_text)
 
 	var region: RegionData = GameStateManager.get_region_by_id(bounty.region_id)
-	region_label.text = "Region: %s" % (region.name if region else "Unknown")
+	region_label.text = tr("Region: %s") % (tr(region.name) if region else tr("Unknown"))
 
 	icon_rect.texture = bounty.icon
 

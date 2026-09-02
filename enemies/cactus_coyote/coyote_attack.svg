@@ -1,27 +1,28 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="64" height="40" viewBox="0 0 64 40">
-  <rect x="47" y="25" width="5" height="12" fill="#5C4A32"/>
-  <rect x="23" y="25" width="5" height="12" fill="#5C4A32"/>
-  <polygon points="48,16 56,10 58,1 62,3 59,12 51,19" fill="#5C4A32"/>
-  <ellipse cx="33" cy="20" rx="20" ry="8.5" fill="#8A7452"/>
-  <circle cx="46" cy="20" r="9" fill="#8A7452"/>
-  <polygon points="25,13 27,3 29,12" fill="#5C4A32"/>
-  <polygon points="32,12 34,2 36,11" fill="#5C4A32"/>
-  <polygon points="39,13 41,3 43,12" fill="#5C4A32"/>
-  <polygon points="11,19 16,7 27,14 22,25" fill="#8A7452"/>
-  <circle cx="20" cy="21" r="8" fill="#8A7452"/>
-  <rect x="43" y="26" width="6" height="11" fill="#8A7452"/>
-  <rect x="17" y="26" width="6" height="11" fill="#8A7452"/>
-  <rect x="42" y="34" width="8" height="3" fill="#5C4A32"/>
-  <rect x="16" y="34" width="8" height="3" fill="#5C4A32"/>
-  <polygon points="12,9 14,1 19,8" fill="#5C4A32"/>
-  <polygon points="18,9 22,2 24,10" fill="#5C4A32"/>
-  <circle cx="14" cy="12" r="7" fill="#8A7452"/>
-  <polygon points="4,15 13,15 13,18 4,19" fill="#3E2E1E"/>
-  <polygon points="2,11 13,10 13,15 3,15" fill="#8A7452"/>
-  <polygon points="3,19 13,17 13,21 4,22" fill="#8A7452"/>
-  <polygon points="4,15 6,18 8,15" fill="#EDE6D6"/>
-  <polygon points="5,19 7,16 9,19" fill="#EDE6D6"/>
-  <rect x="1" y="10" width="4" height="3" fill="#3E2E1E"/>
-  <polygon points="0,15 6,16.5 0,18" fill="#EDE6D6"/>
-  <circle cx="14" cy="10" r="1.7" fill="#E85C2E"/>
+  <rect x="20" y="23" width="4" height="14" fill="#5C4A32"/>
+  <rect x="46" y="23" width="4" height="14" fill="#5C4A32"/>
+  <rect x="19" y="34" width="6" height="3" fill="#5C4A32"/>
+  <rect x="45" y="34" width="6" height="3" fill="#5C4A32"/>
+  <polygon points="47,14 56,9 61,2 64,4 58,12 55,19 47,23" fill="#5C4A32"/>
+  <polygon points="59,3 64,4 59,10 56,8" fill="#3E2E1E"/>
+  <path d="M14,21 C14,16 18,13 24,13 L42,13 C48,13 52,16 52,20 C52,25 49,27 45,26 L26,25 C19,25 14,24 14,21 Z" fill="#8A7452"/>
+  <circle cx="46" cy="20" r="7" fill="#8A7452"/>
+  <circle cx="18" cy="20" r="6.5" fill="#8A7452"/>
+  <polygon points="26,13 28,2 30,12" fill="#5C4A32"/>
+  <polygon points="32,12 34,1 36,11" fill="#5C4A32"/>
+  <polygon points="38,13 40,2 42,12" fill="#5C4A32"/>
+  <rect x="16" y="23" width="4" height="14" fill="#8A7452"/>
+  <rect x="42" y="23" width="4" height="14" fill="#8A7452"/>
+  <rect x="15" y="34" width="6" height="3" fill="#5C4A32"/>
+  <rect x="41" y="34" width="6" height="3" fill="#5C4A32"/>
+  <polygon points="9,13 16,9 20,18 13,21" fill="#8A7452"/>
+  <polygon points="9,9 9,0 15,7" fill="#5C4A32"/>
+  <polygon points="14,7 19,0 21,8" fill="#5C4A32"/>
+  <circle cx="11" cy="11" r="5.5" fill="#8A7452"/>
+  <polygon points="1,9 8,9 11,11 11,13 2,13" fill="#8A7452"/>
+  <polygon points="2,16 9,14 11,15 11,17 3,19" fill="#8A7452"/>
+  <polygon points="2,13 11,13 11,15 3,16" fill="#3E2E1E"/>
+  <polygon points="3,13 5,16 7,13" fill="#EDE6D6"/>
+  <polygon points="4,16 6,13.5 8,16" fill="#EDE6D6"/>
+  <circle cx="10" cy="10" r="1.6" fill="#E85C2E"/>
 </svg>

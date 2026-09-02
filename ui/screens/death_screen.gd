@@ -1,6 +1,6 @@
 extends CanvasLayer
 
-@onready var respawn_button = $PanelContainer/VBoxContainer/RespawnButton
+@onready var respawn_button = $CenterContainer/PanelContainer/Margin/VBoxContainer/RespawnButton
 
 
 func _ready():

@@ -11,18 +11,36 @@ signal closed
 
 const NAME_ENTRY_SCENE := preload("res://ui/screens/name_entry_screen.tscn")
 
+# The rows are built at runtime, so their sizing lives here rather than in the scene with
+# everything else. Tall enough to read a whole playthrough summary off in one line.
+const ROW_HEIGHT := 62
+const ROW_FONT_SIZE := 22
+
 @onready var slot_list : VBoxContainer = $MarginContainer/PanelContainer/MarginContainer/VBoxContainer/SlotList
 @onready var back_button : Button = $MarginContainer/PanelContainer/MarginContainer/VBoxContainer/BackButton
-@onready var delete_confirm_dialog : ConfirmationDialog = $DeleteConfirmDialog
 
-# Which slot the delete dialog is asking about. The dialog is one node reused by all three rows,
-# so it has to be told each time rather than knowing.
+# Erasing a save used to ask through a ConfirmationDialog, which is a real OS Window rather than a
+# Control in this scene. That is the same trap the inventory's item picker was pulled out of (see
+# inventory_ui.gd's _close_picker) - a native window never reliably receives gamepad input, so the
+# one prompt in the game guarding a permanent delete could be unanswerable on a pad, and it drew
+# itself in stock OS chrome besides. It is an embedded panel now, like every other prompt here.
+@onready var confirm_panel : PanelContainer = $ConfirmPanel
+@onready var confirm_backdrop : Button = $ConfirmBackdrop
+@onready var confirm_text : Label = $ConfirmPanel/ConfirmMargin/ConfirmBody/ConfirmText
+@onready var confirm_cancel_button : Button = $ConfirmPanel/ConfirmMargin/ConfirmBody/ConfirmButtons/CancelButton
+@onready var confirm_delete_button : Button = $ConfirmPanel/ConfirmMargin/ConfirmBody/ConfirmButtons/DeleteButton
+
+# Which slot the prompt is asking about. It is one panel reused by all three rows, so it has to be
+# told each time rather than knowing.
 var _slot_pending_delete : int = SaveManager.NO_SLOT
+
+# The Delete button that opened the prompt, so closing it puts focus back on the row the player was
+# working through instead of throwing them to the top of the list.
+var _confirm_opener : Control = null
 
 
 func _ready() -> void:
 	SettingsManager.apply_ui_scale(self)
-	delete_confirm_dialog.confirmed.connect(_on_delete_confirmed)
 	_build_slot_list()
 
 
@@ -33,11 +51,14 @@ func _build_slot_list() -> void:
 	var buttons : Array = []
 	for slot in range(1, SaveManager.SLOT_COUNT + 1):
 		var row := HBoxContainer.new()
+		row.add_theme_constant_override("separation", 14)
 		slot_list.add_child(row)
 
 		var play := Button.new()
 		play.text = _slot_label(slot)
 		play.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+		play.custom_minimum_size = Vector2(0, ROW_HEIGHT)
+		play.add_theme_font_size_override("font_size", ROW_FONT_SIZE)
 		play.pressed.connect(_on_slot_pressed.bind(slot))
 		row.add_child(play)
 		buttons.append(play)
@@ -46,9 +67,11 @@ func _build_slot_list() -> void:
 		# takes neither presses nor focus - a controller should not have to skip past dead buttons.
 		var erase := Button.new()
 		erase.text = tr("Delete")
+		erase.custom_minimum_size = Vector2(180, ROW_HEIGHT)
+		erase.add_theme_font_size_override("font_size", ROW_FONT_SIZE)
 		erase.disabled = not SaveManager.has_save(slot)
 		erase.focus_mode = Control.FOCUS_ALL if not erase.disabled else Control.FOCUS_NONE
-		erase.pressed.connect(_on_delete_pressed.bind(slot))
+		erase.pressed.connect(_on_delete_pressed.bind(slot, erase))
 		row.add_child(erase)
 		if not erase.disabled:
 			buttons.append(erase)
@@ -93,10 +116,28 @@ func _on_slot_pressed(slot : int) -> void:
 	get_tree().get_root().add_child(NAME_ENTRY_SCENE.instantiate())
 
 
-func _on_delete_pressed(slot : int) -> void:
+# --- Erasing a slot ---
+
+func _on_delete_pressed(slot : int, opener : Control) -> void:
 	_slot_pending_delete = slot
-	delete_confirm_dialog.dialog_text = tr("Permanently erase slot %d? This cannot be undone.") % slot
-	delete_confirm_dialog.popup_centered()
+	_confirm_opener = opener
+	confirm_text.text = tr("Permanently erase slot %d? This cannot be undone.") % slot
+	confirm_backdrop.visible = true
+	confirm_panel.visible = true
+	# Keep, not Delete. The destructive answer should never be the one a player confirms by
+	# reflex, and this prompt is the last thing standing between them and a lost playthrough.
+	confirm_cancel_button.grab_focus()
+
+
+func _close_delete_confirm() -> void:
+	_slot_pending_delete = SaveManager.NO_SLOT
+	confirm_panel.visible = false
+	confirm_backdrop.visible = false
+	if _confirm_opener != null and is_instance_valid(_confirm_opener):
+		_confirm_opener.grab_focus()
+	else:
+		back_button.grab_focus()
+	_confirm_opener = null
 
 
 func _on_delete_confirmed() -> void:
@@ -104,16 +145,27 @@ func _on_delete_confirmed() -> void:
 		return
 	SaveManager.delete_slot(_slot_pending_delete)
 	_slot_pending_delete = SaveManager.NO_SLOT
+	# The list rebuilds and grabs focus itself, so the opener is stale from here on.
+	_confirm_opener = null
+	confirm_panel.visible = false
+	confirm_backdrop.visible = false
 	_build_slot_list()
 
 
-# B / Escape backs out to the main menu, the same gesture every other screen in this game uses.
+func is_confirming_delete() -> bool:
+	return confirm_panel.visible
+
+
+# B / Escape backs out one level at a time: the delete prompt first if it is up, and only then the
+# screen itself - the same gesture every other screen in this game uses.
 func _unhandled_input(event : InputEvent) -> void:
-	if delete_confirm_dialog.visible:
+	if not event.is_action_pressed("ui_cancel"):
 		return
-	if event.is_action_pressed("ui_cancel"):
-		get_viewport().set_input_as_handled()
-		_on_back_button_pressed()
+	get_viewport().set_input_as_handled()
+	if is_confirming_delete():
+		_close_delete_confirm()
+		return
+	_on_back_button_pressed()
 
 
 # The main menu frees itself on the way in here (it can't just hide - see

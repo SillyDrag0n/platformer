@@ -529,10 +529,14 @@ playable end to end.
   so the import flag doesn't matter.
 - **The farm house interior is an empty room.** Every other interior has
   someone in it.
-- **Eight UI strings are missing from `localization/translations.csv`:** the
-  four volume labels, "Exit Farm House", and the save slot screen's
-  "SELECT SAVE" / "Delete" / "BACK". Everything else is translated, so this is
-  drift, not a policy.
+- **German is machine-drafted, not reviewed.** `localization/translations.csv`
+  now covers every string the game can show: every `tr()` literal in the
+  scripts, every authored `text` on a UI scene, every `interact_name` prompt,
+  and the whole Missing Cattle contract — its bounty title, three stage titles,
+  nine objectives and four narrative descriptions, none of which were
+  translated before. What is missing is a native pass over the `de` column;
+  a few choices are known-shaky ("SPRINGEN HÄMMERN!" for "MASH JUMP!",
+  "Gesamt" for the Master volume slider).
 
 ### Engine traps, and how they are handled
 
