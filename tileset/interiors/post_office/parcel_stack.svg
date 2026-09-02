@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="86" height="76" viewBox="0 0 86 76">
+  <!-- Parcels stacked by the door, string and all. -->
+  <rect x="0" y="30" width="52" height="46" fill="#a9713f"/>
+  <rect x="0" y="30" width="52" height="5" fill="#c08a52"/>
+  <rect x="22" y="30" width="6" height="46" fill="#7d4f2c"/>
+  <rect x="0" y="50" width="52" height="5" fill="#7d4f2c"/>
+  <rect x="48" y="44" width="38" height="32" fill="#96683b"/>
+  <rect x="48" y="44" width="38" height="4" fill="#b07f4b"/>
+  <rect x="64" y="44" width="5" height="32" fill="#6f4a2a"/>
+  <rect x="10" y="0" width="40" height="32" fill="#b98a55"/>
+  <rect x="10" y="0" width="40" height="4" fill="#cfa06a"/>
+  <rect x="26" y="0" width="6" height="32" fill="#8a6236"/>
+  <rect x="10" y="14" width="40" height="5" fill="#8a6236"/>
+  <rect x="16" y="6" width="16" height="8" fill="#e6dcc0"/>
+</svg>

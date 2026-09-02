@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="110" height="76" viewBox="0 0 110 76">
+  <!-- Trunks and a case, waiting on a train that has not come. -->
+  <rect x="0" y="30" width="64" height="46" fill="#6b4527"/>
+  <rect x="0" y="30" width="64" height="8" fill="#7a5230"/>
+  <rect x="0" y="48" width="64" height="7" fill="#4a4a52"/>
+  <rect x="24" y="30" width="10" height="46" fill="#4a4a52"/>
+  <rect x="26" y="50" width="6" height="8" fill="#c9a227"/>
+  <rect x="60" y="44" width="50" height="32" fill="#8a6a42"/>
+  <rect x="60" y="44" width="50" height="6" fill="#9c7a4c"/>
+  <rect x="60" y="58" width="50" height="5" fill="#5c3d28"/>
+  <rect x="80" y="38" width="12" height="8" fill="#5c3d28"/>
+  <rect x="8" y="8" width="44" height="22" fill="#8b4a2e"/>
+  <rect x="8" y="8" width="44" height="5" fill="#a95c39"/>
+  <rect x="26" y="2" width="10" height="8" fill="#5c3d28"/>
+  <rect x="8" y="20" width="44" height="4" fill="#5c3d28"/>
+</svg>

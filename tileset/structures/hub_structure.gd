@@ -7,9 +7,9 @@ extends Node2D
 # they lead to.
 #
 # A structure with no destination_scene_key is scenery the player can walk up to but not enter
-# yet (the church, the railway station). Those deliberately leave the interactable armed: latching
-# it off for a building that never transitions away would kill the prompt permanently the first
-# time anyone pressed it.
+# yet - the chapel and the railway station were the last two to get interiors. Those deliberately
+# leave the interactable armed: latching it off for a building that never transitions away would
+# kill the prompt permanently the first time anyone pressed it.
 
 @export var destination_scene_key : String = ""
 

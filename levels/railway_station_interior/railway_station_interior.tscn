@@ -1,0 +1,135 @@
+[gd_scene load_steps=18 format=3]
+
+[ext_resource type="Script" path="res://levels/_common/interior_level.gd" id="1_ext01"]
+[ext_resource type="PackedScene" uid="uid://bfcmjoltsmsed" path="res://player/player.tscn" id="2_ext02"]
+[ext_resource type="Script" uid="uid://chd8hkfd628j6" path="res://player/player_camera.gd" id="3_ext03"]
+[ext_resource type="PackedScene" uid="uid://dabxfx3538yx0" path="res://ui/screens/game_screen.tscn" id="4_ext04"]
+[ext_resource type="PackedScene" uid="uid://dnko61n7gbtwq" path="res://ui/screens/death_screen.tscn" id="5_ext05"]
+[ext_resource type="PackedScene" uid="uid://rx3auanfsgp0" path="res://ui/inventory/InventoryUI.tscn" id="6_ext06"]
+[ext_resource type="PackedScene" uid="uid://s2gswtyrtm5x" path="res://interaction_component/interactable.tscn" id="7_ext07"]
+[ext_resource type="PackedScene" path="res://npc/DialogNPC.tscn" id="8_npc"]
+[ext_resource type="Texture2D" path="res://tileset/interiors/railway_station/room.svg" id="9_room"]
+[ext_resource type="Texture2D" path="res://tileset/interiors/railway_station/ticket_booth.svg" id="10_booth"]
+[ext_resource type="Texture2D" path="res://tileset/interiors/railway_station/waiting_bench.svg" id="11_bench"]
+[ext_resource type="Texture2D" path="res://tileset/interiors/railway_station/schedule_board.svg" id="12_board"]
+[ext_resource type="Texture2D" path="res://tileset/interiors/railway_station/luggage.svg" id="13_luggage"]
+[ext_resource type="Texture2D" path="res://tileset/interiors/common/wall_clock.svg" id="14_clock"]
+[ext_resource type="Texture2D" path="res://tileset/interiors/common/oil_lamp.svg" id="15_lamp"]
+[ext_resource type="Texture2D" path="res://tileset/interiors/common/plank_door.svg" id="16_door"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_floor"]
+size = Vector2(1000, 40)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_wall"]
+size = Vector2(24, 400)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_door"]
+size = Vector2(60, 100)
+
+[node name="RailwayStationInterior" type="Node2D"]
+script = ExtResource("1_ext01")
+
+[node name="Background" type="Polygon2D" parent="."]
+z_index = -10
+color = Color(0.219608, 0.129412, 0.113725, 1)
+polygon = PackedVector2Array(-500, -270, 500, -270, 500, 270, -500, 270)
+
+[node name="Room" type="Sprite2D" parent="."]
+z_index = -9
+texture = ExtResource("9_room")
+
+[node name="Floor" type="StaticBody2D" parent="."]
+collision_layer = 1
+collision_mask = 0
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Floor"]
+position = Vector2(0, 150)
+shape = SubResource("RectangleShape2D_floor")
+
+[node name="Walls" type="StaticBody2D" parent="."]
+collision_layer = 1
+collision_mask = 0
+
+[node name="LeftWall" type="CollisionShape2D" parent="Walls"]
+position = Vector2(-492, -70)
+shape = SubResource("RectangleShape2D_wall")
+
+[node name="RightWall" type="CollisionShape2D" parent="Walls"]
+position = Vector2(492, -70)
+shape = SubResource("RectangleShape2D_wall")
+
+[node name="WallDecor" type="Node2D" parent="."]
+z_index = -6
+
+[node name="ScheduleBoard" type="Sprite2D" parent="WallDecor"]
+position = Vector2(-190, 6)
+texture = ExtResource("12_board")
+
+[node name="Clock" type="Sprite2D" parent="WallDecor"]
+position = Vector2(-290, 0)
+texture = ExtResource("14_clock")
+
+[node name="Lamp" type="Sprite2D" parent="WallDecor"]
+position = Vector2(-90, 14)
+texture = ExtResource("15_lamp")
+
+[node name="Furniture" type="Node2D" parent="."]
+z_index = -2
+
+[node name="Bench" type="Sprite2D" parent="Furniture"]
+position = Vector2(-250, 99)
+texture = ExtResource("11_bench")
+
+[node name="Luggage" type="Sprite2D" parent="Furniture"]
+position = Vector2(-100, 92)
+texture = ExtResource("13_luggage")
+
+[node name="Player" parent="." instance=ExtResource("2_ext02")]
+position = Vector2(-365, 100)
+
+[node name="PlayerCamera" type="Camera2D" parent="." node_paths=PackedStringArray("player")]
+position = Vector2(0, 60)
+zoom = Vector2(2, 2)
+limit_left = -500
+limit_top = -270
+limit_right = 500
+limit_bottom = 270
+script = ExtResource("3_ext03")
+player = NodePath("../Player")
+
+[node name="GameScreen" parent="." instance=ExtResource("4_ext04")]
+
+[node name="DeathScreen" parent="." instance=ExtResource("5_ext05")]
+visible = false
+
+[node name="InventoryUi" parent="." instance=ExtResource("6_ext06")]
+visible = false
+
+[node name="Stationmaster" parent="." instance=ExtResource("8_npc")]
+position = Vector2(90, 130)
+speaker_name = "Stationmaster"
+dialogue_lines = Array[String](["Ticket? I'd sell you one, but I've nothing to put you on.", "Line's laid as far as the cut and no further. Crews keep walking off the job.", "They say the desert doesn't care to be dug through. I say they're behind schedule.", "Come back when there's smoke on that horizon and I'll see you aboard."])
+
+[node name="NameLabel" parent="Stationmaster" index="1"]
+text = "Stationmaster"
+
+[node name="Interactable" parent="Stationmaster" index="2"]
+interact_name = "Talk to Stationmaster"
+
+[node name="TicketBooth" type="Sprite2D" parent="."]
+z_index = 20
+position = Vector2(90, 82)
+texture = ExtResource("10_booth")
+
+[node name="ExitDoor" parent="." instance=ExtResource("7_ext07")]
+position = Vector2(-450, 130)
+interact_name = "Exit Railway Station"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="ExitDoor"]
+position = Vector2(0, -50)
+shape = SubResource("RectangleShape2D_door")
+
+[node name="DoorVisual" type="Sprite2D" parent="ExitDoor"]
+z_index = -6
+position = Vector2(0, -59)
+texture = ExtResource("16_door")

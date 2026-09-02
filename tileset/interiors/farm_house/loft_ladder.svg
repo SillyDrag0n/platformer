@@ -1,0 +1,20 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="54" height="300" viewBox="0 0 54 300">
+  <!-- The way up to the sleeping loft: tall enough to actually reach it, leaned against the
+       boards rather than fixed to them. -->
+  <rect x="4" y="0" width="10" height="300" fill="#8a6a42"/>
+  <rect x="38" y="0" width="10" height="300" fill="#7a5a34"/>
+  <g fill="#a3814a">
+    <rect x="4" y="16" width="44" height="8"/><rect x="4" y="48" width="44" height="8"/>
+    <rect x="4" y="80" width="44" height="8"/><rect x="4" y="112" width="44" height="8"/>
+    <rect x="4" y="144" width="44" height="8"/><rect x="4" y="176" width="44" height="8"/>
+    <rect x="4" y="208" width="44" height="8"/><rect x="4" y="240" width="44" height="8"/>
+    <rect x="4" y="272" width="44" height="8"/>
+  </g>
+  <g fill="#75552f">
+    <rect x="4" y="22" width="44" height="3"/><rect x="4" y="54" width="44" height="3"/>
+    <rect x="4" y="86" width="44" height="3"/><rect x="4" y="118" width="44" height="3"/>
+    <rect x="4" y="150" width="44" height="3"/><rect x="4" y="182" width="44" height="3"/>
+    <rect x="4" y="214" width="44" height="3"/><rect x="4" y="246" width="44" height="3"/>
+    <rect x="4" y="278" width="44" height="3"/>
+  </g>
+</svg>

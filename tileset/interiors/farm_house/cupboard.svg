@@ -1,0 +1,24 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="120" height="150" viewBox="0 0 120 150">
+  <!-- Kitchen dresser: plates stood on edge above, doors below. -->
+  <rect x="0" y="0" width="120" height="150" fill="#5c4128"/>
+  <rect x="5" y="5" width="110" height="140" fill="#7a5a34"/>
+  <rect x="10" y="10" width="100" height="66" fill="#4a3320"/>
+  <rect x="10" y="42" width="100" height="7" fill="#8a6a42"/>
+  <rect x="10" y="70" width="100" height="7" fill="#8a6a42"/>
+  <g fill="#e6dcc0">
+    <circle cx="30" cy="30" r="13"/><circle cx="60" cy="30" r="13"/><circle cx="90" cy="30" r="13"/>
+  </g>
+  <g fill="#c9b083">
+    <circle cx="30" cy="30" r="7"/><circle cx="60" cy="30" r="7"/><circle cx="90" cy="30" r="7"/>
+  </g>
+  <g fill="#d6c096">
+    <rect x="18" y="54" width="18" height="14"/><rect x="44" y="52" width="14" height="16"/>
+    <rect x="66" y="56" width="20" height="12"/><rect x="92" y="54" width="12" height="14"/>
+  </g>
+  <rect x="10" y="82" width="46" height="60" fill="#6b4c2c"/>
+  <rect x="64" y="82" width="46" height="60" fill="#6b4c2c"/>
+  <rect x="14" y="86" width="38" height="52" fill="#5c4128"/>
+  <rect x="68" y="86" width="38" height="52" fill="#5c4128"/>
+  <circle cx="50" cy="112" r="4" fill="#c9a227"/>
+  <circle cx="70" cy="112" r="4" fill="#c9a227"/>
+</svg>

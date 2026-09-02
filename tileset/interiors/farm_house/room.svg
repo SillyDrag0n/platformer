@@ -1,0 +1,85 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1000" height="540" viewBox="0 0 1000 540">
+  <!-- The farm house in town. Game coords: x = sx - 500, y = sy - 270; floor at sy 400 (y 130).
+       Whitewashed plaster between the studs, a sleeping loft under the rafters, and boards worn
+       pale where people walk. Warmer and shabbier than anything else in the hub. -->
+  <defs>
+    <linearGradient id="roof" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#1a120b"/>
+      <stop offset="1" stop-color="#332415"/>
+    </linearGradient>
+    <linearGradient id="wallFade" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#241a10" stop-opacity="0.45"/>
+      <stop offset="1" stop-color="#241a10" stop-opacity="0"/>
+    </linearGradient>
+    <linearGradient id="floorFade" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#2a1c0e" stop-opacity="0.45"/>
+      <stop offset="1" stop-color="#2a1c0e" stop-opacity="0"/>
+    </linearGradient>
+    <linearGradient id="bottomFade" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#1c1309" stop-opacity="0"/>
+      <stop offset="1" stop-color="#1c1309" stop-opacity="0.5"/>
+    </linearGradient>
+  </defs>
+
+  <!-- rafters over the loft -->
+  <rect x="0" y="0" width="1000" height="96" fill="url(#roof)"/>
+  <g fill="#4a3320">
+    <polygon points="0,74 1000,74 1000,86 0,86"/>
+    <polygon points="140,10 240,74 220,74 140,22"/>
+    <polygon points="156,10 56,74 76,74 156,22"/>
+    <polygon points="500,10 600,74 580,74 500,22"/>
+    <polygon points="516,10 416,74 436,74 516,22"/>
+    <polygon points="860,10 960,74 940,74 860,22"/>
+    <polygon points="876,10 776,74 796,74 876,22"/>
+  </g>
+
+  <!-- sleeping loft: boards, a rail, and a straw mattress up under the roof -->
+  <rect x="0" y="86" width="620" height="12" fill="#8a6a42"/>
+  <rect x="0" y="98" width="620" height="10" fill="#4a3320"/>
+  <rect x="600" y="86" width="20" height="314" fill="#7a5a34"/>
+  <rect x="600" y="86" width="6" height="314" fill="#8a6a42"/>
+  <rect x="0" y="44" width="620" height="8" fill="#7a5a34"/>
+  <g fill="#6b4c2c">
+    <rect x="40" y="52" width="8" height="34"/><rect x="110" y="52" width="8" height="34"/>
+    <rect x="180" y="52" width="8" height="34"/><rect x="250" y="52" width="8" height="34"/>
+    <rect x="320" y="52" width="8" height="34"/><rect x="390" y="52" width="8" height="34"/>
+    <rect x="460" y="52" width="8" height="34"/><rect x="530" y="52" width="8" height="34"/>
+    <rect x="590" y="52" width="8" height="34"/>
+  </g>
+  <rect x="120" y="60" width="150" height="26" fill="#c2ab7f"/>
+  <rect x="120" y="60" width="150" height="8" fill="#d6c096"/>
+  <rect x="130" y="52" width="52" height="12" fill="#e6dcc0"/>
+  <rect x="300" y="66" width="90" height="20" fill="#8b3a2e"/>
+  <rect x="300" y="66" width="90" height="6" fill="#a94a38"/>
+
+  <!-- plastered wall between studs -->
+  <rect x="0" y="108" width="1000" height="292" fill="#b9a583"/>
+  <rect x="0" y="108" width="1000" height="70" fill="url(#wallFade)"/>
+  <g fill="#8a6a42">
+    <rect x="0" y="108" width="1000" height="10"/>
+    <rect x="120" y="108" width="14" height="292"/><rect x="330" y="108" width="14" height="292"/>
+    <rect x="540" y="108" width="14" height="292"/><rect x="750" y="108" width="14" height="292"/>
+    <rect x="930" y="108" width="14" height="292"/>
+  </g>
+  <g fill="#a3906f">
+    <rect x="134" y="230" width="196" height="5"/><rect x="554" y="230" width="196" height="5"/>
+    <rect x="764" y="230" width="166" height="5"/>
+  </g>
+
+  <!-- board skirting -->
+  <rect x="0" y="366" width="1000" height="10" fill="#7a5a34"/>
+  <rect x="0" y="376" width="1000" height="24" fill="#5c4128"/>
+
+  <!-- worn plank floor -->
+  <rect x="0" y="400" width="1000" height="140" fill="#8a6a42"/>
+  <rect x="0" y="400" width="1000" height="6" fill="#a3814a"/>
+  <g fill="#75552f">
+    <rect x="0" y="440" width="1000" height="4"/>
+    <rect x="0" y="490" width="1000" height="4"/>
+    <rect x="96" y="400" width="4" height="140"/><rect x="252" y="400" width="4" height="140"/>
+    <rect x="418" y="400" width="4" height="140"/><rect x="576" y="400" width="4" height="140"/>
+    <rect x="734" y="400" width="4" height="140"/><rect x="892" y="400" width="4" height="140"/>
+  </g>
+  <rect x="0" y="400" width="1000" height="30" fill="url(#floorFade)"/>
+  <rect x="0" y="452" width="1000" height="88" fill="url(#bottomFade)"/>
+</svg>

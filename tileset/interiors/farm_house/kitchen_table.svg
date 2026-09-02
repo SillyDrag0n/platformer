@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="150" height="58" viewBox="0 0 150 58">
+  <!-- Plank table, laid for two who are not sitting at it. -->
+  <rect x="0" y="14" width="150" height="10" fill="#a3814a"/>
+  <rect x="0" y="24" width="150" height="5" fill="#6b4527"/>
+  <g fill="#8a6a42">
+    <rect x="12" y="29" width="10" height="29"/><rect x="128" y="29" width="10" height="29"/>
+  </g>
+  <rect x="16" y="38" width="118" height="7" fill="#75552f"/>
+  <ellipse cx="44" cy="12" rx="16" ry="5" fill="#d6c096"/>
+  <ellipse cx="44" cy="10" rx="16" ry="5" fill="#e6dcc0"/>
+  <ellipse cx="104" cy="12" rx="16" ry="5" fill="#d6c096"/>
+  <ellipse cx="104" cy="10" rx="16" ry="5" fill="#e6dcc0"/>
+  <rect x="68" y="2" width="14" height="12" fill="#8b6a3a"/>
+  <rect x="66" y="0" width="18" height="4" fill="#a3814a"/>
+  <rect x="24" y="4" width="6" height="10" fill="#9aa2a6"/>
+  <rect x="116" y="4" width="6" height="10" fill="#9aa2a6"/>
+</svg>

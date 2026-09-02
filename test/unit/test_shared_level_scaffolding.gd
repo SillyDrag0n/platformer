@@ -2,7 +2,7 @@ extends GutTest
 
 # The two script families that used to be copy-pasted per scene and are now shared:
 #
-#   levels/_common/interior_level.gd  - the five hub building interiors
+#   levels/_common/interior_level.gd  - the eight hub building interiors
 #   tileset/structures/hub_structure.gd - the nine buildings in town
 #
 # Both are pure wiring, so what is worth pinning is that every scene still gets that wiring, and
@@ -17,6 +17,8 @@ const INTERIORS := [
 	"res://levels/post_office_interior/post_office_interior.tscn",
 	"res://levels/saloon_interior/saloon_interior.tscn",
 	"res://levels/sheriffs_office_interior/sheriffs_office_interior.tscn",
+	"res://levels/chapel_interior/chapel_interior.tscn",
+	"res://levels/railway_station_interior/railway_station_interior.tscn",
 ]
 
 # Scene path -> the SceneManager key it should lead to. "" is scenery the player can walk up to
@@ -28,8 +30,8 @@ const STRUCTURES := {
 	"res://tileset/structures/post_office/post_office.tscn": "PostOffice",
 	"res://tileset/structures/saloon/rosas_saloon.tscn": "Saloon",
 	"res://tileset/structures/sheriffs_office/sheriffs_office.tscn": "SheriffsOffice",
-	"res://tileset/structures/church/church.tscn": "",
-	"res://tileset/structures/railway_station/railway_station.tscn": "",
+	"res://tileset/structures/chapel/chapel.tscn": "Chapel",
+	"res://tileset/structures/railway_station/railway_station.tscn": "RailwayStation",
 }
 
 
@@ -71,19 +73,20 @@ func test_every_enterable_structure_leads_somewhere_scenemanager_knows():
 				"'%s' is not a scene SceneManager knows - %s would go nowhere" % [expected_key, path])
 
 
-# The church and the railway station are the reason can_enter() exists. They used to run the same
-# _on_interact() as everything else, which latched the interactable off and then transitioned
-# nowhere - so the first press killed the prompt for the rest of the run.
+# The chapel and the railway station are the reason can_enter() exists: before they had interiors
+# they ran the same _on_interact() as everything else, which latched the interactable off and then
+# transitioned nowhere, so the first press killed the prompt for the rest of the run. Every
+# building in town leads somewhere now, so this is pinned against a structure whose destination has
+# been cleared - the state any new bit of scenery starts life in.
 func test_scenery_stays_interactable_after_a_press_that_leads_nowhere():
-	for path in STRUCTURES:
-		if STRUCTURES[path] != "":
-			continue
-		var structure = _instantiate(path)
+	var structure = _instantiate("res://tileset/structures/chapel/chapel.tscn")
+	structure.destination_scene_key = ""
 
-		structure._on_interact()
+	structure._on_interact()
 
-		assert_true(structure.interactable.is_interactable, \
-			"%s isn't enterable yet, so pressing it must not disarm it permanently" % path)
+	assert_false(structure.can_enter(), "with no destination there is nowhere to go...")
+	assert_true(structure.interactable.is_interactable, \
+		"...so the press must not disarm the prompt permanently")
 
 
 func test_the_notice_board_opens_the_board_instead_of_loading_a_level():

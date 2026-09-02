@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="96" height="60" viewBox="0 0 96 60">
+  <!-- Canvas mail sacks, tied off and waiting for the train that is not running yet. -->
+  <path d="M22,18 Q42,26 40,60 L4,60 Q2,26 22,18 Z" fill="#8f8266"/>
+  <path d="M22,18 Q14,26 12,60 L4,60 Q2,26 22,18 Z" fill="#a2957a"/>
+  <rect x="16" y="12" width="12" height="9" rx="3" fill="#5f5540"/>
+  <rect x="10" y="40" width="26" height="6" fill="#6b3a24"/>
+  <path d="M68,26 Q90,32 88,60 L48,60 Q46,32 68,26 Z" fill="#7d7159"/>
+  <path d="M68,26 Q58,32 56,60 L48,60 Q46,32 68,26 Z" fill="#8f8266"/>
+  <rect x="62" y="20" width="12" height="9" rx="3" fill="#5f5540"/>
+  <rect x="54" y="44" width="28" height="6" fill="#6b3a24"/>
+</svg>

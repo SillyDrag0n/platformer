@@ -1,0 +1,95 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1000" height="540" viewBox="0 0 1000 540">
+  <!-- The bank hall. Game coords: x = sx - 500, y = sy - 270; floor surface at sy 400 (y 130).
+       No upper storey here - it reads as one tall hall, which is what separates it from the
+       saloon and the sheriff's office. -->
+  <defs>
+    <linearGradient id="roof" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#0f100e"/>
+      <stop offset="1" stop-color="#22241f"/>
+    </linearGradient>
+    <linearGradient id="pane" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#f3dcab"/>
+      <stop offset="1" stop-color="#dda869"/>
+    </linearGradient>
+    <linearGradient id="wallFade" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#171814" stop-opacity="0.5"/>
+      <stop offset="1" stop-color="#171814" stop-opacity="0"/>
+    </linearGradient>
+    <linearGradient id="floorFade" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#20211c" stop-opacity="0.5"/>
+      <stop offset="1" stop-color="#20211c" stop-opacity="0"/>
+    </linearGradient>
+    <linearGradient id="bottomFade" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#14150f" stop-opacity="0"/>
+      <stop offset="1" stop-color="#14150f" stop-opacity="0.55"/>
+    </linearGradient>
+  </defs>
+
+  <!-- roof void and cornice -->
+  <rect x="0" y="0" width="1000" height="100" fill="url(#roof)"/>
+  <rect x="0" y="96" width="1000" height="10" fill="#3b3d34"/>
+  <rect x="0" y="106" width="1000" height="8" fill="#585b4f"/>
+  <rect x="0" y="114" width="1000" height="6" fill="#43463c"/>
+
+  <!-- hall wall -->
+  <rect x="0" y="120" width="1000" height="280" fill="#5a6157"/>
+  <rect x="0" y="120" width="1000" height="60" fill="url(#wallFade)"/>
+
+  <!-- tall windows with round heads -->
+  <g>
+    <rect x="96" y="150" width="72" height="120" fill="#3d4038"/>
+    <path d="M100,196 a32,32 0 0 1 64,0 v70 h-64 z" fill="url(#pane)"/>
+    <rect x="128" y="166" width="8" height="100" fill="#3d4038"/>
+    <rect x="100" y="212" width="64" height="7" fill="#3d4038"/>
+    <rect x="426" y="150" width="72" height="120" fill="#3d4038"/>
+    <path d="M430,196 a32,32 0 0 1 64,0 v70 h-64 z" fill="url(#pane)"/>
+    <rect x="458" y="166" width="8" height="100" fill="#3d4038"/>
+    <rect x="430" y="212" width="64" height="7" fill="#3d4038"/>
+  </g>
+
+  <!-- pilasters running the full height of the hall -->
+  <g>
+    <rect x="252" y="120" width="34" height="280" fill="#6e7367"/>
+    <rect x="252" y="120" width="8" height="280" fill="#828779"/>
+    <rect x="246" y="120" width="46" height="12" fill="#828779"/>
+    <rect x="246" y="388" width="46" height="12" fill="#4b5046"/>
+    <rect x="586" y="120" width="34" height="280" fill="#6e7367"/>
+    <rect x="586" y="120" width="8" height="280" fill="#828779"/>
+    <rect x="580" y="120" width="46" height="12" fill="#828779"/>
+    <rect x="580" y="388" width="46" height="12" fill="#4b5046"/>
+    <rect x="920" y="120" width="34" height="280" fill="#6e7367"/>
+    <rect x="920" y="120" width="8" height="280" fill="#828779"/>
+    <rect x="914" y="120" width="46" height="12" fill="#828779"/>
+    <rect x="914" y="388" width="46" height="12" fill="#4b5046"/>
+  </g>
+
+  <!-- marble dado -->
+  <rect x="0" y="326" width="1000" height="8" fill="#7f8478"/>
+  <rect x="0" y="334" width="1000" height="66" fill="#9b968c"/>
+  <g fill="#8b877e">
+    <rect x="0" y="352" width="1000" height="3"/>
+    <rect x="120" y="334" width="4" height="66"/><rect x="340" y="334" width="4" height="66"/>
+    <rect x="500" y="334" width="4" height="66"/><rect x="700" y="334" width="4" height="66"/>
+    <rect x="860" y="334" width="4" height="66"/>
+  </g>
+  <rect x="0" y="390" width="1000" height="10" fill="#4b5046"/>
+
+  <!-- checkerboard floor, tiles widening toward the viewer -->
+  <rect x="0" y="400" width="1000" height="140" fill="#7c786e"/>
+  <g fill="#575a50">
+    <rect x="0" y="400" width="50" height="38"/><rect x="100" y="400" width="50" height="38"/>
+    <rect x="200" y="400" width="50" height="38"/><rect x="300" y="400" width="50" height="38"/>
+    <rect x="400" y="400" width="50" height="38"/><rect x="500" y="400" width="50" height="38"/>
+    <rect x="600" y="400" width="50" height="38"/><rect x="700" y="400" width="50" height="38"/>
+    <rect x="800" y="400" width="50" height="38"/><rect x="900" y="400" width="50" height="38"/>
+    <rect x="60" y="438" width="66" height="46"/><rect x="192" y="438" width="66" height="46"/>
+    <rect x="324" y="438" width="66" height="46"/><rect x="456" y="438" width="66" height="46"/>
+    <rect x="588" y="438" width="66" height="46"/><rect x="720" y="438" width="66" height="46"/>
+    <rect x="852" y="438" width="66" height="46"/>
+    <rect x="0" y="484" width="84" height="56"/><rect x="168" y="484" width="84" height="56"/>
+    <rect x="336" y="484" width="84" height="56"/><rect x="504" y="484" width="84" height="56"/>
+    <rect x="672" y="484" width="84" height="56"/><rect x="840" y="484" width="84" height="56"/>
+  </g>
+  <rect x="0" y="400" width="1000" height="30" fill="url(#floorFade)"/>
+  <rect x="0" y="452" width="1000" height="88" fill="url(#bottomFade)"/>
+</svg>

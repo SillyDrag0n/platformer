@@ -1,0 +1,102 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1000" height="540" viewBox="0 0 1000 540">
+  <!-- The station waiting room. Game coords: x = sx - 500, y = sy - 270; floor at sy 400 (y 130).
+       Barn-red boards to match the building outside, and an archway at the far end onto the
+       platform - where the track runs off into country the player cannot get to yet. -->
+  <defs>
+    <linearGradient id="roof" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#160c0a"/>
+      <stop offset="1" stop-color="#2d1a16"/>
+    </linearGradient>
+    <linearGradient id="outside" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#cfe0e8"/>
+      <stop offset="0.55" stop-color="#f0d6a4"/>
+      <stop offset="1" stop-color="#e0b478"/>
+    </linearGradient>
+    <linearGradient id="wallFade" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#20100d" stop-opacity="0.5"/>
+      <stop offset="1" stop-color="#20100d" stop-opacity="0"/>
+    </linearGradient>
+    <linearGradient id="floorFade" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#2a1a10" stop-opacity="0.5"/>
+      <stop offset="1" stop-color="#2a1a10" stop-opacity="0"/>
+    </linearGradient>
+    <linearGradient id="bottomFade" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#1c110a" stop-opacity="0"/>
+      <stop offset="1" stop-color="#1c110a" stop-opacity="0.55"/>
+    </linearGradient>
+  </defs>
+
+  <!-- roof void and trusses -->
+  <rect x="0" y="0" width="1000" height="116" fill="url(#roof)"/>
+  <g fill="#4a2a22">
+    <rect x="0" y="70" width="1000" height="12"/>
+    <rect x="120" y="0" width="16" height="70"/><rect x="440" y="0" width="16" height="70"/>
+    <rect x="760" y="0" width="16" height="70"/>
+  </g>
+  <g fill="#3c221c">
+    <polygon points="120,16 220,70 202,70 120,26"/>
+    <polygon points="136,16 36,70 54,70 136,26"/>
+    <polygon points="440,16 540,70 522,70 440,26"/>
+    <polygon points="456,16 356,70 374,70 456,26"/>
+    <polygon points="760,16 860,70 842,70 760,26"/>
+    <polygon points="776,16 676,70 694,70 776,26"/>
+  </g>
+  <rect x="0" y="110" width="1000" height="12" fill="#5c332b"/>
+
+  <!-- board wall -->
+  <rect x="0" y="122" width="1000" height="278" fill="#6e3a32"/>
+  <rect x="0" y="122" width="1000" height="70" fill="url(#wallFade)"/>
+  <g fill="#5f322b">
+    <rect x="0" y="164" width="1000" height="5"/><rect x="0" y="210" width="1000" height="5"/>
+    <rect x="0" y="256" width="1000" height="5"/><rect x="0" y="302" width="1000" height="5"/>
+  </g>
+  <g fill="#7d453b">
+    <rect x="150" y="122" width="9" height="278"/><rect x="330" y="122" width="9" height="278"/>
+    <rect x="620" y="122" width="9" height="278"/>
+  </g>
+
+  <!-- dado -->
+  <rect x="0" y="332" width="1000" height="8" fill="#8a5348"/>
+  <rect x="0" y="340" width="1000" height="60" fill="#5c332b"/>
+  <g fill="#4a2a22">
+    <rect x="70" y="340" width="6" height="60"/><rect x="190" y="340" width="6" height="60"/>
+    <rect x="310" y="340" width="6" height="60"/><rect x="430" y="340" width="6" height="60"/>
+    <rect x="550" y="340" width="6" height="60"/><rect x="670" y="340" width="6" height="60"/>
+  </g>
+  <rect x="0" y="392" width="1000" height="8" fill="#3a201a"/>
+
+  <!-- archway onto the platform: sky, hills, track, and a signal post -->
+  <rect x="690" y="180" width="280" height="220" fill="#3c221c"/>
+  <path d="M700,250 a90,90 0 0 1 180,0 v0 h80 v150 h-260 z" fill="#4a2a22"/>
+  <path d="M710,254 a80,80 0 0 1 160,0 v142 h-160 z" fill="url(#outside)"/>
+  <rect x="870" y="196" width="90" height="200" fill="url(#outside)"/>
+  <polygon points="710,320 780,286 850,320 870,310 960,336 960,396 710,396" fill="#c08a52"/>
+  <polygon points="710,336 790,312 870,340 960,326 960,396 710,396" fill="#a9713f"/>
+  <rect x="710" y="360" width="250" height="10" fill="#8a6a42"/>
+  <g fill="#6b4527">
+    <rect x="716" y="356" width="10" height="20"/><rect x="746" y="356" width="10" height="20"/>
+    <rect x="776" y="356" width="10" height="20"/><rect x="806" y="356" width="10" height="20"/>
+    <rect x="836" y="356" width="10" height="20"/><rect x="866" y="356" width="10" height="20"/>
+    <rect x="896" y="356" width="10" height="20"/><rect x="926" y="356" width="10" height="20"/>
+  </g>
+  <rect x="710" y="358" width="250" height="5" fill="#9aa2a6"/>
+  <rect x="710" y="372" width="250" height="5" fill="#9aa2a6"/>
+  <rect x="900" y="270" width="8" height="90" fill="#4a4a52"/>
+  <rect x="890" y="266" width="28" height="10" fill="#4a4a52"/>
+  <circle cx="904" cy="288" r="7" fill="#b0442f"/>
+  <rect x="690" y="180" width="280" height="12" fill="#8a5348"/>
+  <rect x="684" y="176" width="292" height="8" fill="#5c332b"/>
+
+  <!-- plank floor -->
+  <rect x="0" y="400" width="1000" height="140" fill="#7a5a3c"/>
+  <rect x="0" y="400" width="1000" height="6" fill="#94714b"/>
+  <g fill="#63482d">
+    <rect x="0" y="438" width="1000" height="4"/>
+    <rect x="0" y="488" width="1000" height="4"/>
+    <rect x="120" y="400" width="4" height="140"/><rect x="276" y="400" width="4" height="140"/>
+    <rect x="438" y="400" width="4" height="140"/><rect x="596" y="400" width="4" height="140"/>
+    <rect x="752" y="400" width="4" height="140"/><rect x="908" y="400" width="4" height="140"/>
+  </g>
+  <rect x="0" y="400" width="1000" height="30" fill="url(#floorFade)"/>
+  <rect x="0" y="452" width="1000" height="88" fill="url(#bottomFade)"/>
+</svg>

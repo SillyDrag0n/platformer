@@ -10,6 +10,8 @@ var scenes : Dictionary = { "Level1": "res://levels/test_level.tscn",
 							"SheriffsOffice": "res://levels/sheriffs_office_interior/sheriffs_office_interior.tscn",
 							"Bank": "res://levels/bank_interior/bank_interior.tscn",
 							"PostOffice": "res://levels/post_office_interior/post_office_interior.tscn",
+							"Chapel": "res://levels/chapel_interior/chapel_interior.tscn",
+							"RailwayStation": "res://levels/railway_station_interior/railway_station_interior.tscn",
 							"FarmHouseInterior": "res://levels/farm_house_interior/farm_house_interior.tscn",
 							# The tutorial level out behind the farm house. Reached by taking the
 							# Missing Cattle contract off the board, not by walking into the house

@@ -1,0 +1,22 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="116" height="92" viewBox="0 0 116 92">
+  <!-- Same window as the rest of town, but with curtains someone sewed. -->
+  <defs>
+    <linearGradient id="fsky" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#e8c07a"/>
+      <stop offset="0.6" stop-color="#f2d59b"/>
+      <stop offset="1" stop-color="#d8a765"/>
+    </linearGradient>
+  </defs>
+  <rect x="8" y="8" width="100" height="76" fill="#5c4128"/>
+  <rect x="14" y="14" width="88" height="64" fill="url(#fsky)"/>
+  <polygon points="14,54 38,42 58,54 80,40 102,52 102,78 14,78" fill="#c08a52"/>
+  <polygon points="14,62 34,52 56,62 78,50 102,64 102,78 14,78" fill="#a9713f"/>
+  <rect x="54" y="14" width="8" height="64" fill="#5c4128"/>
+  <rect x="14" y="42" width="88" height="7" fill="#5c4128"/>
+  <rect x="0" y="0" width="116" height="10" fill="#8a6a42"/>
+  <rect x="0" y="82" width="116" height="10" fill="#8a6a42"/>
+  <path d="M8,10 h26 q-8,34 2,72 h-28 z" fill="#8b3a2e"/>
+  <path d="M108,10 h-26 q8,34 -2,72 h28 z" fill="#8b3a2e"/>
+  <path d="M8,10 h14 q-6,34 0,72 h-14 z" fill="#a94a38"/>
+  <path d="M108,10 h-14 q6,34 0,72 h14 z" fill="#a94a38"/>
+</svg>

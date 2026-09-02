@@ -147,19 +147,21 @@ snapshot, not a source of truth; re-check the code for current state.
   works on. The revolver's speed loader is the first: it marks a randomly
   placed notch in the bottom of the reload dial, and a reload pressed while the
   meter crosses it finishes the reload on the spot (one attempt per reload).
-- **Levels/hub:** the hub (town) and six interiors — arms dealer, bank, post
-  office, saloon, sheriff's office, farm house — plus the tutorial's farm house
-  backyard, the shaman's camp, the (empty) coyote den, a boss arena,
-  checkpoints, grapple anchors and a prototyping test level.
+- **Levels/hub:** the hub (town) and eight interiors — arms dealer, bank, post
+  office, saloon, sheriff's office, farm house, chapel, railway station — plus
+  the tutorial's farm house backyard, the shaman's camp, the (empty) coyote
+  den, a boss arena, checkpoints, grapple anchors and a prototyping test level.
 - **Shared scene scaffolding** (added 2026-08-31, replacing per-scene copies):
   - `Level` (`levels/_common/level.gd`) — what every playable level extends:
     player/camera/respawn wiring, a `music` slot, and an `_on_level_ready()`
     hook so a level can't forget to claim `RespawnManager`.
-  - `InteriorLevel` — the six hub-building interiors, which were
+  - `InteriorLevel` — the eight hub-building interiors, which were
     byte-identical scripts.
   - `HubStructure` (`tileset/structures/`) — every building in town; they
-    differ only by an exported `destination_scene_key`. A structure with no key
-    is scenery that can't be entered yet (church, railway station).
+    differ only by an exported `destination_scene_key`. Every building leads
+    somewhere now, chapel and railway station included; a structure with no key
+    would be scenery that cannot be entered, and the notice board is the one
+    that opens a screen instead of loading a level.
   - `FocusGrid` (`ui/_common/`) — keyboard/gamepad focus wiring for grids.
     Godot's geometric focus search is unreliable across wide grids, scrolled
     containers and the bobbing bounty posters, so four screens were each
@@ -187,7 +189,7 @@ snapshot, not a source of truth; re-check the code for current state.
   Respawn, Scene, Settings, Ui, Inventory, GameState, Ability, Quest, Save,
   ProjectileLayer, Localization, UiNavigationRepeater, UiSoundPlayer, Music.
 - **Localization:** in progress (`localization/translations.csv`, en + de).
-- **Testing:** GUT (`addons/gut/`, CLI-only, see `test/unit/`) — 309 tests
+- **Testing:** GUT (`addons/gut/`, CLI-only, see `test/unit/`) — 366 tests
   covering the pure-logic managers, the bounty/save/audio systems, level
   scaffolding and several UI focus regressions. Run via
   `"D:\Godot\Godot_v4.4.1-stable_win64.exe" --headless -s addons/gut/gut_cmdln.gd -gexit`.
@@ -527,8 +529,8 @@ playable end to end.
   `music` slot on every `Level`); the hub's and the backyard's slots are empty.
   Drop an `.ogg` in and assign it in the inspector — looping is forced in code,
   so the import flag doesn't matter.
-- **The farm house interior is an empty room.** Every other interior has
-  someone in it.
+- **Nobody lives in the farm house.** Its interior is furnished now - hearth,
+  loft, kitchen - but it is the one building in town with no one to talk to.
 - **German is machine-drafted, not reviewed.** `localization/translations.csv`
   now covers every string the game can show: every `tr()` literal in the
   scripts, every authored `text` on a UI scene, every `interact_name` prompt,

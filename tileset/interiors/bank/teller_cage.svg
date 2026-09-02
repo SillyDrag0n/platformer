@@ -1,0 +1,24 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="300" height="96" viewBox="0 0 300 96">
+  <!-- The teller's counter and its brass grille. Drawn in front of the clerk, with the serving
+       window left open at head height so she is not walled off from the player. -->
+  <rect x="0" y="64" width="300" height="10" fill="#8b7f5f"/>
+  <rect x="4" y="74" width="292" height="22" fill="#6b6250"/>
+  <g fill="#5a5343">
+    <rect x="40" y="74" width="6" height="22"/><rect x="150" y="74" width="6" height="22"/>
+    <rect x="254" y="74" width="6" height="22"/>
+  </g>
+  <rect x="0" y="90" width="300" height="6" fill="#4a4438"/>
+  <rect x="0" y="0" width="300" height="10" fill="#8b7f5f"/>
+  <rect x="10" y="10" width="88" height="54" fill="#2f2c24" fill-opacity="0.3"/>
+  <rect x="202" y="10" width="88" height="54" fill="#2f2c24" fill-opacity="0.3"/>
+  <g fill="#c9a227">
+    <rect x="20" y="10" width="6" height="54"/><rect x="46" y="10" width="6" height="54"/>
+    <rect x="72" y="10" width="6" height="54"/><rect x="222" y="10" width="6" height="54"/>
+    <rect x="248" y="10" width="6" height="54"/><rect x="274" y="10" width="6" height="54"/>
+    <rect x="10" y="30" width="88" height="5"/><rect x="202" y="30" width="88" height="5"/>
+    <rect x="98" y="0" width="8" height="64"/><rect x="194" y="0" width="8" height="64"/>
+    <rect x="106" y="10" width="88" height="6"/>
+  </g>
+  <rect x="106" y="54" width="88" height="10" fill="#8b7f5f"/>
+  <rect x="128" y="56" width="44" height="6" fill="#c9a227"/>
+</svg>

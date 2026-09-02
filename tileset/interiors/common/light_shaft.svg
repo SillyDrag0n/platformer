@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="150" height="120" viewBox="0 0 150 120">
+  <!-- The pool of daylight a window throws down the wall and onto the floor. Goes over the wall
+       art and under the furniture, so props read as standing in it. -->
+  <defs>
+    <linearGradient id="shaft" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#ffd89a" stop-opacity="0.30"/>
+      <stop offset="0.7" stop-color="#ffd08a" stop-opacity="0.12"/>
+      <stop offset="1" stop-color="#ffc878" stop-opacity="0"/>
+    </linearGradient>
+  </defs>
+  <polygon points="30,0 120,0 150,120 0,120" fill="url(#shaft)"/>
+</svg>

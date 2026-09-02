@@ -1,0 +1,23 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="150" height="180" viewBox="0 0 150 180">
+  <!-- The vault, set into the back wall. Shut, and staying shut - there is nothing behind it. -->
+  <rect x="0" y="10" width="150" height="170" fill="#3b3830"/>
+  <rect x="8" y="18" width="134" height="162" fill="#5c5a50"/>
+  <rect x="14" y="24" width="122" height="156" fill="#6e6c60"/>
+  <circle cx="75" cy="96" r="56" fill="#4f4d44"/>
+  <circle cx="75" cy="96" r="50" fill="#7a7869"/>
+  <circle cx="75" cy="96" r="42" fill="#65635a"/>
+  <g fill="#c9a227">
+    <circle cx="75" cy="96" r="14"/>
+    <rect x="71" y="60" width="8" height="72"/>
+    <rect x="39" y="92" width="72" height="8"/>
+    <rect x="46" y="67" width="8" height="58" transform="rotate(45 50 96)"/>
+    <rect x="96" y="67" width="8" height="58" transform="rotate(-45 100 96)"/>
+  </g>
+  <circle cx="75" cy="96" r="6" fill="#8a6f1e"/>
+  <g fill="#3b3830">
+    <rect x="20" y="30" width="8" height="8"/><rect x="122" y="30" width="8" height="8"/>
+    <rect x="20" y="164" width="8" height="8"/><rect x="122" y="164" width="8" height="8"/>
+  </g>
+  <rect x="14" y="0" width="122" height="12" fill="#4f4d44"/>
+  <rect x="44" y="0" width="62" height="12" fill="#8b7f5f"/>
+</svg>

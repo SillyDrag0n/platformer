@@ -1,0 +1,22 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="88" height="124" viewBox="0 0 88 124">
+  <!-- The way back out to town: daylight in the doorway, batwings across the middle of it. -->
+  <defs>
+    <linearGradient id="day" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#f6dfae"/>
+      <stop offset="1" stop-color="#e0ad6c"/>
+    </linearGradient>
+  </defs>
+  <rect x="0" y="0" width="88" height="124" fill="#33220f"/>
+  <rect x="8" y="8" width="72" height="116" fill="url(#day)"/>
+  <rect x="8" y="96" width="72" height="28" fill="#c99356"/>
+  <rect x="10" y="36" width="30" height="58" rx="4" fill="#6b4527"/>
+  <rect x="48" y="36" width="30" height="58" rx="4" fill="#6b4527"/>
+  <g fill="#5c3d28">
+    <rect x="10" y="44" width="30" height="4"/><rect x="10" y="82" width="30" height="4"/>
+    <rect x="48" y="44" width="30" height="4"/><rect x="48" y="82" width="30" height="4"/>
+  </g>
+  <rect x="40" y="36" width="8" height="58" fill="#4a3020"/>
+  <rect x="0" y="0" width="88" height="10" fill="#5c3d28"/>
+  <rect x="0" y="0" width="10" height="124" fill="#5c3d28"/>
+  <rect x="78" y="0" width="10" height="124" fill="#5c3d28"/>
+</svg>

@@ -1,0 +1,102 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1000" height="540" viewBox="0 0 1000 540">
+  <!-- The chapel. Game coords: x = sx - 500, y = sy - 270; floor surface at sy 400 (y 130).
+       Whitewash, an open truss roof, and three lancet windows with what colour glass the town
+       could afford. Brighter than anywhere else in the hub, on purpose. -->
+  <defs>
+    <linearGradient id="roof" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#241811"/>
+      <stop offset="1" stop-color="#3d2a1b"/>
+    </linearGradient>
+    <linearGradient id="wallFade" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#4a3a24" stop-opacity="0.35"/>
+      <stop offset="1" stop-color="#4a3a24" stop-opacity="0"/>
+    </linearGradient>
+    <linearGradient id="floorFade" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#3a2a16" stop-opacity="0.45"/>
+      <stop offset="1" stop-color="#3a2a16" stop-opacity="0"/>
+    </linearGradient>
+    <linearGradient id="bottomFade" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#231809" stop-opacity="0"/>
+      <stop offset="1" stop-color="#231809" stop-opacity="0.5"/>
+    </linearGradient>
+  </defs>
+
+  <!-- open truss roof -->
+  <rect x="0" y="0" width="1000" height="128" fill="url(#roof)"/>
+  <g fill="#5c3d28">
+    <polygon points="160,0 176,0 300,120 278,120"/>
+    <polygon points="176,0 160,0 36,120 58,120"/>
+    <rect x="60" y="96" width="220" height="12"/>
+    <rect x="162" y="8" width="12" height="96"/>
+    <polygon points="500,0 516,0 640,120 618,120"/>
+    <polygon points="516,0 500,0 376,120 398,120"/>
+    <rect x="400" y="96" width="220" height="12"/>
+    <rect x="502" y="8" width="12" height="96"/>
+    <polygon points="840,0 856,0 980,120 958,120"/>
+    <polygon points="856,0 840,0 716,120 738,120"/>
+    <rect x="740" y="96" width="220" height="12"/>
+    <rect x="842" y="8" width="12" height="96"/>
+  </g>
+  <rect x="0" y="120" width="1000" height="10" fill="#6b4527"/>
+
+  <!-- whitewashed wall -->
+  <rect x="0" y="130" width="1000" height="270" fill="#ddd2b6"/>
+  <rect x="0" y="130" width="1000" height="70" fill="url(#wallFade)"/>
+  <g fill="#c9bd9e">
+    <rect x="0" y="248" width="1000" height="4"/>
+  </g>
+
+  <!-- lancet windows, coloured glass -->
+  <g>
+    <path d="M120,236 a50,50 0 0 1 100,0 v100 h-100 z" fill="#6b4527"/>
+    <path d="M128,238 a42,42 0 0 1 84,0 v90 h-84 z" fill="#e8c07a"/>
+    <path d="M128,238 a42,42 0 0 1 42,-34 v124 h-42 z" fill="#c9843a"/>
+    <path d="M170,204 a42,42 0 0 1 42,34 v90 h-42 z" fill="#7a97b8"/>
+    <circle cx="170" cy="250" r="18" fill="#b0442f"/>
+    <circle cx="170" cy="250" r="9" fill="#e0c489"/>
+    <rect x="128" y="286" width="84" height="8" fill="#6b4527"/>
+    <rect x="166" y="204" width="8" height="124" fill="#6b4527"/>
+
+    <path d="M410,236 a50,50 0 0 1 100,0 v100 h-100 z" fill="#6b4527"/>
+    <path d="M418,238 a42,42 0 0 1 84,0 v90 h-84 z" fill="#e8c07a"/>
+    <path d="M418,238 a42,42 0 0 1 42,-34 v124 h-42 z" fill="#7a97b8"/>
+    <path d="M460,204 a42,42 0 0 1 42,34 v90 h-42 z" fill="#c9843a"/>
+    <circle cx="460" cy="250" r="18" fill="#4f7a4a"/>
+    <circle cx="460" cy="250" r="9" fill="#e0c489"/>
+    <rect x="418" y="286" width="84" height="8" fill="#6b4527"/>
+    <rect x="456" y="204" width="8" height="124" fill="#6b4527"/>
+
+    <path d="M660,236 a50,50 0 0 1 100,0 v100 h-100 z" fill="#6b4527"/>
+    <path d="M668,238 a42,42 0 0 1 84,0 v90 h-84 z" fill="#e8c07a"/>
+    <path d="M668,238 a42,42 0 0 1 42,-34 v124 h-42 z" fill="#c9843a"/>
+    <path d="M710,204 a42,42 0 0 1 42,34 v90 h-42 z" fill="#7a97b8"/>
+    <circle cx="710" cy="250" r="18" fill="#b0442f"/>
+    <circle cx="710" cy="250" r="9" fill="#e0c489"/>
+    <rect x="668" y="286" width="84" height="8" fill="#6b4527"/>
+    <rect x="706" y="204" width="8" height="124" fill="#6b4527"/>
+  </g>
+
+  <!-- light the windows throw down the wall -->
+  <g fill="#ffd89a" fill-opacity="0.16">
+    <polygon points="128,336 212,336 246,400 94,400"/>
+    <polygon points="418,336 502,336 536,400 384,400"/>
+    <polygon points="668,336 752,336 786,400 634,400"/>
+  </g>
+
+  <!-- skirting -->
+  <rect x="0" y="376" width="1000" height="10" fill="#8a6a42"/>
+  <rect x="0" y="386" width="1000" height="14" fill="#5c3d28"/>
+
+  <!-- worn plank floor down the aisle -->
+  <rect x="0" y="400" width="1000" height="140" fill="#9a7a52"/>
+  <rect x="0" y="400" width="1000" height="6" fill="#b08e5f"/>
+  <g fill="#83653f">
+    <rect x="0" y="442" width="1000" height="4"/>
+    <rect x="0" y="492" width="1000" height="4"/>
+    <rect x="104" y="400" width="4" height="140"/><rect x="262" y="400" width="4" height="140"/>
+    <rect x="424" y="400" width="4" height="140"/><rect x="586" y="400" width="4" height="140"/>
+    <rect x="744" y="400" width="4" height="140"/><rect x="902" y="400" width="4" height="140"/>
+  </g>
+  <rect x="0" y="400" width="1000" height="30" fill="url(#floorFade)"/>
+  <rect x="0" y="452" width="1000" height="88" fill="url(#bottomFade)"/>
+</svg>

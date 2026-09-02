@@ -1,0 +1,24 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="120" height="96" viewBox="0 0 120 96">
+  <!-- Rifles racked on the wall, under lock and key. -->
+  <rect x="0" y="0" width="120" height="8" fill="#5c3d28"/>
+  <rect x="0" y="88" width="120" height="8" fill="#5c3d28"/>
+  <rect x="0" y="0" width="8" height="96" fill="#4a3020"/>
+  <rect x="112" y="0" width="8" height="96" fill="#4a3020"/>
+  <rect x="8" y="8" width="104" height="80" fill="#3f2a1d"/>
+  <g>
+    <rect x="20" y="12" width="7" height="72" fill="#6b4527"/>
+    <rect x="20" y="12" width="7" height="40" fill="#3c3c44"/>
+    <rect x="17" y="52" width="13" height="14" fill="#6b4527"/>
+    <rect x="44" y="12" width="7" height="72" fill="#6b4527"/>
+    <rect x="44" y="12" width="7" height="40" fill="#3c3c44"/>
+    <rect x="41" y="52" width="13" height="14" fill="#6b4527"/>
+    <rect x="68" y="12" width="7" height="72" fill="#6b4527"/>
+    <rect x="68" y="12" width="7" height="40" fill="#3c3c44"/>
+    <rect x="65" y="52" width="13" height="14" fill="#6b4527"/>
+    <rect x="92" y="12" width="7" height="72" fill="#6b4527"/>
+    <rect x="92" y="12" width="7" height="40" fill="#3c3c44"/>
+    <rect x="89" y="52" width="13" height="14" fill="#6b4527"/>
+  </g>
+  <rect x="8" y="44" width="104" height="7" fill="#8a6a42"/>
+  <rect x="52" y="42" width="16" height="12" fill="#c9a227"/>
+</svg>

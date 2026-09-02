@@ -121,7 +121,16 @@ func _on_pause_texture_button_pressed():
 	GameManager.pause_game()
 
 
+# Escape is bound to both "pause" and "ui_cancel", and the menus that answer ui_cancel - the
+# inventory and every MenuPopup (shop, dialogue) - poll for it in _process, which runs after input.
+# So a single press used to do both at once: the pause menu opened, the tree froze, and the menu
+# underneath never got the _process call it needed to close itself, leaving it stranded behind the
+# pause screen.
+#
+# InventoryManager.is_open is the shared "a menu is up" flag every menu sets (see ui/menu_popup.gd),
+# so deferring to it backs the player out one level per press: the first Escape closes the shop or
+# the inventory, the next one pauses.
 func _unhandled_input(event : InputEvent) -> void:
-	if event.is_action_pressed("pause"):
+	if event.is_action_pressed("pause") and not InventoryManager.is_open:
 		GameManager.pause_game()
 		get_viewport().set_input_as_handled()

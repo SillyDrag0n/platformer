@@ -63,13 +63,13 @@ Fully rebindable in Settings (keyboard *and* controller). Defaults:
 | [player/](player/) | Player scene, upper/lower body controllers, states, gun, dynamite, grapple, camera, effects |
 | [enemies/](enemies/) | Bandit, skeleton, cactus, cactus coyote, hoop snake, bosses, shared `_common` logic |
 | [npc/](npc/) | `NPC` base plus dialog, quest, shop, welcome and bounty turn-in archetypes |
-| [levels/](levels/) | Town hub, six interiors, tutorial/story levels, boss arena, checkpoints, grapple anchors, and the `_common` scaffolding |
+| [levels/](levels/) | Town hub, eight interiors, tutorial/story levels, boss arena, checkpoints, grapple anchors, and the `_common` scaffolding |
 | [scripts/managers/](scripts/managers/) | The autoload singletons (see below) |
 | [scripts/bounties/](scripts/bounties/) | `BountyData` / `BountyStageData` / `BountyObjectiveData` / `RegionData` |
 | [scripts/](scripts/) | Abilities, items, quests, save data, state machine, shared explosion logic |
 | [abilities/](abilities/), [quests/](quests/), [items/](items/) | Data resources: dash/double jump/grapple/deadeye, side quests, weapons, ammo, cosmetics, utilities, key items |
 | [ui/](ui/) | Screens, inventory journal, shop, dialogue, notice board, HUD, theme and fonts |
-| [tileset/](tileset/) | Desert tilesets, parallax backgrounds, hub building structures |
+| [tileset/](tileset/) | Desert tilesets, parallax backgrounds, hub building structures, interior room art and props |
 | [test/unit/](test/unit/) | GUT test suite |
 
 ## Architecture notes

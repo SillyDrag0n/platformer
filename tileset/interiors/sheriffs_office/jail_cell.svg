@@ -1,0 +1,47 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="260" height="230" viewBox="0 0 260 230">
+  <!-- The cell at the far end of the office: stone-cold back wall, a bunk, a barred window too
+       high to reach, and the flat iron bars the player sees it all through. -->
+  <defs>
+    <linearGradient id="cellPane" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#e7cd9c"/>
+      <stop offset="1" stop-color="#c99356"/>
+    </linearGradient>
+  </defs>
+  <rect x="0" y="0" width="260" height="230" fill="#241c16"/>
+  <rect x="8" y="8" width="244" height="222" fill="#2e251c"/>
+  <g fill="#39302a">
+    <rect x="8" y="40" width="244" height="4"/><rect x="8" y="84" width="244" height="4"/>
+    <rect x="8" y="128" width="244" height="4"/><rect x="8" y="172" width="244" height="4"/>
+    <rect x="70" y="8" width="4" height="222"/><rect x="150" y="8" width="4" height="222"/>
+  </g>
+  <rect x="150" y="46" width="68" height="52" fill="#1b150f"/>
+  <rect x="156" y="52" width="56" height="40" fill="url(#cellPane)"/>
+  <g fill="#4a4a52">
+    <rect x="172" y="46" width="7" height="52"/><rect x="192" y="46" width="7" height="52"/>
+  </g>
+  <rect x="30" y="150" width="106" height="12" fill="#5c3d28"/>
+  <rect x="30" y="162" width="106" height="8" fill="#3f2a1d"/>
+  <rect x="34" y="140" width="98" height="12" fill="#8f8266"/>
+  <rect x="34" y="136" width="34" height="10" fill="#a2957a"/>
+  <rect x="36" y="170" width="8" height="26" fill="#3f2a1d"/>
+  <rect x="122" y="170" width="8" height="26" fill="#3f2a1d"/>
+  <rect x="0" y="196" width="260" height="34" fill="#241c16"/>
+  <g fill="#5a5a63">
+    <rect x="0" y="0" width="260" height="12"/>
+    <rect x="0" y="96" width="260" height="8"/>
+    <rect x="0" y="218" width="260" height="12"/>
+    <rect x="14" y="0" width="10" height="230"/><rect x="52" y="0" width="10" height="230"/>
+    <rect x="90" y="0" width="10" height="230"/><rect x="128" y="0" width="10" height="230"/>
+    <rect x="166" y="0" width="10" height="230"/><rect x="204" y="0" width="10" height="230"/>
+    <rect x="242" y="0" width="10" height="230"/>
+  </g>
+  <g fill="#7a7a86">
+    <rect x="14" y="0" width="4" height="230"/><rect x="52" y="0" width="4" height="230"/>
+    <rect x="90" y="0" width="4" height="230"/><rect x="128" y="0" width="4" height="230"/>
+    <rect x="166" y="0" width="4" height="230"/><rect x="204" y="0" width="4" height="230"/>
+    <rect x="242" y="0" width="4" height="230"/>
+  </g>
+  <rect x="90" y="0" width="86" height="230" fill="#3c3c44" fill-opacity="0.0"/>
+  <rect x="128" y="96" width="48" height="10" fill="#8a8a92"/>
+  <circle cx="140" cy="116" r="7" fill="#c9a227"/>
+</svg>

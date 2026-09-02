@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="60" height="72" viewBox="0 0 60 72">
+  <!-- Wall lamp. The glow is baked in, so it needs no light node to read as lit. -->
+  <defs>
+    <radialGradient id="glow" cx="0.5" cy="0.5" r="0.5">
+      <stop offset="0" stop-color="#ffcf7a" stop-opacity="0.55"/>
+      <stop offset="0.55" stop-color="#ffbe5c" stop-opacity="0.18"/>
+      <stop offset="1" stop-color="#ff9e3c" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+  <circle cx="30" cy="40" r="30" fill="url(#glow)"/>
+  <rect x="26" y="8" width="8" height="12" fill="#4a4a52"/>
+  <rect x="18" y="18" width="24" height="6" fill="#5c5c66"/>
+  <path d="M22,24 L38,24 L36,46 L24,46 Z" fill="#ffd98f"/>
+  <path d="M26,28 L34,28 L33,44 L27,44 Z" fill="#fff2cf"/>
+  <rect x="20" y="46" width="20" height="6" fill="#5c5c66"/>
+</svg>

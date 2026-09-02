@@ -1,0 +1,39 @@
+[gd_scene load_steps=7 format=3 uid="uid://b2ry6lpywpuox"]
+
+[ext_resource type="Script" uid="uid://cdk3xda67fick" path="res://tileset/structures/hub_structure.gd" id="1_3qtpi"]
+[ext_resource type="Texture2D" path="res://tileset/structures/chapel/chapel.svg" id="2_d8a2n"]
+[ext_resource type="PackedScene" uid="uid://s2gswtyrtm5x" path="res://interaction_component/interactable.tscn" id="3_bnqmy"]
+[ext_resource type="FontFile" uid="uid://bn7ed1nmtuvnj" path="res://ui/font/BoldPixels.ttf" id="3_d8a2n"]
+
+[sub_resource type="LabelSettings" id="LabelSettings_bnqmy"]
+font = ExtResource("3_d8a2n")
+outline_size = 4
+outline_color = Color(0, 0, 0, 1)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_ymhjx"]
+size = Vector2(70, 70)
+
+[node name="Chapel" type="Node2D"]
+z_index = 20
+script = ExtResource("1_3qtpi")
+destination_scene_key = "Chapel"
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+position = Vector2(0, -110)
+texture = ExtResource("2_d8a2n")
+
+[node name="NameLabel" type="Label" parent="."]
+offset_left = -70.0
+offset_top = -172.0
+offset_right = 70.0
+offset_bottom = -148.0
+text = "Chapel"
+label_settings = SubResource("LabelSettings_bnqmy")
+horizontal_alignment = 1
+
+[node name="Interactable" parent="." instance=ExtResource("3_bnqmy")]
+interact_name = "Enter Chapel"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Interactable"]
+position = Vector2(0, -35)
+shape = SubResource("RectangleShape2D_ymhjx")

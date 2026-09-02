@@ -1,0 +1,21 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="130" height="96" viewBox="0 0 130 96">
+  <!-- The altar: a table under a cloth, two candles and a bible. -->
+  <rect x="0" y="36" width="130" height="10" fill="#8d5f39"/>
+  <rect x="6" y="46" width="118" height="50" fill="#e6dcc0"/>
+  <rect x="6" y="46" width="118" height="8" fill="#f2ead4"/>
+  <rect x="6" y="76" width="118" height="6" fill="#b0442f"/>
+  <rect x="6" y="84" width="118" height="4" fill="#c9a227"/>
+  <g>
+    <rect x="22" y="22" width="6" height="14" fill="#c9a227"/>
+    <rect x="18" y="18" width="14" height="5" fill="#c9a227"/>
+    <rect x="23" y="8" width="4" height="11" fill="#efe6d2"/>
+    <ellipse cx="25" cy="7" rx="3" ry="5" fill="#ffd98f"/>
+    <rect x="102" y="22" width="6" height="14" fill="#c9a227"/>
+    <rect x="98" y="18" width="14" height="5" fill="#c9a227"/>
+    <rect x="103" y="8" width="4" height="11" fill="#efe6d2"/>
+    <ellipse cx="105" cy="7" rx="3" ry="5" fill="#ffd98f"/>
+  </g>
+  <rect x="52" y="26" width="26" height="10" fill="#5c2f28"/>
+  <rect x="52" y="26" width="26" height="3" fill="#7a3f36"/>
+  <rect x="63" y="28" width="4" height="7" fill="#c9a227"/>
+</svg>

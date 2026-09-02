@@ -1,0 +1,86 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1000" height="540" viewBox="0 0 1000 540">
+  <!-- The sheriff's office. Game coords: x = sx - 500, y = sy - 270; floor at sy 400 (y 130).
+       Board walls, a low ceiling of exposed joists, and a storage loft over the cell end. -->
+  <defs>
+    <linearGradient id="roof" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#150e07"/>
+      <stop offset="1" stop-color="#2b1e12"/>
+    </linearGradient>
+    <linearGradient id="pane" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#f3dcab"/>
+      <stop offset="1" stop-color="#d9a869"/>
+    </linearGradient>
+    <linearGradient id="wallFade" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#1c1209" stop-opacity="0.55"/>
+      <stop offset="1" stop-color="#1c1209" stop-opacity="0"/>
+    </linearGradient>
+    <linearGradient id="floorFade" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#241606" stop-opacity="0.5"/>
+      <stop offset="1" stop-color="#241606" stop-opacity="0"/>
+    </linearGradient>
+    <linearGradient id="bottomFade" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#170f06" stop-opacity="0"/>
+      <stop offset="1" stop-color="#170f06" stop-opacity="0.55"/>
+    </linearGradient>
+  </defs>
+
+  <!-- roof void with joists -->
+  <rect x="0" y="0" width="1000" height="120" fill="url(#roof)"/>
+  <g fill="#3a2716">
+    <rect x="60" y="70" width="20" height="50"/><rect x="260" y="70" width="20" height="50"/>
+    <rect x="460" y="70" width="20" height="50"/><rect x="660" y="70" width="20" height="50"/>
+    <rect x="860" y="70" width="20" height="50"/>
+  </g>
+  <rect x="0" y="62" width="1000" height="12" fill="#4a3320"/>
+  <rect x="0" y="120" width="1000" height="10" fill="#5c4128"/>
+  <rect x="0" y="130" width="1000" height="6" fill="#3a2716"/>
+
+  <!-- loft over the right-hand end, boards and a rail -->
+  <rect x="620" y="136" width="380" height="14" fill="#6b4c2c"/>
+  <rect x="620" y="150" width="380" height="10" fill="#3a2716"/>
+  <g fill="#5c4128">
+    <rect x="640" y="100" width="8" height="40"/><rect x="700" y="100" width="8" height="40"/>
+    <rect x="760" y="100" width="8" height="40"/><rect x="820" y="100" width="8" height="40"/>
+    <rect x="880" y="100" width="8" height="40"/><rect x="940" y="100" width="8" height="40"/>
+  </g>
+  <rect x="620" y="94" width="380" height="8" fill="#7a5a34"/>
+
+  <!-- board wall -->
+  <rect x="0" y="136" width="1000" height="264" fill="#6b5033"/>
+  <rect x="0" y="136" width="1000" height="60" fill="url(#wallFade)"/>
+  <g fill="#5b4229">
+    <rect x="0" y="164" width="1000" height="4"/><rect x="0" y="196" width="1000" height="4"/>
+    <rect x="0" y="228" width="1000" height="4"/><rect x="0" y="260" width="1000" height="4"/>
+    <rect x="0" y="292" width="1000" height="4"/><rect x="0" y="324" width="1000" height="4"/>
+    <rect x="0" y="356" width="1000" height="4"/>
+  </g>
+  <g fill="#7a5c3a">
+    <rect x="120" y="136" width="7" height="264"/><rect x="380" y="136" width="7" height="264"/>
+    <rect x="600" y="136" width="7" height="264"/><rect x="860" y="136" width="7" height="264"/>
+  </g>
+
+  <!-- window onto the street -->
+  <rect x="180" y="196" width="128" height="96" fill="#3f2c1a"/>
+  <rect x="188" y="204" width="112" height="80" fill="url(#pane)"/>
+  <rect x="238" y="204" width="10" height="80" fill="#3f2c1a"/>
+  <rect x="188" y="238" width="112" height="8" fill="#3f2c1a"/>
+  <rect x="174" y="188" width="140" height="10" fill="#8a6a42"/>
+  <rect x="174" y="290" width="140" height="10" fill="#8a6a42"/>
+
+  <!-- baseboard -->
+  <rect x="0" y="378" width="1000" height="10" fill="#563d24"/>
+  <rect x="0" y="388" width="1000" height="12" fill="#3a2716"/>
+
+  <!-- plank floor -->
+  <rect x="0" y="400" width="1000" height="140" fill="#7d5a33"/>
+  <rect x="0" y="400" width="1000" height="6" fill="#96703f"/>
+  <g fill="#654626">
+    <rect x="0" y="438" width="1000" height="4"/>
+    <rect x="0" y="486" width="1000" height="4"/>
+    <rect x="90" y="400" width="4" height="140"/><rect x="250" y="400" width="4" height="140"/>
+    <rect x="410" y="400" width="4" height="140"/><rect x="570" y="400" width="4" height="140"/>
+    <rect x="730" y="400" width="4" height="140"/><rect x="890" y="400" width="4" height="140"/>
+  </g>
+  <rect x="0" y="400" width="1000" height="32" fill="url(#floorFade)"/>
+  <rect x="0" y="452" width="1000" height="88" fill="url(#bottomFade)"/>
+</svg>

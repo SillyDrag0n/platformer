@@ -1,0 +1,31 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="260" height="126" viewBox="0 0 260 126">
+  <!-- Shelves, bottles and the mirror behind the bar. Stands on the floor against the wall. -->
+  <rect x="0" y="0" width="260" height="126" fill="#4a3020"/>
+  <rect x="6" y="6" width="248" height="114" fill="#5c3d28"/>
+  <rect x="86" y="12" width="88" height="72" fill="#33220f"/>
+  <rect x="90" y="16" width="80" height="64" fill="#7f8a8f"/>
+  <polygon points="90,80 90,44 130,16 154,16 96,80" fill="#96a1a6"/>
+  <rect x="10" y="30" width="70" height="6" fill="#6b4527"/>
+  <rect x="180" y="30" width="70" height="6" fill="#6b4527"/>
+  <rect x="10" y="64" width="70" height="6" fill="#6b4527"/>
+  <rect x="180" y="64" width="70" height="6" fill="#6b4527"/>
+  <g>
+    <rect x="16" y="14" width="8" height="16" fill="#4f7a4a"/><rect x="17" y="10" width="6" height="6" fill="#3d5f39"/>
+    <rect x="30" y="12" width="8" height="18" fill="#8b4a2e"/><rect x="31" y="8" width="6" height="6" fill="#6b3a24"/>
+    <rect x="46" y="16" width="8" height="14" fill="#c9a227"/><rect x="47" y="12" width="6" height="6" fill="#9c7d1e"/>
+    <rect x="62" y="13" width="8" height="17" fill="#4a5f7a"/><rect x="63" y="9" width="6" height="6" fill="#3a4b60"/>
+    <rect x="188" y="14" width="8" height="16" fill="#8b4a2e"/><rect x="189" y="10" width="6" height="6" fill="#6b3a24"/>
+    <rect x="204" y="12" width="8" height="18" fill="#4f7a4a"/><rect x="205" y="8" width="6" height="6" fill="#3d5f39"/>
+    <rect x="220" y="16" width="8" height="14" fill="#c9a227"/><rect x="221" y="12" width="6" height="6" fill="#9c7d1e"/>
+    <rect x="236" y="13" width="8" height="17" fill="#7a3a5f"/><rect x="237" y="9" width="6" height="6" fill="#5e2c49"/>
+    <rect x="20" y="48" width="8" height="16" fill="#8b4a2e"/><rect x="36" y="46" width="8" height="18" fill="#4a5f7a"/>
+    <rect x="52" y="50" width="8" height="14" fill="#4f7a4a"/>
+    <rect x="196" y="48" width="8" height="16" fill="#c9a227"/><rect x="212" y="46" width="8" height="18" fill="#8b4a2e"/>
+    <rect x="228" y="50" width="8" height="14" fill="#4f7a4a"/>
+  </g>
+  <rect x="86" y="84" width="88" height="36" fill="#6b4527"/>
+  <rect x="94" y="92" width="30" height="20" fill="#4a3020"/>
+  <rect x="136" y="92" width="30" height="20" fill="#4a3020"/>
+  <rect x="6" y="96" width="74" height="24" fill="#4a3020"/>
+  <rect x="180" y="96" width="74" height="24" fill="#4a3020"/>
+</svg>

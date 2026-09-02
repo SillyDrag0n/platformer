@@ -18,6 +18,7 @@ outline_color = Color(0, 0, 0, 1)
 [node name="RailwayStation" type="Node2D"]
 z_index = 20
 script = ExtResource("1_rail")
+destination_scene_key = "RailwayStation"
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
 position = Vector2(0, -65)
@@ -33,7 +34,7 @@ label_settings = SubResource("LabelSettings_nameplate")
 horizontal_alignment = 1
 
 [node name="Interactable" parent="." instance=ExtResource("3_interact")]
-interact_name = "Wait for Train"
+interact_name = "Enter Railway Station"
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Interactable"]
 position = Vector2(0, -50)

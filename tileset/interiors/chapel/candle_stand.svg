@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="60" height="96" viewBox="0 0 60 96">
+  <defs>
+    <radialGradient id="candleGlow" cx="0.5" cy="0.5" r="0.5">
+      <stop offset="0" stop-color="#ffcf7a" stop-opacity="0.45"/>
+      <stop offset="1" stop-color="#ff9e3c" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+  <circle cx="30" cy="22" r="30" fill="url(#candleGlow)"/>
+  <rect x="26" y="26" width="8" height="58" fill="#8a7a4a"/>
+  <ellipse cx="30" cy="86" rx="16" ry="6" fill="#8a7a4a"/>
+  <ellipse cx="30" cy="84" rx="16" ry="6" fill="#a1904f"/>
+  <rect x="10" y="22" width="40" height="6" fill="#a1904f"/>
+  <g>
+    <rect x="12" y="10" width="5" height="12" fill="#efe6d2"/><ellipse cx="14" cy="8" rx="3" ry="5" fill="#ffd98f"/>
+    <rect x="27" y="6" width="5" height="16" fill="#efe6d2"/><ellipse cx="29" cy="4" rx="3" ry="5" fill="#ffd98f"/>
+    <rect x="42" y="10" width="5" height="12" fill="#efe6d2"/><ellipse cx="44" cy="8" rx="3" ry="5" fill="#ffd98f"/>
+  </g>
+</svg>

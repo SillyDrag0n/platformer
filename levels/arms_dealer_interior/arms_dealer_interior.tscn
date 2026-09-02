@@ -1,4 +1,4 @@
-[gd_scene load_steps=11 format=3]
+[gd_scene load_steps=21 format=3]
 
 [ext_resource type="Script" path="res://levels/_common/interior_level.gd" id="1_ext01"]
 [ext_resource type="PackedScene" uid="uid://bfcmjoltsmsed" path="res://player/player.tscn" id="2_ext02"]
@@ -8,9 +8,22 @@
 [ext_resource type="PackedScene" uid="uid://rx3auanfsgp0" path="res://ui/inventory/InventoryUI.tscn" id="6_ext06"]
 [ext_resource type="PackedScene" uid="uid://s2gswtyrtm5x" path="res://interaction_component/interactable.tscn" id="7_ext07"]
 [ext_resource type="PackedScene" path="res://tileset/structures/arms_dealer/arms_dealer.tscn" id="8_dealer"]
+[ext_resource type="Texture2D" path="res://tileset/interiors/arms_dealer/room.svg" id="9_room"]
+[ext_resource type="Texture2D" path="res://tileset/interiors/arms_dealer/display_case.svg" id="10_case"]
+[ext_resource type="Texture2D" path="res://tileset/interiors/arms_dealer/workbench.svg" id="11_bench"]
+[ext_resource type="Texture2D" path="res://tileset/interiors/arms_dealer/ammo_shelf.svg" id="12_shelf"]
+[ext_resource type="Texture2D" path="res://tileset/interiors/arms_dealer/target_board.svg" id="13_target"]
+[ext_resource type="Texture2D" path="res://tileset/interiors/common/gun_rack.svg" id="14_rack"]
+[ext_resource type="Texture2D" path="res://tileset/interiors/common/barrel.svg" id="15_barrel"]
+[ext_resource type="Texture2D" path="res://tileset/interiors/common/crate.svg" id="16_crate"]
+[ext_resource type="Texture2D" path="res://tileset/interiors/common/oil_lamp.svg" id="17_lamp"]
+[ext_resource type="Texture2D" path="res://tileset/interiors/common/plank_door.svg" id="18_door"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_floor"]
-size = Vector2(900, 40)
+size = Vector2(1000, 40)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_wall"]
+size = Vector2(24, 400)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_door"]
 size = Vector2(60, 100)
@@ -24,7 +37,11 @@ script = ExtResource("1_ext01")
 [node name="Background" type="Polygon2D" parent="."]
 z_index = -10
 color = Color(0.14902, 0.14902, 0.176471, 1)
-polygon = PackedVector2Array(-500, -350, 500, -350, 500, 170, -500, 170)
+polygon = PackedVector2Array(-500, -270, 500, -270, 500, 270, -500, 270)
+
+[node name="Room" type="Sprite2D" parent="."]
+z_index = -9
+texture = ExtResource("9_room")
 
 [node name="Floor" type="StaticBody2D" parent="."]
 collision_layer = 1
@@ -34,18 +51,70 @@ collision_mask = 0
 position = Vector2(0, 150)
 shape = SubResource("RectangleShape2D_floor")
 
-[node name="FloorVisual" type="Polygon2D" parent="Floor"]
-z_index = -5
-position = Vector2(0, 150)
-color = Color(0.278431, 0.270588, 0.290196, 1)
-polygon = PackedVector2Array(-450, -20, 450, -20, 450, 20, -450, 20)
+[node name="Walls" type="StaticBody2D" parent="."]
+collision_layer = 1
+collision_mask = 0
+
+[node name="LeftWall" type="CollisionShape2D" parent="Walls"]
+position = Vector2(-492, -70)
+shape = SubResource("RectangleShape2D_wall")
+
+[node name="RightWall" type="CollisionShape2D" parent="Walls"]
+position = Vector2(492, -70)
+shape = SubResource("RectangleShape2D_wall")
+
+[node name="WallDecor" type="Node2D" parent="."]
+z_index = -6
+
+[node name="GunRackLeft" type="Sprite2D" parent="WallDecor"]
+position = Vector2(-140, 16)
+texture = ExtResource("14_rack")
+
+[node name="GunRackRight" type="Sprite2D" parent="WallDecor"]
+position = Vector2(0, 16)
+texture = ExtResource("14_rack")
+
+[node name="TargetBoard" type="Sprite2D" parent="WallDecor"]
+position = Vector2(430, 10)
+texture = ExtResource("13_target")
+
+[node name="Lamp" type="Sprite2D" parent="WallDecor"]
+position = Vector2(-70, 20)
+texture = ExtResource("17_lamp")
+
+[node name="Furniture" type="Node2D" parent="."]
+z_index = -2
+
+[node name="AmmoShelf" type="Sprite2D" parent="Furniture"]
+position = Vector2(310, 70)
+texture = ExtResource("12_shelf")
+
+[node name="Workbench" type="Sprite2D" parent="Furniture"]
+position = Vector2(-280, 65)
+texture = ExtResource("11_bench")
+
+[node name="Barrel" type="Sprite2D" parent="Furniture"]
+position = Vector2(415, 101)
+texture = ExtResource("15_barrel")
+
+[node name="Crate" type="Sprite2D" parent="Furniture"]
+position = Vector2(444, 109)
+texture = ExtResource("16_crate")
+
+[node name="CrateStacked" type="Sprite2D" parent="Furniture"]
+position = Vector2(444, 67)
+texture = ExtResource("16_crate")
 
 [node name="Player" parent="." instance=ExtResource("2_ext02")]
-position = Vector2(0, 100)
+position = Vector2(-365, 100)
 
 [node name="PlayerCamera" type="Camera2D" parent="." node_paths=PackedStringArray("player")]
 position = Vector2(0, 60)
 zoom = Vector2(2, 2)
+limit_left = -500
+limit_top = -270
+limit_right = 500
+limit_bottom = 270
 script = ExtResource("3_ext03")
 player = NodePath("../Player")
 
@@ -58,7 +127,7 @@ visible = false
 visible = false
 
 [node name="ArmsDealer" parent="." instance=ExtResource("8_dealer")]
-position = Vector2(150, 100)
+position = Vector2(170, 130)
 
 [node name="Counter" type="StaticBody2D" parent="."]
 position = Vector2(125, 130)
@@ -69,19 +138,20 @@ collision_mask = 0
 position = Vector2(0, -25)
 shape = SubResource("RectangleShape2D_counter")
 
-[node name="CounterVisual" type="Polygon2D" parent="Counter"]
+[node name="CounterVisual" type="Sprite2D" parent="Counter"]
 z_index = 20
-color = Color(0.45, 0.32, 0.18, 1)
-polygon = PackedVector2Array(-25, -50, 25, -50, 25, 0, -25, 0)
+position = Vector2(0, -25)
+texture = ExtResource("10_case")
 
 [node name="ExitDoor" parent="." instance=ExtResource("7_ext07")]
-position = Vector2(-380, 130)
+position = Vector2(-450, 130)
 interact_name = "Exit Arms Dealer"
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="ExitDoor"]
 position = Vector2(0, -50)
 shape = SubResource("RectangleShape2D_door")
 
-[node name="DoorVisual" type="Polygon2D" parent="ExitDoor"]
-color = Color(0.180392, 0.101961, 0.062745, 1)
-polygon = PackedVector2Array(-30, -100, 30, -100, 30, 0, -30, 0)
+[node name="DoorVisual" type="Sprite2D" parent="ExitDoor"]
+z_index = -6
+position = Vector2(0, -59)
+texture = ExtResource("18_door")

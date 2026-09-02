@@ -1,0 +1,43 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="180" height="300" viewBox="0 0 180 300">
+  <!-- Stone hearth with a fire in it and a pot hung over. The stack carries all the way up into
+       the rafters, so it reads as part of the house rather than a box against the wall. -->
+  <defs>
+    <radialGradient id="hearthGlow" cx="0.5" cy="0.5" r="0.5">
+      <stop offset="0" stop-color="#ffb45c" stop-opacity="0.5"/>
+      <stop offset="0.55" stop-color="#ff8f3c" stop-opacity="0.16"/>
+      <stop offset="1" stop-color="#ff7a1c" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+  <rect x="40" y="0" width="100" height="152" fill="#7d766a"/>
+  <rect x="40" y="0" width="26" height="152" fill="#8d8579"/>
+  <g fill="#6d675c">
+    <rect x="40" y="34" width="100" height="5"/><rect x="40" y="72" width="100" height="5"/>
+    <rect x="40" y="110" width="100" height="5"/>
+    <rect x="88" y="0" width="5" height="34"/><rect x="112" y="39" width="5" height="33"/>
+    <rect x="70" y="77" width="5" height="33"/><rect x="104" y="115" width="5" height="37"/>
+  </g>
+  <polygon points="40,152 140,152 168,186 12,186" fill="#8d8579"/>
+  <rect x="12" y="186" width="156" height="114" fill="#7d766a"/>
+  <g fill="#6d675c">
+    <rect x="12" y="210" width="156" height="5"/><rect x="12" y="240" width="156" height="5"/>
+    <rect x="12" y="270" width="156" height="5"/>
+    <rect x="54" y="186" width="5" height="24"/><rect x="112" y="186" width="5" height="24"/>
+    <rect x="34" y="215" width="5" height="25"/><rect x="88" y="215" width="5" height="25"/>
+    <rect x="140" y="215" width="5" height="25"/>
+  </g>
+  <rect x="40" y="212" width="100" height="88" fill="#2a231c"/>
+  <circle cx="90" cy="268" r="58" fill="url(#hearthGlow)"/>
+  <g>
+    <polygon points="56,292 124,292 116,278 64,278" fill="#5c3d28"/>
+    <polygon points="60,278 120,278 112,266 68,266" fill="#4a3020"/>
+    <path d="M70,278 Q80,248 90,266 Q100,240 112,278 Z" fill="#ff8f3c"/>
+    <path d="M78,278 Q86,256 92,270 Q99,252 106,278 Z" fill="#ffd07a"/>
+    <path d="M86,278 Q90,264 96,278 Z" fill="#fff2cf"/>
+  </g>
+  <rect x="46" y="220" width="88" height="6" fill="#3c3c44"/>
+  <path d="M74,226 q0,26 16,26 q16,0 16,-26 z" fill="#3c3c44"/>
+  <rect x="72" y="224" width="36" height="6" fill="#55555f"/>
+  <rect x="0" y="182" width="180" height="10" fill="#5c3d28"/>
+  <rect x="26" y="166" width="34" height="16" fill="#8a6a42"/>
+  <rect x="118" y="170" width="26" height="12" fill="#8b3a2e"/>
+</svg>
