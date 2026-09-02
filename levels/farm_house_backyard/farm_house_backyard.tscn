@@ -77,7 +77,7 @@ watch_action = &"shoot"
 hint_text_format = "Watch out, there's a bandit. Press %s to Shoot him."
 
 [node name="HintZoneReload" parent="." instance=ExtResource("8_ext08")]
-position = Vector2(1000, 46)
+position = Vector2(1064, 48)
 watch_action = &"reload"
 hint_text_format = "Press %s to Reload"
 
@@ -90,7 +90,7 @@ respawn_marker = NodePath("../RespawnPosition")
 position = Vector2(2831, 0)
 
 [node name="Bandit" parent="." instance=ExtResource("11_yx8ks")]
-position = Vector2(1475, 64)
+position = Vector2(1407, 59)
 
 [node name="CoyoteEncounter" type="Area2D" parent="." node_paths=PackedStringArray("coyote", "dialogue_box", "camera", "farmer", "farmer_mark")]
 position = Vector2(2600, -32)

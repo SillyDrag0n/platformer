@@ -256,3 +256,10 @@ func give_bounty_reward() -> void:
 	for ability in active_bounty.ability_rewards:
 		AbilityManager.unlock_ability(ability)
 	SaveManager.save_game()
+
+# Whether a bounty is authored as available from the start, as opposed to one the game opens up
+# later. Read by SaveManager so a slot written before a bounty became a starting one cannot put it
+# back behind a lock - see apply_save_data().
+func is_authored_unlocked(id : String) -> bool:
+	var state : Dictionary = _authored_bounty_state.get(id, {})
+	return state.get("unlocked", false)

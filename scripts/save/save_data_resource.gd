@@ -45,3 +45,8 @@ extends Resource
 # still parses, and migrated across once on load - see SaveManager._migrate_legacy_story_flags().
 @export var has_shown_hub_welcome : bool = false
 @export var has_driven_off_coyote : bool = false
+
+# The contract the player was part-way through when the game was written. Stored as the bounty's
+# id rather than the resource, the same way inventory stores paths: BountyData is an authored
+# template shared by every save, not per-save data. Empty means no job in hand.
+@export var active_bounty_id : String = ""

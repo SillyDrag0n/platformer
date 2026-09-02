@@ -169,6 +169,8 @@ func save_game():
 			"completed_objectives": completed_objectives,
 		}
 
+	data.active_bounty_id = GameStateManager.active_bounty.id if GameStateManager.active_bounty != null else ""
+
 	for region in GameStateManager.regions:
 		data.region_states[region.id] = region.unlocked
 
@@ -247,7 +249,12 @@ func load_game():
 		var bounty : BountyData = GameStateManager.get_bounty_by_id(bounty_id)
 		if bounty != null:
 			var state : Dictionary = data.bounty_states[bounty_id]
-			bounty.unlocked = state.get("unlocked", bounty.unlocked)
+			# A bounty the game now ships unlocked stays unlocked, whatever an older save says.
+			# Missing Cattle used to be put on the board by talking to the Old Timer, so a slot
+			# saved before that changed carries "unlocked: false" and would hide the game's first
+			# job from a player loading it.
+			var authored_unlocked : bool = GameStateManager.is_authored_unlocked(bounty_id)
+			bounty.unlocked = state.get("unlocked", bounty.unlocked) or authored_unlocked
 			bounty.completed = state.get("completed", bounty.completed)
 			bounty.reward_claimed = state.get("reward_claimed", bounty.reward_claimed)
 
@@ -257,6 +264,12 @@ func load_game():
 			for stage in bounty.stages:
 				for objective in stage.objectives:
 					objective.completed = completed_objectives.has(objective.id)
+
+	# Put the job back in the player's hand. Without this, quitting part-way through a contract
+	# came back with nothing active: the bounty and every objective ticked off were still there,
+	# but the game had forgotten it was the one being worked on.
+	if data.active_bounty_id != "":
+		GameStateManager.set_active_bounty(GameStateManager.get_bounty_by_id(data.active_bounty_id))
 
 	for region in GameStateManager.regions:
 		if data.region_states.has(region.id):

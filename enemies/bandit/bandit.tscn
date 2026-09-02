@@ -79,12 +79,13 @@ height = 60.0
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_8ytsa"]
 size = Vector2(500, 250)
 
-[node name="Bandit" type="CharacterBody2D" node_paths=PackedStringArray("gun_muzzle")]
+[node name="Bandit" type="CharacterBody2D" node_paths=PackedStringArray("gun_muzzle", "state_machine")]
 z_index = 50
 collision_layer = 4
 collision_mask = 387
 script = ExtResource("1_dhyvq")
 gun_muzzle = NodePath("Muzzle")
+state_machine = NodePath("StateMachine")
 enemy_id = "bandit"
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]

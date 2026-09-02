@@ -3,6 +3,9 @@ extends NPC
 
 @export var speaker_name : String = "Old Timer"
 @export var dialogue_lines : Array[String] = []
+# Any bounty this NPC should put on the board when his dialogue closes. Missing Cattle no longer
+# needs it - it is authored unlocked so the first job is always there to take - but the hook stays
+# for an NPC who is genuinely the one handing a contract over.
 @export var bounty_to_unlock_id : String = "missing_cattle"
 @export var greet_delay_seconds : float = 1.0
 
@@ -15,8 +18,11 @@ var _has_greeted := false
 func _ready() -> void:
 	super._ready()
 	dialogue_box.closed.connect(_on_dialogue_closed)
-	var already_unlocked := GameStateManager.is_bounty_unlocked(bounty_to_unlock_id)
-	if not already_unlocked and not GameStateManager.has_story_flag(GameStateManager.FLAG_HUB_WELCOME_SHOWN):
+	# Gated on the story beat alone. It used to also require the bounty to still be locked, which
+	# only worked while the Old Timer was the thing that put it on the board - now that Missing
+	# Cattle ships unlocked, that condition would be false on the very first visit and he would
+	# never say a word.
+	if not GameStateManager.has_story_flag(GameStateManager.FLAG_HUB_WELCOME_SHOWN):
 		greet_timer.start(greet_delay_seconds)
 
 

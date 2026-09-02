@@ -8,6 +8,20 @@ func _ready():
 	#RenderingServer.set_default_clear_color(Color(0.44,0.12,0.53,1.00))
 
 	SettingsManager.load_settings()
+	# Godot closes the window itself unless asked not to, which meant a player who quit the way
+	# almost everyone quits - the X, or Alt+F4 - was never given the chance to save. Only the Exit
+	# Game button in the menus called save_game(), so a session's progress since the last story
+	# beat simply went away: money picked up, items bought, objectives ticked off, the lot.
+	get_tree().auto_accept_quit = false
+
+
+# Reached for the window's close button and Alt+F4 (and nothing else - exit_game() below saves on
+# its own before quitting, and is not routed through here).
+func _notification(what : int) -> void:
+	if what != NOTIFICATION_WM_CLOSE_REQUEST:
+		return
+	SaveManager.save_game()
+	get_tree().quit()
 
 
 # PLAY opens the save slots rather than the game. Nothing is loaded at boot any more, so which of
