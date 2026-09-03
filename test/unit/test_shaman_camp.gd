@@ -1,11 +1,11 @@
 extends GutTest
 
-# The level the Missing Cattle contract's second leg is played in (levels/shaman_camp/). It's the
-# first level in the project that was laid out from a script rather than by hand, so what's worth
-# pinning is that it actually loads with everything a level needs, that its ground is solid, and
-# that talking to the shaman is what finishes the leg.
+# The level the Missing Cattle contract's second leg is played in
+# (levels/regions/plains/shaman_camp/). It's the first level in the project that was laid out from
+# a script rather than by hand, so what's worth pinning is that it actually loads with everything
+# a level needs, that its ground is solid, and that talking to the shaman is what finishes the leg.
 
-const ShamanCampScene = preload("res://levels/shaman_camp/shaman_camp.tscn")
+const ShamanCampScene = preload("res://levels/regions/plains/shaman_camp/shaman_camp.tscn")
 const BOUNTY_ID := "missing_cattle"
 const STAGE_OBJECTIVES := ["find_shaman", "learn_about_creature", "learn_to_track"]
 
@@ -115,3 +115,53 @@ func test_talking_to_the_shaman_finishes_that_leg_of_the_contract():
 	assert_eq(bounty.get_current_stage().id, "hunt", \
 		"and the contract moves on to hunting the thing down")
 	assert_false(bounty.completed, "which is still ahead of the player, so the job isn't done")
+
+
+# The camp used to have no way out of it at all: her conversation ticked the contract along and
+# then left the player stood in the desert with nothing to press but "Main Menu". The conversation
+# is the level's ending now, the same way the coyote encounter ends the tutorial - see the
+# coyote_encounter.gd in levels/regions/plains/farm_house_backyard/, which this is deliberately
+# modelled on.
+func test_the_conversation_is_the_way_out_of_the_camp():
+	var camp := _make_camp()
+	await wait_physics_frames(1)
+	# Nowhere to go on the way out: a real scene key would swap the whole test scene out from
+	# under the runner when the summary screen loads.
+	camp.exit_scene_key = ""
+
+	var bounty := GameStateManager.get_bounty_by_id(BOUNTY_ID)
+	for objective in bounty.stages[0].objectives:
+		GameStateManager.complete_objective(BOUNTY_ID, objective.id)
+
+	var shaman = camp.get_node("Shaman")
+	shaman._on_interact()
+	await wait_frames(1)
+	shaman.dialogue_box.close()
+	await wait_frames(1)
+
+	var stage : BountyStageData = camp.completed_stage()
+	assert_not_null(stage, "her having had her say is the whole of this leg")
+	assert_eq(stage.id, "seek_the_shaman", "and it is this one that the summary reports on")
+	assert_true(camp._leaving_the_camp, \
+		"so the level ends on that conversation rather than standing the player in the desert")
+
+
+# The other half of that: a player who rides back out here with the leg already behind them should
+# find her willing to talk, not be marched through a summary screen for a leg they finished days
+# ago.
+func test_riding_back_out_afterwards_is_a_visit_rather_than_another_ending():
+	for objective_id in STAGE_OBJECTIVES:
+		GameStateManager.complete_objective(BOUNTY_ID, objective_id)
+
+	var camp := _make_camp()
+	await wait_physics_frames(1)
+	camp.exit_scene_key = ""
+
+	var shaman = camp.get_node("Shaman")
+	shaman._on_interact()
+	await wait_frames(1)
+	shaman.dialogue_box.close()
+	await wait_frames(1)
+
+	assert_false(camp._leaving_the_camp, \
+		"the leg was already done when they walked in, so there is nothing here to finish again")

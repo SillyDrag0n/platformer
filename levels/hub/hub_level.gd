@@ -25,8 +25,8 @@ func _on_level_ready() -> void:
 
 
 # Keyed off the same story flag the encounter uses to retire itself (FLAG_COYOTE_DRIVEN_OFF - see
-# levels/farm_house_backyard/coyote_encounter.gd's _ready()), so town stays cleared across a
-# restart rather than only for the trip home.
+# the _ready() in levels/regions/plains/farm_house_backyard/coyote_encounter.gd), so town stays
+# cleared across a restart rather than only for the trip home.
 #
 # Freed rather than hidden: a hidden Old Timer is still an interactable the player can walk into
 # and start a conversation with, and a hidden HintZone still fires its prompt on body_entered.

@@ -286,7 +286,8 @@ func _write() -> void:
 		push_error("hub_theme_gen: cannot write %s" % OUT_PATH)
 		return
 	f.store_buffer("RIFF".to_ascii_buffer())
-	f.store_32(36 + data.size())
+	# Everything after this field: fmt (24) + data header (8) + samples + smpl (68).
+	f.store_32(36 + data.size() + 68)
 	f.store_buffer("WAVE".to_ascii_buffer())
 	f.store_buffer("fmt ".to_ascii_buffer())
 	f.store_32(16)
@@ -299,7 +300,36 @@ func _write() -> void:
 	f.store_buffer("data".to_ascii_buffer())
 	f.store_32(data.size())
 	f.store_buffer(data)
+	_store_loop_marker(f, total)
 	f.close()
 
 	print("hub_theme_gen: wrote %s - %.2f s, %d bars at %d BPM, %.2f MB" \
 		% [OUT_PATH, float(total) / SAMPLE_RATE, BARS, int(BPM), data.size() / 1048576.0])
+
+
+# A `smpl` chunk marking the whole track as one forward loop.
+#
+# The theme has to loop - the player is in town for as long as they like - and this is the only
+# place that can say so durably. MusicManager forces looping on streams with a `loop` property,
+# which an AudioStreamWAV does not have; the alternative, the importer's own loop_mode flag, lives
+# in hub_theme.wav.import, and *.import is gitignored, so it would not survive a fresh clone. The
+# marker travels inside the file the repo actually tracks, and the importer's default setting
+# ("Detect From WAV") reads it.
+func _store_loop_marker(f : FileAccess, frames : int) -> void:
+	f.store_buffer("smpl".to_ascii_buffer())
+	f.store_32(60)                              # chunk size: 36 header + 24 for one loop
+	f.store_32(0)                               # manufacturer
+	f.store_32(0)                               # product
+	f.store_32(int(1000000000.0 / SAMPLE_RATE)) # sample period, nanoseconds
+	f.store_32(60)                              # MIDI unity note - middle C, unused here
+	f.store_32(0)                               # MIDI pitch fraction
+	f.store_32(0)                               # SMPTE format
+	f.store_32(0)                               # SMPTE offset
+	f.store_32(1)                               # one loop
+	f.store_32(0)                               # no sampler-specific data
+	f.store_32(0)                               # cue point id
+	f.store_32(0)                               # type: forward
+	f.store_32(0)                               # start frame
+	f.store_32(frames - 1)                      # end frame
+	f.store_32(0)                               # fraction
+	f.store_32(0)                               # play count: forever

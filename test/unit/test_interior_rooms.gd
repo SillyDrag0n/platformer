@@ -7,14 +7,14 @@ extends GutTest
 # that is what is pinned here, because it is invisible in the art and easy to lose in a re-layout.
 
 const INTERIORS := [
-	"res://levels/arms_dealer_interior/arms_dealer_interior.tscn",
-	"res://levels/farm_house_interior/farm_house_interior.tscn",
-	"res://levels/bank_interior/bank_interior.tscn",
-	"res://levels/post_office_interior/post_office_interior.tscn",
-	"res://levels/saloon_interior/saloon_interior.tscn",
-	"res://levels/sheriffs_office_interior/sheriffs_office_interior.tscn",
-	"res://levels/chapel_interior/chapel_interior.tscn",
-	"res://levels/railway_station_interior/railway_station_interior.tscn",
+	"res://levels/hub/arms_dealer_interior/arms_dealer_interior.tscn",
+	"res://levels/hub/farm_house_interior/farm_house_interior.tscn",
+	"res://levels/hub/bank_interior/bank_interior.tscn",
+	"res://levels/hub/post_office_interior/post_office_interior.tscn",
+	"res://levels/hub/saloon_interior/saloon_interior.tscn",
+	"res://levels/hub/sheriffs_office_interior/sheriffs_office_interior.tscn",
+	"res://levels/hub/chapel_interior/chapel_interior.tscn",
+	"res://levels/hub/railway_station_interior/railway_station_interior.tscn",
 ]
 
 # Where the floor surface is in every interior, and how tall the player is - the wall has to be
@@ -92,7 +92,7 @@ func test_everyone_in_an_interior_is_standing_on_the_floor():
 # A shop counter is a solid body, so the shopkeeper behind it has to stay inside talking distance
 # of wherever it stops the player. The arms dealer is the only one with a counter that blocks.
 func test_a_blocking_counter_still_leaves_the_shopkeeper_in_reach():
-	var interior = load("res://levels/arms_dealer_interior/arms_dealer_interior.tscn").instantiate()
+	var interior = load("res://levels/hub/arms_dealer_interior/arms_dealer_interior.tscn").instantiate()
 	var counter := _rect_of(interior.get_node("Counter/CollisionShape2D"))
 	var counter_x : float = interior.get_node("Counter").position.x
 	var dealer = interior.get_node("ArmsDealer")

@@ -32,7 +32,8 @@ func _on_interact() -> void:
 
 # The same conversation an interaction would start, but with lines handed in by whoever is staging
 # the beat and without waiting to be talked to - for a forced conversation the player has no say
-# in (see levels/farm_house_backyard/coyote_encounter.gd, where Hutch starts talking the moment
-# the screen fades back in). Goes through this NPC's own box, so the line is credited to them.
+# in (see levels/regions/plains/farm_house_backyard/coyote_encounter.gd, where Hutch starts talking
+# the moment the screen fades back in). Goes through this NPC's own box, so the line is credited
+# to them.
 func speak(lines : Array[String]) -> void:
 	dialogue_box.show_dialogue(speaker_name, lines)

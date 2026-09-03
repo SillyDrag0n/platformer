@@ -9,7 +9,7 @@ extends GutTest
 #   the Missing Cattle contract -> the backyard, loaded from the bounty's own stage
 
 const FarmHouseScene = preload("res://tileset/structures/farm_house/farm_house.tscn")
-const BackyardScene = preload("res://levels/farm_house_backyard/farm_house_backyard.tscn")
+const BackyardScene = preload("res://levels/regions/plains/farm_house_backyard/farm_house_backyard.tscn")
 
 
 func test_scene_manager_knows_about_the_backyard():
@@ -35,7 +35,8 @@ func test_the_backyard_is_still_reachable_through_the_contract_that_uses_it():
 
 	assert_not_null(stage.level_scene, \
 		"the tutorial leg still needs its level - it is no longer reachable from the hub")
-	assert_eq(stage.level_scene.resource_path, "res://levels/farm_house_backyard/farm_house_backyard.tscn", \
+	assert_eq(stage.level_scene.resource_path, \
+		"res://levels/regions/plains/farm_house_backyard/farm_house_backyard.tscn", \
 		"and that level is the backyard")
 
 
@@ -49,7 +50,7 @@ func test_farm_house_wires_its_interactable():
 
 
 func test_hub_level_has_a_farm_house_structure():
-	var hub = load("res://levels/hub_level.tscn").instantiate()
+	var hub = load("res://levels/hub/hub_level.tscn").instantiate()
 	add_child_autofree(hub)
 	await wait_physics_frames(1)
 
@@ -65,7 +66,7 @@ func test_hub_level_has_a_welcome_npc():
 	var original := GameStateManager.has_story_flag(GameStateManager.FLAG_COYOTE_DRIVEN_OFF)
 	GameStateManager.set_story_flag(GameStateManager.FLAG_COYOTE_DRIVEN_OFF, false)
 
-	var hub = load("res://levels/hub_level.tscn").instantiate()
+	var hub = load("res://levels/hub/hub_level.tscn").instantiate()
 	add_child_autofree(hub)
 	await wait_physics_frames(1)
 
@@ -95,3 +96,20 @@ func test_backyard_has_a_hint_zone_and_a_turn_in_npc():
 		"farm_house_backyard.tscn should have at least one HintZone teaching a control")
 	assert_true(backyard.has_node("Hutch"), \
 		"farm_house_backyard.tscn should have Hutch, a dialogue-only NPC (no bounty completion/reward)")
+
+
+# The house in town was furnished - hearth, laid table, two chairs, a loft - and empty, which
+# reads as abandoned rather than lived-in. Nell lives there now. Her nameplate, her prompt and
+# her feet being on the floor are covered by the interior sweep in test_interior_rooms.gd; what
+# is pinned here is that the room has a resident at all, and that talking to her does something.
+func test_someone_is_home_in_the_farm_house():
+	var interior = load("res://levels/hub/farm_house_interior/farm_house_interior.tscn").instantiate()
+	var residents : Array = interior.get_children().filter(func(child): return child is NPC)
+
+	assert_false(residents.is_empty(), \
+		"the farm house interior should have someone in it to talk to")
+	for resident in residents:
+		assert_false(resident.dialogue_lines.is_empty(), \
+			"%s has nothing to say - a Talk prompt that opens an empty box is worse than no NPC" \
+			% resident.name)
+	interior.free()

@@ -33,10 +33,10 @@ var story_flags : Dictionary = {}
 const FLAG_HUB_WELCOME_SHOWN := &"hub_welcome_shown"
 
 # Gates the tutorial's cactus coyote encounter (see
-# levels/farm_house_backyard/coyote_encounter.gd), and retires the hub's tutorial furniture (see
-# levels/hub_level.gd). Without it, re-entering the backyard after already running the coyote off
-# would stage the whole fight again. Set on the coyote actually fleeing rather than on the fight
-# starting, since this one can be lost.
+# levels/regions/plains/farm_house_backyard/coyote_encounter.gd), and retires the hub's tutorial
+# furniture (see levels/hub/hub_level.gd). Without it, re-entering the backyard after already
+# running the coyote off would stage the whole fight again. Set on the coyote actually fleeing
+# rather than on the fight starting, since this one can be lost.
 const FLAG_COYOTE_DRIVEN_OFF := &"coyote_driven_off"
 
 

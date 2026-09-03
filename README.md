@@ -63,7 +63,9 @@ Fully rebindable in Settings (keyboard *and* controller). Defaults:
 | [player/](player/) | Player scene, upper/lower body controllers, states, gun, dynamite, grapple, camera, effects |
 | [enemies/](enemies/) | Bandit, skeleton, cactus, cactus coyote, hoop snake, bosses, shared `_common` logic |
 | [npc/](npc/) | `NPC` base plus dialog, quest, shop, welcome and bounty turn-in archetypes |
-| [levels/](levels/) | Town hub, eight interiors, tutorial/story levels, boss arena, checkpoints, grapple anchors, and the `_common` scaffolding |
+| [levels/](levels/) | Boss arena, the prototyping test level, checkpoints, grapple anchors, and the `_common` scaffolding |
+| [levels/hub/](levels/hub/) | The town itself: `hub_level.tscn` and the eight building interiors it leads into |
+| [levels/regions/](levels/regions/) | Story levels grouped by region — `plains/` holds the tutorial backyard, the shaman camp and the coyote den |
 | [scripts/managers/](scripts/managers/) | The autoload singletons (see below) |
 | [scripts/bounties/](scripts/bounties/) | `BountyData` / `BountyStageData` / `BountyObjectiveData` / `RegionData` |
 | [scripts/](scripts/) | Abilities, items, quests, save data, state machine, shared explosion logic |

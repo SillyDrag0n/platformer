@@ -52,8 +52,8 @@ func test_the_bag_does_not_open_over_another_menu():
 
 
 # A scripted beat has already taken the controls off the player; the bag should not be a way around
-# that either. This is the case levels/farm_house_backyard/coyote_encounter.gd had to write a
-# defensive workaround for.
+# that either. This is the case the coyote_encounter.gd in levels/regions/plains/farm_house_backyard/
+# had to write a defensive workaround for.
 func test_the_bag_does_not_open_during_a_scripted_beat():
 	GameInputEvents.take_scripted_control()
 

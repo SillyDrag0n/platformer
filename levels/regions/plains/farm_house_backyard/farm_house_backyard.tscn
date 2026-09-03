@@ -1,6 +1,6 @@
 [gd_scene load_steps=22 format=4 uid="uid://dm5tm3timh0ok"]
 
-[ext_resource type="Script" uid="uid://5xiefidyn10v" path="res://levels/farm_house_backyard/farm_house_backyard.gd" id="1_ext01"]
+[ext_resource type="Script" uid="uid://5xiefidyn10v" path="res://levels/regions/plains/farm_house_backyard/farm_house_backyard.gd" id="1_ext01"]
 [ext_resource type="PackedScene" uid="uid://bfcmjoltsmsed" path="res://player/player.tscn" id="2_ext02"]
 [ext_resource type="Script" uid="uid://chd8hkfd628j6" path="res://player/player_camera.gd" id="3_ext03"]
 [ext_resource type="Texture2D" uid="uid://bs20qs5iqeam4" path="res://tileset/structures/farm_house/farm_house.png" id="3_tdldl"]
@@ -16,7 +16,7 @@
 [ext_resource type="TileSet" uid="uid://bm6iyhti1uwgi" path="res://tileset/desert_breakables_tileset.tres" id="13_lb11s"]
 [ext_resource type="TileSet" uid="uid://dknxmyabj3msh" path="res://tileset/desert_foreground_tileset.tres" id="14_yx8ks"]
 [ext_resource type="PackedScene" uid="uid://b1xibr4r15y53" path="res://enemies/cactus_coyote/cactus_coyote.tscn" id="15_coyote"]
-[ext_resource type="Script" uid="uid://ncjuurgvbf57" path="res://levels/farm_house_backyard/coyote_encounter.gd" id="16_encounter"]
+[ext_resource type="Script" uid="uid://ncjuurgvbf57" path="res://levels/regions/plains/farm_house_backyard/coyote_encounter.gd" id="16_encounter"]
 [ext_resource type="PackedScene" path="res://ui/dialogue/DialogueBox.tscn" id="17_dialogue"]
 [ext_resource type="PackedScene" uid="uid://c1cg0fctna23d" path="res://levels/checkpoints/checkpoint.tscn" id="18_campfire"]
 

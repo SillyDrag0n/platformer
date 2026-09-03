@@ -11,14 +11,14 @@ extends GutTest
 # load, it just leaves the player interacting with a door that never opens.
 
 const INTERIORS := [
-	"res://levels/arms_dealer_interior/arms_dealer_interior.tscn",
-	"res://levels/farm_house_interior/farm_house_interior.tscn",
-	"res://levels/bank_interior/bank_interior.tscn",
-	"res://levels/post_office_interior/post_office_interior.tscn",
-	"res://levels/saloon_interior/saloon_interior.tscn",
-	"res://levels/sheriffs_office_interior/sheriffs_office_interior.tscn",
-	"res://levels/chapel_interior/chapel_interior.tscn",
-	"res://levels/railway_station_interior/railway_station_interior.tscn",
+	"res://levels/hub/arms_dealer_interior/arms_dealer_interior.tscn",
+	"res://levels/hub/farm_house_interior/farm_house_interior.tscn",
+	"res://levels/hub/bank_interior/bank_interior.tscn",
+	"res://levels/hub/post_office_interior/post_office_interior.tscn",
+	"res://levels/hub/saloon_interior/saloon_interior.tscn",
+	"res://levels/hub/sheriffs_office_interior/sheriffs_office_interior.tscn",
+	"res://levels/hub/chapel_interior/chapel_interior.tscn",
+	"res://levels/hub/railway_station_interior/railway_station_interior.tscn",
 ]
 
 # Scene path -> the SceneManager key it should lead to. "" is scenery the player can walk up to

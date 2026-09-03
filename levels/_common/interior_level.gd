@@ -8,7 +8,8 @@ extends Node2D
 #
 # Deliberately not a Level: interiors have no respawn marker of their own, and claiming
 # RespawnManager's wiring with a null marker would be worse than leaving the last real level's
-# in place.
+# in place. It also leaves MusicManager alone, which is how the town's theme comes in through the
+# door with the player - a Level with an empty music slot silences it instead.
 
 @onready var exit_door : Area2D = $ExitDoor
 

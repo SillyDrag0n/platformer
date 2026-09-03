@@ -50,4 +50,4 @@ func _add_reward(icon : Texture2D, display_name : String) -> void:
 
 
 func _on_button_pressed() -> void:
-	get_tree().change_scene_to_file("res://levels/hub_level.tscn")
+	get_tree().change_scene_to_file("res://levels/hub/hub_level.tscn")

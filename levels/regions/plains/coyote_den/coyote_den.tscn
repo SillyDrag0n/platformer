@@ -1,6 +1,6 @@
 [gd_scene load_steps=12 format=4]
 
-[ext_resource type="Script" path="res://levels/coyote_den/coyote_den.gd" id="1_den"]
+[ext_resource type="Script" path="res://levels/regions/plains/coyote_den/coyote_den.gd" id="1_den"]
 [ext_resource type="PackedScene" uid="uid://bfcmjoltsmsed" path="res://player/player.tscn" id="2_player"]
 [ext_resource type="Script" uid="uid://chd8hkfd628j6" path="res://player/player_camera.gd" id="3_camera"]
 [ext_resource type="PackedScene" uid="uid://dabxfx3538yx0" path="res://ui/screens/game_screen.tscn" id="4_game_screen"]

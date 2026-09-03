@@ -1,14 +1,15 @@
 extends GutTest
 
-# Coverage for the tutorial's closing beat (levels/farm_house_backyard/coyote_encounter.gd): walk
-# in on the coyote -> the controls come off and the player is marched to their mark -> the way back
-# seals and the coyote looks up -> the fight starts and the controls come back -> beating it drops
-# the wall and plays the closing line. The dialogue itself is DialogueBox's job (already covered by
-# its own NPC tests), so what's worth pinning here is the wiring, the staged approach, the seal, and
-# the one-shot guard - staging the whole fight again on every re-entry to the backyard would be the
-# obvious regression.
+# Coverage for the tutorial's closing beat
+# (levels/regions/plains/farm_house_backyard/coyote_encounter.gd): walk in on the coyote ->
+# the controls come off and the player is marched to their mark -> the way back seals and
+# the coyote looks up -> the fight starts and the controls come back -> beating it drops the
+# wall and plays the closing line. The dialogue itself is DialogueBox's job (already covered
+# by its own NPC tests), so what's worth pinning here is the wiring, the staged approach,
+# the seal, and the one-shot guard - staging the whole fight again on every re-entry to the
+# backyard would be the obvious regression.
 
-const BackyardScene = preload("res://levels/farm_house_backyard/farm_house_backyard.tscn")
+const BackyardScene = preload("res://levels/regions/plains/farm_house_backyard/farm_house_backyard.tscn")
 
 var _original_flag : bool
 var _original_dollars : int

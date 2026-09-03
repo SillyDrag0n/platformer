@@ -118,6 +118,9 @@ snapshot, not a source of truth; re-check the code for current state.
 - **NPCs:** `NPC` base plus dialog, quest, shop, welcome ("Old Timer") and
   bounty turn-in archetypes. A `DialogNPC` can tick bounty objectives off its
   own conversation, so a story beat needs no bespoke script.
+  Every hub interior has someone in it: the bank teller, postal clerk, sheriff
+  and deputy, Rosa behind the saloon bar, the arms dealer, the preacher, the
+  stationmaster, and Nell keeping the farm house.
 - **Bounties (the main progression track):** `BountyData` → `BountyStageData` →
   `BountyObjectiveData`, plus `RegionData`. A bounty is one contract played
   across several levels ("legs"), each with its own checklist; accepting a
@@ -175,7 +178,7 @@ snapshot, not a source of truth; re-check the code for current state.
 - **Audio:** `Master` / `Music` / `SFX` / `UI` buses (`default_bus_layout.tres`),
   a volume slider per bus, and `MusicManager` — an autoload holding two players
   so tracks crossfade, and so walking between town's six scenes doesn't restart
-  the theme. **No music tracks are assigned yet** (see TODO).
+  the theme. Only the hub has a track so far (see TODO).
 - **UI:** main menu, save slots, name entry, settings (video/audio/input plus
   keyboard *and* controller rebinding), pause, death, the inventory journal
   (Items / Bounties / Quests / Loadout), shop, dialogue box, hint zones, ammo
@@ -189,7 +192,7 @@ snapshot, not a source of truth; re-check the code for current state.
   Respawn, Scene, Settings, Ui, Inventory, GameState, Ability, Quest, Save,
   ProjectileLayer, Localization, UiNavigationRepeater, UiSoundPlayer, Music.
 - **Localization:** in progress (`localization/translations.csv`, en + de).
-- **Testing:** GUT (`addons/gut/`, CLI-only, see `test/unit/`) — 366 tests
+- **Testing:** GUT (`addons/gut/`, CLI-only, see `test/unit/`) — 372 tests
   covering the pure-logic managers, the bounty/save/audio systems, level
   scaffolding and several UI focus regressions. Run via
   `"D:\Godot\Godot_v4.4.1-stable_win64.exe" --headless -s addons/gut/gut_cmdln.gd -gexit`.
@@ -507,16 +510,11 @@ two bullets are still open.
 
 ### Blocking the main storyline
 
-The Missing Cattle contract is authored as three legs. Only the first is
-playable end to end.
+The Missing Cattle contract is authored as three legs. The first two are
+playable end to end — leg 2 ends the way leg 1 does, on the summary screen and
+the ride back to town (`levels/regions/plains/shaman_camp/shaman_camp.gd`).
 
-- **Leg 2 (the shaman's camp) has no way out.** `levels/shaman_camp/` has no
-  `Goal` node and never calls `UiManager.open_stage_completed_screen()`. Talking
-  to the shaman ticks her objectives off and saves, and then the player is stood
-  in the desert with only "Main Menu" to press. Smallest high-value fix on this
-  list — `levels/farm_house_backyard/coyote_encounter.gd`'s
-  `_leave_the_backyard()` already does exactly this for leg 1.
-- **Leg 3 (the coyote den) is an empty shell.** `levels/coyote_den/` has a
+- **Leg 3 (the coyote den) is an empty shell.** `levels/regions/plains/coyote_den/` has a
   spawn and the tileset layers wired, but no terrain painted, no coyote and no
   turn-in. Its objectives (`track_to_den`, `defeat_creature`, `collect_bounty`)
   are referenced nowhere but their own definitions.
@@ -525,12 +523,16 @@ playable end to end.
 
 ### Content gaps
 
-- **No music tracks.** The system is built (`MusicManager`, a `Music` bus, a
-  `music` slot on every `Level`); the hub's and the backyard's slots are empty.
-  Drop an `.ogg` in and assign it in the inspector — looping is forced in code,
-  so the import flag doesn't matter.
-- **Nobody lives in the farm house.** Its interior is furnished now - hearth,
-  loft, kitchen - but it is the one building in town with no one to talk to.
+- **One music track.** The town theme (`audio/music/hub_theme.wav`, synthesised
+  by `tools/music/hub_theme_gen.gd`) is assigned to the hub, and carries into
+  its interiors because those extend `InteriorLevel` and never touch
+  `MusicManager` at all. A `Level` with an empty `music` slot asks for silence
+  instead, so the theme stops at the edge of town — every level away from town
+  is silent until someone drops a file in and assigns it in the inspector.
+  Looping is forced in code for streams that expose a `loop` property; a WAV has
+  no such property, so the generator writes a `smpl` loop marker into the file
+  itself rather than relying on the importer's flag, which lives in a gitignored
+  `.import`.
 - **German is machine-drafted, not reviewed.** `localization/translations.csv`
   now covers every string the game can show: every `tr()` literal in the
   scripts, every authored `text` on a UI scene, every `interact_name` prompt,

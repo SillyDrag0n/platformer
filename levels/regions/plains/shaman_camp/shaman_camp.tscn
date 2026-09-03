@@ -1,6 +1,6 @@
 [gd_scene load_steps=14 format=4]
 
-[ext_resource type="Script" path="res://levels/shaman_camp/shaman_camp.gd" id="1_wmgqs"]
+[ext_resource type="Script" path="res://levels/regions/plains/shaman_camp/shaman_camp.gd" id="1_wmgqs"]
 [ext_resource type="PackedScene" path="res://player/player.tscn" id="2_4r0lc"]
 [ext_resource type="Script" path="res://player/player_camera.gd" id="4_ihyoe"]
 [ext_resource type="PackedScene" path="res://ui/screens/game_screen.tscn" id="5_apd1y"]
@@ -15,8 +15,9 @@
 
 [sub_resource type="FastNoiseLite" id="FastNoiseLite_wmgqs"]
 
-[node name="ShamanCamp" type="Node2D"]
+[node name="ShamanCamp" type="Node2D" node_paths=PackedStringArray("shaman")]
 script = ExtResource("1_wmgqs")
+shaman = NodePath("Shaman")
 
 [node name="Player" parent="." groups=["Player"] instance=ExtResource("2_4r0lc")]
 z_index = 60

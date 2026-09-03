@@ -1,13 +1,13 @@
 extends GutTest
 
 # The level the Missing Cattle contract's third leg - "Hunt the Creature" - is played in
-# (levels/coyote_den/). It is deliberately an empty shell for now: a spawn and the tileset layers,
-# with the terrain still to be painted. What is worth pinning at this stage is that it loads with
-# everything a level needs, that its layers are actually wired to the desert tilesets rather than
-# left blank, and that the hunt stage points at it - without that last one, accepting the bounty
-# after the shaman leaves the player on the board with nothing loading.
+# (levels/regions/plains/coyote_den/). It is deliberately an empty shell for now: a spawn and the
+# tileset layers, with the terrain still to be painted. What is worth pinning at this stage is that
+# it loads with everything a level needs, that its layers are actually wired to the desert tilesets
+# rather than left blank, and that the hunt stage points at it - without that last one, accepting
+# the bounty after the shaman leaves the player on the board with nothing loading.
 
-const CoyoteDenScene = preload("res://levels/coyote_den/coyote_den.tscn")
+const CoyoteDenScene = preload("res://levels/regions/plains/coyote_den/coyote_den.tscn")
 const BOUNTY_ID := "missing_cattle"
 
 const EXPECTED_LAYERS := {
@@ -104,5 +104,5 @@ func test_the_hunt_stage_loads_this_level():
 		"the hunt stage needs a level to load - without one, accepting the bounty off the board " + \
 		"tears the poster off and then nothing happens")
 	if hunt.level_scene != null:
-		assert_eq(hunt.level_scene.resource_path, "res://levels/coyote_den/coyote_den.tscn", \
-			"and it is this one")
+		assert_eq(hunt.level_scene.resource_path, \
+			"res://levels/regions/plains/coyote_den/coyote_den.tscn", "and it is this one")

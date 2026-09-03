@@ -1,4 +1,4 @@
-[gd_scene load_steps=21 format=3]
+[gd_scene load_steps=22 format=3]
 
 [ext_resource type="Script" path="res://levels/_common/interior_level.gd" id="1_ext01"]
 [ext_resource type="PackedScene" uid="uid://bfcmjoltsmsed" path="res://player/player.tscn" id="2_ext02"]
@@ -19,6 +19,7 @@
 [ext_resource type="Texture2D" path="res://tileset/interiors/common/sack.svg" id="17_sack"]
 [ext_resource type="Texture2D" path="res://tileset/interiors/common/framed_picture.svg" id="18_picture"]
 [ext_resource type="Texture2D" path="res://tileset/interiors/common/plank_door.svg" id="19_door"]
+[ext_resource type="PackedScene" uid="uid://dgflcmvkylnty" path="res://npc/DialogNPC.tscn" id="20_npc"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_floor"]
 size = Vector2(1000, 40)
@@ -139,6 +140,17 @@ visible = false
 
 [node name="InventoryUi" parent="." instance=ExtResource("6_ext06")]
 visible = false
+
+[node name="Nell" parent="." instance=ExtResource("20_npc")]
+position = Vector2(250, 130)
+speaker_name = "Nell"
+dialogue_lines = Array[String](["Door sticks - you have to lift it. Sit yourself down, there's coffee still warm.", "We came out for the cheap land and got it. Nobody thought to mention what was already living on it.", "Our fence line's a mile further out than it was two summers back. Hutch reckons that's why his cattle won't settle.", "My boy leaves a bowl of milk on the step some nights. I've stopped telling him not to."])
+
+[node name="NameLabel" parent="Nell" index="1"]
+text = "Nell"
+
+[node name="Interactable" parent="Nell" index="2"]
+interact_name = "Talk to Nell"
 
 [node name="ExitDoor" parent="." instance=ExtResource("7_ext07")]
 position = Vector2(-450, 130)

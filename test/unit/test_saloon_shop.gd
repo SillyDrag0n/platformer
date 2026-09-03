@@ -5,7 +5,7 @@ extends GutTest
 # sells dynamite by the bundle. What's pinned here is that the shelves are stocked and that a
 # bundle is sold whole rather than a stick at a time.
 
-const SaloonScene = preload("res://levels/saloon_interior/saloon_interior.tscn")
+const SaloonScene = preload("res://levels/hub/saloon_interior/saloon_interior.tscn")
 const SPIRIT : ItemData = preload("res://items/utility/spirit.tres")
 const DYNAMITE : ItemData = preload("res://items/utility/dynamite.tres")
 

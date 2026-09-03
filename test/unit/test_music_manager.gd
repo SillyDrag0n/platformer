@@ -99,10 +99,25 @@ func test_stopping_clears_the_track():
 
 # A level hands its own track over on load - that is the whole integration point.
 func test_a_level_hands_its_track_to_the_manager_on_load():
-	var level = load("res://levels/coyote_den/coyote_den.tscn").instantiate()
+	var level = load("res://levels/regions/plains/coyote_den/coyote_den.tscn").instantiate()
 	level.music = TRACK_B
 	add_child_autofree(level)
 	await wait_frames(1)
 
 	assert_eq(MusicManager.current_track, TRACK_B, \
 		"Level._ready() should pass its music export to the manager")
+
+
+# And the other half of that: a level with an empty slot hands over silence rather than letting the
+# previous scene's track follow it in. Only the hub's interiors carry music across a scene change,
+# and they manage it by not being Levels at all.
+func test_a_level_with_an_empty_slot_silences_the_previous_track():
+	MusicManager.play(TRACK_A)
+
+	var level = load("res://levels/regions/plains/coyote_den/coyote_den.tscn").instantiate()
+	assert_null(level.music, "(nothing assigned in the scene)")
+	add_child_autofree(level)
+	await wait_frames(1)
+
+	assert_null(MusicManager.current_track, \
+		"riding out of town should leave the town's theme behind it")

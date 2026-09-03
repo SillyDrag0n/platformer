@@ -1,10 +1,11 @@
 class_name CactusCoyote
 extends Enemy
 
-# The tutorial's closing encounter (see levels/farm_house_backyard/coyote_encounter.gd): the player
-# catches it eating the remains of one of Hutch's cows, it turns on them, and the backyard's far end
-# becomes a small arena. Unlike the rest of the bestiary it is never killed - once its health is
-# gone it bolts, which is what leaves the story hook behind.
+# The tutorial's closing encounter
+# (see levels/regions/plains/farm_house_backyard/coyote_encounter.gd): the player catches it eating
+# the remains of one of Hutch's cows, it turns on them, and the backyard's far end becomes a small
+# arena. Unlike the rest of the bestiary it is never killed - once its health is gone it bolts,
+# which is what leaves the story hook behind.
 #
 # Uses the same plain enum + _physics_process shape as enemies/cactus/enemy_cactus.gd rather than
 # the NodeFiniteStateMachine addon skeleton/bandit use: this is one fixed, telegraphed rhythm
@@ -157,7 +158,8 @@ func spot_player() -> void:
 	current_state = State.Alerted
 	_state_timer = alert_duration
 	# It is only dangerous to touch once it has turned on them. Before that the player is being
-	# walked up behind it on purpose (see levels/farm_house_backyard/coyote_encounter.gd).
+	# walked up behind it on purpose (see
+	# levels/regions/plains/farm_house_backyard/coyote_encounter.gd).
 	hitbox.set_active(true)
 	_face_player()
 	animated_sprite.play("alert")
@@ -339,7 +341,7 @@ func die() -> void:
 # In the tutorial that lands squarely in the worst place for it - the encounter has already logged
 # the coyote as driven off and stood its own death handler down, and the debrief is holding the
 # player's controls - so the volley is called back with the creature rather than patched around
-# further downstream. See levels/farm_house_backyard/coyote_encounter.gd.
+# further downstream. See levels/regions/plains/farm_house_backyard/coyote_encounter.gd.
 func _recall_spikes() -> void:
 	for spike in _spikes_in_flight:
 		if is_instance_valid(spike):

@@ -7,7 +7,7 @@ extends GutTest
 #    since RespawnManager is an autoload) instead of under current_level - the respawned player
 #    was never actually a child of the level whose "player" reference had just been updated to it.
 
-const HubLevelScene = preload("res://levels/hub_level.tscn")
+const HubLevelScene = preload("res://levels/hub/hub_level.tscn")
 
 var hub
 

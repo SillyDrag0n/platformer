@@ -2,9 +2,10 @@ extends GutTest
 
 # Coverage for SaveManager persisting the one-shot story flags on GameStateManager - the hub
 # welcome (gates WelcomeNPC's auto-greet timer, see npc/welcome_npc.gd) and the coyote being run
-# off (gates the tutorial encounter, see levels/farm_house_backyard/coyote_encounter.gd, and
-# retires the hub's tutorial furniture). Both would otherwise live only in memory, so they would
-# reset on every restart and replay their one-time moment each relaunch.
+# off (gates the tutorial encounter, see
+# levels/regions/plains/farm_house_backyard/coyote_encounter.gd, and retires the hub's tutorial
+# furniture). Both would otherwise live only in memory, so they would reset on every restart and
+# replay their one-time moment each relaunch.
 #
 # They are saved as one dictionary rather than a field each, so what matters is that the pool round
 # -trips - a beat added later comes along for free.

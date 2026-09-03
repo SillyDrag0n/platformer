@@ -46,10 +46,9 @@ func _ready() -> void:
 		_players.append(player)
 
 
-# Crossfades to `track`. Asking for what is already playing does nothing, so walking hub -> saloon
-# -> hub never restarts the town theme, and null is "leave whatever is playing alone" rather than
-# silence - that is what lets the interiors carry the hub's music without declaring it themselves.
-# Silence is stop()'s job.
+# Crossfades to `track`. Asking for what is already playing does nothing, so a scene change back
+# into somewhere the same theme covers never restarts it. Passing null does nothing either - it is
+# not a request for silence, which is stop()'s job.
 func play(track : AudioStream) -> void:
 	if track == null or track == current_track:
 		return
@@ -70,13 +69,21 @@ func play(track : AudioStream) -> void:
 	_crossfade(incoming, outgoing)
 
 
+# Fades out to silence. Levels ask for this by leaving their music slot empty, so it lands on every
+# load of a level with no track of its own - including plenty where nothing is playing to begin
+# with. Bailing out on that case keeps it from building a Tween with nothing in it, which Godot
+# treats as an error and never finishes.
 func stop() -> void:
 	current_track = null
 	_kill_fade()
+
+	var sounding := _players.filter(func(player): return player.playing)
+	if sounding.is_empty():
+		return
+
 	_fade = create_tween().set_parallel(true)
-	for player in _players:
-		if player.playing:
-			_fade.tween_property(player, "volume_db", SILENT_DB, FADE_SECONDS)
+	for player in sounding:
+		_fade.tween_property(player, "volume_db", SILENT_DB, FADE_SECONDS)
 	_fade.finished.connect(_stop_all_players, CONNECT_ONE_SHOT)
 
 

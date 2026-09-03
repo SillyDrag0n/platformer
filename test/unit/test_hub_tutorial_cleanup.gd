@@ -6,9 +6,9 @@ extends GutTest
 # clears them away rather than leaving a town that never moved on.
 #
 # Gated on GameStateManager.has_story_flag(GameStateManager.FLAG_COYOTE_DRIVEN_OFF), the same persisted flag the encounter itself
-# uses to stop restaging (see levels/farm_house_backyard/coyote_encounter.gd).
+# uses to stop restaging (see levels/regions/plains/farm_house_backyard/coyote_encounter.gd).
 
-const HubLevelScene = preload("res://levels/hub_level.tscn")
+const HubLevelScene = preload("res://levels/hub/hub_level.tscn")
 
 var _original_has_driven_off_coyote : bool
 var _hub : Node

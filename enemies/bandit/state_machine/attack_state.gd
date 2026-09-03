@@ -5,7 +5,7 @@ extends NodeState
 
 # Brief pause on the "popped up and aiming" pose before the shot actually fires, so the player
 # gets a readable beat to react before ducking back down to reload.
-const AIM_DURATION : float = 0.5
+const AIM_DURATION : float = 1.2
 
 var timer : float
 var has_fired : bool
