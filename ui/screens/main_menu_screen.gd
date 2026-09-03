@@ -2,11 +2,18 @@ extends CanvasLayer
 
 var settings_menu_screen = preload("res://ui/screens/settings_menu_screen.tscn")
 
+# What plays out here, the same way a level declares its own track (levels/_common/level.gd). Empty
+# means silence - and silence is the point: the menu is a scene change away from the hub but not a
+# Level, so nothing used to speak to MusicManager on the way here at all and the town theme simply
+# carried on playing underneath it. Assign a menu theme in the inspector when there is one.
+@export var music : AudioStream
+
 @onready var play_button = $MarginContainer/PanelContainer/MarginContainer/VBoxContainer/PlayButton
 
 
 func _ready():
 	SettingsManager.apply_ui_scale(self)
+	MusicManager.apply_slot(music)
 	play_button.grab_focus()
 
 

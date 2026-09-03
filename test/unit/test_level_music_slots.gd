@@ -98,3 +98,33 @@ func test_the_loop_is_carried_by_the_wav_itself_not_by_its_import_settings():
 	assert_eq(file.get_buffer(4).get_string_from_ascii(), "smpl", \
 		"the .wav should carry its own loop marker, so no import setting has to be remembered")
 	file.close()
+
+
+# The main menu is a scene change away from the hub, but it is a CanvasLayer rather than a Level -
+# so nothing spoke to MusicManager on the way there and the town theme carried on playing
+# underneath it. It has a slot of its own now, empty, which is a request for silence.
+func test_quitting_to_the_main_menu_leaves_the_town_theme_behind():
+	MusicManager.play(TOWN_THEME)
+	assert_eq(MusicManager.current_track, TOWN_THEME, "(the player is in town...)")
+
+	var menu = load("res://ui/screens/main_menu_screen.tscn").instantiate()
+	add_child_autofree(menu)
+	await wait_physics_frames(1)
+
+	assert_true("music" in menu, "the menu declares what plays out here, like a level does")
+	assert_null(MusicManager.current_track, \
+		"and with nothing in the slot, arriving at the menu asks for silence")
+
+
+# The distinction the bug turned on: play() ignores null on purpose, so a scene that only ever
+# called play() would leave whatever was already running. apply_slot() is the one that reads an
+# empty slot as silence, and it is what both a Level and the menu go through.
+func test_an_empty_slot_is_silence_rather_than_whatever_was_already_playing():
+	MusicManager.play(TOWN_THEME)
+
+	MusicManager.play(null)
+	assert_eq(MusicManager.current_track, TOWN_THEME, \
+		"play(null) is not a request for silence - there is nothing to play")
+
+	MusicManager.apply_slot(null)
+	assert_null(MusicManager.current_track, "apply_slot(null) is")

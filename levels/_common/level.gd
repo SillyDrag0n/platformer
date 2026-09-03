@@ -29,12 +29,11 @@ func _ready() -> void:
 	_on_level_ready()
 
 
-# An empty slot is a decision, not an omission - see the note on `music` above.
+# An empty slot is a decision, not an omission - see the note on `music` above. MusicManager.
+# apply_slot() is what "empty means silence" lives in, shared with the main menu, which is not a
+# Level but has a slot for the same reason.
 func _apply_music() -> void:
-	if music == null:
-		MusicManager.stop()
-	else:
-		MusicManager.play(music)
+	MusicManager.apply_slot(music)
 
 
 # Where a level does its own setup. Overriding this rather than _ready() means a level can't

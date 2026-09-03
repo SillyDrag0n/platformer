@@ -87,6 +87,20 @@ func stop() -> void:
 	_fade.finished.connect(_stop_all_players, CONNECT_ONE_SHOT)
 
 
+# What a scene's music slot means, in one place: the track it names, or silence if it names none.
+#
+# The distinction matters and is easy to get wrong, which is why it is a function rather than a
+# convention. play() deliberately ignores null - it is a request to play something, and "nothing"
+# is not something - so a scene that only ever called play() would leave whatever was already
+# running underneath it. That is exactly how the town theme used to follow the player out to the
+# main menu: the menu is not a Level, so nothing ever spoke to this manager on the way there.
+func apply_slot(track : AudioStream) -> void:
+	if track == null:
+		stop()
+	else:
+		play(track)
+
+
 func is_playing(track : AudioStream) -> bool:
 	return current_track == track and current_track != null
 
