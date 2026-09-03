@@ -2,7 +2,7 @@
 
 [ext_resource type="Script" path="res://tileset/structures/hub_structure.gd" id="1_shop"]
 [ext_resource type="PackedScene" uid="uid://s2gswtyrtm5x" path="res://interaction_component/interactable.tscn" id="2_interact"]
-[ext_resource type="FontFile" uid="uid://kiwlymd55nc2" path="res://ui/font/BoldPixels.ttf" id="3_font"]
+[ext_resource type="FontFile" uid="uid://bn7ed1nmtuvnj" path="res://ui/font/BoldPixels.ttf" id="3_font"]
 [ext_resource type="Texture2D" path="res://tileset/structures/arms_dealer_shop/arms_dealer_shop.svg" id="4_texture"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_shop"]

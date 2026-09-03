@@ -130,6 +130,14 @@ func on_physics_process(delta : float):
 
 	# transitioning states
 
+	# Grabbing a ladder. Only looked for on a frame where up or down is actually being held, so
+	# walking past one costs nothing - and it beats force_fall's other job, dropping through a
+	# one-way platform, on the reasoning that a player pressing down while stood on a ladder means
+	# to climb it rather than to fall past it.
+	if GameInputEvents.climb_input() != 0.0 and Ladder.at_body(character_body_2d) != null:
+		transition.emit("Climb")
+		return
+
 	if AbilityManager.is_unlocked("grapple_hook") and GameInputEvents.grapple_input() and grapple_hook.find_anchor(character_body_2d.global_position) != null:
 		transition.emit("Grapple")
 		return

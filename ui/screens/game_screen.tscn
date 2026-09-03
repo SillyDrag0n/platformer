@@ -2,8 +2,8 @@
 
 [ext_resource type="Script" uid="uid://fer1o12lr8yv" path="res://ui/screens/game_screen.gd" id="1_jadqt"]
 [ext_resource type="PackedScene" uid="uid://cqhro705skse6" path="res://ui/resource_bar/resource_bar.tscn" id="1_qquvf"]
-[ext_resource type="Texture2D" uid="uid://bn2eyu7maqlb6" path="res://collectibles/coins-and-gems.png" id="2_iatnl"]
-[ext_resource type="FontFile" uid="uid://kiwlymd55nc2" path="res://ui/font/BoldPixels.ttf" id="3_utility_qty"]
+[ext_resource type="Texture2D" uid="uid://7bi5duacs08x" path="res://collectibles/dollar_pickup/dollar.svg" id="2_iatnl"]
+[ext_resource type="FontFile" uid="uid://bn7ed1nmtuvnj" path="res://ui/font/BoldPixels.ttf" id="3_utility_qty"]
 [ext_resource type="PackedScene" path="res://ui/ammo_display/ammo_display.tscn" id="4_ammo"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_quest_popup"]
@@ -96,16 +96,13 @@ scale = Vector2(3, 3)
 [node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer"]
 layout_mode = 2
 
-[node name="Control" type="Control" parent="MarginContainer/VBoxContainer/HBoxContainer"]
-custom_minimum_size = Vector2(32, 32)
+[node name="CollectibleIcon" type="TextureRect" parent="MarginContainer/VBoxContainer/HBoxContainer"]
+custom_minimum_size = Vector2(48, 32)
 layout_mode = 2
-
-[node name="Sprite2D" type="Sprite2D" parent="MarginContainer/VBoxContainer/HBoxContainer/Control"]
-scale = Vector2(2, 2)
+size_flags_vertical = 4
 texture = ExtResource("2_iatnl")
-centered = false
-hframes = 20
-vframes = 4
+expand_mode = 1
+stretch_mode = 5
 
 [node name="CollectibleLabel" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainer"]
 custom_minimum_size = Vector2(0, 32)

@@ -129,16 +129,37 @@ snapshot, not a source of truth; re-check the code for current state.
   stage-completed / bounty-completed screens.
 - **Quests:** optional side content, separate from bounties (e.g. "kill 5
   bandits").
+- **Climbing:** a `Ladder` (`levels/_common/ladder/`) is placeable level furniture
+  the player climbs — an `Area2D` on a new `Climbable` layer (14), never a body,
+  so it can be stood inside rather than bumped into. Its origin is the top rung
+  and it hangs downward, since the top is the end that has to line up with the
+  floor it serves. Drawn in `_draw()` from an exported `height` rather than
+  sprited, so a level can drag one to any length. `Climb`
+  (`player/player_states/climb_state.gd`) holds the player to the rungs with
+  gravity off; `climb_up`/`force_fall` — the same axis that lets the grapple rope
+  out and in — walks them along it, jump pushes off, a direction steps off
+  sideways. Aiming and shooting stay live, since the upper body is its own
+  controller. The one-way-platform mask is dropped for the duration so a ladder
+  threaded through a floor can be climbed both ways, and handed back on exit.
+  A plain ladder carries no `GrappleAnchor`, so the hook's ray passes straight
+  through it; a swingable rope would be the same scene plus an anchor at the top,
+  reusing `GrappleState`.
 - **Explosions:** one shared blast (`scripts/explosion.gd`, static methods on a
   preloaded script rather than a `class_name`, so headless tests need no
   `--import` pass) used by both the player's thrown dynamite and the explosive
   barrel (`levels/_common/explosive_barrel/`). It hurts enemies in radius, hurts
   the player if they're too close, opens `BreakableTerrain` tiles, and damages
-  anything else in the `Explosive` group — which is what chains barrels. Barrels
-  are solid `StaticBody2D` scenery on the Ground layer (stand on them, hide
-  behind them) that light a short fuse when shot or caught in a blast, so a row
-  of them goes off as a visible staggered chain; health/damage/radius/fuse are
-  all `@export`. Two are placed in `test_level.tscn` to try.
+  anything else in the `Explosive` group — which is what chains barrels. A barrel
+  is scenery the player and the enemies chasing them walk straight through — its
+  body is on no physics layer at all, so a fight never snags on it — and it
+  lights a short fuse when shot or caught in a blast, so a row of them goes off
+  as a visible staggered chain; health/damage/radius/fuse are all `@export`. Two
+  are placed in `test_level.tscn` to try.
+  - Being walked through cost it the thing that used to stop bullets: a body on
+    the Ground layer, which is one of the two layers a bullet's own hitbox
+    scans. Shots passed through and hit whatever stood behind. The barrel now
+    spends the shot itself from its hurtbox — asking the projectile to land
+    rather than freeing it, so the impact effect is still left where it struck.
   - Extracting this surfaced a real bug: the blast used to require its target to
     be in the `"Enemy"` **group**, but that group is `player.gd`'s
     contact-damage check, so only the cactus and cactus coyote are in it — which
@@ -183,6 +204,11 @@ snapshot, not a source of truth; re-check the code for current state.
   keyboard *and* controller rebinding), pause, death, the inventory journal
   (Items / Bounties / Quests / Loadout), shop, dialogue box, hint zones, ammo
   display, notice board.
+  - The pause menu's two exits that abandon a level in progress — RETURN TO
+    TOWN and MAIN MENU — both ask through one embedded confirm panel, opened
+    on the safe answer, and save on the way out. Embedded rather than a
+    `ConfirmationDialog` for the reason the save slots' delete prompt is: a
+    native `Window` is the one thing a gamepad cannot reliably answer.
   - **DEBUG MODE** panel behind the pause menu (`ui/screens/debug_menu_screen.gd`)
     - money, ability unlocks, item grants, bounty/region unlocks, heal, save.
     Its buttons go through the ordinary manager API so a debug grant fires the

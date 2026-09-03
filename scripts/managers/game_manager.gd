@@ -57,3 +57,13 @@ func continue_game():
 func main_menu():
 	get_tree().paused = false
 	get_tree().change_scene_to_packed(main_menu_screen)
+
+
+# Leaving a level part-way and riding back to town, from the pause menu. Unpaused first for the
+# same reason main_menu() does it - the fade the transition rides on runs on the tree, and a paused
+# tree would leave the player looking at a half-faded screen that never resolves. The bounty's own
+# progress is not touched: objectives already ticked off stay ticked, and the leg itself starts
+# over the next time it is taken on, since a level has no mid-level save point.
+func return_to_hub() -> void:
+	get_tree().paused = false
+	SceneManager.transition_to_scene_faded("Hub")

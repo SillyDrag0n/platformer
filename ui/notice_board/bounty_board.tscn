@@ -3,7 +3,7 @@
 [ext_resource type="Script" path="res://ui/notice_board/bounty_board.gd" id="1_board"]
 [ext_resource type="PackedScene" path="res://ui/notice_board/bounty_inspect_panel.tscn" id="2_board"]
 [ext_resource type="Theme" uid="uid://ddr12d5h68dd1" path="res://ui/theme/game_theme.tres" id="3_theme"]
-[ext_resource type="FontFile" uid="uid://kiwlymd55nc2" path="res://ui/font/BoldPixels.ttf" id="4_font"]
+[ext_resource type="FontFile" uid="uid://bn7ed1nmtuvnj" path="res://ui/font/BoldPixels.ttf" id="4_font"]
 
 [sub_resource type="LabelSettings" id="LabelSettings_title"]
 font = ExtResource("4_font")

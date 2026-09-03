@@ -93,7 +93,17 @@ extends Node
 @export var grapple_trail_kick_degrees : float = 22.0
 @export var grapple_climb_tuck : float = 5.0
 
+@export_category("Climb Pose")
+# A ladder is climbed with the legs alternating on the rungs, so this is the one procedural pose
+# driven by a cycle rather than by physics state: it steps while the player is moving and holds a
+# stood-on-a-rung pose when they stop.
+@export var climb_step_distance : float = 6.0
+@export var climb_step_lift : float = 4.0
+@export var climb_cycle_speed : float = 6.0
+@export var climb_hip_sway : float = 1.5
+
 var facing : float = 1.0
+var _climb_cycle : float = 0.0
 var _leg_sprites : Array[Sprite2D] = []
 var _leg_sprite_rest_offsets : Array[Vector2] = []
 
@@ -187,6 +197,9 @@ func _physics_process(delta : float) -> void:
 		"hurt":
 			animation_player.stop()
 			apply_hurt_pose()
+		"climb":
+			animation_player.stop()
+			apply_climb_pose(delta)
 		"grapple":
 			animation_player.stop()
 			apply_grapple_pose()
@@ -435,3 +448,23 @@ func _has_room_to_stand() -> bool:
 	query.collide_with_areas = false
 	query.collide_with_bodies = true
 	return space_state.intersect_shape(query, 1).is_empty()
+
+
+# Alternating feet on the rungs. Unlike the other procedural poses there is no physics state worth
+# reading here - a climb is a constant crawl, not an arc - so this runs off its own cycle, advanced
+# only while the player is actually moving up or down. Stop climbing and the cycle stops with them,
+# holding whichever rung they were on rather than snapping back to a rest pose mid-ladder.
+func apply_climb_pose(delta : float) -> void:
+	var climb : float = GameInputEvents.climb_input()
+	if climb != 0.0:
+		_climb_cycle += delta * climb_cycle_speed
+
+	var swing : float = sin(_climb_cycle)
+	# The two legs are half a cycle apart, which is what makes it a climb rather than a hop.
+	var up_leg : Vector2 = Vector2(0.0, -climb_step_distance * swing - climb_step_lift)
+	var down_leg : Vector2 = Vector2(0.0, climb_step_distance * swing)
+
+	hip.position = _hip_rest_position + Vector2(facing * climb_hip_sway * swing, 0.0)
+	_set_leg_target(_foot_r_target, _foot_r_target_rest, up_leg, 0.0)
+	_set_leg_target(_foot_l_target, _foot_l_target_rest, down_leg, 0.0)
+	_reset_foot_lookats()

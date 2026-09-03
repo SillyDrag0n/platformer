@@ -3,7 +3,7 @@
 [ext_resource type="Script" path="res://npc/shop_npc.gd" id="1_dealer"]
 [ext_resource type="PackedScene" uid="uid://s2gswtyrtm5x" path="res://interaction_component/interactable.tscn" id="2_interact"]
 [ext_resource type="PackedScene" path="res://ui/shop/ShopUI.tscn" id="3_shop"]
-[ext_resource type="FontFile" uid="uid://kiwlymd55nc2" path="res://ui/font/BoldPixels.ttf" id="4_font"]
+[ext_resource type="FontFile" uid="uid://bn7ed1nmtuvnj" path="res://ui/font/BoldPixels.ttf" id="4_font"]
 [ext_resource type="Script" uid="uid://djhxi31kg3jus" path="res://scripts/items/item_data.gd" id="5_itemdata"]
 [ext_resource type="Resource" path="res://items/weapons/shotgun.tres" id="6_shotgun"]
 [ext_resource type="Resource" path="res://items/ammo/heavy_rounds.tres" id="7_heavy_rounds"]

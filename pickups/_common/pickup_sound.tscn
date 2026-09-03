@@ -1,0 +1,9 @@
+[gd_scene load_steps=3 format=3]
+
+[ext_resource type="Script" path="res://pickups/_common/pickup_sound.gd" id="1_sound"]
+[ext_resource type="AudioStream" path="res://audio/sfx/pickup_coin.wav" id="2_stream"]
+
+[node name="PickupSound" type="AudioStreamPlayer2D" groups=["SFX"]]
+script = ExtResource("1_sound")
+stream = ExtResource("2_stream")
+volume_db = -6.0

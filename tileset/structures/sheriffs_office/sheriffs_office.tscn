@@ -3,7 +3,7 @@
 [ext_resource type="Script" path="res://tileset/structures/hub_structure.gd" id="1_sheriff"]
 [ext_resource type="Texture2D" path="res://tileset/structures/sheriffs_office/sheriffs_office.svg" id="2_texture"]
 [ext_resource type="PackedScene" uid="uid://s2gswtyrtm5x" path="res://interaction_component/interactable.tscn" id="3_interact"]
-[ext_resource type="FontFile" uid="uid://kiwlymd55nc2" path="res://ui/font/BoldPixels.ttf" id="4_font"]
+[ext_resource type="FontFile" uid="uid://bn7ed1nmtuvnj" path="res://ui/font/BoldPixels.ttf" id="4_font"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_sheriff"]
 size = Vector2(90, 90)

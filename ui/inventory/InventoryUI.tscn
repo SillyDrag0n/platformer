@@ -1,4 +1,4 @@
-[gd_scene load_steps=20 format=3 uid="uid://rx3auanfsgp0"]
+[gd_scene load_steps=22 format=3 uid="uid://rx3auanfsgp0"]
 
 [ext_resource type="Theme" uid="uid://ddr12d5h68dd1" path="res://ui/theme/game_theme.tres" id="0_theme"]
 [ext_resource type="Script" uid="uid://badieadd4juu0" path="res://ui/inventory/inventory_ui.gd" id="1_73x1u"]
@@ -8,6 +8,7 @@
 [ext_resource type="PackedScene" path="res://ui/inventory/BountyEntry.tscn" id="5_bnty1"]
 [ext_resource type="PackedScene" path="res://ui/inventory/LoadoutSlot.tscn" id="6_loadout_slot"]
 [ext_resource type="PackedScene" path="res://ui/inventory/ItemPickerEntry.tscn" id="7_picker_entry"]
+[ext_resource type="Texture2D" uid="uid://7bi5duacs08x" path="res://collectibles/dollar_pickup/dollar.svg" id="9_dollar"]
 [ext_resource type="PackedScene" path="res://ui/inventory/QuestEntry.tscn" id="8_quest_entry"]
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_mjk5w"]
@@ -71,8 +72,16 @@ font = ExtResource("3_gvwsh")
 font_size = 20
 font_color = Color(1, 0.85098, 0.352941, 1)
 
-[node name="InventoryUi" type="CanvasLayer" node_paths=PackedStringArray("tab_container", "item_grid", "item_name_label", "item_description_label", "item_information_icon", "bounty_list_container", "bounty_title_label", "bounty_status_label", "bounty_description_label", "bounty_detail_icon", "quest_list_container", "slot_primary", "slot_secondary", "utility_list_container", "slot_ammo_primary", "slot_ammo_secondary", "slot_hat", "slot_outfit", "slot_weapon_skin_primary", "slot_weapon_skin_secondary", "slot_accessory", "abilities_list_container", "item_picker", "item_picker_backdrop", "picker_list_container")]
+[sub_resource type="LabelSettings" id="LabelSettings_money"]
+font = ExtResource("3_gvwsh")
+font_size = 26
+font_color = Color(0.964706, 0.909804, 0.792157, 1)
+outline_size = 5
+outline_color = Color(0.0705882, 0.0392157, 0.0235294, 1)
+
+[node name="InventoryUi" type="CanvasLayer" node_paths=PackedStringArray("money_label", "tab_container", "item_grid", "item_name_label", "item_description_label", "item_information_icon", "bounty_list_container", "bounty_title_label", "bounty_status_label", "bounty_description_label", "bounty_detail_icon", "quest_list_container", "slot_primary", "slot_secondary", "utility_list_container", "slot_ammo_primary", "slot_ammo_secondary", "slot_hat", "slot_outfit", "slot_weapon_skin_primary", "slot_weapon_skin_secondary", "slot_accessory", "abilities_list_container", "item_picker", "item_picker_backdrop", "picker_list_container")]
 script = ExtResource("1_73x1u")
+money_label = NodePath("Panel/MoneyDisplay/MoneyLabel")
 tab_container = NodePath("Panel/MarginContainer/TabContainer")
 item_grid = NodePath("Panel/MarginContainer/TabContainer/Items/ItemSlots/ItemsGridContainer")
 item_slot_scene = ExtResource("2_73x1u")
@@ -459,3 +468,30 @@ theme_override_constants/margin_bottom = 24
 
 [node name="TextureRect" type="TextureRect" parent="Panel/MarginContainer/TabContainer/Map/MarginContainer"]
 layout_mode = 2
+
+[node name="MoneyDisplay" type="HBoxContainer" parent="Panel"]
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -220.0
+offset_top = 18.0
+offset_right = -32.0
+offset_bottom = 54.0
+grow_horizontal = 0
+alignment = 2
+theme_override_constants/separation = 10
+
+[node name="MoneyIcon" type="TextureRect" parent="Panel/MoneyDisplay"]
+custom_minimum_size = Vector2(42, 28)
+layout_mode = 2
+size_flags_vertical = 4
+texture = ExtResource("9_dollar")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="MoneyLabel" type="Label" parent="Panel/MoneyDisplay"]
+layout_mode = 2
+size_flags_vertical = 4
+text = "0"
+label_settings = SubResource("LabelSettings_money")
+vertical_alignment = 1

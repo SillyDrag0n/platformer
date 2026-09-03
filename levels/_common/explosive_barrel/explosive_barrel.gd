@@ -1,10 +1,14 @@
 extends StaticBody2D
 
-# A barrel of blasting powder left standing in a level: solid enough to stand on or hide behind,
-# until something damages it. Shoot it, catch it in a blast, and it goes off - hurting enemies,
-# hurting the player who lit it from too close, opening breakable terrain, and setting off any
-# other barrel in range. The blast itself is Explosion's (scripts/explosion.gd), the same one the
-# player's dynamite uses, so a barrel and a thrown stick can never drift apart in what they do.
+# A barrel of blasting powder left standing in a level. Shoot it, catch it in a blast, and it goes
+# off - hurting enemies, hurting the player who lit it from too close, opening breakable terrain,
+# and setting off any other barrel in range. The blast itself is Explosion's (scripts/explosion.gd),
+# the same one the player's dynamite uses, so a barrel and a thrown stick can never drift apart in
+# what they do.
+#
+# It is walked through rather than stood on: its body is on no physics layer at all, so the player
+# and the enemies chasing them pass straight through a barrel instead of a fight snagging on the
+# furniture. Shots are the exception - see _on_hurtbox_area_entered() at the bottom.
 #
 # It carries a short fuse rather than going off on the hit that kills it. That gives the player a
 # beat to get clear of one they shot from too close, and staggers a row of them into a visible
@@ -77,12 +81,27 @@ func _flash_hit() -> void:
 # Same shape as Enemy._on_hurtbox_area_entered(): whatever owns the incoming hitbox is asked how
 # hard it hits, rather than the barrel knowing anything about bullets.
 #
-# The hurtbox detects the bullet rather than the other way round - it sits on no layer at all, only
-# masking PlayerAttack. The barrel's own body is already on Ground, which is what stops the bullet
-# and spawns its impact, so putting the hurtbox on a layer bullets scan for too would just spawn a
-# second impact effect on top of the first (which is what enemies, whose body and hurtbox share the
-# Enemy layer, currently do).
+# The hurtbox detects the attack rather than the other way round - it sits on no layer at all, only
+# masking PlayerAttack.
 func _on_hurtbox_area_entered(area : Area2D) -> void:
 	var source := area.get_parent()
-	if source != null and source.has_method("get_damage_amount"):
+	if source == null:
+		return
+	if source.has_method("get_damage_amount"):
 		take_damage(source.get_damage_amount())
+	_spend(source)
+
+
+# A barrel is a solid thing to shoot at whether or not there is any health left in it, so what hits
+# it stops there instead of carrying on into whatever stands behind it.
+#
+# It used to get this for free: the body sat on the Ground layer, which is one of the two layers a
+# bullet's own hitbox scans, so the bullet stopped itself. Now that the player and the enemies walk
+# through a barrel, nothing about it is on that layer for a bullet to find, and shots went straight
+# through. The barrel spends them itself.
+#
+# Asked of the attack rather than done to it: an attack freed outright here would blink out with no
+# puff of dust where it struck, and it is the projectile that knows what landing looks like.
+func _spend(attack : Node) -> void:
+	if attack.has_method("bullet_impact"):
+		attack.bullet_impact()

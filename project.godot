@@ -52,7 +52,7 @@ enabled=PackedStringArray("res://addons/soupik/plugin.cfg")
 
 [gui]
 
-theme/custom_font="uid://kiwlymd55nc2"
+theme/custom_font="res://ui/font/BoldPixels.ttf"
 
 [input]
 
@@ -232,6 +232,7 @@ locale/translations=PackedStringArray("res://localization/translations.en.transl
 2d_physics/layer_11="EnemyAttacks"
 2d_physics/layer_12="GrappleAnchor"
 2d_physics/layer_13="ArenaBoundary"
+2d_physics/layer_14="Climbable"
 
 [rendering]
 

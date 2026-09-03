@@ -1,7 +1,7 @@
 [gd_scene load_steps=5 format=3 uid="uid://b5urwtxvwwkpo"]
 
 [ext_resource type="Script" uid="uid://cvp8h6ehgj7yn" path="res://interaction_component/interacting_component.gd" id="1_4b1aw"]
-[ext_resource type="FontFile" uid="uid://kiwlymd55nc2" path="res://ui/font/BoldPixels.ttf" id="2_font"]
+[ext_resource type="FontFile" uid="uid://bn7ed1nmtuvnj" path="res://ui/font/BoldPixels.ttf" id="2_font"]
 
 [sub_resource type="LabelSettings" id="LabelSettings_4b1aw"]
 font = ExtResource("2_font")

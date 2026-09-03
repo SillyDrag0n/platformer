@@ -1,6 +1,6 @@
-[gd_scene load_steps=6 format=3 uid="uid://bip1f6rhcaibn"]
+[gd_scene load_steps=8 format=3 uid="uid://bip1f6rhcaibn"]
 
-[ext_resource type="Script" uid="uid://48n23v1a16i8" path="res://ui/pause_menu_screen.gd" id="1_6benx"]
+[ext_resource type="Script" uid="uid://48n23v1a16i8" path="res://ui/screens/pause_menu_screen.gd" id="1_6benx"]
 [ext_resource type="Theme" uid="uid://ddr12d5h68dd1" path="res://ui/theme/game_theme.tres" id="2_3x2ud"]
 [ext_resource type="FontFile" path="res://ui/font/BoldPixels.ttf" id="3_font"]
 
@@ -28,6 +28,19 @@ outline_color = Color(0.0705882, 0.0392157, 0.0235294, 1)
 shadow_size = 4
 shadow_color = Color(0, 0, 0, 0.35)
 shadow_offset = Vector2(0, 4)
+
+[sub_resource type="LabelSettings" id="LabelSettings_confirm_title"]
+font = ExtResource("3_font")
+font_size = 36
+font_color = Color(0.964706, 0.909804, 0.792157, 1)
+outline_size = 8
+outline_color = Color(0.0705882, 0.0392157, 0.0235294, 1)
+
+[sub_resource type="LabelSettings" id="LabelSettings_body"]
+font = ExtResource("3_font")
+font_size = 22
+font_color = Color(0.909804, 0.862745, 0.772549, 1)
+line_spacing = 6.0
 
 [node name="PauseMenuScreen" type="CanvasLayer"]
 process_mode = 3
@@ -96,13 +109,93 @@ layout_mode = 2
 theme_override_font_sizes/font_size = 30
 text = "DEBUG MODE"
 
+[node name="ReturnToHubButton" type="Button" parent="MarginContainer/PanelContainer/MarginContainer/VBoxContainer"]
+custom_minimum_size = Vector2(400, 68)
+layout_mode = 2
+theme_override_font_sizes/font_size = 30
+text = "RETURN TO TOWN"
+
 [node name="MainMenuButton" type="Button" parent="MarginContainer/PanelContainer/MarginContainer/VBoxContainer"]
 custom_minimum_size = Vector2(400, 68)
 layout_mode = 2
 theme_override_font_sizes/font_size = 30
 text = "MAIN MENU"
 
+[node name="ConfirmBackdrop" type="Button" parent="."]
+visible = false
+self_modulate = Color(0, 0, 0, 0.6)
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+focus_mode = 0
+flat = true
+
+[node name="ConfirmPanel" type="PanelContainer" parent="."]
+visible = false
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -330.0
+offset_top = -150.0
+offset_right = 330.0
+offset_bottom = 150.0
+grow_horizontal = 2
+grow_vertical = 2
+theme = ExtResource("2_3x2ud")
+theme_override_styles/panel = SubResource("StyleBoxFlat_card")
+
+[node name="ConfirmMargin" type="MarginContainer" parent="ConfirmPanel"]
+layout_mode = 2
+theme_override_constants/margin_left = 40
+theme_override_constants/margin_top = 32
+theme_override_constants/margin_right = 40
+theme_override_constants/margin_bottom = 32
+
+[node name="ConfirmBody" type="VBoxContainer" parent="ConfirmPanel/ConfirmMargin"]
+layout_mode = 2
+theme_override_constants/separation = 20
+
+[node name="ConfirmTitle" type="Label" parent="ConfirmPanel/ConfirmMargin/ConfirmBody"]
+layout_mode = 2
+text = "RETURN TO TOWN"
+label_settings = SubResource("LabelSettings_confirm_title")
+horizontal_alignment = 1
+
+[node name="ConfirmText" type="Label" parent="ConfirmPanel/ConfirmMargin/ConfirmBody"]
+layout_mode = 2
+size_flags_vertical = 3
+text = "Ride back to town?"
+label_settings = SubResource("LabelSettings_body")
+horizontal_alignment = 1
+vertical_alignment = 1
+autowrap_mode = 3
+
+[node name="ConfirmButtons" type="HBoxContainer" parent="ConfirmPanel/ConfirmMargin/ConfirmBody"]
+layout_mode = 2
+alignment = 1
+theme_override_constants/separation = 20
+
+[node name="StayButton" type="Button" parent="ConfirmPanel/ConfirmMargin/ConfirmBody/ConfirmButtons"]
+custom_minimum_size = Vector2(240, 60)
+layout_mode = 2
+theme_override_font_sizes/font_size = 24
+text = "Stay"
+
+[node name="LeaveButton" type="Button" parent="ConfirmPanel/ConfirmMargin/ConfirmBody/ConfirmButtons"]
+custom_minimum_size = Vector2(240, 60)
+layout_mode = 2
+theme_override_font_sizes/font_size = 24
+text = "Leave"
+
 [connection signal="pressed" from="MarginContainer/PanelContainer/MarginContainer/VBoxContainer/ContinueButton" to="." method="_on_continue_button_pressed"]
 [connection signal="pressed" from="MarginContainer/PanelContainer/MarginContainer/VBoxContainer/SettingsButton" to="." method="_on_settings_button_pressed"]
 [connection signal="pressed" from="MarginContainer/PanelContainer/MarginContainer/VBoxContainer/DebugButton" to="." method="_on_debug_button_pressed"]
+[connection signal="pressed" from="MarginContainer/PanelContainer/MarginContainer/VBoxContainer/ReturnToHubButton" to="." method="_on_return_to_hub_button_pressed"]
 [connection signal="pressed" from="MarginContainer/PanelContainer/MarginContainer/VBoxContainer/MainMenuButton" to="." method="_on_main_menu_button_pressed"]
+[connection signal="pressed" from="ConfirmBackdrop" to="." method="close_confirm"]
+[connection signal="pressed" from="ConfirmPanel/ConfirmMargin/ConfirmBody/ConfirmButtons/StayButton" to="." method="close_confirm"]
+[connection signal="pressed" from="ConfirmPanel/ConfirmMargin/ConfirmBody/ConfirmButtons/LeaveButton" to="." method="_on_leave_confirmed"]

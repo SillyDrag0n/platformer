@@ -1,4 +1,4 @@
-[gd_scene load_steps=57 format=3 uid="uid://bfcmjoltsmsed"]
+[gd_scene load_steps=58 format=3 uid="uid://bfcmjoltsmsed"]
 
 [ext_resource type="Script" uid="uid://bw7oflms0slfo" path="res://player/player.gd" id="1_wqxfn"]
 [ext_resource type="Texture2D" uid="uid://2gu7psnfksko" path="res://player/sprites/head.png" id="2_knn7v"]
@@ -40,6 +40,7 @@
 [ext_resource type="Script" uid="uid://bnso0mph1tb11" path="res://addons/soupik/modifications/soup_two_bone_ik.gd" id="46_soupik"]
 [ext_resource type="Script" uid="uid://b4u1tvhlw4d2g" path="res://addons/soupik/modifications/soup_look_at.gd" id="47_soup_look_at"]
 [ext_resource type="Script" uid="uid://dwssgakw2jrf7" path="res://player/player_states/snake_attached_state.gd" id="48_snakeattached"]
+[ext_resource type="Script" path="res://player/player_states/climb_state.gd" id="60_climb"]
 [ext_resource type="AudioStream" uid="uid://c0ja5af3bbcqb" path="res://player/sounds/footsteps/footstep_01.wav" id="49_footstep1"]
 [ext_resource type="AudioStream" uid="uid://6l170h7sw45i" path="res://player/sounds/footsteps/footstep_02.wav" id="50_footstep2"]
 [ext_resource type="AudioStream" uid="uid://c80spagn5t5w" path="res://player/sounds/footsteps/footstep_03.wav" id="51_footstep3"]
@@ -910,6 +911,10 @@ character_body_2d = NodePath("../..")
 script = ExtResource("32_dead")
 character_body_2d = NodePath("../..")
 player = NodePath("../..")
+
+[node name="Climb" type="Node" parent="StateMachine" node_paths=PackedStringArray("character_body_2d")]
+script = ExtResource("60_climb")
+character_body_2d = NodePath("../..")
 
 [node name="SnakeAttached" type="Node" parent="StateMachine" node_paths=PackedStringArray("character_body_2d", "player")]
 script = ExtResource("48_snakeattached")

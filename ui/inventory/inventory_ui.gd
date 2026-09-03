@@ -9,6 +9,11 @@ const MUTED := Color(0.6, 0.6, 0.6)
 const ACCENT := Color(0.960784, 0.615686, 0.156863)
 const UNLOCKED := Color(0.45, 0.85, 0.45)
 
+# What the player is carrying, shown in the corner of every tab rather than on one of them: money
+# is what half this screen is for reading against (what a shop item costs, what a bounty pays), and
+# the journal was the one place in the game that never said how much of it there was.
+@export var money_label : Label
+
 @export var tab_container : TabContainer
 
 @export var item_grid : GridContainer
@@ -71,6 +76,8 @@ var _quest_section_headers : Dictionary = {}
 
 func _ready():
 	InventoryManager.updated_inventory.connect(update_inventory_ui)
+	CollectibleManager.on_collectible_award_received.connect(_on_money_changed)
+	_update_money_label()
 	_create_item_slots()
 	visible = false
 	InventoryManager.is_open = false
@@ -604,3 +611,16 @@ func _close_picker() -> void:
 	else:
 		_grab_default_focus()
 	_picker_opener = null
+
+
+# CollectibleManager hands the new total straight to its listeners, but the journal is opened long
+# after most of those signals have already fired, so it reads the manager itself as well - a screen
+# built from signals alone would sit at whatever it was last told, or at zero.
+func _on_money_changed(_total : int) -> void:
+	_update_money_label()
+
+
+func _update_money_label() -> void:
+	if money_label == null:
+		return
+	money_label.text = tr("$%d") % CollectibleManager.total_award_amount

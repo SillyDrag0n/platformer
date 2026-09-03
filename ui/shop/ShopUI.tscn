@@ -2,7 +2,7 @@
 
 [ext_resource type="Theme" uid="uid://ddr12d5h68dd1" path="res://ui/theme/game_theme.tres" id="0_theme"]
 [ext_resource type="Script" path="res://ui/shop/shop_ui.gd" id="1_shop"]
-[ext_resource type="FontFile" uid="uid://kiwlymd55nc2" path="res://ui/font/BoldPixels.ttf" id="2_font"]
+[ext_resource type="FontFile" uid="uid://bn7ed1nmtuvnj" path="res://ui/font/BoldPixels.ttf" id="2_font"]
 [ext_resource type="PackedScene" path="res://ui/shop/ShopEntry.tscn" id="3_entry"]
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_shop"]
