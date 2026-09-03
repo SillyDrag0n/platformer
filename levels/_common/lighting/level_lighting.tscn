@@ -1,0 +1,18 @@
+[gd_scene load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://levels/_common/lighting/level_lighting.gd" id="1_lighting"]
+
+[node name="LevelLighting" type="Node2D"]
+script = ExtResource("1_lighting")
+
+[node name="Ambient" type="CanvasModulate" parent="."]
+color = Color(0.62, 0.56, 0.6, 1)
+
+[node name="Sun" type="DirectionalLight2D" parent="."]
+color = Color(1, 0.78, 0.45, 1)
+energy = 0.85
+shadow_enabled = true
+shadow_filter = 1
+shadow_filter_smooth = 3.0
+rotation = 0.959931
+max_distance = 3000.0

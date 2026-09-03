@@ -34,6 +34,7 @@ const GENERAL := "MarginContainer/PanelContainer/CardMargin/Body/TabContainer/Ge
 @onready var controls_scroll_container = $MarginContainer/PanelContainer/CardMargin/Body/TabContainer/Controls
 @onready var controls_list = $MarginContainer/PanelContainer/CardMargin/Body/TabContainer/Controls/VBoxContainer
 @onready var reset_controls_button = $MarginContainer/PanelContainer/CardMargin/Body/TabContainer/Controls/VBoxContainer/ResetControlsButton
+@onready var main_menu_button : Button = $MarginContainer/PanelContainer/CardMargin/Body/MainMenuButton
 
 var window_modes : Dictionary = {"Fullscreen" : DisplayServer.WINDOW_MODE_EXCLUSIVE_FULLSCREEN,
 								 "Window" : DisplayServer.WINDOW_MODE_WINDOWED,
@@ -76,10 +77,7 @@ func _ready():
 	initialise_controls()
 	_populate_control_bindings()
 	_connect_scroll_follow(reset_controls_button, controls_scroll_container)
-	# Every row in the General tab too, so moving down it with a pad scrolls the list the same way
-	# the Controls tab already did.
-	for control in _focusable_descendants(general_scroll):
-		_connect_scroll_follow(control, general_scroll)
+	_wire_general_focus_neighbors()
 	_refresh_slider_readouts()
 	SettingsManager.apply_ui_scale(self)
 	# Deferred so the containers have been laid out first. Grabbing focus straight away raises
@@ -127,6 +125,7 @@ func _grab_default_focus() -> void:
 	if current_tab_control == null:
 		return
 	var focusable := _find_first_focusable(current_tab_control)
+	_point_main_menu_button_back_into(current_tab_control)
 	if focusable:
 		focusable.grab_focus()
 
@@ -197,6 +196,33 @@ func _wire_control_row_focus_neighbors(rows : Array) -> void:
 			row.bind_button.focus_neighbor_bottom = row.bind_button.get_path_to(reset_controls_button)
 			row.joypad_bind_button.focus_neighbor_bottom = row.joypad_bind_button.get_path_to(reset_controls_button)
 			reset_controls_button.focus_neighbor_top = reset_controls_button.get_path_to(row.bind_button)
+
+
+# The General tab is the same shape of list as the Controls tab and had the same problem: it
+# outruns its own height, so Godot's spatial focus search would give up on the rows still below the
+# fold - an off-screen row sits farther from the focused control than MainMenuButton does - and drop
+# focus out of the list entirely. Chaining the rows top-to-bottom keeps "down" walking the list, and
+# _connect_scroll_follow() scrolls each newly focused row into view on the way.
+func _wire_general_focus_neighbors() -> void:
+	var rows := _focusable_descendants(general_scroll)
+	for i in rows.size():
+		_connect_scroll_follow(rows[i], general_scroll)
+		if i + 1 < rows.size():
+			rows[i].focus_neighbor_bottom = rows[i].get_path_to(rows[i + 1])
+			rows[i + 1].focus_neighbor_top = rows[i + 1].get_path_to(rows[i])
+	# Only the real last row hands focus on to the button below the card.
+	if not rows.is_empty():
+		rows[-1].focus_neighbor_bottom = rows[-1].get_path_to(main_menu_button)
+
+
+# MainMenuButton sits under the TabContainer rather than inside a tab, so its way back up depends on
+# which tab is showing - a fixed neighbour would point into the hidden tab half the time, and focus
+# does not move to a control that cannot take it. Re-pointed on open and on every tab switch.
+func _point_main_menu_button_back_into(tab : Control) -> void:
+	var rows := _focusable_descendants(tab)
+	if rows.is_empty():
+		return
+	main_menu_button.focus_neighbor_top = main_menu_button.get_path_to(rows[-1])
 
 
 func _is_any_control_row_listening() -> bool:

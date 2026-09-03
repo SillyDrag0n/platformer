@@ -1,0 +1,34 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="24" height="88" viewBox="0 0 24 88">
+  <!-- A town street lamp: cast iron, kerosene, and taller than the player. Drawn from its foot up,
+       so the scene's origin sits on the ground and placing one is a matter of dropping it on the
+       terrain line. The glass is the only warm thing in it - everything else is the same dark iron
+       the ladder rails and the notice board are built from, so a lit lamp reads as light rather
+       than as a painted-on glow. -->
+  <g id="base">
+    <rect x="6" y="84" width="12" height="4" fill="#2e2823"/>
+    <rect x="8" y="80" width="8" height="4" fill="#3a332c"/>
+    <rect x="8" y="80" width="2" height="4" fill="#4a4139"/>
+  </g>
+  <g id="post">
+    <rect x="10" y="22" width="4" height="58" fill="#3a332c"/>
+    <rect x="10" y="22" width="1" height="58" fill="#4a4139"/>
+    <rect x="13" y="22" width="1" height="58" fill="#241f1b"/>
+    <!-- Collar where the head sits on the post. -->
+    <rect x="8" y="20" width="8" height="3" fill="#2e2823"/>
+  </g>
+  <g id="head">
+    <!-- Roof, flaring out over the glass so rain and sand stay off the flame. -->
+    <path d="M4 8 L8 2 H16 L20 8 Z" fill="#2e2823"/>
+    <path d="M4 8 L8 2 H12 L12 8 Z" fill="#3a332c"/>
+    <rect x="11" y="0" width="2" height="2" fill="#a3814a"/>
+    <!-- Glass, brightest at the middle where the flame is. -->
+    <rect x="7" y="8" width="10" height="12" fill="#ffcf7a"/>
+    <rect x="9" y="10" width="6" height="8" fill="#fff2c4"/>
+    <rect x="10" y="12" width="4" height="5" fill="#ffffff"/>
+    <!-- Frame: the corner posts and the sill the glass sits in. -->
+    <rect x="6" y="8" width="1" height="12" fill="#2e2823"/>
+    <rect x="17" y="8" width="1" height="12" fill="#2e2823"/>
+    <rect x="6" y="19" width="12" height="2" fill="#2e2823"/>
+    <rect x="7" y="13" width="10" height="1" fill="#c9a05a" opacity="0.55"/>
+  </g>
+</svg>

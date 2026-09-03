@@ -209,3 +209,40 @@ func test_a_handful_taken_at_once_does_not_stack_the_same_sample_on_itself():
 		"sounding four times as good")
 	assert_eq(CollectibleManager.total_award_amount, 4, \
 		"though every one of them is still paid for - it is the sound that is folded, not the money")
+
+
+# Every level scene instances its own game_screen.tscn, so the HUD is rebuilt from scratch on each
+# scene change - and it used to be wired to the award signal alone, which only ever reports money
+# earned since it was built. Walking into a level with a full wallet showed the .tscn's hardcoded
+# "0" while the journal, which reads the manager directly, showed the truth.
+func test_the_hud_shows_money_earned_before_it_was_built():
+	CollectibleManager.total_award_amount = 240
+	var screen = GameScreenScene.instantiate()
+	add_child_autofree(screen)
+	await wait_physics_frames(1)
+
+	assert_eq(screen.collectible_label.text, "$240", \
+		"a HUD built after the money was earned still has to say how much there is")
+
+
+func test_the_two_readouts_agree_after_a_scene_change():
+	CollectibleManager.total_award_amount = 0
+	var inventory = InventoryUIScene.instantiate()
+	add_child_autofree(inventory)
+	var first_screen = GameScreenScene.instantiate()
+	add_child_autofree(first_screen)
+	await wait_physics_frames(2)
+
+	CollectibleManager.give_pickup_award(15)
+	await wait_physics_frames(1)
+
+	# The level ends and the next one brings its own HUD along, while the journal survives as an
+	# autoloaded screen - which is how the two came to disagree in the first place.
+	first_screen.free()
+	var second_screen = GameScreenScene.instantiate()
+	add_child_autofree(second_screen)
+	await wait_physics_frames(1)
+
+	assert_string_contains(inventory.money_label.text, "15", "the journal kept up")
+	assert_eq(second_screen.collectible_label.text, "$15", \
+		"and the new level's HUD has to arrive carrying the same number, not start over at zero")

@@ -165,6 +165,14 @@ snapshot, not a source of truth; re-check the code for current state.
     contact-damage check, so only the cactus and cactus coyote are in it — which
     meant dynamite did nothing whatsoever to bandits or skeletons. It now keys
     off the Enemy *physics layer* the query already masks for.
+  - Breakable terrain is all-or-nothing per patch: the blast finds the cells
+    it covers and then floods outward through every breakable cell connected
+    to them, so a boarded-up mine mouth opens completely instead of taking a
+    circular bite. The flood only steps onto cells that are already
+    breakable, so one empty cell is a wall — which is how a level keeps a
+    bigger cave hidden behind the entrance the player just opened, and it
+    means two structures meant to stay separate have to be painted apart
+    (touching at a corner counts as connected).
 - **Items:** ammo, cosmetics, key items, quest items, utility items, weapons,
   and weapon upgrades (`WeaponUpgradeItemData`) - bought once at a shop and
   fitted for good rather than filling an equip slot, each naming the weapon it
@@ -570,7 +578,7 @@ the ride back to town (`levels/regions/plains/shaman_camp/shaman_camp.gd`).
 
 ### Engine traps, and how they are handled
 
-Two Godot behaviours cost real time before being understood. Both are now
+Three Godot behaviours cost real time before being understood. All are now
 defused in code rather than only written down here — this section explains
 *why* the code looks the way it does.
 
@@ -594,6 +602,18 @@ defused in code rather than only written down here — this section explains
   grouping nodes `Node2D` rather than bare `Node`, with
   `test/unit/test_canvas_layer_visibility.gd` sweeping every `CanvasLayer` scene
   for the shape so the next one fails a test instead of shipping.
+- **Focus navigation answers key *echoes*, not just fresh presses.** `Viewport`
+  navigates on `is_action_pressed("ui_down", allow_echo = true)`, so the OS's own
+  key repeat walks the focus through a menu at whatever rate the OS is set to —
+  and a deflected analog stick jitters out motion events that read as presses
+  too. Anything adding its own hold-to-repeat therefore ends up as the second or
+  third stream driving the same hold, and holding a direction lurches, skips
+  rows and behaves differently every time. **Handled by** giving one owner the
+  whole job: `scripts/managers/ui_navigation_repeater.gd` swallows everything a
+  direction sends between its first press and its release (`_input` runs before
+  GUI dispatch, so `set_input_as_handled()` there is enough) and re-fires it on a
+  single cadence. It stands aside for the controls that legitimately repeat
+  themselves — a slider along its own axis, a text field's caret.
 
 ## Design Pillars (draft — refine as needed)
 

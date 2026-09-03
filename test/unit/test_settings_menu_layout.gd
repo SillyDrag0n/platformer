@@ -64,3 +64,46 @@ func test_a_slider_says_where_it_is_set():
 
 	assert_string_contains(screen.master_volume_value.text, "45", \
 		"a slider with no number beside it only ever says 'somewhere around here'")
+
+
+# The General tab is taller than the card it sits in, and Godot's spatial focus search measures
+# distance to controls it cannot see - so from a row near the fold, MainMenuButton (on screen, just
+# below the card) won an "up/down" against the next row (off screen, further away). Pressing down
+# walked a few rows and then fell out of the list, with no way back to the settings underneath.
+func test_moving_down_the_general_tab_walks_every_row():
+	var rows : Array = screen._focusable_descendants(screen.general_scroll)
+	assert_gt(rows.size(), 1, "the tab needs more than one row for this to mean anything")
+
+	var walked : Array = []
+	var here : Control = rows[0]
+	# One step per row at most - a chain that loops back on itself would otherwise spin here.
+	for _step in rows.size():
+		walked.append(here)
+		var next := here.find_valid_focus_neighbor(SIDE_BOTTOM)
+		if next == null or next == screen.main_menu_button:
+			break
+		here = next
+
+	assert_eq(walked.size(), rows.size(), \
+		"holding down has to reach every setting rather than dropping out of the list part way")
+	assert_eq(walked[-1], rows[-1], "and end on the last one")
+
+
+func test_the_bottom_of_the_list_hands_focus_to_the_button_below_it():
+	var rows : Array = screen._focusable_descendants(screen.general_scroll)
+
+	assert_eq(rows[-1].find_valid_focus_neighbor(SIDE_BOTTOM), screen.main_menu_button, \
+		"past the last setting there is nowhere left to go but out")
+	assert_eq(screen.main_menu_button.find_valid_focus_neighbor(SIDE_TOP), rows[-1], \
+		"and pressing up off the button has to come back to it")
+
+
+# MainMenuButton is shared by both tabs, so its way back up cannot be wired once and left - it has
+# to follow whichever tab is showing, or it points into a hidden one and focus stops moving at all.
+func test_the_button_finds_its_way_back_into_whichever_tab_is_showing():
+	screen._cycle_tab(1)
+	await wait_physics_frames(2)
+
+	var controls_rows : Array = screen._focusable_descendants(screen.controls_scroll_container)
+	assert_eq(screen.main_menu_button.find_valid_focus_neighbor(SIDE_TOP), controls_rows[-1], \
+		"on the Controls tab, up off the button goes back into the Controls list")

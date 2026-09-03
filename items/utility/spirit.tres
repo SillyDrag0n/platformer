@@ -12,5 +12,5 @@ display_name = "Spirit"
 description = "A bottle of hard moonshine - more medicine than drink out here. A swig steadies the nerves and patches you up in the field."
 max_stack_size = 10
 icon = ExtResource("2_icon")
-price = 10
+price = 5
 purchase_quantity = 1

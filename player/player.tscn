@@ -40,10 +40,10 @@
 [ext_resource type="Script" uid="uid://bnso0mph1tb11" path="res://addons/soupik/modifications/soup_two_bone_ik.gd" id="46_soupik"]
 [ext_resource type="Script" uid="uid://b4u1tvhlw4d2g" path="res://addons/soupik/modifications/soup_look_at.gd" id="47_soup_look_at"]
 [ext_resource type="Script" uid="uid://dwssgakw2jrf7" path="res://player/player_states/snake_attached_state.gd" id="48_snakeattached"]
-[ext_resource type="Script" path="res://player/player_states/climb_state.gd" id="60_climb"]
 [ext_resource type="AudioStream" uid="uid://c0ja5af3bbcqb" path="res://player/sounds/footsteps/footstep_01.wav" id="49_footstep1"]
 [ext_resource type="AudioStream" uid="uid://6l170h7sw45i" path="res://player/sounds/footsteps/footstep_02.wav" id="50_footstep2"]
 [ext_resource type="AudioStream" uid="uid://c80spagn5t5w" path="res://player/sounds/footsteps/footstep_03.wav" id="51_footstep3"]
+[ext_resource type="Script" path="res://player/player_states/climb_state.gd" id="60_climb"]
 
 [sub_resource type="SkeletonModification2DCCDIK" id="SkeletonModification2DCCDIK_5ejfk"]
 target_nodepath = NodePath("../../IKTargets/ArmR Target")
@@ -583,7 +583,7 @@ offset = Vector2(3, -4)
 
 [node name="ShinR" type="Bone2D" parent="Animation/Bones/Skeleton2D/Hip/LegR"]
 position = Vector2(-1.99966, 13.9987)
-rotation = 0.0705774
+rotation = 0.0705775
 scale = Vector2(0.999929, 0.999929)
 rest = Transform2D(0.998328, 0.0561413, -0.0561413, 0.998328, -1.99963, 13.9988)
 

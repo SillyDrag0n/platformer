@@ -1,0 +1,22 @@
+[gd_scene load_steps=4 format=3]
+
+[ext_resource type="Texture2D" path="res://levels/_common/lamps/lamp_post.svg" id="1_post"]
+[ext_resource type="Texture2D" path="res://levels/_common/lighting/light_falloff.tres" id="2_falloff"]
+[ext_resource type="Script" path="res://levels/_common/lamps/flickering_light.gd" id="3_flicker"]
+
+[node name="LampPost" type="Node2D"]
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+position = Vector2(0, -44)
+texture = ExtResource("1_post")
+
+[node name="Light" type="PointLight2D" parent="."]
+position = Vector2(0, -74)
+color = Color(1, 0.82, 0.5, 1)
+energy = 0.9
+shadow_enabled = true
+shadow_filter = 1
+shadow_filter_smooth = 4.0
+texture = ExtResource("2_falloff")
+texture_scale = 1.5
+script = ExtResource("3_flicker")

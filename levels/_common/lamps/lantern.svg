@@ -1,0 +1,27 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="18" height="26" viewBox="0 0 18 26">
+  <!-- The hand lantern: what gets left on a crate, hung off a beam, or set down beside a bedroll.
+       Same iron and same warm glass as the street lamp (lamp_post.svg), at a quarter the size, so a
+       camp lit with these and a town lit with those look like the same world. Its origin is at the
+       foot like the post's, so one standing on the ground needs no offset - hanging it is a matter
+       of lifting it off the floor and letting the bail read as a hook. -->
+  <g id="bail">
+    <path d="M4 6 C4 0, 14 0, 14 6" fill="none" stroke="#4a4139" stroke-width="1.5"/>
+  </g>
+  <g id="cap">
+    <rect x="3" y="5" width="12" height="3" fill="#2e2823"/>
+    <rect x="5" y="3" width="8" height="2" fill="#3a332c"/>
+  </g>
+  <g id="glass">
+    <rect x="4" y="8" width="10" height="11" fill="#ffcf7a"/>
+    <rect x="6" y="10" width="6" height="7" fill="#fff2c4"/>
+    <rect x="8" y="12" width="2" height="4" fill="#ffffff"/>
+    <rect x="4" y="8" width="1" height="11" fill="#2e2823"/>
+    <rect x="13" y="8" width="1" height="11" fill="#2e2823"/>
+    <rect x="4" y="13" width="10" height="1" fill="#c9a05a" opacity="0.5"/>
+  </g>
+  <g id="base">
+    <rect x="3" y="19" width="12" height="4" fill="#2e2823"/>
+    <rect x="4" y="23" width="10" height="3" fill="#3a332c"/>
+    <rect x="4" y="23" width="2" height="3" fill="#4a4139"/>
+  </g>
+</svg>

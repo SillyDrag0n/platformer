@@ -1,4 +1,4 @@
-[gd_scene load_steps=25 format=4 uid="uid://xshg6sdsrl54"]
+[gd_scene load_steps=23 format=4 uid="uid://xshg6sdsrl54"]
 
 [ext_resource type="PackedScene" uid="uid://bfcmjoltsmsed" path="res://player/player.tscn" id="2_oyc5a"]
 [ext_resource type="Script" uid="uid://chd8hkfd628j6" path="res://player/player_camera.gd" id="4_bdvu7"]
@@ -9,7 +9,6 @@
 [ext_resource type="PackedScene" uid="uid://wq5uffyprpgx" path="res://tileset/structures/saloon/rosas_saloon.tscn" id="6_bdvu7"]
 [ext_resource type="PackedScene" uid="uid://m3n2p442c8l" path="res://tileset/structures/notice_board/notice_board.tscn" id="6_ftq5n"]
 [ext_resource type="PackedScene" path="res://tileset/structures/arms_dealer_shop/arms_dealer_shop.tscn" id="7_dealer"]
-[ext_resource type="Script" path="res://levels/hub_level.gd" id="8_hub"]
 [ext_resource type="PackedScene" path="res://tileset/structures/sheriffs_office/sheriffs_office.tscn" id="9_sheriff"]
 [ext_resource type="PackedScene" path="res://tileset/structures/bank/bank.tscn" id="10_bank"]
 [ext_resource type="TileSet" uid="uid://dxdum0wlxjwk" path="res://tileset/desert_terrain_tileset.tres" id="10_terrain"]
@@ -23,12 +22,8 @@
 [ext_resource type="PackedScene" path="res://tileset/structures/farm_house/farm_house.tscn" id="15_farmhouse"]
 [ext_resource type="PackedScene" path="res://npc/WelcomeNPC.tscn" id="16_welcome"]
 [ext_resource type="PackedScene" path="res://interaction_component/hint_zone.tscn" id="23_15esb"]
-[ext_resource type="AudioStream" uid="uid://c2yrrrb1768gl" path="res://audio/music/hub_theme.wav" id="24_music"]
 
-[node name="HubLevel" type="Node2D" node_paths=PackedStringArray("tutorial_only_nodes")]
-script = ExtResource("8_hub")
-tutorial_only_nodes = [NodePath("WelcomeNPC"), NodePath("HintZoneInteract")]
-music = ExtResource("24_music")
+[node name="HubLevel" type="Node2D"]
 
 [node name="Player" parent="." instance=ExtResource("2_oyc5a")]
 position = Vector2(1300, 190)

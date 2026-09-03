@@ -1,0 +1,54 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="32" height="64" viewBox="0 0 32 64">
+  <!-- Rosa gets her own sprite rather than the shared shop_npc one she was borrowing from the arms
+       dealer. Every other townsperson is a hat over a coat, so at 32x64 what actually tells her
+       apart is the shape - loose hair and a long skirt instead of a brim and boots - and the
+       barkeep's props: the apron and the towel over her arm. -->
+  <g id="skirt">
+    <path d="M9 40 H23 L26 64 H6 Z" fill="#8E2438"/>
+    <path d="M17 40 H23 L26 64 H18 Z" fill="#6B1A2A"/>
+    <rect x="6" y="61" width="20" height="2" fill="#C9A227"/>
+  </g>
+  <g id="apron">
+    <path d="M12 40 H20 L21 59 H11 Z" fill="#E8E0CE"/>
+    <rect x="11" y="57" width="10" height="1" fill="#CFC5AE"/>
+  </g>
+  <g id="sash">
+    <rect x="9" y="37" width="14" height="4" fill="#6B1A2A"/>
+    <rect x="14" y="37" width="4" height="4" fill="#C9A227"/>
+  </g>
+  <g id="arms">
+    <rect x="23" y="26" width="4" height="11" fill="#C1926B"/>
+    <rect x="5" y="26" width="4" height="11" fill="#E0B48C"/>
+  </g>
+  <g id="bodice">
+    <rect x="9" y="25" width="14" height="13" fill="#8E2438"/>
+    <rect x="18" y="25" width="5" height="13" fill="#6B1A2A"/>
+    <rect x="9" y="25" width="14" height="2" fill="#E8D9B8"/>
+  </g>
+  <!-- Draped over the near forearm, which is the one prop that says "barkeep" from across a room. -->
+  <g id="bar-towel">
+    <rect x="3" y="30" width="6" height="10" fill="#E8E0CE"/>
+    <rect x="3" y="34" width="6" height="1" fill="#CFC5AE"/>
+  </g>
+  <g id="hair-behind">
+    <ellipse cx="16" cy="14" rx="8" ry="8" fill="#4A2C1E"/>
+    <path d="M8 14 H24 L25 24 H21 L20 17 H12 L11 24 H7 Z" fill="#4A2C1E"/>
+  </g>
+  <g id="neck">
+    <rect x="14" y="20" width="5" height="5" fill="#C1926B"/>
+    <rect x="13" y="21" width="7" height="2" fill="#2A1D14"/>
+  </g>
+  <g id="face">
+    <circle cx="16" cy="15" r="6" fill="#E0B48C"/>
+    <ellipse cx="16" cy="11" rx="6.5" ry="3.5" fill="#4A2C1E"/>
+    <rect x="12" y="14" width="2" height="2" fill="#3A2118"/>
+    <rect x="18" y="14" width="2" height="2" fill="#3A2118"/>
+    <rect x="14" y="18" width="4" height="1" fill="#A63A32"/>
+  </g>
+  <g id="pinned-up-hair">
+    <ellipse cx="16" cy="6" rx="5" ry="4" fill="#4A2C1E"/>
+    <ellipse cx="13" cy="5" rx="2" ry="1.5" fill="#6B4230"/>
+    <circle cx="22" cy="8" r="2.2" fill="#C9A227"/>
+    <circle cx="22" cy="8" r="0.9" fill="#8E2438"/>
+  </g>
+</svg>

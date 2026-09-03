@@ -10,6 +10,7 @@ extends RefCounted
 # can see it (see PROJECT.md), and a preloaded script with static methods needs no such thing.
 
 const EFFECT_SCENE : PackedScene = preload("res://player/dynamite/dynamite_explosion_effect.tscn")
+const RUBBLE_BURST = preload("res://levels/_common/breakable_rubble/rubble_burst.gd")
 
 const ENEMY_COLLISION_MASK : int = 4
 
@@ -95,7 +96,7 @@ static func _erase_breakable_cells(terrain : TileMapLayer, origin : Vector2, rad
 	var center_cell : Vector2i = terrain.local_to_map(local_center)
 	var cell_radius : int = int(ceil(radius / min(tile_size.x, tile_size.y)))
 
-	var hit_cells : Array[Vector2i] = []
+	var frontier : Array[Vector2i] = []
 	for x in range(-cell_radius, cell_radius + 1):
 		for y in range(-cell_radius, cell_radius + 1):
 			var cell := center_cell + Vector2i(x, y)
@@ -104,22 +105,43 @@ static func _erase_breakable_cells(terrain : TileMapLayer, origin : Vector2, rad
 				continue
 
 			if terrain.get_cell_source_id(cell) != -1:
-				hit_cells.append(cell)
+				frontier.append(cell)
 
-	# A hidden structure can be built entirely out of breakable tiles and span further than any
-	# blast radius - erasing only cells strictly inside the radius would leave a suspiciously
-	# precise circular bite instead of fully opening the entrance. Extending exactly one tile past
-	# each hit cell finishes off that entrance cleanly without cascading into the rest of the
-	# structure, which is what keeps a bigger hidden cave still obscured beyond it.
-	var cells_to_erase : Dictionary = {}
-	for cell in hit_cells:
-		cells_to_erase[cell] = true
+	# Whatever the blast reaches, it takes the whole of. A breakable patch is one object as far
+	# as the player is concerned - a boarded-up mine mouth, a cracked wall - so opening part of
+	# it and leaving a ragged fringe standing reads as the blast having failed rather than as a
+	# deliberate edge. This used to stop one tile past whatever the radius covered, which left
+	# exactly that: a circular bite out of a wall.
+	#
+	# The flood is bounded by the patch itself - it only ever steps onto cells that are already
+	# breakable, so it stops dead at the first empty cell or ordinary terrain. What that costs is
+	# that two structures meant to be separate have to be painted apart: touching at a corner
+	# counts as connected, since a diagonal join reads as one wall to look at.
+	var doomed : Dictionary = {}
+	while not frontier.is_empty():
+		var cell : Vector2i = frontier.pop_back()
+		if doomed.has(cell):
+			continue
+		doomed[cell] = true
 		for neighbor in _get_adjacent_cells(cell):
-			if terrain.get_cell_source_id(neighbor) != -1:
-				cells_to_erase[neighbor] = true
+			if not doomed.has(neighbor) and terrain.get_cell_source_id(neighbor) != -1:
+				frontier.append(neighbor)
 
-	for cell in cells_to_erase:
+	# The rubble is built off the same list the erase walks, so the dust and falling rock land
+	# exactly where the wall stood however ragged the patch is. Without it the tiles simply stop
+	# being drawn a frame after the fireball, which reads as the wall having been deleted rather
+	# than blown open.
+	var rubble_positions := PackedVector2Array()
+	for cell in doomed:
+		rubble_positions.append(terrain.to_global(terrain.map_to_local(cell)))
 		terrain.erase_cell(cell)
+
+	if rubble_positions.is_empty():
+		return
+
+	var rubble : Node2D = RUBBLE_BURST.new()
+	rubble.setup(rubble_positions, origin)
+	ProjectileLayer.spawn(rubble)
 
 
 static func _get_adjacent_cells(cell : Vector2i) -> Array[Vector2i]:

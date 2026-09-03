@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="20" height="8" viewBox="0 0 20 8">
+  <!-- Every row of pixels is identical, so this stretches to any ladder height without the grain
+       shearing or the ends going soft. Palette matches the farm house loft ladder. -->
+  <rect x="1" y="0" width="5" height="8" fill="#8a6a42"/>
+  <rect x="1" y="0" width="1" height="8" fill="#6b5030"/>
+  <rect x="4" y="0" width="1" height="8" fill="#a3814a"/>
+  <rect x="14" y="0" width="5" height="8" fill="#7a5a34"/>
+  <rect x="18" y="0" width="1" height="8" fill="#5c4226"/>
+  <rect x="16" y="0" width="1" height="8" fill="#8a6a42"/>
+</svg>

@@ -7,12 +7,15 @@ extends Area2D
 # what has to line up with the floor the player is climbing onto, while the bottom only has to
 # reach the ground.
 #
-# Drawn rather than sprited: a ladder has to be any height a level wants, and two rails with rungs
-# spaced down them stretches for free where a sliced sprite would need slicing. The same reason
-# grapple_anchor.gd draws its own ring.
+# The rails and the rungs are separate pieces of art. The rails are uniform down their length,
+# so they stretch to any height a level wants; the rungs keep their own size and are repeated
+# down them. One whole-ladder sprite stretched to fit would smear its rungs into stripes.
 #
 # It is an Area2D and nothing else - never a body. A ladder the player collided with would stop
 # them walking past it, and the whole point is to be stood inside.
+
+const RAILS : Texture2D = preload("res://levels/_common/ladder/ladder_rails.svg")
+const RUNG : Texture2D = preload("res://levels/_common/ladder/ladder_rung.svg")
 
 const GROUP := &"Climbable"
 
@@ -35,11 +38,6 @@ const TOP_REACH : float = 10.0
 	set(value):
 		rung_spacing = maxf(value, 4.0)
 		_rebuild()
-
-@export var rail_color : Color = Color(0.42, 0.28, 0.16)
-@export var rung_color : Color = Color(0.58, 0.41, 0.24)
-@export var rail_width : float = 3.0
-@export var rung_width : float = 3.0
 
 @onready var collision_shape : CollisionShape2D = $CollisionShape2D
 
@@ -65,14 +63,17 @@ func _rebuild() -> void:
 
 func _draw() -> void:
 	var half : float = width * 0.5
-	draw_line(Vector2(-half, 0.0), Vector2(-half, height), rail_color, rail_width)
-	draw_line(Vector2(half, 0.0), Vector2(half, height), rail_color, rail_width)
+	draw_texture_rect(RAILS, Rect2(-half, 0.0, width, height), false)
+
+	# Rung art is kept in proportion to the ladder's width, so a wider ladder gets chunkier rungs
+	# rather than the same thin ones stretched across a bigger gap.
+	var rung_height : float = width * RUNG.get_height() / RUNG.get_width()
 
 	# Spaced from the top down, so the top rung always sits exactly on the floor line the ladder
 	# was placed against however odd the height works out.
 	var y : float = 0.0
 	while y <= height:
-		draw_line(Vector2(-half, y), Vector2(half, y), rung_color, rung_width)
+		draw_texture_rect(RUNG, Rect2(-half, y - rung_height * 0.5, width, rung_height), false)
 		y += rung_spacing
 
 

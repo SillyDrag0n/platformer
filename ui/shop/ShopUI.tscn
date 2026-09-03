@@ -1,7 +1,7 @@
-[gd_scene load_steps=13 format=3]
+[gd_scene load_steps=14 format=3 uid="uid://bm76a8my7jk8y"]
 
 [ext_resource type="Theme" uid="uid://ddr12d5h68dd1" path="res://ui/theme/game_theme.tres" id="0_theme"]
-[ext_resource type="Script" path="res://ui/shop/shop_ui.gd" id="1_shop"]
+[ext_resource type="Script" uid="uid://c0exgacq8yw35" path="res://ui/shop/shop_ui.gd" id="1_shop"]
 [ext_resource type="FontFile" uid="uid://bn7ed1nmtuvnj" path="res://ui/font/BoldPixels.ttf" id="2_font"]
 [ext_resource type="PackedScene" path="res://ui/shop/ShopEntry.tscn" id="3_entry"]
 
@@ -45,16 +45,16 @@ font_size = 32
 font_color = Color(0.964706, 0.909804, 0.792157, 1)
 
 [sub_resource type="LabelSettings" id="LabelSettings_detailbody"]
+line_spacing = 6.0
 font = ExtResource("2_font")
 font_size = 20
 font_color = Color(0.909804, 0.862745, 0.772549, 1)
-line_spacing = 6.0
 
 [sub_resource type="LabelSettings" id="LabelSettings_detailstats"]
+line_spacing = 6.0
 font = ExtResource("2_font")
 font_size = 20
 font_color = Color(0.768627, 0.658824, 0.509804, 1)
-line_spacing = 6.0
 
 [sub_resource type="LabelSettings" id="LabelSettings_detailprice"]
 font = ExtResource("2_font")
@@ -68,12 +68,12 @@ font_color = Color(0.768627, 0.658824, 0.509804, 1)
 
 [node name="ShopUi" type="CanvasLayer" node_paths=PackedStringArray("title_label", "currency_label", "portrait_rect", "entry_list_container", "entry_list_scroll", "close_button", "detail_panel", "detail_icon", "detail_name_label", "detail_description_label", "detail_stats_label", "detail_price_label", "detail_stock_label")]
 script = ExtResource("1_shop")
-entry_scene = ExtResource("3_entry")
 title_label = NodePath("Panel/MarginContainer/VBoxContainer/HeaderRow/TitleLabel")
 currency_label = NodePath("Panel/MarginContainer/VBoxContainer/HeaderRow/CurrencyLabel")
 portrait_rect = NodePath("Panel/MarginContainer/VBoxContainer/CounterRow/PortraitFrame/PortraitRect")
 entry_list_container = NodePath("Panel/MarginContainer/VBoxContainer/CounterRow/ScrollContainer/EntryListContainer")
 entry_list_scroll = NodePath("Panel/MarginContainer/VBoxContainer/CounterRow/ScrollContainer")
+entry_scene = ExtResource("3_entry")
 close_button = NodePath("Panel/MarginContainer/VBoxContainer/CloseButton")
 detail_panel = NodePath("Panel/MarginContainer/VBoxContainer/DetailPanel")
 detail_icon = NodePath("Panel/MarginContainer/VBoxContainer/DetailPanel/DetailMargin/DetailRow/DetailIconFrame/DetailIcon")

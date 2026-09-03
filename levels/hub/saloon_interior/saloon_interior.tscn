@@ -1,6 +1,6 @@
-[gd_scene load_steps=31 format=3]
+[gd_scene load_steps=32 format=3 uid="uid://rklnf2c3pg1a"]
 
-[ext_resource type="Script" path="res://levels/_common/interior_level.gd" id="1_ext01"]
+[ext_resource type="Script" uid="uid://bkhc53qdhj0g0" path="res://levels/_common/interior_level.gd" id="1_ext01"]
 [ext_resource type="PackedScene" uid="uid://bfcmjoltsmsed" path="res://player/player.tscn" id="2_ext02"]
 [ext_resource type="Script" uid="uid://chd8hkfd628j6" path="res://player/player_camera.gd" id="3_ext03"]
 [ext_resource type="PackedScene" uid="uid://dabxfx3538yx0" path="res://ui/screens/game_screen.tscn" id="4_ext04"]
@@ -8,25 +8,26 @@
 [ext_resource type="PackedScene" uid="uid://rx3auanfsgp0" path="res://ui/inventory/InventoryUI.tscn" id="6_ext06"]
 [ext_resource type="PackedScene" uid="uid://s2gswtyrtm5x" path="res://interaction_component/interactable.tscn" id="7_ext07"]
 [ext_resource type="PackedScene" path="res://npc/ShopNPC.tscn" id="8_shopnpc"]
-[ext_resource type="Script" path="res://scripts/items/item_data.gd" id="9_itemdata"]
-[ext_resource type="Resource" path="res://items/utility/spirit.tres" id="10_spirit"]
-[ext_resource type="Texture2D" path="res://tileset/interiors/saloon/room.svg" id="11_room"]
-[ext_resource type="Texture2D" path="res://tileset/interiors/saloon/batwing_doors.svg" id="12_doors"]
-[ext_resource type="Texture2D" path="res://tileset/interiors/saloon/bar_counter.svg" id="13_bar"]
-[ext_resource type="Texture2D" path="res://tileset/interiors/saloon/back_bar.svg" id="14_backbar"]
-[ext_resource type="Texture2D" path="res://tileset/interiors/saloon/round_table.svg" id="15_table"]
-[ext_resource type="Texture2D" path="res://tileset/interiors/saloon/piano.svg" id="16_piano"]
-[ext_resource type="Texture2D" path="res://tileset/interiors/saloon/chandelier.svg" id="17_chandelier"]
-[ext_resource type="Texture2D" path="res://tileset/interiors/saloon/stairs.svg" id="18_stairs"]
-[ext_resource type="Texture2D" path="res://tileset/interiors/common/window.svg" id="19_window"]
-[ext_resource type="Texture2D" path="res://tileset/interiors/common/light_shaft.svg" id="20_shaft"]
-[ext_resource type="Texture2D" path="res://tileset/interiors/common/oil_lamp.svg" id="21_lamp"]
-[ext_resource type="Texture2D" path="res://tileset/interiors/common/rug.svg" id="22_rug"]
-[ext_resource type="Texture2D" path="res://tileset/interiors/common/barrel.svg" id="23_barrel"]
-[ext_resource type="Texture2D" path="res://tileset/interiors/common/chair.svg" id="25_chair"]
-[ext_resource type="Texture2D" path="res://tileset/interiors/common/spittoon.svg" id="26_spittoon"]
-[ext_resource type="Texture2D" path="res://tileset/interiors/common/coat_hooks.svg" id="27_hooks"]
-[ext_resource type="Texture2D" path="res://tileset/interiors/common/framed_picture.svg" id="28_picture"]
+[ext_resource type="Script" uid="uid://djhxi31kg3jus" path="res://scripts/items/item_data.gd" id="9_itemdata"]
+[ext_resource type="Resource" uid="uid://bp333tulxffmk" path="res://items/utility/spirit.tres" id="10_spirit"]
+[ext_resource type="Texture2D" uid="uid://c6rdxu2o3ujtn" path="res://npc/rosa.svg" id="29_rosa"]
+[ext_resource type="Texture2D" uid="uid://c6vqjurhc2pd4" path="res://tileset/interiors/saloon/room.svg" id="11_room"]
+[ext_resource type="Texture2D" uid="uid://bppgynok0md6b" path="res://tileset/interiors/saloon/batwing_doors.svg" id="12_doors"]
+[ext_resource type="Texture2D" uid="uid://fgwfjf78568e" path="res://tileset/interiors/saloon/bar_counter.svg" id="13_bar"]
+[ext_resource type="Texture2D" uid="uid://dq6kgtndys5hp" path="res://tileset/interiors/saloon/back_bar.svg" id="14_backbar"]
+[ext_resource type="Texture2D" uid="uid://dlva0ypn4hjeg" path="res://tileset/interiors/saloon/round_table.svg" id="15_table"]
+[ext_resource type="Texture2D" uid="uid://yawks870n2jx" path="res://tileset/interiors/saloon/piano.svg" id="16_piano"]
+[ext_resource type="Texture2D" uid="uid://lrq4pp2djb6h" path="res://tileset/interiors/saloon/chandelier.svg" id="17_chandelier"]
+[ext_resource type="Texture2D" uid="uid://dlrbynfk7cg43" path="res://tileset/interiors/saloon/stairs.svg" id="18_stairs"]
+[ext_resource type="Texture2D" uid="uid://662ug66pohpk" path="res://tileset/interiors/common/window.svg" id="19_window"]
+[ext_resource type="Texture2D" uid="uid://1p04iucr3tt4" path="res://tileset/interiors/common/light_shaft.svg" id="20_shaft"]
+[ext_resource type="Texture2D" uid="uid://pn1y1euvwo5t" path="res://tileset/interiors/common/oil_lamp.svg" id="21_lamp"]
+[ext_resource type="Texture2D" uid="uid://b03qrp8yudp4q" path="res://tileset/interiors/common/rug.svg" id="22_rug"]
+[ext_resource type="Texture2D" uid="uid://dbed413681qxc" path="res://tileset/interiors/common/barrel.svg" id="23_barrel"]
+[ext_resource type="Texture2D" uid="uid://cj2g55xqxogg4" path="res://tileset/interiors/common/chair.svg" id="25_chair"]
+[ext_resource type="Texture2D" uid="uid://nkb001jsy53w" path="res://tileset/interiors/common/spittoon.svg" id="26_spittoon"]
+[ext_resource type="Texture2D" uid="uid://cnemfi16le2go" path="res://tileset/interiors/common/coat_hooks.svg" id="27_hooks"]
+[ext_resource type="Texture2D" uid="uid://ucpi6skh4mn4" path="res://tileset/interiors/common/framed_picture.svg" id="28_picture"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_floor"]
 size = Vector2(1000, 40)
@@ -50,7 +51,6 @@ z_index = -9
 texture = ExtResource("11_room")
 
 [node name="Floor" type="StaticBody2D" parent="."]
-collision_layer = 1
 collision_mask = 0
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Floor"]
@@ -58,7 +58,6 @@ position = Vector2(0, 150)
 shape = SubResource("RectangleShape2D_floor")
 
 [node name="Walls" type="StaticBody2D" parent="."]
-collision_layer = 1
 collision_mask = 0
 
 [node name="LeftWall" type="CollisionShape2D" parent="Walls"]
@@ -123,8 +122,8 @@ texture = ExtResource("15_table")
 
 [node name="ChairRight" type="Sprite2D" parent="Furniture"]
 position = Vector2(-92, 107)
-flip_h = true
 texture = ExtResource("25_chair")
+flip_h = true
 
 [node name="Barrel" type="Sprite2D" parent="Furniture"]
 position = Vector2(146, 101)
@@ -164,10 +163,13 @@ visible = false
 [node name="InventoryUi" parent="." instance=ExtResource("6_ext06")]
 visible = false
 
-[node name="Barkeep" parent="." node_paths=PackedStringArray() instance=ExtResource("8_shopnpc")]
+[node name="Barkeep" parent="." instance=ExtResource("8_shopnpc")]
 position = Vector2(300, 130)
 speaker_name = "Rosa"
 greeting_line = "Pull up a stool. Somethin' to steady you before you head back out?"
+
+[node name="Sprite2D" parent="Barkeep" index="0"]
+texture = ExtResource("29_rosa")
 
 [node name="NameLabel" parent="Barkeep" index="1"]
 text = "Rosa"

@@ -33,6 +33,7 @@ func _ready():
 	PlayerManager.snake_grab_ended.connect(_on_snake_grab_ended)
 	_update_swap_weapon_hint()
 	_update_utility_display()
+	on_collectible_award_received(CollectibleManager.total_award_amount)
 
 
 func _on_snake_grab_started(jump_presses_required : int) -> void:
@@ -64,8 +65,12 @@ func _on_quest_popup_timer_timeout() -> void:
 	quest_popup.visible = false
 
 
+# Every level scene carries its own copy of this HUD, so a fresh one is built on each scene change
+# and its label starts at whatever the .tscn hardcodes. The signal only reports money earned since
+# then - the total the player is already carrying has to be read off the manager on the way in, or
+# walking into a level shows nothing while the journal shows the real amount.
 func on_collectible_award_received(total_award : int):
-	collectible_label.text = str(total_award)
+	collectible_label.text = tr("$%d") % total_award
 
 
 func _on_equipped_weapon_changed(_slot, _weapon):
