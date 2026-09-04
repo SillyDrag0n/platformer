@@ -38,26 +38,26 @@ const PRESETS := {
 		"sun_angle": 20.0,
 	},
 	Preset.GOLDEN_HOUR: {
-		"ambient": Color(0.62, 0.56, 0.6),
+		"ambient": Color(0.72, 0.65, 0.7),
 		"sun_color": Color(1.0, 0.78, 0.45),
 		"sun_energy": 0.85,
 		"sun_angle": 55.0,
 	},
 	Preset.DUSK: {
-		"ambient": Color(0.38, 0.35, 0.48),
+		"ambient": Color(0.44, 0.4, 0.55),
 		"sun_color": Color(0.95, 0.5, 0.34),
 		"sun_energy": 0.55,
 		"sun_angle": 72.0,
 	},
 	Preset.NIGHT: {
-		"ambient": Color(0.2, 0.22, 0.34),
+		"ambient": Color(0.23, 0.25, 0.39),
 		"sun_color": Color(0.55, 0.65, 0.95),
 		"sun_energy": 0.16,
 		"sun_angle": -25.0,
 	},
 	# No sun at all - a room's light comes from its lamps and whatever falls through the door.
 	Preset.INTERIOR: {
-		"ambient": Color(0.36, 0.31, 0.29),
+		"ambient": Color(0.41, 0.36, 0.33),
 		"sun_color": Color(1.0, 0.9, 0.7),
 		"sun_energy": 0.0,
 		"sun_angle": 0.0,

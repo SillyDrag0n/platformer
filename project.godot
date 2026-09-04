@@ -228,7 +228,6 @@ locale/translations=PackedStringArray("res://localization/translations.en.transl
 2d_physics/layer_7="EnemyAggro"
 2d_physics/layer_8="OneWayPlatform"
 2d_physics/layer_9="Foreground"
-2d_physics/layer_10="Goal"
 2d_physics/layer_11="EnemyAttacks"
 2d_physics/layer_12="GrappleAnchor"
 2d_physics/layer_13="ArenaBoundary"

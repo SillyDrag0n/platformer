@@ -1,22 +1,22 @@
-[gd_scene load_steps=4 format=3]
+[gd_scene load_steps=2 format=3 uid="uid://bsa1558sapnt7"]
 
-[ext_resource type="Texture2D" path="res://levels/_common/lamps/lantern.svg" id="1_lantern"]
-[ext_resource type="Texture2D" path="res://levels/_common/lighting/light_falloff.tres" id="2_falloff"]
-[ext_resource type="Script" path="res://levels/_common/lamps/flickering_light.gd" id="3_flicker"]
+[ext_resource type="Texture2D" uid="uid://cekmea6plcsjo" path="res://levels/_common/lamps/lantern.svg" id="2_lantern"]
 
-[node name="Lantern" type="Node2D"]
+[node name="Lantern"]
+sprite_texture = ExtResource("2_lantern")
+sprite_offset = Vector2(0, -13)
+light_offset = Vector2(0, -13)
+light_color = Color(1, 0.8, 0.46, 1)
+light_energy = 0.8
+light_texture_scale = 0.8
 
-[node name="Sprite2D" type="Sprite2D" parent="."]
+[node name="Sprite2D" parent="." index="0"]
 position = Vector2(0, -13)
-texture = ExtResource("1_lantern")
+texture = ExtResource("2_lantern")
 
-[node name="Light" type="PointLight2D" parent="."]
+[node name="Light" parent="." index="1"]
 position = Vector2(0, -13)
 color = Color(1, 0.8, 0.46, 1)
 energy = 0.8
-shadow_enabled = true
-shadow_filter = 1
 shadow_filter_smooth = 3.0
-texture = ExtResource("2_falloff")
 texture_scale = 0.8
-script = ExtResource("3_flicker")

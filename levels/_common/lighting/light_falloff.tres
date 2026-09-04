@@ -1,8 +1,4 @@
-[gd_resource type="GradientTexture2D" load_steps=2 format=3]
-
-; The falloff every lamp in the game is shaped by - a soft round pool, brightest at the flame and
-; gone by the edge. Shared rather than one per lamp so a lantern and a street lamp differ only in
-; how far they reach and how warm they are, not in the shape of the light.
+[gd_resource type="GradientTexture2D" load_steps=2 format=3 uid="uid://5wmfblah1620"]
 
 [sub_resource type="Gradient" id="Gradient_falloff"]
 offsets = PackedFloat32Array(0, 0.35, 1)
