@@ -1,4 +1,4 @@
-[gd_scene load_steps=21 format=4 uid="uid://da2heh3m02pjw"]
+[gd_scene load_steps=19 format=4 uid="uid://da2heh3m02pjw"]
 
 [ext_resource type="Script" uid="uid://cs0fi60je58ib" path="res://levels/regions/plains/shaman_camp/shaman_camp.gd" id="1_wmgqs"]
 [ext_resource type="PackedScene" uid="uid://bfcmjoltsmsed" path="res://player/player.tscn" id="2_4r0lc"]
@@ -17,8 +17,6 @@
 [ext_resource type="PackedScene" uid="uid://u0noil7whtf" path="res://enemies/cactus/enemy_cactus.tscn" id="20_ffglu"]
 [ext_resource type="PackedScene" uid="uid://c1cg0fctna23d" path="res://levels/checkpoints/checkpoint.tscn" id="22_2kc72"]
 [ext_resource type="PackedScene" path="res://npc/ShamanNPC.tscn" id="24_43km5"]
-[ext_resource type="PackedScene" path="res://levels/_common/lighting/level_lighting.tscn" id="25_light"]
-[ext_resource type="PackedScene" path="res://levels/_common/lamps/lamp_light.tscn" id="26_light"]
 
 [sub_resource type="FastNoiseLite" id="FastNoiseLite_wmgqs"]
 
@@ -90,20 +88,6 @@ position = Vector2(2160, -177)
 [node name="Ladder" parent="TileMap" instance=ExtResource("13_nwyop")]
 position = Vector2(1160, -158)
 
-[node name="Lights" type="Node2D" parent="TileMap"]
-z_index = 1
-
-[node name="LanternCampLedge" parent="TileMap/Lights" instance=ExtResource("26_light")]
-position = Vector2(1041, 155)
-texture_scale = 1.75
-
-[node name="LanternLadder" parent="TileMap/Lights" instance=ExtResource("26_light")]
-position = Vector2(1216, -189)
-
-[node name="LanternMineMouth" parent="TileMap/Lights" instance=ExtResource("26_light")]
-position = Vector2(2817, -143)
-texture_scale = 1.75
-
 [node name="Bandit" parent="." instance=ExtResource("18_mcnwe")]
 position = Vector2(888, 120)
 drops_dollars = true
@@ -130,6 +114,3 @@ respawn_marker = NodePath("../RespawnPosition")
 [node name="Shaman" parent="." instance=ExtResource("24_43km5")]
 z_index = 1
 position = Vector2(3406, -112)
-
-[node name="LevelLighting" parent="." instance=ExtResource("25_light")]
-sun_strength = 0.75
